@@ -1,0 +1,633 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DB9E3CBC272131CC008FCFAB /* UrbanRecorderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */; };
+		DB9E3CBE272131CC008FCFAB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CBD272131CC008FCFAB /* ContentView.swift */; };
+		DB9E3CC0272131CE008FCFAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB9E3CBF272131CE008FCFAB /* Assets.xcassets */; };
+		DB9E3CC3272131CE008FCFAB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB9E3CC2272131CE008FCFAB /* Preview Assets.xcassets */; };
+		DB9E3CC5272131CE008FCFAB /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CC4272131CE008FCFAB /* Persistence.swift */; };
+		DB9E3CC8272131CE008FCFAB /* UrbanRecorder.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CC6272131CE008FCFAB /* UrbanRecorder.xcdatamodeld */; };
+		DB9E3CD2272131CF008FCFAB /* UrbanRecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CD1272131CF008FCFAB /* UrbanRecorderTests.swift */; };
+		DB9E3CDC272131CF008FCFAB /* UrbanRecorderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CDB272131CF008FCFAB /* UrbanRecorderUITests.swift */; };
+		DB9E3CDE272131CF008FCFAB /* UrbanRecorderUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CDD272131CF008FCFAB /* UrbanRecorderUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DB9E3CCE272131CF008FCFAB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DB9E3CB0272131CC008FCFAB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DB9E3CB7272131CC008FCFAB;
+			remoteInfo = UrbanRecorder;
+		};
+		DB9E3CD8272131CF008FCFAB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DB9E3CB0272131CC008FCFAB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DB9E3CB7272131CC008FCFAB;
+			remoteInfo = UrbanRecorder;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		DB9E3CB8272131CC008FCFAB /* UrbanRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UrbanRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderApp.swift; sourceTree = "<group>"; };
+		DB9E3CBD272131CC008FCFAB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		DB9E3CBF272131CE008FCFAB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DB9E3CC2272131CE008FCFAB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		DB9E3CC4272131CE008FCFAB /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		DB9E3CC7272131CE008FCFAB /* UrbanRecorder.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UrbanRecorder.xcdatamodel; sourceTree = "<group>"; };
+		DB9E3CCD272131CF008FCFAB /* UrbanRecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UrbanRecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB9E3CD1272131CF008FCFAB /* UrbanRecorderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderTests.swift; sourceTree = "<group>"; };
+		DB9E3CD7272131CF008FCFAB /* UrbanRecorderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UrbanRecorderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB9E3CDB272131CF008FCFAB /* UrbanRecorderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderUITests.swift; sourceTree = "<group>"; };
+		DB9E3CDD272131CF008FCFAB /* UrbanRecorderUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DB9E3CB5272131CC008FCFAB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DB9E3CCA272131CF008FCFAB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DB9E3CD4272131CF008FCFAB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DB9E3CAF272131CC008FCFAB = {
+			isa = PBXGroup;
+			children = (
+				DB9E3CBA272131CC008FCFAB /* UrbanRecorder */,
+				DB9E3CD0272131CF008FCFAB /* UrbanRecorderTests */,
+				DB9E3CDA272131CF008FCFAB /* UrbanRecorderUITests */,
+				DB9E3CB9272131CC008FCFAB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DB9E3CB9272131CC008FCFAB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DB9E3CB8272131CC008FCFAB /* UrbanRecorder.app */,
+				DB9E3CCD272131CF008FCFAB /* UrbanRecorderTests.xctest */,
+				DB9E3CD7272131CF008FCFAB /* UrbanRecorderUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DB9E3CBA272131CC008FCFAB /* UrbanRecorder */ = {
+			isa = PBXGroup;
+			children = (
+				DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */,
+				DB9E3CBD272131CC008FCFAB /* ContentView.swift */,
+				DB9E3CBF272131CE008FCFAB /* Assets.xcassets */,
+				DB9E3CC4272131CE008FCFAB /* Persistence.swift */,
+				DB9E3CC6272131CE008FCFAB /* UrbanRecorder.xcdatamodeld */,
+				DB9E3CC1272131CE008FCFAB /* Preview Content */,
+			);
+			path = UrbanRecorder;
+			sourceTree = "<group>";
+		};
+		DB9E3CC1272131CE008FCFAB /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				DB9E3CC2272131CE008FCFAB /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		DB9E3CD0272131CF008FCFAB /* UrbanRecorderTests */ = {
+			isa = PBXGroup;
+			children = (
+				DB9E3CD1272131CF008FCFAB /* UrbanRecorderTests.swift */,
+			);
+			path = UrbanRecorderTests;
+			sourceTree = "<group>";
+		};
+		DB9E3CDA272131CF008FCFAB /* UrbanRecorderUITests */ = {
+			isa = PBXGroup;
+			children = (
+				DB9E3CDB272131CF008FCFAB /* UrbanRecorderUITests.swift */,
+				DB9E3CDD272131CF008FCFAB /* UrbanRecorderUITestsLaunchTests.swift */,
+			);
+			path = UrbanRecorderUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DB9E3CB7272131CC008FCFAB /* UrbanRecorder */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DB9E3CE1272131CF008FCFAB /* Build configuration list for PBXNativeTarget "UrbanRecorder" */;
+			buildPhases = (
+				DB9E3CB4272131CC008FCFAB /* Sources */,
+				DB9E3CB5272131CC008FCFAB /* Frameworks */,
+				DB9E3CB6272131CC008FCFAB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UrbanRecorder;
+			productName = UrbanRecorder;
+			productReference = DB9E3CB8272131CC008FCFAB /* UrbanRecorder.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DB9E3CCC272131CF008FCFAB /* UrbanRecorderTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DB9E3CE4272131CF008FCFAB /* Build configuration list for PBXNativeTarget "UrbanRecorderTests" */;
+			buildPhases = (
+				DB9E3CC9272131CF008FCFAB /* Sources */,
+				DB9E3CCA272131CF008FCFAB /* Frameworks */,
+				DB9E3CCB272131CF008FCFAB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DB9E3CCF272131CF008FCFAB /* PBXTargetDependency */,
+			);
+			name = UrbanRecorderTests;
+			productName = UrbanRecorderTests;
+			productReference = DB9E3CCD272131CF008FCFAB /* UrbanRecorderTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		DB9E3CD6272131CF008FCFAB /* UrbanRecorderUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DB9E3CE7272131CF008FCFAB /* Build configuration list for PBXNativeTarget "UrbanRecorderUITests" */;
+			buildPhases = (
+				DB9E3CD3272131CF008FCFAB /* Sources */,
+				DB9E3CD4272131CF008FCFAB /* Frameworks */,
+				DB9E3CD5272131CF008FCFAB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DB9E3CD9272131CF008FCFAB /* PBXTargetDependency */,
+			);
+			name = UrbanRecorderUITests;
+			productName = UrbanRecorderUITests;
+			productReference = DB9E3CD7272131CF008FCFAB /* UrbanRecorderUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DB9E3CB0272131CC008FCFAB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1300;
+				LastUpgradeCheck = 1300;
+				TargetAttributes = {
+					DB9E3CB7272131CC008FCFAB = {
+						CreatedOnToolsVersion = 13.0;
+					};
+					DB9E3CCC272131CF008FCFAB = {
+						CreatedOnToolsVersion = 13.0;
+						TestTargetID = DB9E3CB7272131CC008FCFAB;
+					};
+					DB9E3CD6272131CF008FCFAB = {
+						CreatedOnToolsVersion = 13.0;
+						TestTargetID = DB9E3CB7272131CC008FCFAB;
+					};
+				};
+			};
+			buildConfigurationList = DB9E3CB3272131CC008FCFAB /* Build configuration list for PBXProject "UrbanRecorder" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = DB9E3CAF272131CC008FCFAB;
+			productRefGroup = DB9E3CB9272131CC008FCFAB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DB9E3CB7272131CC008FCFAB /* UrbanRecorder */,
+				DB9E3CCC272131CF008FCFAB /* UrbanRecorderTests */,
+				DB9E3CD6272131CF008FCFAB /* UrbanRecorderUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DB9E3CB6272131CC008FCFAB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DB9E3CC3272131CE008FCFAB /* Preview Assets.xcassets in Resources */,
+				DB9E3CC0272131CE008FCFAB /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DB9E3CCB272131CF008FCFAB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DB9E3CD5272131CF008FCFAB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DB9E3CB4272131CC008FCFAB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DB9E3CC8272131CE008FCFAB /* UrbanRecorder.xcdatamodeld in Sources */,
+				DB9E3CC5272131CE008FCFAB /* Persistence.swift in Sources */,
+				DB9E3CBE272131CC008FCFAB /* ContentView.swift in Sources */,
+				DB9E3CBC272131CC008FCFAB /* UrbanRecorderApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DB9E3CC9272131CF008FCFAB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DB9E3CD2272131CF008FCFAB /* UrbanRecorderTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DB9E3CD3272131CF008FCFAB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DB9E3CDC272131CF008FCFAB /* UrbanRecorderUITests.swift in Sources */,
+				DB9E3CDE272131CF008FCFAB /* UrbanRecorderUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DB9E3CCF272131CF008FCFAB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DB9E3CB7272131CC008FCFAB /* UrbanRecorder */;
+			targetProxy = DB9E3CCE272131CF008FCFAB /* PBXContainerItemProxy */;
+		};
+		DB9E3CD9272131CF008FCFAB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DB9E3CB7272131CC008FCFAB /* UrbanRecorder */;
+			targetProxy = DB9E3CD8272131CF008FCFAB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		DB9E3CDF272131CF008FCFAB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		DB9E3CE0272131CF008FCFAB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		DB9E3CE2272131CF008FCFAB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"UrbanRecorder/Preview Content\"";
+				DEVELOPMENT_TEAM = R8WVK7NKZV;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Holadddd.UrbanRecorder;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		DB9E3CE3272131CF008FCFAB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"UrbanRecorder/Preview Content\"";
+				DEVELOPMENT_TEAM = R8WVK7NKZV;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Holadddd.UrbanRecorder;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		DB9E3CE5272131CF008FCFAB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R8WVK7NKZV;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Holadddd.UrbanRecorderTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UrbanRecorder.app/UrbanRecorder";
+			};
+			name = Debug;
+		};
+		DB9E3CE6272131CF008FCFAB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R8WVK7NKZV;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Holadddd.UrbanRecorderTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UrbanRecorder.app/UrbanRecorder";
+			};
+			name = Release;
+		};
+		DB9E3CE8272131CF008FCFAB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R8WVK7NKZV;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Holadddd.UrbanRecorderUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = UrbanRecorder;
+			};
+			name = Debug;
+		};
+		DB9E3CE9272131CF008FCFAB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R8WVK7NKZV;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Holadddd.UrbanRecorderUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = UrbanRecorder;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DB9E3CB3272131CC008FCFAB /* Build configuration list for PBXProject "UrbanRecorder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB9E3CDF272131CF008FCFAB /* Debug */,
+				DB9E3CE0272131CF008FCFAB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DB9E3CE1272131CF008FCFAB /* Build configuration list for PBXNativeTarget "UrbanRecorder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB9E3CE2272131CF008FCFAB /* Debug */,
+				DB9E3CE3272131CF008FCFAB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DB9E3CE4272131CF008FCFAB /* Build configuration list for PBXNativeTarget "UrbanRecorderTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB9E3CE5272131CF008FCFAB /* Debug */,
+				DB9E3CE6272131CF008FCFAB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DB9E3CE7272131CF008FCFAB /* Build configuration list for PBXNativeTarget "UrbanRecorderUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB9E3CE8272131CF008FCFAB /* Debug */,
+				DB9E3CE9272131CF008FCFAB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		DB9E3CC6272131CE008FCFAB /* UrbanRecorder.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				DB9E3CC7272131CE008FCFAB /* UrbanRecorder.xcdatamodel */,
+			);
+			currentVersion = DB9E3CC7272131CE008FCFAB /* UrbanRecorder.xcdatamodel */;
+			path = UrbanRecorder.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = DB9E3CB0272131CC008FCFAB /* Project object */;
+}
