@@ -16,6 +16,8 @@
 		DB9E3CD2272131CF008FCFAB /* UrbanRecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CD1272131CF008FCFAB /* UrbanRecorderTests.swift */; };
 		DB9E3CDC272131CF008FCFAB /* UrbanRecorderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CDB272131CF008FCFAB /* UrbanRecorderUITests.swift */; };
 		DB9E3CDE272131CF008FCFAB /* UrbanRecorderUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CDD272131CF008FCFAB /* UrbanRecorderUITestsLaunchTests.swift */; };
+		DB9E3CEC27213B77008FCFAB /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = DB9E3CEB27213B77008FCFAB /* SocketIO */; };
+		DB9E3CEF27213B8F008FCFAB /* CocoaAsyncSocket in Frameworks */ = {isa = PBXBuildFile; productRef = DB9E3CEE27213B8F008FCFAB /* CocoaAsyncSocket */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB9E3CEF27213B8F008FCFAB /* CocoaAsyncSocket in Frameworks */,
+				DB9E3CEC27213B77008FCFAB /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,6 +153,10 @@
 			dependencies = (
 			);
 			name = UrbanRecorder;
+			packageProductDependencies = (
+				DB9E3CEB27213B77008FCFAB /* SocketIO */,
+				DB9E3CEE27213B8F008FCFAB /* CocoaAsyncSocket */,
+			);
 			productName = UrbanRecorder;
 			productReference = DB9E3CB8272131CC008FCFAB /* UrbanRecorder.app */;
 			productType = "com.apple.product-type.application";
@@ -221,6 +229,10 @@
 				Base,
 			);
 			mainGroup = DB9E3CAF272131CC008FCFAB;
+			packageReferences = (
+				DB9E3CEA27213B77008FCFAB /* XCRemoteSwiftPackageReference "socket.io-client-swift" */,
+				DB9E3CED27213B8F008FCFAB /* XCRemoteSwiftPackageReference "CocoaAsyncSocket" */,
+			);
 			productRefGroup = DB9E3CB9272131CC008FCFAB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -435,7 +447,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -465,7 +477,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -615,6 +627,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		DB9E3CEA27213B77008FCFAB /* XCRemoteSwiftPackageReference "socket.io-client-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/socketio/socket.io-client-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.2.0;
+			};
+		};
+		DB9E3CED27213B8F008FCFAB /* XCRemoteSwiftPackageReference "CocoaAsyncSocket" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/robbiehanson/CocoaAsyncSocket";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.6.5;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DB9E3CEB27213B77008FCFAB /* SocketIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DB9E3CEA27213B77008FCFAB /* XCRemoteSwiftPackageReference "socket.io-client-swift" */;
+			productName = SocketIO;
+		};
+		DB9E3CEE27213B8F008FCFAB /* CocoaAsyncSocket */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DB9E3CED27213B8F008FCFAB /* XCRemoteSwiftPackageReference "CocoaAsyncSocket" */;
+			productName = CocoaAsyncSocket;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		DB9E3CC6272131CE008FCFAB /* UrbanRecorder.xcdatamodeld */ = {
