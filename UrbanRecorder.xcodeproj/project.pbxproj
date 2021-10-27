@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		DB9E3CBC272131CC008FCFAB /* UrbanRecorderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */; };
-		DB9E3CBE272131CC008FCFAB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CBD272131CC008FCFAB /* ContentView.swift */; };
 		DB9E3CC0272131CE008FCFAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB9E3CBF272131CE008FCFAB /* Assets.xcassets */; };
 		DB9E3CC3272131CE008FCFAB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB9E3CC2272131CE008FCFAB /* Preview Assets.xcassets */; };
 		DB9E3CC5272131CE008FCFAB /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CC4272131CE008FCFAB /* Persistence.swift */; };
@@ -18,6 +17,15 @@
 		DB9E3CDE272131CF008FCFAB /* UrbanRecorderUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CDD272131CF008FCFAB /* UrbanRecorderUITestsLaunchTests.swift */; };
 		DB9E3CEC27213B77008FCFAB /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = DB9E3CEB27213B77008FCFAB /* SocketIO */; };
 		DB9E3CEF27213B8F008FCFAB /* CocoaAsyncSocket in Frameworks */ = {isa = PBXBuildFile; productRef = DB9E3CEE27213B8F008FCFAB /* CocoaAsyncSocket */; };
+		DB9E3CF227215B8A008FCFAB /* HomeMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CF127215B8A008FCFAB /* HomeMapView.swift */; };
+		DB9E3CF727215D81008FCFAB /* HomeMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CF627215D81008FCFAB /* HomeMapViewModel.swift */; };
+		DB9E3CFB27216E23008FCFAB /* HomeMapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CFA27216E23008FCFAB /* HomeMapModel.swift */; };
+		DB9E3CFD2722785F008FCFAB /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CFC2722785F008FCFAB /* Helper.swift */; };
+		DB9E3D052722BAF6008FCFAB /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3D042722BAF6008FCFAB /* View+.swift */; };
+		DB9E3D072722BB34008FCFAB /* CGFloat+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3D062722BB34008FCFAB /* CGFloat+.swift */; };
+		DB9E3D0B2726A1AE008FCFAB /* RecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3D0A2726A1AE008FCFAB /* RecorderView.swift */; };
+		DBF3C68C2726BCEC00292893 /* SegmentSlideOverCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF3C68B2726BCEC00292893 /* SegmentSlideOverCardView.swift */; };
+		DBF3C68E2727E10800292893 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF3C68D2727E10800292893 /* Color+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,7 +48,6 @@
 /* Begin PBXFileReference section */
 		DB9E3CB8272131CC008FCFAB /* UrbanRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UrbanRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderApp.swift; sourceTree = "<group>"; };
-		DB9E3CBD272131CC008FCFAB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DB9E3CBF272131CE008FCFAB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DB9E3CC2272131CE008FCFAB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DB9E3CC4272131CE008FCFAB /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -50,6 +57,16 @@
 		DB9E3CD7272131CF008FCFAB /* UrbanRecorderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UrbanRecorderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB9E3CDB272131CF008FCFAB /* UrbanRecorderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderUITests.swift; sourceTree = "<group>"; };
 		DB9E3CDD272131CF008FCFAB /* UrbanRecorderUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		DB9E3CF127215B8A008FCFAB /* HomeMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMapView.swift; sourceTree = "<group>"; };
+		DB9E3CF627215D81008FCFAB /* HomeMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMapViewModel.swift; sourceTree = "<group>"; };
+		DB9E3CF827216587008FCFAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		DB9E3CFA27216E23008FCFAB /* HomeMapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMapModel.swift; sourceTree = "<group>"; };
+		DB9E3CFC2722785F008FCFAB /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		DB9E3D042722BAF6008FCFAB /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
+		DB9E3D062722BB34008FCFAB /* CGFloat+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+.swift"; sourceTree = "<group>"; };
+		DB9E3D0A2726A1AE008FCFAB /* RecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecorderView.swift; sourceTree = "<group>"; };
+		DBF3C68B2726BCEC00292893 /* SegmentSlideOverCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentSlideOverCardView.swift; sourceTree = "<group>"; };
+		DBF3C68D2727E10800292893 /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,8 +119,13 @@
 		DB9E3CBA272131CC008FCFAB /* UrbanRecorder */ = {
 			isa = PBXGroup;
 			children = (
+				DB9E3CF827216587008FCFAB /* Info.plist */,
 				DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */,
-				DB9E3CBD272131CC008FCFAB /* ContentView.swift */,
+				DB9E3CFC2722785F008FCFAB /* Helper.swift */,
+				DB9E3D032722BAE7008FCFAB /* Extension */,
+				DB9E3CF527215D51008FCFAB /* HomeMap */,
+				DB9E3D0A2726A1AE008FCFAB /* RecorderView.swift */,
+				DBF3C68A2726AF9F00292893 /* Views */,
 				DB9E3CBF272131CE008FCFAB /* Assets.xcassets */,
 				DB9E3CC4272131CE008FCFAB /* Persistence.swift */,
 				DB9E3CC6272131CE008FCFAB /* UrbanRecorder.xcdatamodeld */,
@@ -135,6 +157,58 @@
 				DB9E3CDD272131CF008FCFAB /* UrbanRecorderUITestsLaunchTests.swift */,
 			);
 			path = UrbanRecorderUITests;
+			sourceTree = "<group>";
+		};
+		DB9E3CF027215B3B008FCFAB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DB9E3CF127215B8A008FCFAB /* HomeMapView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DB9E3CF427215D3A008FCFAB /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DB9E3CF627215D81008FCFAB /* HomeMapViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		DB9E3CF527215D51008FCFAB /* HomeMap */ = {
+			isa = PBXGroup;
+			children = (
+				DB9E3CF027215B3B008FCFAB /* View */,
+				DB9E3CF427215D3A008FCFAB /* ViewModel */,
+				DB9E3CF927216E0F008FCFAB /* Model */,
+			);
+			path = HomeMap;
+			sourceTree = "<group>";
+		};
+		DB9E3CF927216E0F008FCFAB /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DB9E3CFA27216E23008FCFAB /* HomeMapModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DB9E3D032722BAE7008FCFAB /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				DB9E3D042722BAF6008FCFAB /* View+.swift */,
+				DB9E3D062722BB34008FCFAB /* CGFloat+.swift */,
+				DBF3C68D2727E10800292893 /* Color+.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		DBF3C68A2726AF9F00292893 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DBF3C68B2726BCEC00292893 /* SegmentSlideOverCardView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -275,10 +349,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBF3C68E2727E10800292893 /* Color+.swift in Sources */,
 				DB9E3CC8272131CE008FCFAB /* UrbanRecorder.xcdatamodeld in Sources */,
+				DB9E3CFD2722785F008FCFAB /* Helper.swift in Sources */,
 				DB9E3CC5272131CE008FCFAB /* Persistence.swift in Sources */,
-				DB9E3CBE272131CC008FCFAB /* ContentView.swift in Sources */,
+				DBF3C68C2726BCEC00292893 /* SegmentSlideOverCardView.swift in Sources */,
+				DB9E3D072722BB34008FCFAB /* CGFloat+.swift in Sources */,
+				DB9E3CF227215B8A008FCFAB /* HomeMapView.swift in Sources */,
+				DB9E3D0B2726A1AE008FCFAB /* RecorderView.swift in Sources */,
+				DB9E3CFB27216E23008FCFAB /* HomeMapModel.swift in Sources */,
 				DB9E3CBC272131CC008FCFAB /* UrbanRecorderApp.swift in Sources */,
+				DB9E3CF727215D81008FCFAB /* HomeMapViewModel.swift in Sources */,
+				DB9E3D052722BAF6008FCFAB /* View+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -442,9 +524,13 @@
 				DEVELOPMENT_TEAM = R8WVK7NKZV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = UrbanRecorder/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "將使用您的地理位置以提升體驗";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "將使用您的地理位置以提升體驗";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -472,9 +558,13 @@
 				DEVELOPMENT_TEAM = R8WVK7NKZV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = UrbanRecorder/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "將使用您的地理位置以提升體驗";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "將使用您的地理位置以提升體驗";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -500,7 +590,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = R8WVK7NKZV;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -525,7 +615,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = R8WVK7NKZV;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
