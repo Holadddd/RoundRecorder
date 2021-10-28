@@ -47,22 +47,33 @@ struct SegmentSlideOverCardView<Content: View> : View {
                 GeometryReader{ value in
                     
                     ScrollView {
-                        VStack{
-                            content()
-                                .expandHorizontally()
-                            Spacer().padding(10)
-                        }.overlay(
-                            GeometryReader { proxy in
-                                Color.clear.onAppear {
-                                    print("ContentSize: \(proxy.size.height)")
-                                    print("ScrollviewSize: \(value.frame(in: .local).size)")
-                                    scrollViewMaxOffset = value.frame(in: .local).size.height - proxy.size.height
-                                }
+                        ZStack{
+                            VStack{
+                                content()
+                                    .expandHorizontally()
+                                    .background(GeometryReader{ insideProxy in  //
+                                        let offset = insideProxy.frame(in: .named("scroll")).minY
+                                        Color.clear.preference(key: ScrollOffsetPreferenceKey.self, value: offset)
+                                    })
+                                Spacer().padding(10)
                             }
-                        )
-                            .background(Color.themeBackgroud)
+                            .overlay(
+                                GeometryReader { proxy in
+                                    Color.clear.onAppear {
+                                        print("ContentSize: \(proxy.size.height)")
+                                        print("ScrollviewSize: \(value.frame(in: .local).size)")
+                                        scrollViewMaxOffset = value.frame(in: .local).size.height - proxy.size.height
+                                    }
+                                }
+                            ).background(Color.themeBackgroud)
+                        }
                     }
                     .content.offset(x: 0, y: scrollViewOffset)
+                    .coordinateSpace(name: "scroll")
+                    .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
+//                        print("Offset: \(Int(value))")
+                        
+                    }
                     .disabled(true)
                 }
             }
@@ -118,16 +129,19 @@ struct SegmentSlideOverCardView<Content: View> : View {
                             
                             if !isCardWillOnTop {
                                 scrollViewOffset = 0
+                                scrollAble = false
                             }
                         }
                         
                         if isScrollingOnScrollView {
                             if (scrollViewOffset + predictShiftOffset) > 0 {
                                 scrollViewOffset = 0
+                                scrollAble = false
                             } else if (scrollViewOffset + predictShiftOffset) < scrollViewMaxOffset {
                                 scrollViewOffset = scrollViewMaxOffset
                             } else {
                                 scrollViewOffset += predictShiftOffset
+                                scrollAble = true
                             }
                             
                         }
