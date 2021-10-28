@@ -42,6 +42,7 @@ struct SegmentSlideOverCardView<Content: View> : View {
                     .padding(10)
                     .scaleEffect(2)
                     .background(.white)
+                    .zIndex(1)
                 
                 GeometryReader{ value in
                     
@@ -64,16 +65,6 @@ struct SegmentSlideOverCardView<Content: View> : View {
                     .content.offset(x: 0, y: scrollViewOffset)
                     .disabled(true)
                 }
-            }
-            
-            VStack{
-                Image(systemName: "minus")
-                    .expandHorizontally()
-                    .foregroundColor(.gray)
-                    .padding(10)
-                    .scaleEffect(2)
-                    .background(.white)
-                Spacer()
             }
         }
         .gesture(
@@ -239,4 +230,10 @@ enum CardPosition: CGFloat {
         let sortedMode = availableMode.sorted(by:{$0.offsetValue < $1.offsetValue})
         return position == sortedMode[0]
     }
+}
+
+private struct ScrollOffsetPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = .zero
+    
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {}
 }
