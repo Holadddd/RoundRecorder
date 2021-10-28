@@ -24,6 +24,18 @@
 		DB9E3D052722BAF6008FCFAB /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3D042722BAF6008FCFAB /* View+.swift */; };
 		DB9E3D072722BB34008FCFAB /* CGFloat+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3D062722BB34008FCFAB /* CGFloat+.swift */; };
 		DB9E3D0B2726A1AE008FCFAB /* RecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3D0A2726A1AE008FCFAB /* RecorderView.swift */; };
+		DBA7EFC7272A9F880037AA7E /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFC6272A9F880037AA7E /* HTTPClient.swift */; };
+		DBA7EFCA272AB3440037AA7E /* DeviceInfoRQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFC9272AB3440037AA7E /* DeviceInfoRQ.swift */; };
+		DBA7EFCC272ABABA0037AA7E /* Codable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFCB272ABABA0037AA7E /* Codable+.swift */; };
+		DBA7EFCE272ABBF50037AA7E /* URLRequest+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFCD272ABBF50037AA7E /* URLRequest+.swift */; };
+		DBA7EFD1272AE89B0037AA7E /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFD0272AE89B0037AA7E /* UserAPI.swift */; };
+		DBA7EFD3272AE8BA0037AA7E /* VoiceServerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFD2272AE8BA0037AA7E /* VoiceServerAPI.swift */; };
+		DBA7EFD5272AEB1C0037AA7E /* CallRequestRQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFD4272AEB1C0037AA7E /* CallRequestRQ.swift */; };
+		DBA7EFD7272AEEB20037AA7E /* AcceptCallingRequestRQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFD6272AEEB20037AA7E /* AcceptCallingRequestRQ.swift */; };
+		DBA7EFD9272AEEC50037AA7E /* DeclineCallingRequestRQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFD8272AEEC50037AA7E /* DeclineCallingRequestRQ.swift */; };
+		DBA7EFDB272AEEDE0037AA7E /* CloseTheSessionRQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFDA272AEEDE0037AA7E /* CloseTheSessionRQ.swift */; };
+		DBA7EFDE272AF37D0037AA7E /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFDD272AF37D0037AA7E /* UserInfo.swift */; };
+		DBA7EFE0272AF3920037AA7E /* AvailableUserListRP.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFDF272AF3920037AA7E /* AvailableUserListRP.swift */; };
 		DBF3C68C2726BCEC00292893 /* SegmentSlideOverCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF3C68B2726BCEC00292893 /* SegmentSlideOverCardView.swift */; };
 		DBF3C68E2727E10800292893 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF3C68D2727E10800292893 /* Color+.swift */; };
 /* End PBXBuildFile section */
@@ -65,6 +77,18 @@
 		DB9E3D042722BAF6008FCFAB /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		DB9E3D062722BB34008FCFAB /* CGFloat+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+.swift"; sourceTree = "<group>"; };
 		DB9E3D0A2726A1AE008FCFAB /* RecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecorderView.swift; sourceTree = "<group>"; };
+		DBA7EFC6272A9F880037AA7E /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
+		DBA7EFC9272AB3440037AA7E /* DeviceInfoRQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoRQ.swift; sourceTree = "<group>"; };
+		DBA7EFCB272ABABA0037AA7E /* Codable+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+.swift"; sourceTree = "<group>"; };
+		DBA7EFCD272ABBF50037AA7E /* URLRequest+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest+.swift"; sourceTree = "<group>"; };
+		DBA7EFD0272AE89B0037AA7E /* UserAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
+		DBA7EFD2272AE8BA0037AA7E /* VoiceServerAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceServerAPI.swift; sourceTree = "<group>"; };
+		DBA7EFD4272AEB1C0037AA7E /* CallRequestRQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallRequestRQ.swift; sourceTree = "<group>"; };
+		DBA7EFD6272AEEB20037AA7E /* AcceptCallingRequestRQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptCallingRequestRQ.swift; sourceTree = "<group>"; };
+		DBA7EFD8272AEEC50037AA7E /* DeclineCallingRequestRQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeclineCallingRequestRQ.swift; sourceTree = "<group>"; };
+		DBA7EFDA272AEEDE0037AA7E /* CloseTheSessionRQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseTheSessionRQ.swift; sourceTree = "<group>"; };
+		DBA7EFDD272AF37D0037AA7E /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
+		DBA7EFDF272AF3920037AA7E /* AvailableUserListRP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableUserListRP.swift; sourceTree = "<group>"; };
 		DBF3C68B2726BCEC00292893 /* SegmentSlideOverCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentSlideOverCardView.swift; sourceTree = "<group>"; };
 		DBF3C68D2727E10800292893 /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -127,6 +151,7 @@
 				DB9E3D0A2726A1AE008FCFAB /* RecorderView.swift */,
 				DBF3C68A2726AF9F00292893 /* Views */,
 				DB9E3CBF272131CE008FCFAB /* Assets.xcassets */,
+				DBA7EFC5272A9F380037AA7E /* Network */,
 				DB9E3CC4272131CE008FCFAB /* Persistence.swift */,
 				DB9E3CC6272131CE008FCFAB /* UrbanRecorder.xcdatamodeld */,
 				DB9E3CC1272131CE008FCFAB /* Preview Content */,
@@ -199,8 +224,51 @@
 				DB9E3D042722BAF6008FCFAB /* View+.swift */,
 				DB9E3D062722BB34008FCFAB /* CGFloat+.swift */,
 				DBF3C68D2727E10800292893 /* Color+.swift */,
+				DBA7EFCB272ABABA0037AA7E /* Codable+.swift */,
+				DBA7EFCD272ABBF50037AA7E /* URLRequest+.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		DBA7EFC5272A9F380037AA7E /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				DBA7EFC6272A9F880037AA7E /* HTTPClient.swift */,
+				DBA7EFCF272AE8640037AA7E /* API */,
+				DBA7EFC8272AB31C0037AA7E /* Model */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		DBA7EFC8272AB31C0037AA7E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DBA7EFDC272AF36B0037AA7E /* User */,
+				DBA7EFC9272AB3440037AA7E /* DeviceInfoRQ.swift */,
+				DBA7EFD4272AEB1C0037AA7E /* CallRequestRQ.swift */,
+				DBA7EFD6272AEEB20037AA7E /* AcceptCallingRequestRQ.swift */,
+				DBA7EFD8272AEEC50037AA7E /* DeclineCallingRequestRQ.swift */,
+				DBA7EFDA272AEEDE0037AA7E /* CloseTheSessionRQ.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DBA7EFCF272AE8640037AA7E /* API */ = {
+			isa = PBXGroup;
+			children = (
+				DBA7EFD0272AE89B0037AA7E /* UserAPI.swift */,
+				DBA7EFD2272AE8BA0037AA7E /* VoiceServerAPI.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		DBA7EFDC272AF36B0037AA7E /* User */ = {
+			isa = PBXGroup;
+			children = (
+				DBA7EFDD272AF37D0037AA7E /* UserInfo.swift */,
+				DBA7EFDF272AF3920037AA7E /* AvailableUserListRP.swift */,
+			);
+			path = User;
 			sourceTree = "<group>";
 		};
 		DBF3C68A2726AF9F00292893 /* Views */ = {
@@ -349,17 +417,29 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBA7EFDB272AEEDE0037AA7E /* CloseTheSessionRQ.swift in Sources */,
 				DBF3C68E2727E10800292893 /* Color+.swift in Sources */,
 				DB9E3CC8272131CE008FCFAB /* UrbanRecorder.xcdatamodeld in Sources */,
+				DBA7EFC7272A9F880037AA7E /* HTTPClient.swift in Sources */,
+				DBA7EFCE272ABBF50037AA7E /* URLRequest+.swift in Sources */,
+				DBA7EFD1272AE89B0037AA7E /* UserAPI.swift in Sources */,
+				DBA7EFDE272AF37D0037AA7E /* UserInfo.swift in Sources */,
 				DB9E3CFD2722785F008FCFAB /* Helper.swift in Sources */,
 				DB9E3CC5272131CE008FCFAB /* Persistence.swift in Sources */,
 				DBF3C68C2726BCEC00292893 /* SegmentSlideOverCardView.swift in Sources */,
+				DBA7EFE0272AF3920037AA7E /* AvailableUserListRP.swift in Sources */,
 				DB9E3D072722BB34008FCFAB /* CGFloat+.swift in Sources */,
+				DBA7EFD7272AEEB20037AA7E /* AcceptCallingRequestRQ.swift in Sources */,
 				DB9E3CF227215B8A008FCFAB /* HomeMapView.swift in Sources */,
+				DBA7EFCC272ABABA0037AA7E /* Codable+.swift in Sources */,
+				DBA7EFD9272AEEC50037AA7E /* DeclineCallingRequestRQ.swift in Sources */,
+				DBA7EFCA272AB3440037AA7E /* DeviceInfoRQ.swift in Sources */,
+				DBA7EFD5272AEB1C0037AA7E /* CallRequestRQ.swift in Sources */,
 				DB9E3D0B2726A1AE008FCFAB /* RecorderView.swift in Sources */,
 				DB9E3CFB27216E23008FCFAB /* HomeMapModel.swift in Sources */,
 				DB9E3CBC272131CC008FCFAB /* UrbanRecorderApp.swift in Sources */,
 				DB9E3CF727215D81008FCFAB /* HomeMapViewModel.swift in Sources */,
+				DBA7EFD3272AE8BA0037AA7E /* VoiceServerAPI.swift in Sources */,
 				DB9E3D052722BAF6008FCFAB /* View+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -57,6 +57,23 @@ class HomeMapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     func playButtonDidClicked() {
         print("playButtonDidClicked")
     }
+    
+    func getAvailableUsersList() {
+        #warning("Test Api work for temporarily")
+        HTTPClient.shared.request(UserAPI.getAvailableUsersList(userID: "")) { result in
+            switch result {
+            case .success(let data):
+                guard let data = data, let list = try? JSONDecoder().decode(AvailableUserListRP.self, from: data) else {
+                    print("Data is empty")
+                    return
+                }
+                
+                print(list)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
 }
 // location Manager
 extension HomeMapViewModel {

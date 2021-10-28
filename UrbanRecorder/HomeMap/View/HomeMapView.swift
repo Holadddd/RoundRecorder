@@ -59,6 +59,9 @@ struct HomeMapView: View {
                     }
                 }, cardPosition: $viewmodel.cardPosition, availableMode: [.top, .middle, .bottom])
             }
+        }.onAppear {
+            #warning("Test Api work for temporarily")
+            viewmodel.getAvailableUsersList()
         }
     }
 }
