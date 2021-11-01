@@ -57,7 +57,7 @@ struct HomeMapView: View {
                     ForEach(0..<50) {i in
                         Text("\(i)")
                     }
-                }, cardPosition: $viewmodel.cardPosition, availableMode: [.top, .middle, .bottom])
+                }, cardPosition: $viewmodel.cardPosition, availableMode: AvailablePosition([.top, .middle, .bottom]))
             }
         }.onAppear {
             #warning("Test Api work for temporarily")

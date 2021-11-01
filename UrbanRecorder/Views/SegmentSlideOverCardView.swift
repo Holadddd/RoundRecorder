@@ -19,7 +19,7 @@ struct SegmentSlideOverCardView<Content: View> : View {
     
     @Binding var cardPosition: CardPosition
     
-    var availableMode:[CardPosition] = [.middle, .bottom]
+    var availableMode: AvailablePosition = AvailablePosition()
     
     let axes: Axis.Set = .vertical
     
@@ -83,14 +83,20 @@ struct SegmentSlideOverCardView<Content: View> : View {
                 .onChanged({ drag in
                     
                     if let lastDragPosition = lastDragPosition {
-                        let sortedMode = availableMode.sorted(by:{$0.offsetValue < $1.offsetValue})
                         
                         let scrollShiftOffSet = drag.location.y - lastDragPosition.location.y
                         
-                        if cardPosition.offsetValue + cardViewOffset > (sortedMode[0].offsetValue) && !isScrollingOnScrollView {
+                        let currentCardOffset = cardPosition.offsetValue + cardViewOffset
+                        if currentCardOffset > (availableMode.maxMode.offsetValue) && !isScrollingOnScrollView {
                             isScrollingOnCard = true
                             scrollViewOffset = 0
+                            
                             cardViewOffset += drag.translation.height
+                            
+                            let currentCardOffset = cardPosition.offsetValue + cardViewOffset
+                            if currentCardOffset > availableMode.minMode.offsetValue {
+                                cardViewOffset -= drag.translation.height
+                            }
                         } else {
                             let updatedOffset = scrollViewOffset + scrollShiftOffSet
                             if updatedOffset <= 0 && updatedOffset > scrollViewMaxOffset {
@@ -117,9 +123,9 @@ struct SegmentSlideOverCardView<Content: View> : View {
                     
                     let currentOffset = cardPosition.offsetValue + cardViewOffset
                     
-                    let updatePosition = cardPosition.updatePositionResult(with: currentOffset + predictShiftOffset, availableMode: availableMode)
+                    let updatePosition = cardPosition.updatePositionResult(with: currentOffset + predictShiftOffset, availableMode: availableMode.modes)
                     
-                    let isCardWillOnTop = cardPosition.isPositionStatusIsOnTop(updatePosition, availableMode: availableMode)
+                    let isCardWillOnTop = cardPosition.isPositionStatusIsOnTop(updatePosition, availableMode: availableMode.modes)
                     
                     withAnimation(.spring(response: 0.3, dampingFraction: 0.7, blendDuration: 0)) {
                         if isScrollingOnCard {
@@ -169,6 +175,22 @@ struct SegmentSlideOverCardView<Content: View> : View {
         } else {
             return outsideProxy.frame(in: .global).minX - insideProxy.frame(in: .global).minX
         }
+    }
+}
+
+struct AvailablePosition {
+    var modes: [CardPosition]
+    
+    init(_ modes: [CardPosition] = [.bottom, .middle]) {
+        self.modes = modes.sorted(by:{$0.offsetValue < $1.offsetValue})
+    }
+    
+    var maxMode: CardPosition {
+        return modes[0]
+    }
+    
+    var minMode: CardPosition {
+        return modes[modes.count - 1]
     }
 }
 
