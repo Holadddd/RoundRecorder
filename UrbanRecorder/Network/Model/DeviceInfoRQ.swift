@@ -9,7 +9,7 @@ import Foundation
 
 struct DeviceInfoRQ: Codable {
     
-    let UUID: String
+    let deviceID: String
     
     let socketID: String
     

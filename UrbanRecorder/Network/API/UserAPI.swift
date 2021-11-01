@@ -49,7 +49,7 @@ enum UserAPI: APIRequest {
         switch self {
         case .registerAvailableDevice(let UUID, let socketID, let userID):
             
-            return DeviceInfoRQ(UUID: UUID, socketID: socketID, userID: userID).JSONData
+            return DeviceInfoRQ(deviceID: UUID, socketID: socketID, userID: userID).JSONData
         default:
             return nil
         }
