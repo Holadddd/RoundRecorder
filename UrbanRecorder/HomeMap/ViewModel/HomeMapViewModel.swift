@@ -85,10 +85,6 @@ class HomeMapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
 
 extension HomeMapViewModel: SocketManagerDelegate {
     
-    func didReceiveData(_ data: Data) {
-        print("didReceiveData")
-    }
-    
     func callRequest(from user: UserInfo) {
         print("callRequest from: \(user)")
     }

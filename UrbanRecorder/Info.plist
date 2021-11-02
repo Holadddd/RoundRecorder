@@ -6,6 +6,10 @@
 	<string>52.192.242.163</string>
 	<key>SocketHostIP</key>
 	<string>52.192.242.163</string>
+	<key>UDPSocketHostIP</key>
+	<string>52.192.242.163</string>
+	<key>UDPSocketPort</key>
+	<string>8001</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsLocalNetworking</key>

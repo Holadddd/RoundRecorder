@@ -39,6 +39,9 @@
 		DBF0E3F9272FEB07004DC546 /* SubscribeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E3F8272FEB07004DC546 /* SubscribeManager.swift */; };
 		DBF0E3FD2730FD99004DC546 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBF0E3FC2730FD99004DC546 /* NetworkExtension.framework */; };
 		DBF0E3FF27311959004DC546 /* Notification+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E3FE27311959004DC546 /* Notification+.swift */; };
+		DBF0E40127311DCF004DC546 /* UDPSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E40027311DCF004DC546 /* UDPSocketManager.swift */; };
+		DBF0E403273123ED004DC546 /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E402273123ED004DC546 /* Data+.swift */; };
+		DBF0E405273126C1004DC546 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E404273126C1004DC546 /* Date+.swift */; };
 		DBF3C68C2726BCEC00292893 /* SegmentSlideOverCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF3C68B2726BCEC00292893 /* SegmentSlideOverCardView.swift */; };
 		DBF3C68E2727E10800292893 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF3C68D2727E10800292893 /* Color+.swift */; };
 /* End PBXBuildFile section */
@@ -96,6 +99,9 @@
 		DBF0E3FA2730FD99004DC546 /* UrbanRecorder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UrbanRecorder.entitlements; sourceTree = "<group>"; };
 		DBF0E3FC2730FD99004DC546 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		DBF0E3FE27311959004DC546 /* Notification+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+.swift"; sourceTree = "<group>"; };
+		DBF0E40027311DCF004DC546 /* UDPSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPSocketManager.swift; sourceTree = "<group>"; };
+		DBF0E402273123ED004DC546 /* Data+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+.swift"; sourceTree = "<group>"; };
+		DBF0E404273126C1004DC546 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		DBF3C68B2726BCEC00292893 /* SegmentSlideOverCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentSlideOverCardView.swift; sourceTree = "<group>"; };
 		DBF3C68D2727E10800292893 /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -238,6 +244,8 @@
 				DBA7EFCB272ABABA0037AA7E /* Codable+.swift */,
 				DBA7EFCD272ABBF50037AA7E /* URLRequest+.swift */,
 				DBF0E3FE27311959004DC546 /* Notification+.swift */,
+				DBF0E402273123ED004DC546 /* Data+.swift */,
+				DBF0E404273126C1004DC546 /* Date+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -287,6 +295,7 @@
 			isa = PBXGroup;
 			children = (
 				DBF0E3F8272FEB07004DC546 /* SubscribeManager.swift */,
+				DBF0E40027311DCF004DC546 /* UDPSocketManager.swift */,
 			);
 			path = Socket;
 			sourceTree = "<group>";
@@ -466,9 +475,12 @@
 				DBA7EFCA272AB3440037AA7E /* DeviceInfoRQ.swift in Sources */,
 				DBA7EFD5272AEB1C0037AA7E /* CallRequestRQ.swift in Sources */,
 				DB9E3D0B2726A1AE008FCFAB /* RecorderView.swift in Sources */,
+				DBF0E405273126C1004DC546 /* Date+.swift in Sources */,
 				DB9E3CFB27216E23008FCFAB /* HomeMapModel.swift in Sources */,
 				DB9E3CBC272131CC008FCFAB /* UrbanRecorderApp.swift in Sources */,
+				DBF0E403273123ED004DC546 /* Data+.swift in Sources */,
 				DB9E3CF727215D81008FCFAB /* HomeMapViewModel.swift in Sources */,
+				DBF0E40127311DCF004DC546 /* UDPSocketManager.swift in Sources */,
 				DBA7EFD3272AE8BA0037AA7E /* VoiceServerAPI.swift in Sources */,
 				DB9E3D052722BAF6008FCFAB /* View+.swift in Sources */,
 			);

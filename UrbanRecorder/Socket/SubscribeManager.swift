@@ -10,8 +10,6 @@ import SocketIO
 
 protocol SocketManagerDelegate: AnyObject {
     
-    func didReceiveData(_ data: Data)
-    
     func callRequest(from user: UserInfo)
     
     func callRequestAccept(from user: UserInfo)
@@ -57,7 +55,7 @@ class SubscribeManager: NSObject {
             guard let self = self else {print("Fail to get socket client id"); return }
             
             // Publish the socket status
-            NotificationCenter.default.post(name: .socketConnectionDidFinish, object: nil)
+            NotificationCenter.default.post(name: .TCPsocketConnectionDidFinish, object: nil)
             
             // TODO: Sync UUID and socket ID by calling web post api for server sending the correct subscription
             self.didSetupClientConnection(userID: userID)
@@ -86,8 +84,6 @@ class SubscribeManager: NSObject {
             let emitUser = UserInfo(deviceID: deviceID, userID: userID, isAvailable: true)
             
             switch subscribesEvent {
-            case .receiveData:
-                print("Did receive data: \(content)")
             case .callRequest:
                 self.delegate?.callRequest(from: emitUser)
             case .callRequestAccept:
@@ -107,8 +103,6 @@ class SubscribeManager: NSObject {
 
 enum SubscribeEvent: CaseIterable {
     
-    case receiveData
-    
     case callRequest
     
     case callRequestAccept
@@ -119,8 +113,6 @@ enum SubscribeEvent: CaseIterable {
     
     var eventID: String {
         switch self {
-        case .receiveData:
-            return "message"
         case .callRequest:
             return "callRequest"
         case .callRequestAccept:

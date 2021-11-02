@@ -8,5 +8,14 @@
 import Foundation
 
 extension Notification.Name {
-    static let socketConnectionDidFinish = Notification.Name("socketClinetDidConnect")
+    static let TCPsocketConnectionDidFinish = Notification.Name("socketClinetDidConnect")
+    
+    static let UDPSocketConnectionLatency = Notification.Name("socketConnectionLatency") // Milliseconds
+}
+
+extension NotificationCenter {
+    
+    func post(UDPSocketLatency: Int64) {
+        post(name: Notification.Name.UDPSocketConnectionLatency, object: nil, userInfo: ["millisecond": UDPSocketLatency])
+    }
 }
