@@ -74,7 +74,39 @@ class HomeMapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
             }
         }
     }
+    
+    func subscribeAllEvent() {
+        SubscribeManager.shared.delegate = self
+        
+        SubscribeManager.shared.setupWith("test1234")
+        
+    }
 }
+
+extension HomeMapViewModel: SocketManagerDelegate {
+    
+    func didReceiveData(_ data: Data) {
+        print("didReceiveData")
+    }
+    
+    func callRequest(from user: UserInfo) {
+        print("callRequest from: \(user)")
+    }
+    
+    func callRequestAccept(from user: UserInfo) {
+        print("callRequestAccept from: \(user)")
+    }
+    
+    func callRequestDecline(from user: UserInfo) {
+        print("callRequestDecline from: \(user)")
+    }
+    
+    func calledSessionClosed(by user: UserInfo) {
+        print("calledSessionClosed from: \(user)")
+    }
+    
+}
+
 // location Manager
 extension HomeMapViewModel {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

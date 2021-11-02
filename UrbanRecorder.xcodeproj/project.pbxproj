@@ -36,6 +36,9 @@
 		DBA7EFDB272AEEDE0037AA7E /* CloseTheSessionRQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFDA272AEEDE0037AA7E /* CloseTheSessionRQ.swift */; };
 		DBA7EFDE272AF37D0037AA7E /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFDD272AF37D0037AA7E /* UserInfo.swift */; };
 		DBA7EFE0272AF3920037AA7E /* AvailableUserListRP.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFDF272AF3920037AA7E /* AvailableUserListRP.swift */; };
+		DBF0E3F9272FEB07004DC546 /* SubscribeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E3F8272FEB07004DC546 /* SubscribeManager.swift */; };
+		DBF0E3FD2730FD99004DC546 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBF0E3FC2730FD99004DC546 /* NetworkExtension.framework */; };
+		DBF0E3FF27311959004DC546 /* Notification+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E3FE27311959004DC546 /* Notification+.swift */; };
 		DBF3C68C2726BCEC00292893 /* SegmentSlideOverCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF3C68B2726BCEC00292893 /* SegmentSlideOverCardView.swift */; };
 		DBF3C68E2727E10800292893 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF3C68D2727E10800292893 /* Color+.swift */; };
 /* End PBXBuildFile section */
@@ -89,6 +92,10 @@
 		DBA7EFDA272AEEDE0037AA7E /* CloseTheSessionRQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseTheSessionRQ.swift; sourceTree = "<group>"; };
 		DBA7EFDD272AF37D0037AA7E /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		DBA7EFDF272AF3920037AA7E /* AvailableUserListRP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableUserListRP.swift; sourceTree = "<group>"; };
+		DBF0E3F8272FEB07004DC546 /* SubscribeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeManager.swift; sourceTree = "<group>"; };
+		DBF0E3FA2730FD99004DC546 /* UrbanRecorder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UrbanRecorder.entitlements; sourceTree = "<group>"; };
+		DBF0E3FC2730FD99004DC546 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
+		DBF0E3FE27311959004DC546 /* Notification+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+.swift"; sourceTree = "<group>"; };
 		DBF3C68B2726BCEC00292893 /* SegmentSlideOverCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentSlideOverCardView.swift; sourceTree = "<group>"; };
 		DBF3C68D2727E10800292893 /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -99,6 +106,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB9E3CEF27213B8F008FCFAB /* CocoaAsyncSocket in Frameworks */,
+				DBF0E3FD2730FD99004DC546 /* NetworkExtension.framework in Frameworks */,
 				DB9E3CEC27213B77008FCFAB /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -127,6 +135,7 @@
 				DB9E3CD0272131CF008FCFAB /* UrbanRecorderTests */,
 				DB9E3CDA272131CF008FCFAB /* UrbanRecorderUITests */,
 				DB9E3CB9272131CC008FCFAB /* Products */,
+				DBF0E3FB2730FD99004DC546 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -143,6 +152,7 @@
 		DB9E3CBA272131CC008FCFAB /* UrbanRecorder */ = {
 			isa = PBXGroup;
 			children = (
+				DBF0E3FA2730FD99004DC546 /* UrbanRecorder.entitlements */,
 				DB9E3CF827216587008FCFAB /* Info.plist */,
 				DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */,
 				DB9E3CFC2722785F008FCFAB /* Helper.swift */,
@@ -151,6 +161,7 @@
 				DB9E3CF527215D51008FCFAB /* HomeMap */,
 				DB9E3D0A2726A1AE008FCFAB /* RecorderView.swift */,
 				DBA7EFC5272A9F380037AA7E /* Network */,
+				DBF0E3F7272FCC43004DC546 /* Socket */,
 				DB9E3CBF272131CE008FCFAB /* Assets.xcassets */,
 				DB9E3CC4272131CE008FCFAB /* Persistence.swift */,
 				DB9E3CC6272131CE008FCFAB /* UrbanRecorder.xcdatamodeld */,
@@ -226,6 +237,7 @@
 				DBF3C68D2727E10800292893 /* Color+.swift */,
 				DBA7EFCB272ABABA0037AA7E /* Codable+.swift */,
 				DBA7EFCD272ABBF50037AA7E /* URLRequest+.swift */,
+				DBF0E3FE27311959004DC546 /* Notification+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -269,6 +281,22 @@
 				DBA7EFDF272AF3920037AA7E /* AvailableUserListRP.swift */,
 			);
 			path = User;
+			sourceTree = "<group>";
+		};
+		DBF0E3F7272FCC43004DC546 /* Socket */ = {
+			isa = PBXGroup;
+			children = (
+				DBF0E3F8272FEB07004DC546 /* SubscribeManager.swift */,
+			);
+			path = Socket;
+			sourceTree = "<group>";
+		};
+		DBF0E3FB2730FD99004DC546 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DBF0E3FC2730FD99004DC546 /* NetworkExtension.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		DBF3C68A2726AF9F00292893 /* Views */ = {
@@ -431,6 +459,8 @@
 				DB9E3D072722BB34008FCFAB /* CGFloat+.swift in Sources */,
 				DBA7EFD7272AEEB20037AA7E /* AcceptCallingRequestRQ.swift in Sources */,
 				DB9E3CF227215B8A008FCFAB /* HomeMapView.swift in Sources */,
+				DBF0E3FF27311959004DC546 /* Notification+.swift in Sources */,
+				DBF0E3F9272FEB07004DC546 /* SubscribeManager.swift in Sources */,
 				DBA7EFCC272ABABA0037AA7E /* Codable+.swift in Sources */,
 				DBA7EFD9272AEEC50037AA7E /* DeclineCallingRequestRQ.swift in Sources */,
 				DBA7EFCA272AB3440037AA7E /* DeviceInfoRQ.swift in Sources */,
@@ -598,6 +628,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = UrbanRecorder/UrbanRecorder.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"UrbanRecorder/Preview Content\"";
@@ -621,6 +652,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Holadddd.UrbanRecorder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -632,6 +664,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = UrbanRecorder/UrbanRecorder.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"UrbanRecorder/Preview Content\"";
@@ -655,6 +688,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Holadddd.UrbanRecorder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -804,7 +838,7 @@
 			repositoryURL = "https://github.com/socketio/socket.io-client-swift.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 15.2.0;
+				minimumVersion = 16.0.0;
 			};
 		};
 		DB9E3CED27213B8F008FCFAB /* XCRemoteSwiftPackageReference "CocoaAsyncSocket" */ = {

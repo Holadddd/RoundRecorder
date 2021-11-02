@@ -61,7 +61,7 @@ struct HomeMapView: View {
             }
         }.onAppear {
             #warning("Test Api work for temporarily")
-            viewmodel.getAvailableUsersList()
+            viewmodel.subscribeAllEvent()
         }
     }
 }

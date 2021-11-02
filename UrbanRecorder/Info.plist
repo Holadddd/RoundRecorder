@@ -4,5 +4,12 @@
 <dict>
 	<key>APIHostIP</key>
 	<string>52.192.242.163</string>
+	<key>SocketHostIP</key>
+	<string>52.192.242.163</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 </dict>
 </plist>
