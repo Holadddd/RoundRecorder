@@ -21,6 +21,14 @@ class HomeMapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     var isMapDisplayFullScreen: Bool = true
     
+    var urAudioEngineInstance = URAudioEngine.instance
+    
+    @Published var latitude: Double = 0
+    
+    @Published var longitude: Double = 0
+    
+    @Published var altitude: Double = 0
+    
     @Published var isShowingRecorderView: Bool = false
     
     @Published var isSelectedItemPlayAble: Bool = false
@@ -43,6 +51,8 @@ class HomeMapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
         locationManager.requestWhenInUseAuthorization()
         
         locationManager.startUpdatingLocation()
+        
+        startRecording()
     }
     
     func menuButtonDidClisked() {
@@ -81,7 +91,16 @@ class HomeMapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
         SubscribeManager.shared.setupWith("test1234")
         
     }
+    
+    func startRecording(){
+        urAudioEngineInstance.setupURAudioEngineCaptureCallBack {[weak self] audioData in
+            guard let self = self else { return }
+            // TODO: Send data through UDPSocket
+        }
+    }
 }
+
+
 
 extension HomeMapViewModel: SocketManagerDelegate {
     
@@ -109,12 +128,18 @@ extension HomeMapViewModel {
         guard let location = locations.first else { return }
         let latitude = location.coordinate.latitude
         let longitude = location.coordinate.longitude
-        
+        let altitude = location.altitude
         let locationCoordinate = CLLocationCoordinate2D(latitude: latitude,
                                                         longitude: longitude)
-        if !isUpdatedUserRegion {
-            userCurrentRegion.center = locationCoordinate
-            isUpdatedUserRegion.toggle()
+        DispatchQueue.main.async {
+            self.latitude = latitude
+            self.longitude = longitude
+            self.altitude = altitude
+            
+            if !self.isUpdatedUserRegion {
+                self.userCurrentRegion.center = locationCoordinate
+                self.isUpdatedUserRegion.toggle()
+            }
         }
     }
     

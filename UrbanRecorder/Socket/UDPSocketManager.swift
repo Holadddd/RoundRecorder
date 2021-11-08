@@ -115,7 +115,7 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
                 // Latency
                 let timeData = Data.init(bytes: rawPtr + audioDataLength, count: msTimeStampDataSize)
                 guard let timeString = String(data: timeData, encoding: .utf8),
-                      let sendMsTimeStamp = Int64(timeString) else { return }
+                      let sendMsTimeStamp = UInt64(timeString) else { return }
 
                 let receiveMsTimeStamp = Date().millisecondsSince1970
 

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB67AE3D2738D678007EE7CE /* PowerMeters.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB67AE3C2738D678007EE7CE /* PowerMeters.swift */; };
+		DB68DD9C2733DB7500336001 /* URAudioEngineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB68DD9B2733DB7500336001 /* URAudioEngineDelegate.swift */; };
 		DB9E3CBC272131CC008FCFAB /* UrbanRecorderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */; };
 		DB9E3CC0272131CE008FCFAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB9E3CBF272131CE008FCFAB /* Assets.xcassets */; };
 		DB9E3CC3272131CE008FCFAB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB9E3CC2272131CE008FCFAB /* Preview Assets.xcassets */; };
@@ -37,11 +39,18 @@
 		DBA7EFDE272AF37D0037AA7E /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFDD272AF37D0037AA7E /* UserInfo.swift */; };
 		DBA7EFE0272AF3920037AA7E /* AvailableUserListRP.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFDF272AF3920037AA7E /* AvailableUserListRP.swift */; };
 		DBF0E3F9272FEB07004DC546 /* SubscribeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E3F8272FEB07004DC546 /* SubscribeManager.swift */; };
-		DBF0E3FD2730FD99004DC546 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBF0E3FC2730FD99004DC546 /* NetworkExtension.framework */; };
 		DBF0E3FF27311959004DC546 /* Notification+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E3FE27311959004DC546 /* Notification+.swift */; };
 		DBF0E40127311DCF004DC546 /* UDPSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E40027311DCF004DC546 /* UDPSocketManager.swift */; };
 		DBF0E403273123ED004DC546 /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E402273123ED004DC546 /* Data+.swift */; };
 		DBF0E405273126C1004DC546 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E404273126C1004DC546 /* Date+.swift */; };
+		DBF0E408273141E1004DC546 /* URAudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E407273141E1004DC546 /* URAudioEngine.swift */; };
+		DBF0E40B273144B6004DC546 /* URAudioBufferMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E40A273144B6004DC546 /* URAudioBufferMetadata.swift */; };
+		DBF0E40D27327A6F004DC546 /* URAudioEngineDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E40C27327A6F004DC546 /* URAudioEngineDataSource.swift */; };
+		DBF0E41027327B69004DC546 /* URAudioRenderAudioUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E40F27327B69004DC546 /* URAudioRenderAudioUnit.swift */; };
+		DBF0E41327327CE7004DC546 /* URStreamBasicDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E41227327CE7004DC546 /* URStreamBasicDescription.swift */; };
+		DBF0E41527327D1B004DC546 /* EngineHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E41427327D1B004DC546 /* EngineHelper.swift */; };
+		DBF0E417273288BE004DC546 /* URAudioOutputData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E416273288BE004DC546 /* URAudioOutputData.swift */; };
+		DBF0E41927338BDE004DC546 /* URAudioBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E41827338BDE004DC546 /* URAudioBuffer.swift */; };
 		DBF3C68C2726BCEC00292893 /* SegmentSlideOverCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF3C68B2726BCEC00292893 /* SegmentSlideOverCardView.swift */; };
 		DBF3C68E2727E10800292893 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF3C68D2727E10800292893 /* Color+.swift */; };
 /* End PBXBuildFile section */
@@ -64,6 +73,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DB67AE3C2738D678007EE7CE /* PowerMeters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerMeters.swift; sourceTree = "<group>"; };
+		DB68DD9B2733DB7500336001 /* URAudioEngineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioEngineDelegate.swift; sourceTree = "<group>"; };
 		DB9E3CB8272131CC008FCFAB /* UrbanRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UrbanRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderApp.swift; sourceTree = "<group>"; };
 		DB9E3CBF272131CE008FCFAB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -102,6 +113,14 @@
 		DBF0E40027311DCF004DC546 /* UDPSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPSocketManager.swift; sourceTree = "<group>"; };
 		DBF0E402273123ED004DC546 /* Data+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+.swift"; sourceTree = "<group>"; };
 		DBF0E404273126C1004DC546 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
+		DBF0E407273141E1004DC546 /* URAudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioEngine.swift; sourceTree = "<group>"; };
+		DBF0E40A273144B6004DC546 /* URAudioBufferMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioBufferMetadata.swift; sourceTree = "<group>"; };
+		DBF0E40C27327A6F004DC546 /* URAudioEngineDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioEngineDataSource.swift; sourceTree = "<group>"; };
+		DBF0E40F27327B69004DC546 /* URAudioRenderAudioUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioRenderAudioUnit.swift; sourceTree = "<group>"; };
+		DBF0E41227327CE7004DC546 /* URStreamBasicDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URStreamBasicDescription.swift; sourceTree = "<group>"; };
+		DBF0E41427327D1B004DC546 /* EngineHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineHelper.swift; sourceTree = "<group>"; };
+		DBF0E416273288BE004DC546 /* URAudioOutputData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioOutputData.swift; sourceTree = "<group>"; };
+		DBF0E41827338BDE004DC546 /* URAudioBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioBuffer.swift; sourceTree = "<group>"; };
 		DBF3C68B2726BCEC00292893 /* SegmentSlideOverCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentSlideOverCardView.swift; sourceTree = "<group>"; };
 		DBF3C68D2727E10800292893 /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -112,7 +131,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB9E3CEF27213B8F008FCFAB /* CocoaAsyncSocket in Frameworks */,
-				DBF0E3FD2730FD99004DC546 /* NetworkExtension.framework in Frameworks */,
 				DB9E3CEC27213B77008FCFAB /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -134,6 +152,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DB67AE3B2738D65F007EE7CE /* PowerMeters */ = {
+			isa = PBXGroup;
+			children = (
+				DB67AE3C2738D678007EE7CE /* PowerMeters.swift */,
+			);
+			path = PowerMeters;
+			sourceTree = "<group>";
+		};
 		DB9E3CAF272131CC008FCFAB = {
 			isa = PBXGroup;
 			children = (
@@ -168,6 +194,7 @@
 				DB9E3D0A2726A1AE008FCFAB /* RecorderView.swift */,
 				DBA7EFC5272A9F380037AA7E /* Network */,
 				DBF0E3F7272FCC43004DC546 /* Socket */,
+				DBF0E406273141C5004DC546 /* URAudioEngine */,
 				DB9E3CBF272131CE008FCFAB /* Assets.xcassets */,
 				DB9E3CC4272131CE008FCFAB /* Persistence.swift */,
 				DB9E3CC6272131CE008FCFAB /* UrbanRecorder.xcdatamodeld */,
@@ -306,6 +333,47 @@
 				DBF0E3FC2730FD99004DC546 /* NetworkExtension.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DBF0E406273141C5004DC546 /* URAudioEngine */ = {
+			isa = PBXGroup;
+			children = (
+				DBF0E407273141E1004DC546 /* URAudioEngine.swift */,
+				DBF0E40C27327A6F004DC546 /* URAudioEngineDataSource.swift */,
+				DB68DD9B2733DB7500336001 /* URAudioEngineDelegate.swift */,
+				DBF0E416273288BE004DC546 /* URAudioOutputData.swift */,
+				DBF0E40E27327ABB004DC546 /* AudioUnit */,
+				DBF0E41127327CC7004DC546 /* AudioStreamBasicDescription */,
+				DB67AE3B2738D65F007EE7CE /* PowerMeters */,
+				DBF0E40927314495004DC546 /* Model */,
+				DBF0E41427327D1B004DC546 /* EngineHelper.swift */,
+			);
+			path = URAudioEngine;
+			sourceTree = "<group>";
+		};
+		DBF0E40927314495004DC546 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DBF0E40A273144B6004DC546 /* URAudioBufferMetadata.swift */,
+				DBF0E41827338BDE004DC546 /* URAudioBuffer.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DBF0E40E27327ABB004DC546 /* AudioUnit */ = {
+			isa = PBXGroup;
+			children = (
+				DBF0E40F27327B69004DC546 /* URAudioRenderAudioUnit.swift */,
+			);
+			path = AudioUnit;
+			sourceTree = "<group>";
+		};
+		DBF0E41127327CC7004DC546 /* AudioStreamBasicDescription */ = {
+			isa = PBXGroup;
+			children = (
+				DBF0E41227327CE7004DC546 /* URStreamBasicDescription.swift */,
+			);
+			path = AudioStreamBasicDescription;
 			sourceTree = "<group>";
 		};
 		DBF3C68A2726AF9F00292893 /* Views */ = {
@@ -456,6 +524,7 @@
 			files = (
 				DBA7EFDB272AEEDE0037AA7E /* CloseTheSessionRQ.swift in Sources */,
 				DBF3C68E2727E10800292893 /* Color+.swift in Sources */,
+				DBF0E41327327CE7004DC546 /* URStreamBasicDescription.swift in Sources */,
 				DB9E3CC8272131CE008FCFAB /* UrbanRecorder.xcdatamodeld in Sources */,
 				DBA7EFC7272A9F880037AA7E /* HTTPClient.swift in Sources */,
 				DBA7EFCE272ABBF50037AA7E /* URLRequest+.swift in Sources */,
@@ -464,14 +533,22 @@
 				DB9E3CFD2722785F008FCFAB /* Helper.swift in Sources */,
 				DB9E3CC5272131CE008FCFAB /* Persistence.swift in Sources */,
 				DBF3C68C2726BCEC00292893 /* SegmentSlideOverCardView.swift in Sources */,
+				DBF0E40B273144B6004DC546 /* URAudioBufferMetadata.swift in Sources */,
 				DBA7EFE0272AF3920037AA7E /* AvailableUserListRP.swift in Sources */,
 				DB9E3D072722BB34008FCFAB /* CGFloat+.swift in Sources */,
+				DBF0E408273141E1004DC546 /* URAudioEngine.swift in Sources */,
 				DBA7EFD7272AEEB20037AA7E /* AcceptCallingRequestRQ.swift in Sources */,
+				DBF0E41027327B69004DC546 /* URAudioRenderAudioUnit.swift in Sources */,
 				DB9E3CF227215B8A008FCFAB /* HomeMapView.swift in Sources */,
+				DB68DD9C2733DB7500336001 /* URAudioEngineDelegate.swift in Sources */,
 				DBF0E3FF27311959004DC546 /* Notification+.swift in Sources */,
+				DB67AE3D2738D678007EE7CE /* PowerMeters.swift in Sources */,
 				DBF0E3F9272FEB07004DC546 /* SubscribeManager.swift in Sources */,
 				DBA7EFCC272ABABA0037AA7E /* Codable+.swift in Sources */,
 				DBA7EFD9272AEEC50037AA7E /* DeclineCallingRequestRQ.swift in Sources */,
+				DBF0E41927338BDE004DC546 /* URAudioBuffer.swift in Sources */,
+				DBF0E417273288BE004DC546 /* URAudioOutputData.swift in Sources */,
+				DBF0E41527327D1B004DC546 /* EngineHelper.swift in Sources */,
 				DBA7EFCA272AB3440037AA7E /* DeviceInfoRQ.swift in Sources */,
 				DBA7EFD5272AEB1C0037AA7E /* CallRequestRQ.swift in Sources */,
 				DB9E3D0B2726A1AE008FCFAB /* RecorderView.swift in Sources */,
@@ -482,6 +559,7 @@
 				DB9E3CF727215D81008FCFAB /* HomeMapViewModel.swift in Sources */,
 				DBF0E40127311DCF004DC546 /* UDPSocketManager.swift in Sources */,
 				DBA7EFD3272AE8BA0037AA7E /* VoiceServerAPI.swift in Sources */,
+				DBF0E40D27327A6F004DC546 /* URAudioEngineDataSource.swift in Sources */,
 				DB9E3D052722BAF6008FCFAB /* View+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -645,15 +723,18 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"UrbanRecorder/Preview Content\"";
 				DEVELOPMENT_TEAM = R8WVK7NKZV;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UrbanRecorder/Info.plist;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "將使用您的地理位置以提升體驗";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "將使用您的地理位置以提升體驗";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "將使用您的麥克風";
+				INFOPLIST_KEY_NSMotionUsageDescription = "使用 motion";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -681,15 +762,18 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"UrbanRecorder/Preview Content\"";
 				DEVELOPMENT_TEAM = R8WVK7NKZV;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UrbanRecorder/Info.plist;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "將使用您的地理位置以提升體驗";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "將使用您的地理位置以提升體驗";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "將使用您的麥克風";
+				INFOPLIST_KEY_NSMotionUsageDescription = "使用 motion";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -858,7 +942,7 @@
 			repositoryURL = "https://github.com/robbiehanson/CocoaAsyncSocket";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 7.6.5;
+				minimumVersion = 7.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

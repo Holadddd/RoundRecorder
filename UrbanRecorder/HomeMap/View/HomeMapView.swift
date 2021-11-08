@@ -21,7 +21,8 @@ struct HomeMapView: View {
     
     var body: some View {
         GeometryReader { outsideProxy in
-            ZStack(alignment: Alignment.top) {
+            ZStack(alignment: Alignment.leading) {
+                
                 VStack{
                     Map(coordinateRegion: $viewmodel.userCurrentRegion, interactionModes: .all, showsUserLocation: true, userTrackingMode: nil, annotationItems: viewmodel.annotationItems, annotationContent: { item in
                         MapAnnotation(coordinate: item.coordinate) {
@@ -52,7 +53,12 @@ struct HomeMapView: View {
 //                        }.disabled(!viewmodel.isSelectedItemPlayAble)
 //                    })
 //                }.padding(50)
-                
+                VStack(alignment: .leading){
+                    Text("Longitude: \(viewmodel.longitude)")
+                    Text("Latitude: \(viewmodel.latitude)")
+                    Text("Elevation: \(viewmodel.altitude)")
+                }
+                Spacer()
                 SegmentSlideOverCardView(content: {
                     ForEach(0..<50) {i in
                         Text("\(i)")

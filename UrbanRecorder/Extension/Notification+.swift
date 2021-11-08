@@ -15,7 +15,7 @@ extension Notification.Name {
 
 extension NotificationCenter {
     
-    func post(UDPSocketLatency: Int64) {
+    func post(UDPSocketLatency: UInt64) {
         post(name: Notification.Name.UDPSocketConnectionLatency, object: nil, userInfo: ["millisecond": UDPSocketLatency])
     }
 }
