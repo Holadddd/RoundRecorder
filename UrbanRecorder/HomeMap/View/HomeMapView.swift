@@ -58,7 +58,25 @@ struct HomeMapView: View {
                     Text("Latitude: \(viewmodel.latitude)")
                     Text("Elevation: \(viewmodel.altitude)")
                 }
-                Spacer()
+                
+                VStack(alignment: .leading){
+                    HStack{
+                        Text("UserID: ")
+                        TextField.init("userID", text: $viewmodel.userID, prompt: nil)
+                    }
+                    
+                    HStack{
+                        Text("RecieverID: ")
+                        TextField.init("recieverID", text: $viewmodel.recieverID, prompt: nil)
+                    }
+                    HStack{
+                        Button("MakeCallSession") {
+                            viewmodel.setupCallSessionChannel()
+                        }
+                    }
+                    Spacer()
+                }
+                
                 SegmentSlideOverCardView(content: {
                     ForEach(0..<50) {i in
                         Text("\(i)")
@@ -68,6 +86,9 @@ struct HomeMapView: View {
         }.onAppear {
             #warning("Test Api work for temporarily")
             viewmodel.subscribeAllEvent()
+        }
+        .onTapGesture {
+            UIApplication.shared.endEditing()
         }
     }
 }

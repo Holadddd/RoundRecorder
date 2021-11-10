@@ -14,6 +14,9 @@ class HomeMapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     var buttonScale: CGFloat {
         return DeviceInfo.isCurrentDeviceIsPad ? 3 : 2
     }
+    @Published var userID: String = ""
+    
+    @Published var recieverID: String = ""
     
     @Published var cardPosition = CardPosition.bottom
     
@@ -39,6 +42,8 @@ class HomeMapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     @Published var userCurrentRegion: MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 40.75773, longitude: -73.985708), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
     
+    var udpSocket: UDPSocketManager = UDPSocketManager.shared
+    
     func updateUserCurrentRegion() {
         
     }
@@ -51,8 +56,6 @@ class HomeMapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
         locationManager.requestWhenInUseAuthorization()
         
         locationManager.startUpdatingLocation()
-        
-        startRecording()
     }
     
     func menuButtonDidClisked() {
@@ -96,11 +99,25 @@ class HomeMapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
         urAudioEngineInstance.setupURAudioEngineCaptureCallBack {[weak self] audioData in
             guard let self = self else { return }
             // TODO: Send data through UDPSocket
+            self.udpSocket.sendBufferData(audioData, from: self.userID, to: self.recieverID)
+        }
+    }
+    
+    func setupCallSessionChannel() {
+        udpSocket.delegate = self
+        udpSocket.setupConnection {[weak self] in
+            guard let self = self else { return }
+            self.startRecording()
         }
     }
 }
 
-
+extension HomeMapViewModel: UDPSocketManagerDelegate {
+    func didReceiveAudioBuffersData(_ manager: UDPSocketManager, data: Data, from sendID: String) {
+        let urAudioBuffer = URAudioEngine.parseURAudioBufferData(data)
+        urAudioEngineInstance.schechuleRendererAudioBuffer(urAudioBuffer)
+    }
+}
 
 extension HomeMapViewModel: SocketManagerDelegate {
     

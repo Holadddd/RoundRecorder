@@ -8,11 +8,10 @@
 import Foundation
 import AVFoundation
 import CocoaAsyncSocket
+import Network
 
 protocol UDPSocketManagerDelegate: AnyObject {
-    
-    func didReceiveAudioBuffersData(_ manager: UDPSocketManager, data: Data)
-    
+    func didReceiveAudioBuffersData(_ manager: UDPSocketManager, data: Data,from sendID: String)
 }
 
 class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
@@ -25,10 +24,10 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
     
     static let compressionAlgorithm: NSData.CompressionAlgorithm = .lz4
     
-    //AWS can accept maximum package size(64K 65536 bytes)
-    let MTU = 65535
+    //AWS can accept maximum package size(64K 65536 bytes), Mac max buffer size is 9216
+    let mtu = 65535
     
-    var socket: GCDAsyncUdpSocket?
+    var udpSocketInOut: InOutSocket?
     
     var status: UDPSocketStstus = .disConneected
     
@@ -38,123 +37,147 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
     
     override init() {
         super.init()
-        
-        setupUDPReceive()
     }
     
-    func setupConnection() {
-        socket = GCDAsyncUdpSocket(delegate: self, delegateQueue:DispatchQueue.main)
-        
-        guard let socket = socket ,
-              let port = UInt16(UDPSocketManager.port)
-        else { return }
-        
+    func setupConnection(_ complete: @escaping()->Void) {
+        // UDPSocket
         let ip = UDPSocketManager.hostIP
-        
-        do { try socket.bind(toPort: port)} catch { print("")}
-        do { try socket.connect(toHost: ip, onPort: port)} catch { print("joinMulticastGroup not proceed")}
-        do { try socket.enableBroadcast(true)} catch { print("not able to brad cast")}
-        do { try socket.beginReceiving()} catch { print("beginReceiving not proceed")}
-        
-        status = .connected
+        guard let port = UInt16(UDPSocketManager.port) else { fatalError() }
+        udpSocketInOut = InOutSocket(ip: ip, port: port)
+        udpSocketInOut?.setupConnection {
+            setupUDPReceive()
+            status = .connected
+            complete()
+        }
     }
     
-    func sendAudioBuffer(_ audioBuffer: AudioBuffer, from userUUID: String = "", to recieverUserUUID: String = "") {
+    func sendBufferData(_ audioBufferData: NSMutableData, from userID: String = "", to recieverID: String = "") {
         guard status == .connected else { return }
         
-        guard var bufferData = audioBuffer.mData else { return }
-        var bufferSize = audioBuffer.mDataByteSize
-        
-        guard let msData = String(Date().millisecondsSince1970).data(using: .utf8) else { return }
-        // Using UUID for fixed data size, the size would be 115 bytes
-        let socketInfoData = try! JSONEncoder().encode(UDPSocketInfo(senderUserUUID: userUUID, recieverUserUUID: recieverUserUUID))
+        var bufferDataByte = audioBufferData.mutableBytes
+        var bufferSize = audioBufferData.length
         
         #warning("AWS UDP Socket didnt have max limit of bytes, still need to check of the limit")
-        let defaultMaximumBufferSize = MTU - msData.count - socketInfoData.count
+        let defaultMaximumBufferSize = mtu - 40
         
         while true {
             if bufferSize > defaultMaximumBufferSize {
-                var data = Data.init(bytes: bufferData, count: defaultMaximumBufferSize)
-                data.append(msData)
                 
-                guard var compressedData = data.compressed(using: UDPSocketManager.compressionAlgorithm) else { return }
-                // Append data after compressed
-                compressedData.append(socketInfoData)
-                sendData(compressedData)
+                let audioData = Data(bytes: bufferDataByte, count: defaultMaximumBufferSize)
                 
-                bufferData += defaultMaximumBufferSize
-                bufferSize -= UInt32(defaultMaximumBufferSize)
+                guard let sendingPayload = UDPSocketManager.encodeUDPSocketPayload(audioData, userID: userID, recieverID: recieverID) else { break }
+                
+                sendData(sendingPayload)
+                
+                bufferDataByte += defaultMaximumBufferSize
+                bufferSize -= defaultMaximumBufferSize
             } else {
-                var data = Data.init(bytes: bufferData, count: Int(bufferSize))
-                data.append(msData)
-                guard var compressedData = data.compressed(using: UDPSocketManager.compressionAlgorithm) else { return }
-                // Append data after compressed
-                compressedData.append(socketInfoData)
-                sendData(compressedData)
+                
+                let audioData = Data(bytes: bufferDataByte, count: bufferSize)
+                
+                guard let sendingPayload = UDPSocketManager.encodeUDPSocketPayload(audioData, userID: userID, recieverID: recieverID) else { break }
+                
+                sendData(sendingPayload)
+                
                 break
             }
         }
     }
     
     private func setupUDPReceive() {
-        receiveCallback = {[weak self] incomingData in
-            guard let self = self,
-                  let data = incomingData.decompressed(using: UDPSocketManager.compressionAlgorithm)
-            else { return }
+        udpSocketInOut?.setupDidReceiveDataCallback({ [weak self]  incomingData in
             
-            data.withUnsafeBytes { rawBufferPointer in
-                guard let rawPtr = rawBufferPointer.baseAddress else { return }
-
-                let msTimeStampDataSize: Int = 13
-                // AudioData
-                let audioDataLength = data.count - msTimeStampDataSize
-                let audioData = Data.init(bytes: rawPtr, count: audioDataLength)
-
-                self.delegate?.didReceiveAudioBuffersData(self, data: audioData)
-
-                // Latency
-                let timeData = Data.init(bytes: rawPtr + audioDataLength, count: msTimeStampDataSize)
-                guard let timeString = String(data: timeData, encoding: .utf8),
-                      let sendMsTimeStamp = UInt64(timeString) else { return }
-
-                let receiveMsTimeStamp = Date().millisecondsSince1970
-
-                let latencyMs = receiveMsTimeStamp - sendMsTimeStamp
-                // Notification
-                DispatchQueue.main.async {[latencyMs] in
-                    NotificationCenter.default.post(UDPSocketLatency: latencyMs)
-                }
+            guard let self = self else { return }
+            
+            guard let payload = UDPSocketManager.parseUDPSocketData(incomingData) else { return }
+            
+            let data = payload.data
+            let emitID = payload.emitID
+            
+            self.delegate?.didReceiveAudioBuffersData(self, data: data, from: emitID)
+            // Notification
+            let date = payload.date
+            let latencyMs = Date().millisecondsSince1970 - date
+            DispatchQueue.main.async {[latencyMs] in
+                NotificationCenter.default.post(UDPSocketLatency: latencyMs)
             }
-        }
+        })
     }
     
     private func sendData(_ data: Data) {
-        socket?.send(data, withTimeout: -1, tag: 0)
+        udpSocketInOut?.send(data: data)
     }
     
+    static func encodeUDPSocketPayload(_ dataPtr: UnsafeMutableRawPointer, _ dataLength: Int, userID: String, recieverID: String) -> Data? {
+        /*
+         UDPSocketSendPayload
+         --------------------------------------------------------------------
+         Field Offset | Field Name | Field type | Field Size(byte) | Description
+         --------------------------------------------------------------------
+         0              recieveID   String          16
+         16             emitID      String          16
+         32             date        UInt64          8               MillisecondsSince1970
+         40             data        UInt32
+         --------------------------------------------------------------------
+         */
+        let date = Date().millisecondsSince1970
+        
+        var data = withUnsafeBytes(of: recieverID) { Data($0) }   // Offset: 0
+        data.append(withUnsafeBytes(of: userID) { Data($0) })   // Offset: 16
+        data.append(withUnsafeBytes(of: date) { Data($0) }) // Offset: 32
+        data.append(Data(bytes: dataPtr, count: dataLength))    // Offset: 40
+        
+        return data
+    }
+    
+    static func encodeUDPSocketPayload(_ data: Data, userID: String, recieverID: String) -> Data? {
+        /*
+         UDPSocketSendPayload
+         --------------------------------------------------------------------
+         Field Offset | Field Name | Field type | Field Size(byte) | Description
+         --------------------------------------------------------------------
+         0              recieveID   String          16
+         16             emitID      String          16
+         32             date        UInt64          8               MillisecondsSince1970
+         40             data        UInt32
+         --------------------------------------------------------------------
+         */
+        let date = Date().millisecondsSince1970
+        
+        var newData = withUnsafeBytes(of: recieverID) { Data($0) }   // Offset: 0
+        newData.append(withUnsafeBytes(of: userID) { Data($0) })   // Offset: 16
+        newData.append(withUnsafeBytes(of: date) { Data($0) }) // Offset: 32
+        newData.append(data)    // Offset: 40
+        
+        return newData
+    }
+    
+    static func parseUDPSocketData(_ data: Data) -> UDPSocketRecievedPayload? {
+        /*
+         UDPSocketReceivePayload
+         --------------------------------------------------------------------
+         Field Offset | Field Name | Field type | Field Size(byte) | Description
+         --------------------------------------------------------------------
+         0              emitID      String          16
+         16             date        UInt64          8               MillisecondsSince1970
+         24             data        UInt32
+         --------------------------------------------------------------------
+         */
+                
+        let emitID: String = NSMutableData(data: data.advanced(by: 0)).bytes.load(as: String.self)
+        let date: UInt64 = NSMutableData(data: data.advanced(by: 16)).bytes.load(as: UInt64.self)
+        let payload: Data = data.advanced(by: 24)
+        
+        let recievedPayload = UDPSocketRecievedPayload(emitID: emitID, date: date, data: payload)
+        
+        return recievedPayload
+    }
 }
 
-extension UDPSocketManager {
-    //MARK:-GCDAsyncUdpSocketDelegate
-    func udpSocket(_ sock: GCDAsyncUdpSocket, didReceive data: Data, fromAddress address: Data, withFilterContext filterContext: Any?) {
-        receiveCallback?(data)
-    }
-    func udpSocket(_ sock: GCDAsyncUdpSocket, didNotConnect error: Error?) {
-        print("didNotConnect")
-        status = .disConneected
-    }
-    func udpSocket(_ sock: GCDAsyncUdpSocket, didNotSendDataWithTag tag: Int, dueToError error: Error?) {
-        print("didNotSendDataWithTag")
-    }
-    func udpSocketDidClose(_ sock: GCDAsyncUdpSocket, withError error: Error?) {
-        print("Error:\(error.debugDescription)")
-        status = .disConneected
-    }
-}
-
-struct UDPSocketInfo: Codable {
-    let senderUserUUID: String
-    let recieverUserUUID: String
+struct UDPSocketRecievedPayload {
+    let emitID: String
+    let date: UInt64
+    let data: Data
 }
 
 enum UDPSocketStstus {

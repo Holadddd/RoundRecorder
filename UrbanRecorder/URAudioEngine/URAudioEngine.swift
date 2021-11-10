@@ -17,7 +17,7 @@ class URAudioEngine {
     
     private var engine: AVAudioEngine = AVAudioEngine()
     
-    private var captureAudioBufferDataCallBack: ((Data)->Void)?
+    private var captureAudioBufferDataCallBack: ((NSMutableData)->Void)?
     
     var status: URAudioEngineStatus = .unReady
     
@@ -213,8 +213,6 @@ class URAudioEngine {
     }
     //MARK: - SetAudioOutputData
     private func setupRendererAudioData() {
-        //Init AudioOutputData
-        // TODO: Make ms as data size
         rendererData = URAudioOutputData(format: convertFormat, dataMS: rendererDataMilliseconds, bufferMS: rendererDataBufferMilliseconds)
     }
     //MARK: - AudioIOCallback
@@ -231,9 +229,13 @@ class URAudioEngine {
         }
         // ScheduleAudioData
         rendererData?.scheduleOutput(data: buffer.audioData)
+        
+//        let bufferSize: Int = Int(buffer.audioData.length)
+//        let frameCounts = bufferSize / self.bytesPerFrame
+//        inputVolumeMeters.process_Int16(buffer.audioData.bytes.assumingMemoryBound(to: Int16.self), 1, Int(frameCounts))
     }
     
-    public func setupURAudioEngineCaptureCallBack(_ handler: @escaping ((Data)->Void)) {
+    public func setupURAudioEngineCaptureCallBack(_ handler: @escaping ((NSMutableData)->Void)) {
         captureAudioBufferDataCallBack = handler
     }
     
@@ -330,7 +332,7 @@ class URAudioEngine {
                                          _ roll: Double,
                                          _ pitch: Double,
                                          _ yaw: Double,
-                                         _ audioData: Data) -> Data {
+                                         _ audioData: Data) -> NSMutableData {
         
         var data = withUnsafeBytes(of: date) { Data($0) }   // Offset: 0
         data.append(withUnsafeBytes(of: nChannel) { Data($0) }) // Offset: 8
@@ -344,7 +346,7 @@ class URAudioEngine {
         data.append(withUnsafeBytes(of: yaw) { Data($0) })  // Offset: 60
         data.append(audioData)    // Offset: 68
         
-        return data
+        return NSMutableData(data: data)
     }
     // MARK: - Update Environment
     private func updateListenerPosition(_ position: AVAudio3DPoint) {

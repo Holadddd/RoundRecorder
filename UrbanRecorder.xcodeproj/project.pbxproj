@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		DB67AE3D2738D678007EE7CE /* PowerMeters.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB67AE3C2738D678007EE7CE /* PowerMeters.swift */; };
 		DB68DD9C2733DB7500336001 /* URAudioEngineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB68DD9B2733DB7500336001 /* URAudioEngineDelegate.swift */; };
+		DB74024F273A6FFD00CD74A4 /* InOutUDPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB74024E273A6FFD00CD74A4 /* InOutUDPSocket.swift */; };
 		DB9E3CBC272131CC008FCFAB /* UrbanRecorderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */; };
 		DB9E3CC0272131CE008FCFAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB9E3CBF272131CE008FCFAB /* Assets.xcassets */; };
 		DB9E3CC3272131CE008FCFAB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB9E3CC2272131CE008FCFAB /* Preview Assets.xcassets */; };
@@ -75,6 +76,7 @@
 /* Begin PBXFileReference section */
 		DB67AE3C2738D678007EE7CE /* PowerMeters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerMeters.swift; sourceTree = "<group>"; };
 		DB68DD9B2733DB7500336001 /* URAudioEngineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioEngineDelegate.swift; sourceTree = "<group>"; };
+		DB74024E273A6FFD00CD74A4 /* InOutUDPSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutUDPSocket.swift; sourceTree = "<group>"; };
 		DB9E3CB8272131CC008FCFAB /* UrbanRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UrbanRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderApp.swift; sourceTree = "<group>"; };
 		DB9E3CBF272131CE008FCFAB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -323,6 +325,7 @@
 			children = (
 				DBF0E3F8272FEB07004DC546 /* SubscribeManager.swift */,
 				DBF0E40027311DCF004DC546 /* UDPSocketManager.swift */,
+				DB74024E273A6FFD00CD74A4 /* InOutUDPSocket.swift */,
 			);
 			path = Socket;
 			sourceTree = "<group>";
@@ -554,6 +557,7 @@
 				DB9E3D0B2726A1AE008FCFAB /* RecorderView.swift in Sources */,
 				DBF0E405273126C1004DC546 /* Date+.swift in Sources */,
 				DB9E3CFB27216E23008FCFAB /* HomeMapModel.swift in Sources */,
+				DB74024F273A6FFD00CD74A4 /* InOutUDPSocket.swift in Sources */,
 				DB9E3CBC272131CC008FCFAB /* UrbanRecorderApp.swift in Sources */,
 				DBF0E403273123ED004DC546 /* Data+.swift in Sources */,
 				DB9E3CF727215D81008FCFAB /* HomeMapViewModel.swift in Sources */,
@@ -727,6 +731,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UrbanRecorder/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "接收廣播";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "將使用您的地理位置以提升體驗";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "將使用您的地理位置以提升體驗";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "將使用您的麥克風";
@@ -766,6 +771,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UrbanRecorder/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "接收廣播";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "將使用您的地理位置以提升體驗";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "將使用您的地理位置以提升體驗";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "將使用您的麥克風";
@@ -933,8 +939,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/socketio/socket.io-client-swift.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 16.0.0;
+				kind = exactVersion;
+				version = 16.0.0;
 			};
 		};
 		DB9E3CED27213B8F008FCFAB /* XCRemoteSwiftPackageReference "CocoaAsyncSocket" */ = {
