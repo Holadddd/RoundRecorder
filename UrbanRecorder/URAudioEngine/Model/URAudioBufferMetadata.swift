@@ -22,7 +22,41 @@ struct URLocationCoordinate3D: Codable {
     public var longitude: URLocationDegrees //經度
     
     public var altitude: URAltitudeMeters   //海拔
-
+    
+    func distanceAndDistance(from destination: URLocationCoordinate3D) -> UR2DDirectionAndDistance {
+        func hypotenuse(_ a: Double, _ b: Double) -> Double {
+            return (a * a + b * b).squareRoot()
+        }
+        /*
+         1° of latitude = always 111.32 km
+         1° of longitude = 40075 km * cos( latitude ) / 360
+         */
+        let latitudeDifferenceDegrees = (destination.latitude - self.latitude) // 緯度
+        let lontitudeDifferenceDegrees = (destination.longitude - self.longitude)  // 經度
+        let latitudeMeters = latitudeDifferenceDegrees * 111320
+        let longitudeMeters = lontitudeDifferenceDegrees * 40075000 * cos(latitudeDifferenceDegrees * Double.pi / 180) / 360
+        
+        var direction: Double {
+            let tanValue = longitudeMeters / latitudeMeters
+            let tanDegrees = atan(tanValue) * 180 / Double.pi
+            
+            var directionDegrees: Double = 0
+            
+            if latitudeMeters > 0 {
+                // 1,2
+                directionDegrees = 90 - tanDegrees
+            } else {
+                // 3,4
+                directionDegrees = 270 - tanDegrees
+            }
+            
+            return directionDegrees
+        }
+        
+        let distance = hypotenuse(latitudeMeters, longitudeMeters)
+        
+        return UR2DDirectionAndDistance(direction: direction, distance: distance)
+    }
 }
 
 public typealias URMotionAttitudeDegrees = Double
@@ -33,4 +67,12 @@ struct URMotionAttitude: Codable {
     public var pitch: URMotionAttitudeDegrees
     
     public var yaw: URMotionAttitudeDegrees
+}
+
+public typealias URDirectionDegrees = Double
+public typealias URDistanceMeters = Double
+struct UR2DDirectionAndDistance {
+    public var direction: URDirectionDegrees
+    
+    public var distance: URDistanceMeters
 }

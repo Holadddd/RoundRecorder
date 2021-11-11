@@ -3,16 +3,16 @@
 <plist version="1.0">
 <dict>
 	<key>APIHostIP</key>
-	<string>192.168.0.100</string>
+	<string>52.192.242.163</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
 	<key>SocketHostIP</key>
-	<string>192.168.0.100</string>
+	<string>52.192.242.163</string>
 	<key>UDPSocketHostIP</key>
-	<string>192.168.0.100</string>
+	<string>52.192.242.163</string>
 	<key>UDPSocketPort</key>
 	<string>8001</string>
 </dict>

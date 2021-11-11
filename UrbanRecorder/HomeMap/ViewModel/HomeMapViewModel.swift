@@ -8,8 +8,9 @@
 import Foundation
 import MapKit
 import CoreLocation
+import CoreMotion
 
-class HomeMapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
+class HomeMapViewModel: NSObject, ObservableObject {
     
     var buttonScale: CGFloat {
         return DeviceInfo.isCurrentDeviceIsPad ? 3 : 2
@@ -32,11 +33,21 @@ class HomeMapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     @Published var altitude: Double = 0
     
+    private var firstAnchorMotion: CMDeviceMotion?
+    
+    var yaw: Double = 0
+    
+    var roll: Double = 0
+    
+    var pitch: Double = 0
+    
     @Published var isShowingRecorderView: Bool = false
     
     @Published var isSelectedItemPlayAble: Bool = false
     
     let locationManager = CLLocationManager()
+    
+    let headphoneMotionManager = CMHeadphoneMotionManager()
     
     var annotationItems: [HomeMapAnnotationItem] = [HomeMapAnnotationItem.taipei101]
     
@@ -49,6 +60,10 @@ class HomeMapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
     override init() {
         super.init()
+        // DataSource
+        urAudioEngineInstance.dataSource = self
+        
+        // Location
         locationManager.delegate = self
         
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -56,6 +71,15 @@ class HomeMapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
         locationManager.requestWhenInUseAuthorization()
         
         locationManager.startUpdatingLocation()
+        // Headphone Motion
+        if headphoneMotionManager.isDeviceMotionAvailable {
+            headphoneMotionManager.delegate = self
+            
+            headphoneMotionManager.startDeviceMotionUpdates(to: OperationQueue.current!, withHandler: {[weak self] motion, error  in
+                guard let self = self, let motion = motion, error == nil else { return }
+                self.headphoneMotionDidChange(motion)
+            })
+        }
     }
     
     func menuButtonDidClisked() {
@@ -139,8 +163,8 @@ extension HomeMapViewModel: SocketManagerDelegate {
     
 }
 
-// location Manager
-extension HomeMapViewModel {
+// Core Data Manager
+extension HomeMapViewModel: CLLocationManagerDelegate, CMHeadphoneMotionManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
         let latitude = location.coordinate.latitude
@@ -163,5 +187,25 @@ extension HomeMapViewModel {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Location Manager Did Fail With Error: \(error.localizedDescription)")
+    }
+    
+    func headphoneMotionDidChange(_ motion: CMDeviceMotion) {
+        guard let anchorMotion = firstAnchorMotion else { firstAnchorMotion = motion; return}
+        
+        yaw = motion.attitude.yaw - anchorMotion.attitude.yaw
+        pitch = motion.attitude.pitch - anchorMotion.attitude.pitch
+        roll = motion.attitude.roll - anchorMotion.attitude.roll
+    }
+}
+// URAudioEngineDataSource
+extension HomeMapViewModel: URAudioEngineDataSource {
+    func urAudioEngine(currentLocationForEngine: URAudioEngine) -> URLocationCoordinate3D {
+        let location = URLocationCoordinate3D(latitude: latitude, longitude: longitude, altitude: altitude)
+        return location
+    }
+    
+    func urAudioEngine(currentMotionForEngine: URAudioEngine) -> URMotionAttitude {
+        let attitude = URMotionAttitude(roll: roll, pitch: pitch, yaw: yaw)
+        return attitude
     }
 }

@@ -223,9 +223,15 @@ class URAudioEngine {
     public func schechuleRendererAudioBuffer(_ buffer: URAudioBuffer) {
         // TODO: Update Environment
         if let metatdata = buffer.metadata {
-            let location = metatdata.locationCoordinate
+            if let userLocation = dataSource?.urAudioEngine(currentLocationForEngine: self) {
+                let receiverLocation = metatdata.locationCoordinate
+                let directionAndDistance = userLocation.distanceAndDistance(from: receiverLocation)
+                // TODO: - Update Direction and Distance
+            }
             
-            let motion = metatdata.motionAttitude
+            if let userMotion = dataSource?.urAudioEngine(currentMotionForEngine: self) {
+                let receiverMotion = metatdata.motionAttitude
+            }
         }
         // ScheduleAudioData
         rendererData?.scheduleOutput(data: buffer.audioData)
@@ -360,7 +366,6 @@ class URAudioEngine {
     private func updateEnvirmentReverb(_ reverbParameters: AVAudioUnitReverbPreset) {
         streamingEnvironmentNode.reverbParameters.loadFactoryReverbPreset(reverbParameters)
     }
-    
 }
 
 extension URAudioEngine {
