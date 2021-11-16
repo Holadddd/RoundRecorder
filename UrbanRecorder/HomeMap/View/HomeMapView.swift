@@ -74,6 +74,7 @@ struct HomeMapView: View {
                             viewmodel.setupCallSessionChannel()
                         }
                     }
+                    DirectionAndDistanceMetersView(directionDegrees: $viewmodel.receiverLastDirectionDegrees, distanceMeter: $viewmodel.receiverLastDistanceMeters)
                     Spacer()
                 }
                 

@@ -61,7 +61,8 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
         var bufferSize = audioBufferData.length
         
         #warning("AWS UDP Socket didnt have max limit of bytes, still need to check of the limit")
-        let defaultMaximumBufferSize = mtu - 40
+        let payloadInfoDataSize = 40   // RecieverID(String) + UserID(String) + Date(UInt64)
+        let defaultMaximumBufferSize = mtu - payloadInfoDataSize
         
         while true {
             if bufferSize > defaultMaximumBufferSize {
@@ -99,10 +100,13 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
             
             self.delegate?.didReceiveAudioBuffersData(self, data: data, from: emitID)
             // Notification
-            let date = payload.date
-            let latencyMs = Date().millisecondsSince1970 - date
-            DispatchQueue.main.async {[latencyMs] in
-                NotificationCenter.default.post(UDPSocketLatency: latencyMs)
+            let emitDate: UInt64 = payload.date
+            let receiveDate: UInt64 = Date().millisecondsSince1970
+            if receiveDate > emitDate {
+                let latencyMs: UInt64 = receiveDate - emitDate
+                DispatchQueue.main.async {[latencyMs] in
+                    NotificationCenter.default.post(UDPSocketLatency: latencyMs)
+                }
             }
         })
     }

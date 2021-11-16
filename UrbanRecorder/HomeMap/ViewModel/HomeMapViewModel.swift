@@ -9,6 +9,7 @@ import Foundation
 import MapKit
 import CoreLocation
 import CoreMotion
+import SwiftUI
 
 class HomeMapViewModel: NSObject, ObservableObject {
     
@@ -41,6 +42,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     var pitch: Double = 0
     
+    @Published var receiverLastDirectionDegrees: Double = 0
+    
+    @Published var receiverLastDistanceMeters: Double = 0
+    
     @Published var isShowingRecorderView: Bool = false
     
     @Published var isSelectedItemPlayAble: Bool = false
@@ -60,9 +65,9 @@ class HomeMapViewModel: NSObject, ObservableObject {
     }
     override init() {
         super.init()
-        // DataSource
+        // Delegate/DataSource
         urAudioEngineInstance.dataSource = self
-        
+        urAudioEngineInstance.delegate = self
         // Location
         locationManager.delegate = self
         
@@ -207,5 +212,12 @@ extension HomeMapViewModel: URAudioEngineDataSource {
     func urAudioEngine(currentMotionForEngine: URAudioEngine) -> URMotionAttitude {
         let attitude = URMotionAttitude(roll: roll, pitch: pitch, yaw: yaw)
         return attitude
+    }
+}
+// URAudioEngineDelegate
+extension HomeMapViewModel: URAudioEngineDelegate {
+    func didUpdateReceiverDirectionAndDistance(_ engine: URAudioEngine, directionAndDistance: UR2DDirectionAndDistance) {
+        receiverLastDirectionDegrees = directionAndDistance.direction
+        receiverLastDistanceMeters = directionAndDistance.distance
     }
 }

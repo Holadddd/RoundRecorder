@@ -40,7 +40,7 @@ class SubscribeManager: NSObject {
     override init() {
         super.init()
         
-        let urlString = "http://" + SubscribeManager.hostIP + ":3000"
+        let urlString = "http://" + SubscribeManager.hostIP 
         guard let url = URL(string: urlString) else {return}
         
         manager = SocketManager(socketURL: url)

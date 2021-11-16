@@ -221,12 +221,13 @@ class URAudioEngine {
     }
     
     public func schechuleRendererAudioBuffer(_ buffer: URAudioBuffer) {
-        // TODO: Update Environment
+        // MARK: Update Environment
         if let metatdata = buffer.metadata {
             if let userLocation = dataSource?.urAudioEngine(currentLocationForEngine: self) {
                 let receiverLocation = metatdata.locationCoordinate
                 let directionAndDistance = userLocation.distanceAndDistance(from: receiverLocation)
-                // TODO: - Update Direction and Distance
+                
+                delegate?.didUpdateReceiverDirectionAndDistance(self, directionAndDistance: directionAndDistance)
             }
             
             if let userMotion = dataSource?.urAudioEngine(currentMotionForEngine: self) {
@@ -265,9 +266,10 @@ class URAudioEngine {
         let yaw = currentMotion?.pitch ?? 0
         
         guard let mData = audioBuffer.mData else { return }
-        let audioData = Data.init(bytes: mData, count: Int(audioBuffer.mDataByteSize))
+        let bufferLenght = audioBuffer.mDataByteSize
+        let audioData = Data.init(bytes: mData, count: Int(bufferLenght))
         
-        let urAudioData = encodeURAudioBufferData(date, nChannel, sampleRate, bitRate, latitude, longitude, altitude, roll, pitch, yaw, audioData)
+        let urAudioData = encodeURAudioBufferData(date, bufferLenght, nChannel, sampleRate, bitRate, latitude, longitude, altitude, roll, pitch, yaw, audioData)
         
         captureAudioBufferDataCallBack?(urAudioData)
     }
@@ -277,17 +279,18 @@ class URAudioEngine {
      --------------------------------------------------------------------
      Field Offset | Field Name | Field type | Field Size(byte) | Description
      --------------------------------------------------------------------
-     0              date        UInt64           8               MillisecondsSince1970
-     8              nChannel    UInt32           4
-     12             sampleRate UInt32           4
-     16             bitRate    UInt32           4
-     20             latitude    Double          8
-     28             longitude   Double          8
-     36             altitude    Double          8
-     44             roll        Double          8
-     52             pitch       Double          8
-     60             yaw         Double          8
-     68             data
+     0              date        UInt64          8               MillisecondsSince1970
+     8              bufferLengthUInt32          4
+     12             nChannel    UInt32          4
+     16             sampleRate  UInt32          4
+     20             bitRate     UInt32          4
+     24             latitude    Double          8
+     32             longitude   Double          8
+     40             altitude    Double          8
+     48             roll        Double          8
+     56             pitch       Double          8
+     64             yaw         Double          8
+     72             data
      --------------------------------------------------------------------
      */
     // MARK: - Parse data
@@ -296,19 +299,20 @@ class URAudioEngine {
         
         
         // Parse into URAudioBuffer
-        let metadataLenght = 68
-        let audioBufferLength: UInt32 = UInt32(data.count - metadataLenght)
-        
+        let metadataLenght = 72
         let date: UInt64 = NSMutableData(data: data.advanced(by: 0)).bytes.load(as: UInt64.self)
-        let channel: UInt32 =  NSMutableData(data: data.advanced(by: 8)).bytes.load(as: UInt32.self)
         
-        let latitude: Double = NSMutableData(data: data.advanced(by: 20)).bytes.load(as: Double.self)
-        let longitude: Double = NSMutableData(data: data.advanced(by: 28)).bytes.load(as: Double.self)
-        let altitude: Double = NSMutableData(data: data.advanced(by: 36)).bytes.load(as: Double.self)
+        let audioBufferLength: UInt32 = NSMutableData(data: data.advanced(by: 8)).bytes.load(as: UInt32.self)
         
-        let roll: Double = NSMutableData(data: data.advanced(by: 44)).bytes.load(as: Double.self)
-        let pitch: Double = NSMutableData(data: data.advanced(by: 52)).bytes.load(as: Double.self)
-        let yaw: Double = NSMutableData(data: data.advanced(by: 60)).bytes.load(as: Double.self)
+        let channel: UInt32 =  NSMutableData(data: data.advanced(by: 12)).bytes.load(as: UInt32.self)
+        
+        let latitude: Double = NSMutableData(data: data.advanced(by: 24)).bytes.load(as: Double.self)
+        let longitude: Double = NSMutableData(data: data.advanced(by: 32)).bytes.load(as: Double.self)
+        let altitude: Double = NSMutableData(data: data.advanced(by: 40)).bytes.load(as: Double.self)
+        
+        let roll: Double = NSMutableData(data: data.advanced(by: 48)).bytes.load(as: Double.self)
+        let pitch: Double = NSMutableData(data: data.advanced(by: 56)).bytes.load(as: Double.self)
+        let yaw: Double = NSMutableData(data: data.advanced(by: 64)).bytes.load(as: Double.self)
         
         let mData = NSMutableData(data: data.advanced(by: metadataLenght))
             
@@ -329,6 +333,7 @@ class URAudioEngine {
     }
     
     private func encodeURAudioBufferData(_ date: UInt64,
+                                         _ bufferLength: UInt32,
                                          _ nChannel: UInt32,
                                          _ sampleRate: UInt32,
                                          _ bitRate: UInt32,
@@ -341,16 +346,17 @@ class URAudioEngine {
                                          _ audioData: Data) -> NSMutableData {
         
         var data = withUnsafeBytes(of: date) { Data($0) }   // Offset: 0
-        data.append(withUnsafeBytes(of: nChannel) { Data($0) }) // Offset: 8
-        data.append(withUnsafeBytes(of: sampleRate) { Data($0) })   // Offset: 12
-        data.append(withUnsafeBytes(of: bitRate) { Data($0) })  // Offset: 16
-        data.append(withUnsafeBytes(of: latitude) { Data($0) }) // Offset: 20
-        data.append(withUnsafeBytes(of: longitude) { Data($0) })    // Offset: 28
-        data.append(withUnsafeBytes(of: altitude) { Data($0) }) // Offset: 36
-        data.append(withUnsafeBytes(of: roll) { Data($0) }) // Offset: 44
-        data.append(withUnsafeBytes(of: pitch) { Data($0) })    // Offset: 52
-        data.append(withUnsafeBytes(of: yaw) { Data($0) })  // Offset: 60
-        data.append(audioData)    // Offset: 68
+        data.append(withUnsafeBytes(of: bufferLength) { Data($0) }) // Offset: 8
+        data.append(withUnsafeBytes(of: nChannel) { Data($0) }) // Offset: 12
+        data.append(withUnsafeBytes(of: sampleRate) { Data($0) })   // Offset: 16
+        data.append(withUnsafeBytes(of: bitRate) { Data($0) })  // Offset: 20
+        data.append(withUnsafeBytes(of: latitude) { Data($0) }) // Offset: 24
+        data.append(withUnsafeBytes(of: longitude) { Data($0) })    // Offset: 32
+        data.append(withUnsafeBytes(of: altitude) { Data($0) }) // Offset: 40
+        data.append(withUnsafeBytes(of: roll) { Data($0) }) // Offset: 48
+        data.append(withUnsafeBytes(of: pitch) { Data($0) })    // Offset: 56
+        data.append(withUnsafeBytes(of: yaw) { Data($0) })  // Offset: 64
+        data.append(audioData)    // Offset: 72
         
         return NSMutableData(data: data)
     }

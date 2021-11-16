@@ -37,20 +37,25 @@ struct URLocationCoordinate3D: Codable {
         let longitudeMeters = lontitudeDifferenceDegrees * 40075000 * cos(latitudeDifferenceDegrees * Double.pi / 180) / 360
         
         var direction: Double {
-            let tanValue = longitudeMeters / latitudeMeters
+            if longitudeMeters == 0 {
+                return latitudeMeters >= 0 ? 0 : 180
+            } else if latitudeMeters == 0 {
+                return longitudeMeters >= 0 ? 90 : -90
+            }
+            let tanValue = latitudeMeters / longitudeMeters
             let tanDegrees = atan(tanValue) * 180 / Double.pi
             
             var directionDegrees: Double = 0
             
-            if latitudeMeters > 0 {
+            if longitudeMeters > 0 {
                 // 1,2
                 directionDegrees = 90 - tanDegrees
             } else {
                 // 3,4
-                directionDegrees = 270 - tanDegrees
+                directionDegrees = -90 - tanDegrees
             }
             
-            return directionDegrees
+            return directionDegrees.isNaN ? 0 : directionDegrees
         }
         
         let distance = hypotenuse(latitudeMeters, longitudeMeters)
