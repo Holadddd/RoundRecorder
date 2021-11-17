@@ -7,28 +7,57 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB67AE3D2738D678007EE7CE /* PowerMeters.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB67AE3C2738D678007EE7CE /* PowerMeters.swift */; };
+		DB68DD9C2733DB7500336001 /* URAudioEngineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB68DD9B2733DB7500336001 /* URAudioEngineDelegate.swift */; };
+		DB74024F273A6FFD00CD74A4 /* InOutUDPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB74024E273A6FFD00CD74A4 /* InOutUDPSocket.swift */; };
 		DB9E3CBC272131CC008FCFAB /* UrbanRecorderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */; };
-		DB9E3CBE272131CC008FCFAB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CBD272131CC008FCFAB /* ContentView.swift */; };
 		DB9E3CC0272131CE008FCFAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB9E3CBF272131CE008FCFAB /* Assets.xcassets */; };
 		DB9E3CC3272131CE008FCFAB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB9E3CC2272131CE008FCFAB /* Preview Assets.xcassets */; };
 		DB9E3CC5272131CE008FCFAB /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CC4272131CE008FCFAB /* Persistence.swift */; };
 		DB9E3CC8272131CE008FCFAB /* UrbanRecorder.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CC6272131CE008FCFAB /* UrbanRecorder.xcdatamodeld */; };
-		DB9E3CD2272131CF008FCFAB /* UrbanRecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CD1272131CF008FCFAB /* UrbanRecorderTests.swift */; };
-		DB9E3CDC272131CF008FCFAB /* UrbanRecorderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CDB272131CF008FCFAB /* UrbanRecorderUITests.swift */; };
-		DB9E3CDE272131CF008FCFAB /* UrbanRecorderUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CDD272131CF008FCFAB /* UrbanRecorderUITestsLaunchTests.swift */; };
 		DB9E3CEC27213B77008FCFAB /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = DB9E3CEB27213B77008FCFAB /* SocketIO */; };
 		DB9E3CEF27213B8F008FCFAB /* CocoaAsyncSocket in Frameworks */ = {isa = PBXBuildFile; productRef = DB9E3CEE27213B8F008FCFAB /* CocoaAsyncSocket */; };
+		DB9E3CF227215B8A008FCFAB /* HomeMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CF127215B8A008FCFAB /* HomeMapView.swift */; };
+		DB9E3CF727215D81008FCFAB /* HomeMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CF627215D81008FCFAB /* HomeMapViewModel.swift */; };
+		DB9E3CFB27216E23008FCFAB /* HomeMapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CFA27216E23008FCFAB /* HomeMapModel.swift */; };
+		DB9E3CFD2722785F008FCFAB /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CFC2722785F008FCFAB /* Helper.swift */; };
+		DB9E3D052722BAF6008FCFAB /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3D042722BAF6008FCFAB /* View+.swift */; };
+		DB9E3D072722BB34008FCFAB /* CGFloat+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3D062722BB34008FCFAB /* CGFloat+.swift */; };
+		DB9E3D0B2726A1AE008FCFAB /* RecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3D0A2726A1AE008FCFAB /* RecorderView.swift */; };
+		DBA7EFC7272A9F880037AA7E /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFC6272A9F880037AA7E /* HTTPClient.swift */; };
+		DBA7EFCA272AB3440037AA7E /* DeviceInfoRQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFC9272AB3440037AA7E /* DeviceInfoRQ.swift */; };
+		DBA7EFCC272ABABA0037AA7E /* Codable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFCB272ABABA0037AA7E /* Codable+.swift */; };
+		DBA7EFCE272ABBF50037AA7E /* URLRequest+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFCD272ABBF50037AA7E /* URLRequest+.swift */; };
+		DBA7EFD1272AE89B0037AA7E /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFD0272AE89B0037AA7E /* UserAPI.swift */; };
+		DBA7EFD3272AE8BA0037AA7E /* VoiceServerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFD2272AE8BA0037AA7E /* VoiceServerAPI.swift */; };
+		DBA7EFD5272AEB1C0037AA7E /* CallRequestRQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFD4272AEB1C0037AA7E /* CallRequestRQ.swift */; };
+		DBA7EFD7272AEEB20037AA7E /* AcceptCallingRequestRQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFD6272AEEB20037AA7E /* AcceptCallingRequestRQ.swift */; };
+		DBA7EFD9272AEEC50037AA7E /* DeclineCallingRequestRQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFD8272AEEC50037AA7E /* DeclineCallingRequestRQ.swift */; };
+		DBA7EFDB272AEEDE0037AA7E /* CloseTheSessionRQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFDA272AEEDE0037AA7E /* CloseTheSessionRQ.swift */; };
+		DBA7EFDE272AF37D0037AA7E /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFDD272AF37D0037AA7E /* UserInfo.swift */; };
+		DBA7EFE0272AF3920037AA7E /* AvailableUserListRP.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFDF272AF3920037AA7E /* AvailableUserListRP.swift */; };
+		DBDD67DB27440F0100E91A5B /* UrbanRecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDD67DA27440F0100E91A5B /* UrbanRecorderTests.swift */; };
+		DBE2A389273D0B2B0098E52D /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE2A388273D0B2B0098E52D /* Double+.swift */; };
+		DBE2A38B273D17460098E52D /* DirectionAndDistanceMetersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE2A38A273D17460098E52D /* DirectionAndDistanceMetersView.swift */; };
+		DBF0E3F9272FEB07004DC546 /* SubscribeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E3F8272FEB07004DC546 /* SubscribeManager.swift */; };
+		DBF0E3FF27311959004DC546 /* Notification+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E3FE27311959004DC546 /* Notification+.swift */; };
+		DBF0E40127311DCF004DC546 /* UDPSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E40027311DCF004DC546 /* UDPSocketManager.swift */; };
+		DBF0E403273123ED004DC546 /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E402273123ED004DC546 /* Data+.swift */; };
+		DBF0E405273126C1004DC546 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E404273126C1004DC546 /* Date+.swift */; };
+		DBF0E408273141E1004DC546 /* URAudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E407273141E1004DC546 /* URAudioEngine.swift */; };
+		DBF0E40B273144B6004DC546 /* URAudioBufferMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E40A273144B6004DC546 /* URAudioBufferMetadata.swift */; };
+		DBF0E40D27327A6F004DC546 /* URAudioEngineDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E40C27327A6F004DC546 /* URAudioEngineDataSource.swift */; };
+		DBF0E41027327B69004DC546 /* URAudioRenderAudioUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E40F27327B69004DC546 /* URAudioRenderAudioUnit.swift */; };
+		DBF0E41327327CE7004DC546 /* URStreamBasicDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E41227327CE7004DC546 /* URStreamBasicDescription.swift */; };
+		DBF0E41527327D1B004DC546 /* EngineHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E41427327D1B004DC546 /* EngineHelper.swift */; };
+		DBF0E417273288BE004DC546 /* URAudioOutputData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E416273288BE004DC546 /* URAudioOutputData.swift */; };
+		DBF0E41927338BDE004DC546 /* URAudioBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E41827338BDE004DC546 /* URAudioBuffer.swift */; };
+		DBF3C68C2726BCEC00292893 /* SegmentSlideOverCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF3C68B2726BCEC00292893 /* SegmentSlideOverCardView.swift */; };
+		DBF3C68E2727E10800292893 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF3C68D2727E10800292893 /* Color+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		DB9E3CCE272131CF008FCFAB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DB9E3CB0272131CC008FCFAB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DB9E3CB7272131CC008FCFAB;
-			remoteInfo = UrbanRecorder;
-		};
-		DB9E3CD8272131CF008FCFAB /* PBXContainerItemProxy */ = {
+		DBDD67DC27440F0100E91A5B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DB9E3CB0272131CC008FCFAB /* Project object */;
 			proxyType = 1;
@@ -38,18 +67,56 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DB67AE3C2738D678007EE7CE /* PowerMeters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerMeters.swift; sourceTree = "<group>"; };
+		DB68DD9B2733DB7500336001 /* URAudioEngineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioEngineDelegate.swift; sourceTree = "<group>"; };
+		DB74024E273A6FFD00CD74A4 /* InOutUDPSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutUDPSocket.swift; sourceTree = "<group>"; };
 		DB9E3CB8272131CC008FCFAB /* UrbanRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UrbanRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderApp.swift; sourceTree = "<group>"; };
-		DB9E3CBD272131CC008FCFAB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DB9E3CBF272131CE008FCFAB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DB9E3CC2272131CE008FCFAB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DB9E3CC4272131CE008FCFAB /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		DB9E3CC7272131CE008FCFAB /* UrbanRecorder.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UrbanRecorder.xcdatamodel; sourceTree = "<group>"; };
-		DB9E3CCD272131CF008FCFAB /* UrbanRecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UrbanRecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		DB9E3CD1272131CF008FCFAB /* UrbanRecorderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderTests.swift; sourceTree = "<group>"; };
-		DB9E3CD7272131CF008FCFAB /* UrbanRecorderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UrbanRecorderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		DB9E3CDB272131CF008FCFAB /* UrbanRecorderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderUITests.swift; sourceTree = "<group>"; };
-		DB9E3CDD272131CF008FCFAB /* UrbanRecorderUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		DB9E3CF127215B8A008FCFAB /* HomeMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMapView.swift; sourceTree = "<group>"; };
+		DB9E3CF627215D81008FCFAB /* HomeMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMapViewModel.swift; sourceTree = "<group>"; };
+		DB9E3CF827216587008FCFAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		DB9E3CFA27216E23008FCFAB /* HomeMapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMapModel.swift; sourceTree = "<group>"; };
+		DB9E3CFC2722785F008FCFAB /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		DB9E3D042722BAF6008FCFAB /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
+		DB9E3D062722BB34008FCFAB /* CGFloat+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+.swift"; sourceTree = "<group>"; };
+		DB9E3D0A2726A1AE008FCFAB /* RecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecorderView.swift; sourceTree = "<group>"; };
+		DBA7EFC6272A9F880037AA7E /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
+		DBA7EFC9272AB3440037AA7E /* DeviceInfoRQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoRQ.swift; sourceTree = "<group>"; };
+		DBA7EFCB272ABABA0037AA7E /* Codable+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+.swift"; sourceTree = "<group>"; };
+		DBA7EFCD272ABBF50037AA7E /* URLRequest+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest+.swift"; sourceTree = "<group>"; };
+		DBA7EFD0272AE89B0037AA7E /* UserAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
+		DBA7EFD2272AE8BA0037AA7E /* VoiceServerAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceServerAPI.swift; sourceTree = "<group>"; };
+		DBA7EFD4272AEB1C0037AA7E /* CallRequestRQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallRequestRQ.swift; sourceTree = "<group>"; };
+		DBA7EFD6272AEEB20037AA7E /* AcceptCallingRequestRQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptCallingRequestRQ.swift; sourceTree = "<group>"; };
+		DBA7EFD8272AEEC50037AA7E /* DeclineCallingRequestRQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeclineCallingRequestRQ.swift; sourceTree = "<group>"; };
+		DBA7EFDA272AEEDE0037AA7E /* CloseTheSessionRQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseTheSessionRQ.swift; sourceTree = "<group>"; };
+		DBA7EFDD272AF37D0037AA7E /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
+		DBA7EFDF272AF3920037AA7E /* AvailableUserListRP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableUserListRP.swift; sourceTree = "<group>"; };
+		DBDD67D827440F0100E91A5B /* UrbanRecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UrbanRecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DBDD67DA27440F0100E91A5B /* UrbanRecorderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderTests.swift; sourceTree = "<group>"; };
+		DBE2A388273D0B2B0098E52D /* Double+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
+		DBE2A38A273D17460098E52D /* DirectionAndDistanceMetersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionAndDistanceMetersView.swift; sourceTree = "<group>"; };
+		DBF0E3F8272FEB07004DC546 /* SubscribeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeManager.swift; sourceTree = "<group>"; };
+		DBF0E3FA2730FD99004DC546 /* UrbanRecorder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UrbanRecorder.entitlements; sourceTree = "<group>"; };
+		DBF0E3FC2730FD99004DC546 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
+		DBF0E3FE27311959004DC546 /* Notification+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+.swift"; sourceTree = "<group>"; };
+		DBF0E40027311DCF004DC546 /* UDPSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPSocketManager.swift; sourceTree = "<group>"; };
+		DBF0E402273123ED004DC546 /* Data+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+.swift"; sourceTree = "<group>"; };
+		DBF0E404273126C1004DC546 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
+		DBF0E407273141E1004DC546 /* URAudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioEngine.swift; sourceTree = "<group>"; };
+		DBF0E40A273144B6004DC546 /* URAudioBufferMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioBufferMetadata.swift; sourceTree = "<group>"; };
+		DBF0E40C27327A6F004DC546 /* URAudioEngineDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioEngineDataSource.swift; sourceTree = "<group>"; };
+		DBF0E40F27327B69004DC546 /* URAudioRenderAudioUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioRenderAudioUnit.swift; sourceTree = "<group>"; };
+		DBF0E41227327CE7004DC546 /* URStreamBasicDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URStreamBasicDescription.swift; sourceTree = "<group>"; };
+		DBF0E41427327D1B004DC546 /* EngineHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineHelper.swift; sourceTree = "<group>"; };
+		DBF0E416273288BE004DC546 /* URAudioOutputData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioOutputData.swift; sourceTree = "<group>"; };
+		DBF0E41827338BDE004DC546 /* URAudioBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioBuffer.swift; sourceTree = "<group>"; };
+		DBF3C68B2726BCEC00292893 /* SegmentSlideOverCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentSlideOverCardView.swift; sourceTree = "<group>"; };
+		DBF3C68D2727E10800292893 /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,14 +129,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DB9E3CCA272131CF008FCFAB /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DB9E3CD4272131CF008FCFAB /* Frameworks */ = {
+		DBDD67D527440F0100E91A5B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -79,13 +139,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DB67AE3B2738D65F007EE7CE /* PowerMeters */ = {
+			isa = PBXGroup;
+			children = (
+				DB67AE3C2738D678007EE7CE /* PowerMeters.swift */,
+			);
+			path = PowerMeters;
+			sourceTree = "<group>";
+		};
 		DB9E3CAF272131CC008FCFAB = {
 			isa = PBXGroup;
 			children = (
 				DB9E3CBA272131CC008FCFAB /* UrbanRecorder */,
-				DB9E3CD0272131CF008FCFAB /* UrbanRecorderTests */,
-				DB9E3CDA272131CF008FCFAB /* UrbanRecorderUITests */,
+				DBDD67D927440F0100E91A5B /* UrbanRecorderTests */,
 				DB9E3CB9272131CC008FCFAB /* Products */,
+				DBF0E3FB2730FD99004DC546 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -93,8 +161,7 @@
 			isa = PBXGroup;
 			children = (
 				DB9E3CB8272131CC008FCFAB /* UrbanRecorder.app */,
-				DB9E3CCD272131CF008FCFAB /* UrbanRecorderTests.xctest */,
-				DB9E3CD7272131CF008FCFAB /* UrbanRecorderUITests.xctest */,
+				DBDD67D827440F0100E91A5B /* UrbanRecorderTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -102,10 +169,19 @@
 		DB9E3CBA272131CC008FCFAB /* UrbanRecorder */ = {
 			isa = PBXGroup;
 			children = (
+				DBF0E3FA2730FD99004DC546 /* UrbanRecorder.entitlements */,
+				DB9E3CF827216587008FCFAB /* Info.plist */,
 				DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */,
-				DB9E3CBD272131CC008FCFAB /* ContentView.swift */,
-				DB9E3CBF272131CE008FCFAB /* Assets.xcassets */,
+				DB9E3CFC2722785F008FCFAB /* Helper.swift */,
+				DB9E3D032722BAE7008FCFAB /* Extension */,
+				DBF3C68A2726AF9F00292893 /* Views */,
+				DB9E3CF527215D51008FCFAB /* HomeMap */,
+				DB9E3D0A2726A1AE008FCFAB /* RecorderView.swift */,
+				DBA7EFC5272A9F380037AA7E /* Network */,
+				DBF0E3F7272FCC43004DC546 /* Socket */,
+				DBF0E406273141C5004DC546 /* URAudioEngine */,
 				DB9E3CC4272131CE008FCFAB /* Persistence.swift */,
+				DB9E3CBF272131CE008FCFAB /* Assets.xcassets */,
 				DB9E3CC6272131CE008FCFAB /* UrbanRecorder.xcdatamodeld */,
 				DB9E3CC1272131CE008FCFAB /* Preview Content */,
 			);
@@ -120,21 +196,171 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		DB9E3CD0272131CF008FCFAB /* UrbanRecorderTests */ = {
+		DB9E3CF027215B3B008FCFAB /* View */ = {
 			isa = PBXGroup;
 			children = (
-				DB9E3CD1272131CF008FCFAB /* UrbanRecorderTests.swift */,
+				DB9E3CF127215B8A008FCFAB /* HomeMapView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DB9E3CF427215D3A008FCFAB /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DB9E3CF627215D81008FCFAB /* HomeMapViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		DB9E3CF527215D51008FCFAB /* HomeMap */ = {
+			isa = PBXGroup;
+			children = (
+				DB9E3CF027215B3B008FCFAB /* View */,
+				DB9E3CF427215D3A008FCFAB /* ViewModel */,
+				DB9E3CF927216E0F008FCFAB /* Model */,
+			);
+			path = HomeMap;
+			sourceTree = "<group>";
+		};
+		DB9E3CF927216E0F008FCFAB /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DB9E3CFA27216E23008FCFAB /* HomeMapModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DB9E3D032722BAE7008FCFAB /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				DB9E3D042722BAF6008FCFAB /* View+.swift */,
+				DB9E3D062722BB34008FCFAB /* CGFloat+.swift */,
+				DBE2A388273D0B2B0098E52D /* Double+.swift */,
+				DBF3C68D2727E10800292893 /* Color+.swift */,
+				DBA7EFCB272ABABA0037AA7E /* Codable+.swift */,
+				DBA7EFCD272ABBF50037AA7E /* URLRequest+.swift */,
+				DBF0E3FE27311959004DC546 /* Notification+.swift */,
+				DBF0E402273123ED004DC546 /* Data+.swift */,
+				DBF0E404273126C1004DC546 /* Date+.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		DBA7EFC5272A9F380037AA7E /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				DBA7EFC6272A9F880037AA7E /* HTTPClient.swift */,
+				DBA7EFCF272AE8640037AA7E /* API */,
+				DBA7EFC8272AB31C0037AA7E /* Model */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		DBA7EFC8272AB31C0037AA7E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DBA7EFDC272AF36B0037AA7E /* User */,
+				DBA7EFC9272AB3440037AA7E /* DeviceInfoRQ.swift */,
+				DBA7EFD4272AEB1C0037AA7E /* CallRequestRQ.swift */,
+				DBA7EFD6272AEEB20037AA7E /* AcceptCallingRequestRQ.swift */,
+				DBA7EFD8272AEEC50037AA7E /* DeclineCallingRequestRQ.swift */,
+				DBA7EFDA272AEEDE0037AA7E /* CloseTheSessionRQ.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DBA7EFCF272AE8640037AA7E /* API */ = {
+			isa = PBXGroup;
+			children = (
+				DBA7EFD0272AE89B0037AA7E /* UserAPI.swift */,
+				DBA7EFD2272AE8BA0037AA7E /* VoiceServerAPI.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		DBA7EFDC272AF36B0037AA7E /* User */ = {
+			isa = PBXGroup;
+			children = (
+				DBA7EFDD272AF37D0037AA7E /* UserInfo.swift */,
+				DBA7EFDF272AF3920037AA7E /* AvailableUserListRP.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		DBDD67D927440F0100E91A5B /* UrbanRecorderTests */ = {
+			isa = PBXGroup;
+			children = (
+				DBDD67DA27440F0100E91A5B /* UrbanRecorderTests.swift */,
 			);
 			path = UrbanRecorderTests;
 			sourceTree = "<group>";
 		};
-		DB9E3CDA272131CF008FCFAB /* UrbanRecorderUITests */ = {
+		DBF0E3F7272FCC43004DC546 /* Socket */ = {
 			isa = PBXGroup;
 			children = (
-				DB9E3CDB272131CF008FCFAB /* UrbanRecorderUITests.swift */,
-				DB9E3CDD272131CF008FCFAB /* UrbanRecorderUITestsLaunchTests.swift */,
+				DBF0E3F8272FEB07004DC546 /* SubscribeManager.swift */,
+				DBF0E40027311DCF004DC546 /* UDPSocketManager.swift */,
+				DB74024E273A6FFD00CD74A4 /* InOutUDPSocket.swift */,
 			);
-			path = UrbanRecorderUITests;
+			path = Socket;
+			sourceTree = "<group>";
+		};
+		DBF0E3FB2730FD99004DC546 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DBF0E3FC2730FD99004DC546 /* NetworkExtension.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DBF0E406273141C5004DC546 /* URAudioEngine */ = {
+			isa = PBXGroup;
+			children = (
+				DBF0E407273141E1004DC546 /* URAudioEngine.swift */,
+				DBF0E40C27327A6F004DC546 /* URAudioEngineDataSource.swift */,
+				DB68DD9B2733DB7500336001 /* URAudioEngineDelegate.swift */,
+				DBF0E416273288BE004DC546 /* URAudioOutputData.swift */,
+				DBF0E40E27327ABB004DC546 /* AudioUnit */,
+				DBF0E41127327CC7004DC546 /* AudioStreamBasicDescription */,
+				DB67AE3B2738D65F007EE7CE /* PowerMeters */,
+				DBF0E40927314495004DC546 /* Model */,
+				DBF0E41427327D1B004DC546 /* EngineHelper.swift */,
+			);
+			path = URAudioEngine;
+			sourceTree = "<group>";
+		};
+		DBF0E40927314495004DC546 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DBF0E40A273144B6004DC546 /* URAudioBufferMetadata.swift */,
+				DBF0E41827338BDE004DC546 /* URAudioBuffer.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DBF0E40E27327ABB004DC546 /* AudioUnit */ = {
+			isa = PBXGroup;
+			children = (
+				DBF0E40F27327B69004DC546 /* URAudioRenderAudioUnit.swift */,
+			);
+			path = AudioUnit;
+			sourceTree = "<group>";
+		};
+		DBF0E41127327CC7004DC546 /* AudioStreamBasicDescription */ = {
+			isa = PBXGroup;
+			children = (
+				DBF0E41227327CE7004DC546 /* URStreamBasicDescription.swift */,
+			);
+			path = AudioStreamBasicDescription;
+			sourceTree = "<group>";
+		};
+		DBF3C68A2726AF9F00292893 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DBF3C68B2726BCEC00292893 /* SegmentSlideOverCardView.swift */,
+				DBE2A38A273D17460098E52D /* DirectionAndDistanceMetersView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -161,41 +387,23 @@
 			productReference = DB9E3CB8272131CC008FCFAB /* UrbanRecorder.app */;
 			productType = "com.apple.product-type.application";
 		};
-		DB9E3CCC272131CF008FCFAB /* UrbanRecorderTests */ = {
+		DBDD67D727440F0100E91A5B /* UrbanRecorderTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DB9E3CE4272131CF008FCFAB /* Build configuration list for PBXNativeTarget "UrbanRecorderTests" */;
+			buildConfigurationList = DBDD67DE27440F0100E91A5B /* Build configuration list for PBXNativeTarget "UrbanRecorderTests" */;
 			buildPhases = (
-				DB9E3CC9272131CF008FCFAB /* Sources */,
-				DB9E3CCA272131CF008FCFAB /* Frameworks */,
-				DB9E3CCB272131CF008FCFAB /* Resources */,
+				DBDD67D427440F0100E91A5B /* Sources */,
+				DBDD67D527440F0100E91A5B /* Frameworks */,
+				DBDD67D627440F0100E91A5B /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				DB9E3CCF272131CF008FCFAB /* PBXTargetDependency */,
+				DBDD67DD27440F0100E91A5B /* PBXTargetDependency */,
 			);
 			name = UrbanRecorderTests;
 			productName = UrbanRecorderTests;
-			productReference = DB9E3CCD272131CF008FCFAB /* UrbanRecorderTests.xctest */;
+			productReference = DBDD67D827440F0100E91A5B /* UrbanRecorderTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		DB9E3CD6272131CF008FCFAB /* UrbanRecorderUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DB9E3CE7272131CF008FCFAB /* Build configuration list for PBXNativeTarget "UrbanRecorderUITests" */;
-			buildPhases = (
-				DB9E3CD3272131CF008FCFAB /* Sources */,
-				DB9E3CD4272131CF008FCFAB /* Frameworks */,
-				DB9E3CD5272131CF008FCFAB /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				DB9E3CD9272131CF008FCFAB /* PBXTargetDependency */,
-			);
-			name = UrbanRecorderUITests;
-			productName = UrbanRecorderUITests;
-			productReference = DB9E3CD7272131CF008FCFAB /* UrbanRecorderUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -210,11 +418,7 @@
 					DB9E3CB7272131CC008FCFAB = {
 						CreatedOnToolsVersion = 13.0;
 					};
-					DB9E3CCC272131CF008FCFAB = {
-						CreatedOnToolsVersion = 13.0;
-						TestTargetID = DB9E3CB7272131CC008FCFAB;
-					};
-					DB9E3CD6272131CF008FCFAB = {
+					DBDD67D727440F0100E91A5B = {
 						CreatedOnToolsVersion = 13.0;
 						TestTargetID = DB9E3CB7272131CC008FCFAB;
 					};
@@ -238,8 +442,7 @@
 			projectRoot = "";
 			targets = (
 				DB9E3CB7272131CC008FCFAB /* UrbanRecorder */,
-				DB9E3CCC272131CF008FCFAB /* UrbanRecorderTests */,
-				DB9E3CD6272131CF008FCFAB /* UrbanRecorderUITests */,
+				DBDD67D727440F0100E91A5B /* UrbanRecorderTests */,
 			);
 		};
 /* End PBXProject section */
@@ -254,14 +457,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DB9E3CCB272131CF008FCFAB /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DB9E3CD5272131CF008FCFAB /* Resources */ = {
+		DBDD67D627440F0100E91A5B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -275,42 +471,66 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBA7EFDB272AEEDE0037AA7E /* CloseTheSessionRQ.swift in Sources */,
+				DBF3C68E2727E10800292893 /* Color+.swift in Sources */,
+				DBF0E41327327CE7004DC546 /* URStreamBasicDescription.swift in Sources */,
 				DB9E3CC8272131CE008FCFAB /* UrbanRecorder.xcdatamodeld in Sources */,
+				DBA7EFC7272A9F880037AA7E /* HTTPClient.swift in Sources */,
+				DBA7EFCE272ABBF50037AA7E /* URLRequest+.swift in Sources */,
+				DBA7EFD1272AE89B0037AA7E /* UserAPI.swift in Sources */,
+				DBA7EFDE272AF37D0037AA7E /* UserInfo.swift in Sources */,
+				DB9E3CFD2722785F008FCFAB /* Helper.swift in Sources */,
 				DB9E3CC5272131CE008FCFAB /* Persistence.swift in Sources */,
-				DB9E3CBE272131CC008FCFAB /* ContentView.swift in Sources */,
+				DBF3C68C2726BCEC00292893 /* SegmentSlideOverCardView.swift in Sources */,
+				DBF0E40B273144B6004DC546 /* URAudioBufferMetadata.swift in Sources */,
+				DBA7EFE0272AF3920037AA7E /* AvailableUserListRP.swift in Sources */,
+				DB9E3D072722BB34008FCFAB /* CGFloat+.swift in Sources */,
+				DBF0E408273141E1004DC546 /* URAudioEngine.swift in Sources */,
+				DBA7EFD7272AEEB20037AA7E /* AcceptCallingRequestRQ.swift in Sources */,
+				DBF0E41027327B69004DC546 /* URAudioRenderAudioUnit.swift in Sources */,
+				DB9E3CF227215B8A008FCFAB /* HomeMapView.swift in Sources */,
+				DB68DD9C2733DB7500336001 /* URAudioEngineDelegate.swift in Sources */,
+				DBF0E3FF27311959004DC546 /* Notification+.swift in Sources */,
+				DB67AE3D2738D678007EE7CE /* PowerMeters.swift in Sources */,
+				DBE2A38B273D17460098E52D /* DirectionAndDistanceMetersView.swift in Sources */,
+				DBF0E3F9272FEB07004DC546 /* SubscribeManager.swift in Sources */,
+				DBA7EFCC272ABABA0037AA7E /* Codable+.swift in Sources */,
+				DBA7EFD9272AEEC50037AA7E /* DeclineCallingRequestRQ.swift in Sources */,
+				DBF0E41927338BDE004DC546 /* URAudioBuffer.swift in Sources */,
+				DBF0E417273288BE004DC546 /* URAudioOutputData.swift in Sources */,
+				DBF0E41527327D1B004DC546 /* EngineHelper.swift in Sources */,
+				DBA7EFCA272AB3440037AA7E /* DeviceInfoRQ.swift in Sources */,
+				DBA7EFD5272AEB1C0037AA7E /* CallRequestRQ.swift in Sources */,
+				DB9E3D0B2726A1AE008FCFAB /* RecorderView.swift in Sources */,
+				DBF0E405273126C1004DC546 /* Date+.swift in Sources */,
+				DB9E3CFB27216E23008FCFAB /* HomeMapModel.swift in Sources */,
+				DB74024F273A6FFD00CD74A4 /* InOutUDPSocket.swift in Sources */,
+				DBE2A389273D0B2B0098E52D /* Double+.swift in Sources */,
 				DB9E3CBC272131CC008FCFAB /* UrbanRecorderApp.swift in Sources */,
+				DBF0E403273123ED004DC546 /* Data+.swift in Sources */,
+				DB9E3CF727215D81008FCFAB /* HomeMapViewModel.swift in Sources */,
+				DBF0E40127311DCF004DC546 /* UDPSocketManager.swift in Sources */,
+				DBA7EFD3272AE8BA0037AA7E /* VoiceServerAPI.swift in Sources */,
+				DBF0E40D27327A6F004DC546 /* URAudioEngineDataSource.swift in Sources */,
+				DB9E3D052722BAF6008FCFAB /* View+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DB9E3CC9272131CF008FCFAB /* Sources */ = {
+		DBDD67D427440F0100E91A5B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB9E3CD2272131CF008FCFAB /* UrbanRecorderTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DB9E3CD3272131CF008FCFAB /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DB9E3CDC272131CF008FCFAB /* UrbanRecorderUITests.swift in Sources */,
-				DB9E3CDE272131CF008FCFAB /* UrbanRecorderUITestsLaunchTests.swift in Sources */,
+				DBDD67DB27440F0100E91A5B /* UrbanRecorderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		DB9E3CCF272131CF008FCFAB /* PBXTargetDependency */ = {
+		DBDD67DD27440F0100E91A5B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = DB9E3CB7272131CC008FCFAB /* UrbanRecorder */;
-			targetProxy = DB9E3CCE272131CF008FCFAB /* PBXContainerItemProxy */;
-		};
-		DB9E3CD9272131CF008FCFAB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = DB9E3CB7272131CC008FCFAB /* UrbanRecorder */;
-			targetProxy = DB9E3CD8272131CF008FCFAB /* PBXContainerItemProxy */;
+			targetProxy = DBDD67DC27440F0100E91A5B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -318,7 +538,7 @@
 		DB9E3CDF272131CF008FCFAB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -372,14 +592,16 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = "";
 			};
 			name = Debug;
 		};
 		DB9E3CE0272131CF008FCFAB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -413,6 +635,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -427,6 +650,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -436,15 +660,24 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = UrbanRecorder/UrbanRecorder.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"UrbanRecorder/Preview Content\"";
 				DEVELOPMENT_TEAM = R8WVK7NKZV;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = UrbanRecorder/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "接收廣播";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "將使用您的地理位置以提升體驗";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "將使用您的地理位置以提升體驗";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "將使用您的麥克風";
+				INFOPLIST_KEY_NSMotionUsageDescription = "使用 motion";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -455,6 +688,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Holadddd.UrbanRecorder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -466,15 +700,24 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = UrbanRecorder/UrbanRecorder.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"UrbanRecorder/Preview Content\"";
 				DEVELOPMENT_TEAM = R8WVK7NKZV;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = UrbanRecorder/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "接收廣播";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "將使用您的地理位置以提升體驗";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "將使用您的地理位置以提升體驗";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "將使用您的麥克風";
+				INFOPLIST_KEY_NSMotionUsageDescription = "使用 motion";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -485,22 +728,22 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Holadddd.UrbanRecorder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
-		DB9E3CE5272131CF008FCFAB /* Debug */ = {
+		DBDD67DF27440F0100E91A5B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = R8WVK7NKZV;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -516,16 +759,15 @@
 			};
 			name = Debug;
 		};
-		DB9E3CE6272131CF008FCFAB /* Release */ = {
+		DBDD67E027440F0100E91A5B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = R8WVK7NKZV;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -538,52 +780,6 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UrbanRecorder.app/UrbanRecorder";
-			};
-			name = Release;
-		};
-		DB9E3CE8272131CF008FCFAB /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = R8WVK7NKZV;
-				GENERATE_INFOPLIST_FILE = YES;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Holadddd.UrbanRecorderUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = UrbanRecorder;
-			};
-			name = Debug;
-		};
-		DB9E3CE9272131CF008FCFAB /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = R8WVK7NKZV;
-				GENERATE_INFOPLIST_FILE = YES;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Holadddd.UrbanRecorderUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = UrbanRecorder;
 			};
 			name = Release;
 		};
@@ -608,20 +804,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DB9E3CE4272131CF008FCFAB /* Build configuration list for PBXNativeTarget "UrbanRecorderTests" */ = {
+		DBDD67DE27440F0100E91A5B /* Build configuration list for PBXNativeTarget "UrbanRecorderTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				DB9E3CE5272131CF008FCFAB /* Debug */,
-				DB9E3CE6272131CF008FCFAB /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		DB9E3CE7272131CF008FCFAB /* Build configuration list for PBXNativeTarget "UrbanRecorderUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				DB9E3CE8272131CF008FCFAB /* Debug */,
-				DB9E3CE9272131CF008FCFAB /* Release */,
+				DBDD67DF27440F0100E91A5B /* Debug */,
+				DBDD67E027440F0100E91A5B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -634,15 +821,15 @@
 			repositoryURL = "https://github.com/socketio/socket.io-client-swift.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 15.2.0;
+				minimumVersion = 16.0.0;
 			};
 		};
 		DB9E3CED27213B8F008FCFAB /* XCRemoteSwiftPackageReference "CocoaAsyncSocket" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/robbiehanson/CocoaAsyncSocket";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.6.5;
+				kind = exactVersion;
+				version = 7.6.5;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

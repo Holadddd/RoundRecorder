@@ -13,7 +13,7 @@ struct UrbanRecorderApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeMapView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
