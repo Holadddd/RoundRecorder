@@ -269,7 +269,7 @@ class URAudioEngine {
         let bufferLenght = audioBuffer.mDataByteSize
         let audioData = Data.init(bytes: mData, count: Int(bufferLenght))
         
-        let urAudioData = encodeURAudioBufferData(date, bufferLenght, nChannel, sampleRate, bitRate, latitude, longitude, altitude, roll, pitch, yaw, audioData)
+        let urAudioData = URAudioEngine.encodeURAudioBufferData(date, bufferLenght, nChannel, sampleRate, bitRate, latitude, longitude, altitude, roll, pitch, yaw, audioData)
         
         captureAudioBufferDataCallBack?(urAudioData)
     }
@@ -305,6 +305,8 @@ class URAudioEngine {
         let audioBufferLength: UInt32 = NSMutableData(data: data.advanced(by: 8)).bytes.load(as: UInt32.self)
         
         let channel: UInt32 =  NSMutableData(data: data.advanced(by: 12)).bytes.load(as: UInt32.self)
+        let sampleRate: UInt32 =  NSMutableData(data: data.advanced(by: 16)).bytes.load(as: UInt32.self)
+        let bitRate: UInt32 =  NSMutableData(data: data.advanced(by: 20)).bytes.load(as: UInt32.self)
         
         let latitude: Double = NSMutableData(data: data.advanced(by: 24)).bytes.load(as: Double.self)
         let longitude: Double = NSMutableData(data: data.advanced(by: 32)).bytes.load(as: Double.self)
@@ -327,12 +329,12 @@ class URAudioEngine {
         let metadata: URAudioBufferMetadata = URAudioBufferMetadata(locationCoordinate: location,
                                                                     motionAttitude: motion)
         
-        let buffer = URAudioBuffer(mData, audioBufferLength, channel, metadata, date)
+        let buffer = URAudioBuffer(mData, audioBufferLength, channel, sampleRate, bitRate, metadata, date)
         
         return buffer
     }
     
-    private func encodeURAudioBufferData(_ date: UInt64,
+    static func encodeURAudioBufferData(_ date: UInt64,
                                          _ bufferLength: UInt32,
                                          _ nChannel: UInt32,
                                          _ sampleRate: UInt32,

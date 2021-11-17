@@ -26,13 +26,14 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DB9E3CCC272131CF008FCFAB"
+               BlueprintIdentifier = "DBDD67D727440F0100E91A5B"
                BuildableName = "UrbanRecorderTests.xctest"
                BlueprintName = "UrbanRecorderTests"
                ReferencedContainer = "container:UrbanRecorder.xcodeproj">

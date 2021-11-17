@@ -15,9 +15,6 @@
 		DB9E3CC3272131CE008FCFAB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB9E3CC2272131CE008FCFAB /* Preview Assets.xcassets */; };
 		DB9E3CC5272131CE008FCFAB /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CC4272131CE008FCFAB /* Persistence.swift */; };
 		DB9E3CC8272131CE008FCFAB /* UrbanRecorder.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CC6272131CE008FCFAB /* UrbanRecorder.xcdatamodeld */; };
-		DB9E3CD2272131CF008FCFAB /* UrbanRecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CD1272131CF008FCFAB /* UrbanRecorderTests.swift */; };
-		DB9E3CDC272131CF008FCFAB /* UrbanRecorderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CDB272131CF008FCFAB /* UrbanRecorderUITests.swift */; };
-		DB9E3CDE272131CF008FCFAB /* UrbanRecorderUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CDD272131CF008FCFAB /* UrbanRecorderUITestsLaunchTests.swift */; };
 		DB9E3CEC27213B77008FCFAB /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = DB9E3CEB27213B77008FCFAB /* SocketIO */; };
 		DB9E3CEF27213B8F008FCFAB /* CocoaAsyncSocket in Frameworks */ = {isa = PBXBuildFile; productRef = DB9E3CEE27213B8F008FCFAB /* CocoaAsyncSocket */; };
 		DB9E3CF227215B8A008FCFAB /* HomeMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CF127215B8A008FCFAB /* HomeMapView.swift */; };
@@ -39,6 +36,7 @@
 		DBA7EFDB272AEEDE0037AA7E /* CloseTheSessionRQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFDA272AEEDE0037AA7E /* CloseTheSessionRQ.swift */; };
 		DBA7EFDE272AF37D0037AA7E /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFDD272AF37D0037AA7E /* UserInfo.swift */; };
 		DBA7EFE0272AF3920037AA7E /* AvailableUserListRP.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFDF272AF3920037AA7E /* AvailableUserListRP.swift */; };
+		DBDD67DB27440F0100E91A5B /* UrbanRecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDD67DA27440F0100E91A5B /* UrbanRecorderTests.swift */; };
 		DBE2A389273D0B2B0098E52D /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE2A388273D0B2B0098E52D /* Double+.swift */; };
 		DBE2A38B273D17460098E52D /* DirectionAndDistanceMetersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE2A38A273D17460098E52D /* DirectionAndDistanceMetersView.swift */; };
 		DBF0E3F9272FEB07004DC546 /* SubscribeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E3F8272FEB07004DC546 /* SubscribeManager.swift */; };
@@ -59,14 +57,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		DB9E3CCE272131CF008FCFAB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DB9E3CB0272131CC008FCFAB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DB9E3CB7272131CC008FCFAB;
-			remoteInfo = UrbanRecorder;
-		};
-		DB9E3CD8272131CF008FCFAB /* PBXContainerItemProxy */ = {
+		DBDD67DC27440F0100E91A5B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DB9E3CB0272131CC008FCFAB /* Project object */;
 			proxyType = 1;
@@ -85,11 +76,6 @@
 		DB9E3CC2272131CE008FCFAB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DB9E3CC4272131CE008FCFAB /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		DB9E3CC7272131CE008FCFAB /* UrbanRecorder.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UrbanRecorder.xcdatamodel; sourceTree = "<group>"; };
-		DB9E3CCD272131CF008FCFAB /* UrbanRecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UrbanRecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		DB9E3CD1272131CF008FCFAB /* UrbanRecorderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderTests.swift; sourceTree = "<group>"; };
-		DB9E3CD7272131CF008FCFAB /* UrbanRecorderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UrbanRecorderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		DB9E3CDB272131CF008FCFAB /* UrbanRecorderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderUITests.swift; sourceTree = "<group>"; };
-		DB9E3CDD272131CF008FCFAB /* UrbanRecorderUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		DB9E3CF127215B8A008FCFAB /* HomeMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMapView.swift; sourceTree = "<group>"; };
 		DB9E3CF627215D81008FCFAB /* HomeMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMapViewModel.swift; sourceTree = "<group>"; };
 		DB9E3CF827216587008FCFAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -110,6 +96,8 @@
 		DBA7EFDA272AEEDE0037AA7E /* CloseTheSessionRQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseTheSessionRQ.swift; sourceTree = "<group>"; };
 		DBA7EFDD272AF37D0037AA7E /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		DBA7EFDF272AF3920037AA7E /* AvailableUserListRP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableUserListRP.swift; sourceTree = "<group>"; };
+		DBDD67D827440F0100E91A5B /* UrbanRecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UrbanRecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DBDD67DA27440F0100E91A5B /* UrbanRecorderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderTests.swift; sourceTree = "<group>"; };
 		DBE2A388273D0B2B0098E52D /* Double+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
 		DBE2A38A273D17460098E52D /* DirectionAndDistanceMetersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionAndDistanceMetersView.swift; sourceTree = "<group>"; };
 		DBF0E3F8272FEB07004DC546 /* SubscribeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeManager.swift; sourceTree = "<group>"; };
@@ -141,14 +129,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DB9E3CCA272131CF008FCFAB /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DB9E3CD4272131CF008FCFAB /* Frameworks */ = {
+		DBDD67D527440F0100E91A5B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -170,8 +151,8 @@
 			isa = PBXGroup;
 			children = (
 				DB9E3CBA272131CC008FCFAB /* UrbanRecorder */,
-				DB9E3CD0272131CF008FCFAB /* UrbanRecorderTests */,
 				DB9E3CDA272131CF008FCFAB /* UrbanRecorderUITests */,
+				DBDD67D927440F0100E91A5B /* UrbanRecorderTests */,
 				DB9E3CB9272131CC008FCFAB /* Products */,
 				DBF0E3FB2730FD99004DC546 /* Frameworks */,
 			);
@@ -181,8 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				DB9E3CB8272131CC008FCFAB /* UrbanRecorder.app */,
-				DB9E3CCD272131CF008FCFAB /* UrbanRecorderTests.xctest */,
-				DB9E3CD7272131CF008FCFAB /* UrbanRecorderUITests.xctest */,
+				DBDD67D827440F0100E91A5B /* UrbanRecorderTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -217,19 +197,9 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		DB9E3CD0272131CF008FCFAB /* UrbanRecorderTests */ = {
-			isa = PBXGroup;
-			children = (
-				DB9E3CD1272131CF008FCFAB /* UrbanRecorderTests.swift */,
-			);
-			path = UrbanRecorderTests;
-			sourceTree = "<group>";
-		};
 		DB9E3CDA272131CF008FCFAB /* UrbanRecorderUITests */ = {
 			isa = PBXGroup;
 			children = (
-				DB9E3CDB272131CF008FCFAB /* UrbanRecorderUITests.swift */,
-				DB9E3CDD272131CF008FCFAB /* UrbanRecorderUITestsLaunchTests.swift */,
 			);
 			path = UrbanRecorderUITests;
 			sourceTree = "<group>";
@@ -325,6 +295,14 @@
 			path = User;
 			sourceTree = "<group>";
 		};
+		DBDD67D927440F0100E91A5B /* UrbanRecorderTests */ = {
+			isa = PBXGroup;
+			children = (
+				DBDD67DA27440F0100E91A5B /* UrbanRecorderTests.swift */,
+			);
+			path = UrbanRecorderTests;
+			sourceTree = "<group>";
+		};
 		DBF0E3F7272FCC43004DC546 /* Socket */ = {
 			isa = PBXGroup;
 			children = (
@@ -417,41 +395,23 @@
 			productReference = DB9E3CB8272131CC008FCFAB /* UrbanRecorder.app */;
 			productType = "com.apple.product-type.application";
 		};
-		DB9E3CCC272131CF008FCFAB /* UrbanRecorderTests */ = {
+		DBDD67D727440F0100E91A5B /* UrbanRecorderTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DB9E3CE4272131CF008FCFAB /* Build configuration list for PBXNativeTarget "UrbanRecorderTests" */;
+			buildConfigurationList = DBDD67DE27440F0100E91A5B /* Build configuration list for PBXNativeTarget "UrbanRecorderTests" */;
 			buildPhases = (
-				DB9E3CC9272131CF008FCFAB /* Sources */,
-				DB9E3CCA272131CF008FCFAB /* Frameworks */,
-				DB9E3CCB272131CF008FCFAB /* Resources */,
+				DBDD67D427440F0100E91A5B /* Sources */,
+				DBDD67D527440F0100E91A5B /* Frameworks */,
+				DBDD67D627440F0100E91A5B /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				DB9E3CCF272131CF008FCFAB /* PBXTargetDependency */,
+				DBDD67DD27440F0100E91A5B /* PBXTargetDependency */,
 			);
 			name = UrbanRecorderTests;
 			productName = UrbanRecorderTests;
-			productReference = DB9E3CCD272131CF008FCFAB /* UrbanRecorderTests.xctest */;
+			productReference = DBDD67D827440F0100E91A5B /* UrbanRecorderTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		DB9E3CD6272131CF008FCFAB /* UrbanRecorderUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DB9E3CE7272131CF008FCFAB /* Build configuration list for PBXNativeTarget "UrbanRecorderUITests" */;
-			buildPhases = (
-				DB9E3CD3272131CF008FCFAB /* Sources */,
-				DB9E3CD4272131CF008FCFAB /* Frameworks */,
-				DB9E3CD5272131CF008FCFAB /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				DB9E3CD9272131CF008FCFAB /* PBXTargetDependency */,
-			);
-			name = UrbanRecorderUITests;
-			productName = UrbanRecorderUITests;
-			productReference = DB9E3CD7272131CF008FCFAB /* UrbanRecorderUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -466,11 +426,7 @@
 					DB9E3CB7272131CC008FCFAB = {
 						CreatedOnToolsVersion = 13.0;
 					};
-					DB9E3CCC272131CF008FCFAB = {
-						CreatedOnToolsVersion = 13.0;
-						TestTargetID = DB9E3CB7272131CC008FCFAB;
-					};
-					DB9E3CD6272131CF008FCFAB = {
+					DBDD67D727440F0100E91A5B = {
 						CreatedOnToolsVersion = 13.0;
 						TestTargetID = DB9E3CB7272131CC008FCFAB;
 					};
@@ -494,8 +450,7 @@
 			projectRoot = "";
 			targets = (
 				DB9E3CB7272131CC008FCFAB /* UrbanRecorder */,
-				DB9E3CCC272131CF008FCFAB /* UrbanRecorderTests */,
-				DB9E3CD6272131CF008FCFAB /* UrbanRecorderUITests */,
+				DBDD67D727440F0100E91A5B /* UrbanRecorderTests */,
 			);
 		};
 /* End PBXProject section */
@@ -510,14 +465,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DB9E3CCB272131CF008FCFAB /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DB9E3CD5272131CF008FCFAB /* Resources */ = {
+		DBDD67D627440F0100E91A5B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -576,35 +524,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DB9E3CC9272131CF008FCFAB /* Sources */ = {
+		DBDD67D427440F0100E91A5B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB9E3CD2272131CF008FCFAB /* UrbanRecorderTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DB9E3CD3272131CF008FCFAB /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DB9E3CDC272131CF008FCFAB /* UrbanRecorderUITests.swift in Sources */,
-				DB9E3CDE272131CF008FCFAB /* UrbanRecorderUITestsLaunchTests.swift in Sources */,
+				DBDD67DB27440F0100E91A5B /* UrbanRecorderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		DB9E3CCF272131CF008FCFAB /* PBXTargetDependency */ = {
+		DBDD67DD27440F0100E91A5B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = DB9E3CB7272131CC008FCFAB /* UrbanRecorder */;
-			targetProxy = DB9E3CCE272131CF008FCFAB /* PBXContainerItemProxy */;
-		};
-		DB9E3CD9272131CF008FCFAB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = DB9E3CB7272131CC008FCFAB /* UrbanRecorder */;
-			targetProxy = DB9E3CD8272131CF008FCFAB /* PBXContainerItemProxy */;
+			targetProxy = DBDD67DC27440F0100E91A5B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -612,7 +546,7 @@
 		DB9E3CDF272131CF008FCFAB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -666,14 +600,16 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = "";
 			};
 			name = Debug;
 		};
 		DB9E3CE0272131CF008FCFAB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -707,6 +643,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -721,6 +658,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -805,16 +743,15 @@
 			};
 			name = Release;
 		};
-		DB9E3CE5272131CF008FCFAB /* Debug */ = {
+		DBDD67DF27440F0100E91A5B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = R8WVK7NKZV;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -830,16 +767,15 @@
 			};
 			name = Debug;
 		};
-		DB9E3CE6272131CF008FCFAB /* Release */ = {
+		DBDD67E027440F0100E91A5B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = R8WVK7NKZV;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -852,52 +788,6 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UrbanRecorder.app/UrbanRecorder";
-			};
-			name = Release;
-		};
-		DB9E3CE8272131CF008FCFAB /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = R8WVK7NKZV;
-				GENERATE_INFOPLIST_FILE = YES;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Holadddd.UrbanRecorderUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = UrbanRecorder;
-			};
-			name = Debug;
-		};
-		DB9E3CE9272131CF008FCFAB /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = R8WVK7NKZV;
-				GENERATE_INFOPLIST_FILE = YES;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Holadddd.UrbanRecorderUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = UrbanRecorder;
 			};
 			name = Release;
 		};
@@ -922,20 +812,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DB9E3CE4272131CF008FCFAB /* Build configuration list for PBXNativeTarget "UrbanRecorderTests" */ = {
+		DBDD67DE27440F0100E91A5B /* Build configuration list for PBXNativeTarget "UrbanRecorderTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				DB9E3CE5272131CF008FCFAB /* Debug */,
-				DB9E3CE6272131CF008FCFAB /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		DB9E3CE7272131CF008FCFAB /* Build configuration list for PBXNativeTarget "UrbanRecorderUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				DB9E3CE8272131CF008FCFAB /* Debug */,
-				DB9E3CE9272131CF008FCFAB /* Release */,
+				DBDD67DF27440F0100E91A5B /* Debug */,
+				DBDD67E027440F0100E91A5B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -947,16 +828,16 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/socketio/socket.io-client-swift.git";
 			requirement = {
-				kind = exactVersion;
-				version = 16.0.0;
+				kind = upToNextMajorVersion;
+				minimumVersion = 16.0.0;
 			};
 		};
 		DB9E3CED27213B8F008FCFAB /* XCRemoteSwiftPackageReference "CocoaAsyncSocket" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/robbiehanson/CocoaAsyncSocket";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.0.0;
+				kind = exactVersion;
+				version = 7.6.5;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
