@@ -181,8 +181,8 @@
 				DBA7EFC5272A9F380037AA7E /* Network */,
 				DBF0E3F7272FCC43004DC546 /* Socket */,
 				DBF0E406273141C5004DC546 /* URAudioEngine */,
-				DB9E3CBF272131CE008FCFAB /* Assets.xcassets */,
 				DB9E3CC4272131CE008FCFAB /* Persistence.swift */,
+				DB9E3CBF272131CE008FCFAB /* Assets.xcassets */,
 				DB9E3CC6272131CE008FCFAB /* UrbanRecorder.xcdatamodeld */,
 				DB9E3CC1272131CE008FCFAB /* Preview Content */,
 			);
