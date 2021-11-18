@@ -42,6 +42,12 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     var pitch: Double = 0
     
+    var receiverDirection: Double {
+        return compassDegrees + receiverLastDirectionDegrees
+    }
+    
+    @Published var compassDegrees: Double = 0
+    
     @Published var receiverLastDirectionDegrees: Double = 0
     
     @Published var receiverLastDistanceMeters: Double = 0
@@ -75,7 +81,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
         
         locationManager.requestWhenInUseAuthorization()
         
-        locationManager.startUpdatingLocation()
+        if CLLocationManager.headingAvailable() {
+            self.locationManager.startUpdatingLocation()
+            self.locationManager.startUpdatingHeading()
+        }
         // Headphone Motion
         if headphoneMotionManager.isDeviceMotionAvailable {
             headphoneMotionManager.delegate = self
@@ -189,6 +198,10 @@ extension HomeMapViewModel: CLLocationManagerDelegate, CMHeadphoneMotionManagerD
         }
     }
     
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        let newDegrees = -1 * newHeading.magneticHeading
+        compassDegrees = newDegrees
+    }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Location Manager Did Fail With Error: \(error.localizedDescription)")

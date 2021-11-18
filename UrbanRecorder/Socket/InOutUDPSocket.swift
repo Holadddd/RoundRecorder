@@ -16,6 +16,9 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     
     var receiveCallback: ((Data)->Void)?
     
+    var dataCollection: [Data] = []
+    private var isStartSendData: Bool = false
+    
     override init(){
         super.init()
     }
@@ -23,6 +26,11 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
         self.init()
         IP = ip
         PORT = port
+    }
+    
+    deinit {
+        socket.close()
+        socket = nil
     }
     
     func setupConnection(success:(()->())){
@@ -35,7 +43,11 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
         print("maxReceiveIPv4BufferSize: \(socket.maxReceiveIPv4BufferSize()), maxSendBufferSize: \(socket.maxSendBufferSize())")
     }
     func send(data: Data){
-        socket.send(data, withTimeout: 2, tag: 0)
+        #warning("Need Thread safe")
+        dataCollection.append(data)
+        if !isStartSendData {
+            socket.send(dataCollection[0], withTimeout: 0, tag: 0)
+        }
     }
     //MARK:-GCDAsyncUdpSocketDelegate
     func udpSocket(_ sock: GCDAsyncUdpSocket, didConnectToAddress address: Data) {
@@ -47,6 +59,15 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     }
     func udpSocket(_ sock: GCDAsyncUdpSocket, didNotConnect error: Error?) {
         print("didNotConnect")
+    }
+    func udpSocket(_ sock: GCDAsyncUdpSocket, didSendDataWithTag tag: Int) {
+        dataCollection.remove(at: 0)
+        
+        if dataCollection.count > 1 {
+            socket.send(dataCollection[0], withTimeout: 0, tag: 0)
+        } else if dataCollection.count == 0 {
+            isStartSendData = false
+        }
     }
     func udpSocket(_ sock: GCDAsyncUdpSocket, didNotSendDataWithTag tag: Int, dueToError error: Error?) {
 //        print("didNotSendDataWithTag")

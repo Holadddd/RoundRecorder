@@ -33,26 +33,6 @@ struct HomeMapView: View {
                         .edgesIgnoringSafeArea(.all)
                 }
                 
-//                VStack{
-//                    Spacer()
-//                    HStack(alignment: .center, spacing: 50, content: {
-//                        Button {
-//                            viewmodel.recordButtonDidClicked()
-//                        } label: {
-//                            Image(systemName: "record.circle.fill")
-//                                .foregroundStyle(.red, .white)
-//                                .scaleEffect(viewmodel.buttonScale)
-//                        }
-//
-//                        Button {
-//                            viewmodel.playButtonDidClicked()
-//                        } label: {
-//                            Image(systemName: "play.circle.fill")
-//                                .foregroundStyle(viewmodel.isSelectedItemPlayAble ? .green : .gray, .white)
-//                                .scaleEffect(viewmodel.buttonScale)
-//                        }.disabled(!viewmodel.isSelectedItemPlayAble)
-//                    })
-//                }.padding(50)
                 VStack(alignment: .leading){
                     Text("Longitude: \(viewmodel.longitude)")
                     Text("Latitude: \(viewmodel.latitude)")
@@ -74,7 +54,7 @@ struct HomeMapView: View {
                             viewmodel.setupCallSessionChannel()
                         }
                     }
-                    DirectionAndDistanceMetersView(directionDegrees: $viewmodel.receiverLastDirectionDegrees, distanceMeter: $viewmodel.receiverLastDistanceMeters)
+                    DirectionAndDistanceMetersView(receiverDirection: viewmodel.receiverDirection, receiverMeters: $viewmodel.receiverLastDistanceMeters)
                     Spacer()
                 }
                 

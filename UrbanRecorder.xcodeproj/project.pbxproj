@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		DB67AE3D2738D678007EE7CE /* PowerMeters.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB67AE3C2738D678007EE7CE /* PowerMeters.swift */; };
 		DB68DD9C2733DB7500336001 /* URAudioEngineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB68DD9B2733DB7500336001 /* URAudioEngineDelegate.swift */; };
+		DB710E442744FA5E00FD3304 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB710E432744FA5E00FD3304 /* AppDelegate.swift */; };
+		DB710E462745025700FD3304 /* AtomicValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB710E452745025700FD3304 /* AtomicValue.swift */; };
+		DB710E472745025D00FD3304 /* AtomicValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB710E452745025700FD3304 /* AtomicValue.swift */; };
+		DB710E492745F42A00FD3304 /* DispatchTime+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB710E482745F42A00FD3304 /* DispatchTime+.swift */; };
 		DB74024F273A6FFD00CD74A4 /* InOutUDPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB74024E273A6FFD00CD74A4 /* InOutUDPSocket.swift */; };
 		DB9E3CBC272131CC008FCFAB /* UrbanRecorderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */; };
 		DB9E3CC0272131CE008FCFAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB9E3CBF272131CE008FCFAB /* Assets.xcassets */; };
@@ -69,6 +73,9 @@
 /* Begin PBXFileReference section */
 		DB67AE3C2738D678007EE7CE /* PowerMeters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerMeters.swift; sourceTree = "<group>"; };
 		DB68DD9B2733DB7500336001 /* URAudioEngineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioEngineDelegate.swift; sourceTree = "<group>"; };
+		DB710E432744FA5E00FD3304 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		DB710E452745025700FD3304 /* AtomicValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicValue.swift; sourceTree = "<group>"; };
+		DB710E482745F42A00FD3304 /* DispatchTime+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchTime+.swift"; sourceTree = "<group>"; };
 		DB74024E273A6FFD00CD74A4 /* InOutUDPSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutUDPSocket.swift; sourceTree = "<group>"; };
 		DB9E3CB8272131CC008FCFAB /* UrbanRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UrbanRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderApp.swift; sourceTree = "<group>"; };
@@ -172,6 +179,7 @@
 				DBF0E3FA2730FD99004DC546 /* UrbanRecorder.entitlements */,
 				DB9E3CF827216587008FCFAB /* Info.plist */,
 				DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */,
+				DB710E432744FA5E00FD3304 /* AppDelegate.swift */,
 				DB9E3CFC2722785F008FCFAB /* Helper.swift */,
 				DB9E3D032722BAE7008FCFAB /* Extension */,
 				DBF3C68A2726AF9F00292893 /* Views */,
@@ -242,6 +250,8 @@
 				DBF0E3FE27311959004DC546 /* Notification+.swift */,
 				DBF0E402273123ED004DC546 /* Data+.swift */,
 				DBF0E404273126C1004DC546 /* Date+.swift */,
+				DB710E452745025700FD3304 /* AtomicValue.swift */,
+				DB710E482745F42A00FD3304 /* DispatchTime+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -471,6 +481,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB710E442744FA5E00FD3304 /* AppDelegate.swift in Sources */,
 				DBA7EFDB272AEEDE0037AA7E /* CloseTheSessionRQ.swift in Sources */,
 				DBF3C68E2727E10800292893 /* Color+.swift in Sources */,
 				DBF0E41327327CE7004DC546 /* URStreamBasicDescription.swift in Sources */,
@@ -494,6 +505,8 @@
 				DB67AE3D2738D678007EE7CE /* PowerMeters.swift in Sources */,
 				DBE2A38B273D17460098E52D /* DirectionAndDistanceMetersView.swift in Sources */,
 				DBF0E3F9272FEB07004DC546 /* SubscribeManager.swift in Sources */,
+				DB710E462745025700FD3304 /* AtomicValue.swift in Sources */,
+				DB710E492745F42A00FD3304 /* DispatchTime+.swift in Sources */,
 				DBA7EFCC272ABABA0037AA7E /* Codable+.swift in Sources */,
 				DBA7EFD9272AEEC50037AA7E /* DeclineCallingRequestRQ.swift in Sources */,
 				DBF0E41927338BDE004DC546 /* URAudioBuffer.swift in Sources */,
@@ -520,6 +533,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB710E472745025D00FD3304 /* AtomicValue.swift in Sources */,
 				DBDD67DB27440F0100E91A5B /* UrbanRecorderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
