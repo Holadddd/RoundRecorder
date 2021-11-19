@@ -29,7 +29,7 @@ struct DirectionAndDistanceMetersView: View {
                     
                     context.withCGContext { cgContext in
                         let midPoint = CGPoint(x: size.width/2.0, y: size.height/2.0)
-                        let text = Text("\(receiverMeters.ceiling(toDecimal: 2)) M").font(.title).fontWeight(.heavy)
+                        let text = Text("\(receiverMeters.string(fractionDigits: 2)) M").font(.title).fontWeight(.heavy)
                         context.blendMode = GraphicsContext.BlendMode.softLight
                         context.draw(text, at: midPoint)
                     }
