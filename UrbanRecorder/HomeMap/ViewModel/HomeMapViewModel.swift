@@ -20,7 +20,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     @Published var recieverID: String = ""
     
-    @Published var cardPosition = CardPosition.bottom
+    @Published var cardPosition = CardPosition.middle
     
     var isUpdatedUserRegion: Bool = false
     
@@ -199,7 +199,18 @@ extension HomeMapViewModel: CLLocationManagerDelegate, CMHeadphoneMotionManagerD
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        let newDegrees = -1 * newHeading.magneticHeading
+        var newDegrees =  -newHeading.magneticHeading + 360
+        
+        if (newDegrees - compassDegrees) > 0 {
+            if abs(newDegrees - compassDegrees) > 180 {
+                newDegrees -= 360
+            }
+        } else {
+            if abs(newDegrees - compassDegrees) > 180 {
+                newDegrees += 360
+            }
+        }
+        
         compassDegrees = newDegrees
     }
     

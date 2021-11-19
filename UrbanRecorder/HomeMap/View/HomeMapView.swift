@@ -54,14 +54,12 @@ struct HomeMapView: View {
                             viewmodel.setupCallSessionChannel()
                         }
                     }
-                    DirectionAndDistanceMetersView(receiverDirection: viewmodel.receiverDirection, receiverMeters: $viewmodel.receiverLastDistanceMeters)
                     Spacer()
                 }
                 
                 SegmentSlideOverCardView(content: {
-                    ForEach(0..<50) {i in
-                        Text("\(i)")
-                    }
+                    DirectionAndDistanceMetersView(receiverDirection: viewmodel.receiverDirection, receiverMeters: $viewmodel.receiverLastDistanceMeters)
+                        .scaleEffect(0.8)
                 }, cardPosition: $viewmodel.cardPosition, availableMode: AvailablePosition([.top, .middle, .bottom]))
             }
         }.onAppear {
