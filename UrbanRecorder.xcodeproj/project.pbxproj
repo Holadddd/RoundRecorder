@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DB3321D227476312002446F1 /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = DB3321D127476312002446F1 /* Neumorphic */; };
+		DB4956D9274920DD00FE512A /* NeumorphicWaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */; };
 		DB67AE3D2738D678007EE7CE /* PowerMeters.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB67AE3C2738D678007EE7CE /* PowerMeters.swift */; };
 		DB68DD9C2733DB7500336001 /* URAudioEngineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB68DD9B2733DB7500336001 /* URAudioEngineDelegate.swift */; };
 		DB710E442744FA5E00FD3304 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB710E432744FA5E00FD3304 /* AppDelegate.swift */; };
@@ -72,6 +73,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeumorphicWaveView.swift; sourceTree = "<group>"; };
 		DB67AE3C2738D678007EE7CE /* PowerMeters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerMeters.swift; sourceTree = "<group>"; };
 		DB68DD9B2733DB7500336001 /* URAudioEngineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioEngineDelegate.swift; sourceTree = "<group>"; };
 		DB710E432744FA5E00FD3304 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -148,11 +150,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		DB3321C627474951002446F1 /* Neumorphic Modifier */ = {
+		DB3321C627474951002446F1 /* Neumorphic View */ = {
 			isa = PBXGroup;
 			children = (
+				DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */,
 			);
-			path = "Neumorphic Modifier";
+			path = "Neumorphic View";
 			sourceTree = "<group>";
 		};
 		DB67AE3B2738D65F007EE7CE /* PowerMeters */ = {
@@ -190,7 +193,7 @@
 				DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */,
 				DB710E432744FA5E00FD3304 /* AppDelegate.swift */,
 				DB9E3CFC2722785F008FCFAB /* Helper.swift */,
-				DB3321C627474951002446F1 /* Neumorphic Modifier */,
+				DB3321C627474951002446F1 /* Neumorphic View */,
 				DB9E3D032722BAE7008FCFAB /* Extension */,
 				DBF3C68A2726AF9F00292893 /* Views */,
 				DB9E3CF527215D51008FCFAB /* HomeMap */,
@@ -514,6 +517,7 @@
 				DB9E3CF227215B8A008FCFAB /* HomeMapView.swift in Sources */,
 				DB68DD9C2733DB7500336001 /* URAudioEngineDelegate.swift in Sources */,
 				DBF0E3FF27311959004DC546 /* Notification+.swift in Sources */,
+				DB4956D9274920DD00FE512A /* NeumorphicWaveView.swift in Sources */,
 				DB67AE3D2738D678007EE7CE /* PowerMeters.swift in Sources */,
 				DBE2A38B273D17460098E52D /* DirectionAndDistanceMetersView.swift in Sources */,
 				DBF0E3F9272FEB07004DC546 /* SubscribeManager.swift in Sources */,

@@ -22,7 +22,7 @@ struct DirectionAndDistanceMetersView: View {
         GeometryReader{ reader in
             ZStack{
                 Circle().fill(mainColor).frame(width: reader.size.width, height: reader.size.height)
-                    .softInnerShadow(Circle(), spread: 0.6)
+                    .softInnerShadow(Circle(), spread: 0.05)
                 
 //                Canvas { context, size in
 //                    context.withCGContext { cgContext in
@@ -76,7 +76,18 @@ struct DirectionAndDistanceMetersView: View {
                 .frame(width: redDotSize.width, height: redDotSize.height)
                 .rotationEffect(.degrees(receiverDirection))
                 .animation(.easeInOut(duration: 0.2), value: receiverDirection)
-                    
+                
+                // Peak Wave
+                NeumorphicWaveView()
+                .scaleEffect(0.7)
+                // Distance Meter Button
+                Button(action: {
+                    // TODO: Fixed the distance
+                    print("TODO: Fixed the distance")
+                }) {
+                    Text("\(receiverMeters.string(fractionDigits: 2)) M").font(.title).fontWeight(.heavy)
+                }.softButtonStyle(RoundedRectangle(cornerRadius: cornerRadius))
+                    .disabled(false)
                 
             }
             .scaledToFit()
