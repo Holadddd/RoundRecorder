@@ -58,7 +58,12 @@ struct HomeMapView: View {
                 }
                 
                 SegmentSlideOverCardView(content: {
-                    DirectionAndDistanceMetersView(receiverDirection: viewmodel.receiverDirection, receiverMeters: $viewmodel.receiverLastDistanceMeters)
+                    DirectionAndDistanceMetersView(receiverDirection: viewmodel.receiverDirection,
+                                                   receiverMeters: $viewmodel.receiverLastDistanceMeters, showWave: viewmodel.showWave,
+                                                   volumeMaxPeakPercentage: viewmodel.volumeMaxPeakPercentage) {
+                        // TODO: Fixed the distance
+                        print("TODO: Fixed the distance")
+                    }
                         .scaleEffect(0.8)
                 }, cardPosition: $viewmodel.cardPosition, availableMode: AvailablePosition([.top, .middle, .bottom]))
             }

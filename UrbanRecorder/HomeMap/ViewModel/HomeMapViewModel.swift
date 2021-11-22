@@ -66,9 +66,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     var udpSocket: UDPSocketManager = UDPSocketManager.shared
     
-    func updateUserCurrentRegion() {
-        
-    }
+    @Published var showWave: Bool = false
+    
+    var volumeMaxPeakPercentage: Double = 0.01
+    
     override init() {
         super.init()
         // Delegate/DataSource
@@ -81,8 +82,9 @@ class HomeMapViewModel: NSObject, ObservableObject {
         
         locationManager.requestWhenInUseAuthorization()
         
+        locationManager.startUpdatingLocation()
+        
         if CLLocationManager.headingAvailable() {
-            self.locationManager.startUpdatingLocation()
             self.locationManager.startUpdatingHeading()
         }
         // Headphone Motion
@@ -147,6 +149,26 @@ class HomeMapViewModel: NSObject, ObservableObject {
             guard let self = self else { return }
             self.startRecording()
         }
+    }
+    
+    func didReceiveVolumePeakPercentage(_ percentage: Double) {
+        // Vivration is not working
+        UIDevice.vibrate()
+        withAnimation(.linear(duration: 0.4)) {
+            showWave = true
+            
+            volumeMaxPeakPercentage = percentage
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            self.resetVolumePeakPercentage()
+        }
+    }
+    
+    func resetVolumePeakPercentage() {
+        showWave = false
+        
+        volumeMaxPeakPercentage = 0.01
     }
 }
 

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		DB3321D227476312002446F1 /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = DB3321D127476312002446F1 /* Neumorphic */; };
 		DB4956D9274920DD00FE512A /* NeumorphicWaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */; };
+		DB4956DB2749401400FE512A /* UIDevice+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4956DA2749401400FE512A /* UIDevice+.swift */; };
 		DB67AE3D2738D678007EE7CE /* PowerMeters.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB67AE3C2738D678007EE7CE /* PowerMeters.swift */; };
 		DB68DD9C2733DB7500336001 /* URAudioEngineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB68DD9B2733DB7500336001 /* URAudioEngineDelegate.swift */; };
 		DB710E442744FA5E00FD3304 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB710E432744FA5E00FD3304 /* AppDelegate.swift */; };
@@ -74,6 +75,7 @@
 
 /* Begin PBXFileReference section */
 		DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeumorphicWaveView.swift; sourceTree = "<group>"; };
+		DB4956DA2749401400FE512A /* UIDevice+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+.swift"; sourceTree = "<group>"; };
 		DB67AE3C2738D678007EE7CE /* PowerMeters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerMeters.swift; sourceTree = "<group>"; };
 		DB68DD9B2733DB7500336001 /* URAudioEngineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioEngineDelegate.swift; sourceTree = "<group>"; };
 		DB710E432744FA5E00FD3304 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 				DBF0E404273126C1004DC546 /* Date+.swift */,
 				DB710E452745025700FD3304 /* AtomicValue.swift */,
 				DB710E482745F42A00FD3304 /* DispatchTime+.swift */,
+				DB4956DA2749401400FE512A /* UIDevice+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -542,6 +545,7 @@
 				DBA7EFD3272AE8BA0037AA7E /* VoiceServerAPI.swift in Sources */,
 				DBF0E40D27327A6F004DC546 /* URAudioEngineDataSource.swift in Sources */,
 				DB9E3D052722BAF6008FCFAB /* View+.swift in Sources */,
+				DB4956DB2749401400FE512A /* UIDevice+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

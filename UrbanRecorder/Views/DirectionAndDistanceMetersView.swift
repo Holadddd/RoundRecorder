@@ -12,11 +12,25 @@ struct DirectionAndDistanceMetersView: View {
     var receiverDirection: Double
     @Binding var receiverMeters: Double
     
+    var volumeMaxPeakPercentage: Double
+    
+    var showWave: Bool
+    
+    var distanceMeteDidClicked: (()->Void)
+    
     let cornerRadius : CGFloat = 15
     let mainColor = Color.Neumorphic.main
     let secondaryColor = Color.Neumorphic.secondary
     
     let redDotSize: CGSize = CGSize(width: 25, height: 25)
+    
+    init(receiverDirection: Double, receiverMeters: Binding<Double>, showWave: Bool, volumeMaxPeakPercentage: Double, _ distanceMeteDidClicked: @escaping (()->Void)) {
+        self.receiverDirection = receiverDirection
+        self._receiverMeters = receiverMeters
+        self.showWave = showWave
+        self.volumeMaxPeakPercentage = volumeMaxPeakPercentage
+        self.distanceMeteDidClicked = distanceMeteDidClicked
+    }
     
     var body: some View {
         GeometryReader{ reader in
@@ -79,15 +93,21 @@ struct DirectionAndDistanceMetersView: View {
                 
                 // Peak Wave
                 NeumorphicWaveView()
-                .scaleEffect(0.7)
+                    .scaleEffect(showWave ? volumeMaxPeakPercentage : showWave ? 0.4 : 0.01)
+                    .opacity(showWave ? 0.1 : 1)
+                NeumorphicWaveView()
+                    .scaleEffect(showWave ? volumeMaxPeakPercentage * 0.7 : showWave ? 0.3 : 0.01)
+                    .opacity(showWave ? 0.1 : 1)
+                NeumorphicWaveView()
+                    .scaleEffect(showWave ? volumeMaxPeakPercentage * 0.5 : showWave ? 0.2 : 0.01)
+                    .opacity(showWave ? 0.1 : 1)
                 // Distance Meter Button
                 Button(action: {
-                    // TODO: Fixed the distance
-                    print("TODO: Fixed the distance")
+                    distanceMeteDidClicked()
                 }) {
                     Text("\(receiverMeters.string(fractionDigits: 2)) M").font(.title).fontWeight(.heavy)
                 }.softButtonStyle(RoundedRectangle(cornerRadius: cornerRadius))
-                    .disabled(false)
+                    .disabled(true)
                 
             }
             .scaledToFit()
@@ -98,6 +118,8 @@ struct DirectionAndDistanceMetersView: View {
 struct DirectionAndDistanceMetersView_Previews: PreviewProvider {
     static var previews: some View {
         
-        DirectionAndDistanceMetersView(receiverDirection: 315, receiverMeters: .constant(5))
+        DirectionAndDistanceMetersView(receiverDirection: 315, receiverMeters: .constant(5), showWave: true, volumeMaxPeakPercentage: 0.7) {
+            
+        }
     }
 }
