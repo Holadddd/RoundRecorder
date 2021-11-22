@@ -28,7 +28,7 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
      Use this command to modify the os system maximun UPD buffer size as 65535 bytes
      $ sysctl -w net.inet.udp.maxdgram=65535
      */
-    let mtu = 65535
+    var mtu = 65535
     
     var udpSocketInOut: InOutSocket?
     
