@@ -383,7 +383,6 @@ class URAudioEngine {
     }
     
     private func updateListenerOrientation(_ orientation: AVAudio3DAngularOrientation) {
-        print("UserOrientation: \(orientation)")
         streamingEnvironmentNode.listenerAngularOrientation = orientation
     }
     
@@ -439,18 +438,22 @@ extension URAudioEngine: URAudioRenderAudioUnitDelegate {
 extension URAudioEngine {
     static func get3DMetersPositionWith(_ directionAndDistance: UR3DDirectionAndDistance) -> AVAudio3DPoint {
         
-        // Direction Degrees From Recerver
+        // Direction Degrees Point To Receiver
         // Positive X is direct to the east
         // Negitive Z is direct to the north
         // Y is for elevation
         #warning("The distance temporary set as 20 meters for demo")
-        let degreesInPi = (directionAndDistance.direction / 180 * Double.pi)
-        let distanceMeters = directionAndDistance.distance > 5 ? 20 : directionAndDistance.distance
-        let x: Float = Float(cos(degreesInPi) * distanceMeters)
+        // Transfer TrueNorth degrees to quadrant degrees
+        let quadrantDegrees = -directionAndDistance.direction + 90
+        let degreesInPi = (quadrantDegrees / 180 * Double.pi)
+        
+        let distanceMeters = directionAndDistance.distance > 5 ? 10 : directionAndDistance.distance
+        let x: Float = -Float(cos(degreesInPi) * distanceMeters)
         let y: Float = 0
-        let z: Float = -Float(sin(degreesInPi) * distanceMeters)
+        let z: Float = Float(sin(degreesInPi) * distanceMeters)
         
         let position = AVAudio3DPoint(x: x, y: y, z: z)
+        
         return position
     }
 }
