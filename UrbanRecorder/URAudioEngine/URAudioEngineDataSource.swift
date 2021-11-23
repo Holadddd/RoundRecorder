@@ -10,6 +10,6 @@ import Foundation
 protocol URAudioEngineDataSource: AnyObject {
     func urAudioEngine(currentLocationForEngine: URAudioEngine) -> URLocationCoordinate3D
     
-    func urAudioEngine(currentMotionForEngine: URAudioEngine) -> URMotionAttitude 
+    func urAudioEngine(currentTrueNorthAnchorsMotionForEngine: URAudioEngine) -> URMotionAttitude 
 }
 

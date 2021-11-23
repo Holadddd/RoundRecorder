@@ -37,6 +37,7 @@ struct HomeMapView: View {
                     Text("Longitude: \(viewmodel.longitude)")
                     Text("Latitude: \(viewmodel.latitude)")
                     Text("Elevation: \(viewmodel.altitude)")
+                    Text("TrueNorthYawDegrees: \(viewmodel.trueNorthYawDegrees)")
                 }
                 
                 VStack(alignment: .leading){

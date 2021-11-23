@@ -36,15 +36,19 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     private var firstAnchorMotion: CMDeviceMotion?
     
-    var yaw: Double = 0
+    private var firstAnchorMotionCompassDegrees: Double?
     
-    var roll: Double = 0
+    var trueNorthYawDegrees: Double = 0
     
-    var pitch: Double = 0
+    var trueNorthRollDegrees: Double = 0
+    
+    var trueNorthPitchDegrees: Double = 0
     
     var receiverDirection: Double {
         return compassDegrees + receiverLastDirectionDegrees
     }
+    // TrueNorthOrientationAnchor(Assume the first motion is faceing the phone)
+    var trueNorthMotionAnchor: CMDeviceMotion?
     
     @Published var compassDegrees: Double = 0
     
@@ -241,11 +245,16 @@ extension HomeMapViewModel: CLLocationManagerDelegate, CMHeadphoneMotionManagerD
     }
     
     func headphoneMotionDidChange(_ motion: CMDeviceMotion) {
-        guard let anchorMotion = firstAnchorMotion else { firstAnchorMotion = motion; return}
+        guard let anchorMotion = firstAnchorMotion,
+              let firstAnchorMotionCompassDegrees = firstAnchorMotionCompassDegrees else {
+            firstAnchorMotionCompassDegrees = compassDegrees
+            firstAnchorMotion = motion
+            return}
         
-        yaw = motion.attitude.yaw - anchorMotion.attitude.yaw
-        pitch = motion.attitude.pitch - anchorMotion.attitude.pitch
-        roll = motion.attitude.roll - anchorMotion.attitude.roll
+        trueNorthYawDegrees = (anchorMotion.attitude.yaw - motion.attitude.yaw) / Double.pi * 180 - firstAnchorMotionCompassDegrees
+        trueNorthPitchDegrees = (anchorMotion.attitude.pitch - motion.attitude.pitch) / Double.pi * 180
+        trueNorthRollDegrees = (anchorMotion.attitude.roll - motion.attitude.roll) / Double.pi * 180
+        
     }
 }
 // URAudioEngineDataSource
@@ -255,14 +264,14 @@ extension HomeMapViewModel: URAudioEngineDataSource {
         return location
     }
     
-    func urAudioEngine(currentMotionForEngine: URAudioEngine) -> URMotionAttitude {
-        let attitude = URMotionAttitude(roll: roll, pitch: pitch, yaw: yaw)
+    func urAudioEngine(currentTrueNorthAnchorsMotionForEngine: URAudioEngine) -> URMotionAttitude {
+        let attitude = URMotionAttitude(rollDegrees: trueNorthRollDegrees, pitchDegrees: trueNorthPitchDegrees, yawDegrees: trueNorthYawDegrees)
         return attitude
     }
 }
 // URAudioEngineDelegate
 extension HomeMapViewModel: URAudioEngineDelegate {
-    func didUpdateReceiverDirectionAndDistance(_ engine: URAudioEngine, directionAndDistance: UR2DDirectionAndDistance) {
+    func didUpdateReceiverDirectionAndDistance(_ engine: URAudioEngine, directionAndDistance: UR3DDirectionAndDistance) {
         receiverLastDirectionDegrees = directionAndDistance.direction
         receiverLastDistanceMeters = directionAndDistance.distance
     }
