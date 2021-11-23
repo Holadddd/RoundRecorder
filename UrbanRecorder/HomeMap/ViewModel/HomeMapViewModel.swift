@@ -71,7 +71,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
     let headphoneMotionManager = CMHeadphoneMotionManager()
     
     var annotationItems: [HomeMapAnnotationItem] {
-        var tmp = [HomeMapAnnotationItem.taipei101]
+        var tmp: [HomeMapAnnotationItem] = []
         
         tmp.append(receiverAnnotationItem)
         
