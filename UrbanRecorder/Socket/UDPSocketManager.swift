@@ -23,9 +23,11 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
     static let shared: UDPSocketManager = UDPSocketManager()
     
     static let compressionAlgorithm: NSData.CompressionAlgorithm = .lz4
+    
+    static let enableCompresssionAlgorithm: Bool = false
     /*
      AWS can accept maximum package size(64K 65536 bytes), Mac default max buffer size is 9216
-     Use this command to modify the os system maximun UPD buffer size as 65535 bytes
+     Use the command for modify the os system maximun UPD buffer with size as 65535 bytes
      $ sysctl -w net.inet.udp.maxdgram=65535
      */
     var mtu = 65535
@@ -132,9 +134,20 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
         var data = withUnsafeBytes(of: recieverID) { Data($0) }   // Offset: 0
         data.append(withUnsafeBytes(of: userID) { Data($0) })   // Offset: 16
         data.append(withUnsafeBytes(of: date) { Data($0) }) // Offset: 32
-        data.append(Data(bytes: dataPtr, count: dataLength))    // Offset: 40
         
-        return data
+        if UDPSocketManager.enableCompresssionAlgorithm {
+            guard let compressData = Data(bytes: dataPtr, count: dataLength).compressed(using: UDPSocketManager.compressionAlgorithm) else {
+                print("CompressFail")
+                return data
+            }
+            data.append(compressData)    // Offset: 40
+            
+            return data
+        } else {
+            data.append(Data(bytes: dataPtr, count: dataLength))    // Offset: 40
+            
+            return data
+        }
     }
     
     static func encodeUDPSocketPayload(_ data: Data, userID: String, recieverID: String) -> Data? {
@@ -154,9 +167,20 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
         var newData = withUnsafeBytes(of: recieverID) { Data($0) }   // Offset: 0
         newData.append(withUnsafeBytes(of: userID) { Data($0) })   // Offset: 16
         newData.append(withUnsafeBytes(of: date) { Data($0) }) // Offset: 32
-        newData.append(data)    // Offset: 40
         
-        return newData
+        if UDPSocketManager.enableCompresssionAlgorithm {
+            guard let compressData = data.compressed(using: UDPSocketManager.compressionAlgorithm) else {
+                print("CompressFail")
+                return data
+            }
+            newData.append(compressData)    // Offset: 40
+            
+            return newData
+        } else {
+            newData.append(data)    // Offset: 40
+            
+            return newData
+        }
     }
     
     static func parseUDPSocketData(_ data: Data) -> UDPSocketRecievedPayload? {
@@ -175,9 +199,21 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
         let date: UInt64 = NSMutableData(data: data.advanced(by: 16)).bytes.load(as: UInt64.self)
         let payload: Data = data.advanced(by: 24)
         
-        let recievedPayload = UDPSocketRecievedPayload(emitID: emitID, date: date, data: payload)
+        if UDPSocketManager.enableCompresssionAlgorithm {
+            guard let decompressedPayload = payload.decompressed(using: UDPSocketManager.compressionAlgorithm) else {
+                print("Decompressed Fail")
+                return nil
+            }
+            
+            let recievedPayload = UDPSocketRecievedPayload(emitID: emitID, date: date, data: decompressedPayload)
+            
+            return recievedPayload
+        } else {
+            let recievedPayload = UDPSocketRecievedPayload(emitID: emitID, date: date, data: payload)
+            
+            return recievedPayload
+        }
         
-        return recievedPayload
     }
 }
 
