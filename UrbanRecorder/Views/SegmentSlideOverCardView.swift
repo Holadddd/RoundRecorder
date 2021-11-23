@@ -41,7 +41,7 @@ struct SegmentSlideOverCardView<Content: View> : View {
                     .foregroundColor(.gray)
                     .padding(10)
                     .scaleEffect(2)
-                    .background(.white)
+                    .background(Color.themeBackgroud)
                     .zIndex(1)
                 
                 GeometryReader{ value in
@@ -74,7 +74,6 @@ struct SegmentSlideOverCardView<Content: View> : View {
 //                        print("Offset: \(Int(value))")
                         
                     }
-                    .disabled(true)
                 }
             }
         }
@@ -162,10 +161,12 @@ struct SegmentSlideOverCardView<Content: View> : View {
                     lastDragPosition = nil
                 })
         )
-        .background(.white)
+        .background(Color.themeBackgroud)
         .cornerRadius(10)
+        .softOuterShadow(darkShadow: .fixedDarkGray, lightShadow: .fixedLightGray, offset: 5, radius: 5)
         .offset(y: cardPosition.offsetValue + cardViewOffset)
         .ignoresSafeArea(edges: Edge.Set.bottom)
+        
         
     }
     

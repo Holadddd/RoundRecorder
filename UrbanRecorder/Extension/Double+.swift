@@ -16,4 +16,9 @@ extension Double {
             return Double(ceil(self * numberOfDigits)) / numberOfDigits
         }
     }
+    
+    func string(fractionDigits:Int) -> String {
+        let string = String(format: "%.\(fractionDigits)f", self)
+        return string
+    }
 }

@@ -199,7 +199,8 @@ class URAudioEngine {
     }
     //MARK: - AudioNode connect
     private func setupAudioNodeConnection() {
-        guard let layout: AVAudioChannelLayout = AVAudioChannelLayout.init(layoutTag: kAudioChannelLayoutTag_Stereo) else { return }
+        #warning("Keep Layout as Mono to play SpactialAudio")
+        guard let layout: AVAudioChannelLayout = AVAudioChannelLayout.init(layoutTag: kAudioChannelLayoutTag_Mono) else { return }
         
         let stereoFormat = AVAudioFormat(standardFormatWithSampleRate: 48000, channelLayout: layout)
         
@@ -222,17 +223,33 @@ class URAudioEngine {
     
     public func schechuleRendererAudioBuffer(_ buffer: URAudioBuffer) {
         // MARK: Update Environment
-        if let metatdata = buffer.metadata {
-            if let userLocation = dataSource?.urAudioEngine(currentLocationForEngine: self) {
-                let receiverLocation = metatdata.locationCoordinate
-                let directionAndDistance = userLocation.distanceAndDistance(from: receiverLocation)
+        if let receiversBufferMetatdata = buffer.metadata {
+            #warning("Need to know the motion is on or not")
+            // View
+            delegate?.didUpdateReceiversBufferMetaData(self, metaData: receiversBufferMetatdata)
+            
+            // MARK: Update Orientation
+            if let userTrueNorthAnchorsMotion = dataSource?.urAudioEngine(currentTrueNorthAnchorsMotionForEngine: self) {
+                let yawDegrees: Float = Float(userTrueNorthAnchorsMotion.yawDegrees)
+                let pitchDegrees: Float = Float(userTrueNorthAnchorsMotion.pitchDegrees)
+                let rollDegrees: Float = Float(userTrueNorthAnchorsMotion.rollDegrees)
+                let userOrientation = AVAudio3DAngularOrientation(yaw: yawDegrees, pitch: pitchDegrees, roll: rollDegrees)
                 
-                delegate?.didUpdateReceiverDirectionAndDistance(self, directionAndDistance: directionAndDistance)
+                updateListenerOrientation(userOrientation)
+            }
+            // NotUsing
+            let _ = receiversBufferMetatdata.motionAttitude
+            
+            // MARK: Update Position
+            if let userLocation = dataSource?.urAudioEngine(currentLocationForEngine: self) {
+                let receiverLocation = receiversBufferMetatdata.locationCoordinate
+                let directionAndDistance = userLocation.distanceAndDistance(from: receiverLocation)
+                // Audio Engine
+                let listenerPosition = URAudioEngine.get3DMetersPositionWith(directionAndDistance)
+                
+                updateListenerPosition(listenerPosition)
             }
             
-            if let userMotion = dataSource?.urAudioEngine(currentMotionForEngine: self) {
-                let receiverMotion = metatdata.motionAttitude
-            }
         }
         // ScheduleAudioData
         rendererData?.scheduleOutput(data: buffer.audioData)
@@ -248,7 +265,7 @@ class URAudioEngine {
     
     private func captureAudioInputBuffer(_ audioBuffer: AudioBuffer) {
         let currentLocation = dataSource?.urAudioEngine(currentLocationForEngine: self)
-        let currentMotion = dataSource?.urAudioEngine(currentMotionForEngine: self)
+        let trueNorthAnchorsMotion = dataSource?.urAudioEngine(currentTrueNorthAnchorsMotionForEngine: self)
         
         let date = Date().millisecondsSince1970
         
@@ -261,9 +278,9 @@ class URAudioEngine {
         let longitude = currentLocation?.longitude ?? 0
         let altitude = currentLocation?.altitude ?? 0
         
-        let roll = currentMotion?.roll ?? 0
-        let pitch = currentMotion?.pitch ?? 0
-        let yaw = currentMotion?.pitch ?? 0
+        let roll = trueNorthAnchorsMotion?.rollDegrees ?? 0
+        let pitch = trueNorthAnchorsMotion?.pitchDegrees ?? 0
+        let yaw = trueNorthAnchorsMotion?.yawDegrees ?? 0
         
         guard let mData = audioBuffer.mData else { return }
         let bufferLenght = audioBuffer.mDataByteSize
@@ -312,9 +329,9 @@ class URAudioEngine {
         let longitude: Double = NSMutableData(data: data.advanced(by: 32)).bytes.load(as: Double.self)
         let altitude: Double = NSMutableData(data: data.advanced(by: 40)).bytes.load(as: Double.self)
         
-        let roll: Double = NSMutableData(data: data.advanced(by: 48)).bytes.load(as: Double.self)
-        let pitch: Double = NSMutableData(data: data.advanced(by: 56)).bytes.load(as: Double.self)
-        let yaw: Double = NSMutableData(data: data.advanced(by: 64)).bytes.load(as: Double.self)
+        let trueNorthRollDegrees: Double = NSMutableData(data: data.advanced(by: 48)).bytes.load(as: Double.self)
+        let trueNorthPitchDegrees: Double = NSMutableData(data: data.advanced(by: 56)).bytes.load(as: Double.self)
+        let trueNorthYawDegrees: Double = NSMutableData(data: data.advanced(by: 64)).bytes.load(as: Double.self)
         
         let mData = NSMutableData(data: data.advanced(by: metadataLenght))
             
@@ -322,12 +339,12 @@ class URAudioEngine {
                                               longitude: longitude,
                                               altitude: altitude)
         
-        let motion = URMotionAttitude(roll: roll,
-                                      pitch: pitch,
-                                      yaw: yaw)
+        let trueNorthMotion = URMotionAttitude(rollDegrees: trueNorthRollDegrees,
+                                      pitchDegrees: trueNorthPitchDegrees,
+                                      yawDegrees: trueNorthYawDegrees)
         
         let metadata: URAudioBufferMetadata = URAudioBufferMetadata(locationCoordinate: location,
-                                                                    motionAttitude: motion)
+                                                                    motionAttitude: trueNorthMotion)
         
         let buffer = URAudioBuffer(mData, audioBufferLength, channel, sampleRate, bitRate, metadata, date)
         
@@ -420,6 +437,28 @@ extension URAudioEngine: URAudioRenderAudioUnitDelegate {
     }
 }
 
+extension URAudioEngine {
+    static func get3DMetersPositionWith(_ directionAndDistance: UR3DDirectionAndDistance) -> AVAudio3DPoint {
+        
+        // Direction Degrees Point To Receiver
+        // Positive X is direct to the east
+        // Negitive Z is direct to the north
+        // Y is for elevation
+        #warning("The distance temporary set as 20 meters for demo")
+        // Transfer TrueNorth degrees to quadrant degrees
+        let quadrantDegrees = -directionAndDistance.direction + 90
+        let degreesInPi = (quadrantDegrees / 180 * Double.pi)
+        
+        let distanceMeters = directionAndDistance.distance > 5 ? 10 : directionAndDistance.distance
+        let x: Float = -Float(cos(degreesInPi) * distanceMeters)
+        let y: Float = 0
+        let z: Float = Float(sin(degreesInPi) * distanceMeters)
+        
+        let position = AVAudio3DPoint(x: x, y: y, z: z)
+        
+        return position
+    }
+}
 enum URAudioEngineStatus {
     case unReady
     

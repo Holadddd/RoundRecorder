@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import UIKit
+import Neumorphic
 
 /// Color definitions of the UIColor constant colors.
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
@@ -94,5 +95,5 @@ extension Color {
     // list.
     
     // App Theme
-    public static let themeBackgroud = Color(UIColor.darkGray)
+    public static let themeBackgroud = Color.Neumorphic.main
 }

@@ -7,8 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB3321D227476312002446F1 /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = DB3321D127476312002446F1 /* Neumorphic */; };
+		DB4956D9274920DD00FE512A /* NeumorphicWaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */; };
+		DB4956DB2749401400FE512A /* UIDevice+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4956DA2749401400FE512A /* UIDevice+.swift */; };
 		DB67AE3D2738D678007EE7CE /* PowerMeters.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB67AE3C2738D678007EE7CE /* PowerMeters.swift */; };
 		DB68DD9C2733DB7500336001 /* URAudioEngineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB68DD9B2733DB7500336001 /* URAudioEngineDelegate.swift */; };
+		DB710E442744FA5E00FD3304 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB710E432744FA5E00FD3304 /* AppDelegate.swift */; };
+		DB710E462745025700FD3304 /* AtomicValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB710E452745025700FD3304 /* AtomicValue.swift */; };
+		DB710E472745025D00FD3304 /* AtomicValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB710E452745025700FD3304 /* AtomicValue.swift */; };
+		DB710E492745F42A00FD3304 /* DispatchTime+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB710E482745F42A00FD3304 /* DispatchTime+.swift */; };
 		DB74024F273A6FFD00CD74A4 /* InOutUDPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB74024E273A6FFD00CD74A4 /* InOutUDPSocket.swift */; };
 		DB9E3CBC272131CC008FCFAB /* UrbanRecorderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */; };
 		DB9E3CC0272131CE008FCFAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB9E3CBF272131CE008FCFAB /* Assets.xcassets */; };
@@ -67,8 +74,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeumorphicWaveView.swift; sourceTree = "<group>"; };
+		DB4956DA2749401400FE512A /* UIDevice+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+.swift"; sourceTree = "<group>"; };
 		DB67AE3C2738D678007EE7CE /* PowerMeters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerMeters.swift; sourceTree = "<group>"; };
 		DB68DD9B2733DB7500336001 /* URAudioEngineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioEngineDelegate.swift; sourceTree = "<group>"; };
+		DB710E432744FA5E00FD3304 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		DB710E452745025700FD3304 /* AtomicValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicValue.swift; sourceTree = "<group>"; };
+		DB710E482745F42A00FD3304 /* DispatchTime+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchTime+.swift"; sourceTree = "<group>"; };
 		DB74024E273A6FFD00CD74A4 /* InOutUDPSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutUDPSocket.swift; sourceTree = "<group>"; };
 		DB9E3CB8272131CC008FCFAB /* UrbanRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UrbanRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderApp.swift; sourceTree = "<group>"; };
@@ -126,6 +138,7 @@
 			files = (
 				DB9E3CEF27213B8F008FCFAB /* CocoaAsyncSocket in Frameworks */,
 				DB9E3CEC27213B77008FCFAB /* SocketIO in Frameworks */,
+				DB3321D227476312002446F1 /* Neumorphic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,6 +152,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DB3321C627474951002446F1 /* Neumorphic View */ = {
+			isa = PBXGroup;
+			children = (
+				DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */,
+			);
+			path = "Neumorphic View";
+			sourceTree = "<group>";
+		};
 		DB67AE3B2738D65F007EE7CE /* PowerMeters */ = {
 			isa = PBXGroup;
 			children = (
@@ -172,7 +193,9 @@
 				DBF0E3FA2730FD99004DC546 /* UrbanRecorder.entitlements */,
 				DB9E3CF827216587008FCFAB /* Info.plist */,
 				DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */,
+				DB710E432744FA5E00FD3304 /* AppDelegate.swift */,
 				DB9E3CFC2722785F008FCFAB /* Helper.swift */,
+				DB3321C627474951002446F1 /* Neumorphic View */,
 				DB9E3D032722BAE7008FCFAB /* Extension */,
 				DBF3C68A2726AF9F00292893 /* Views */,
 				DB9E3CF527215D51008FCFAB /* HomeMap */,
@@ -242,6 +265,9 @@
 				DBF0E3FE27311959004DC546 /* Notification+.swift */,
 				DBF0E402273123ED004DC546 /* Data+.swift */,
 				DBF0E404273126C1004DC546 /* Date+.swift */,
+				DB710E452745025700FD3304 /* AtomicValue.swift */,
+				DB710E482745F42A00FD3304 /* DispatchTime+.swift */,
+				DB4956DA2749401400FE512A /* UIDevice+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -382,6 +408,7 @@
 			packageProductDependencies = (
 				DB9E3CEB27213B77008FCFAB /* SocketIO */,
 				DB9E3CEE27213B8F008FCFAB /* CocoaAsyncSocket */,
+				DB3321D127476312002446F1 /* Neumorphic */,
 			);
 			productName = UrbanRecorder;
 			productReference = DB9E3CB8272131CC008FCFAB /* UrbanRecorder.app */;
@@ -436,6 +463,7 @@
 			packageReferences = (
 				DB9E3CEA27213B77008FCFAB /* XCRemoteSwiftPackageReference "socket.io-client-swift" */,
 				DB9E3CED27213B8F008FCFAB /* XCRemoteSwiftPackageReference "CocoaAsyncSocket" */,
+				DB3321D027476312002446F1 /* XCRemoteSwiftPackageReference "neumorphic" */,
 			);
 			productRefGroup = DB9E3CB9272131CC008FCFAB /* Products */;
 			projectDirPath = "";
@@ -471,6 +499,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB710E442744FA5E00FD3304 /* AppDelegate.swift in Sources */,
 				DBA7EFDB272AEEDE0037AA7E /* CloseTheSessionRQ.swift in Sources */,
 				DBF3C68E2727E10800292893 /* Color+.swift in Sources */,
 				DBF0E41327327CE7004DC546 /* URStreamBasicDescription.swift in Sources */,
@@ -491,9 +520,12 @@
 				DB9E3CF227215B8A008FCFAB /* HomeMapView.swift in Sources */,
 				DB68DD9C2733DB7500336001 /* URAudioEngineDelegate.swift in Sources */,
 				DBF0E3FF27311959004DC546 /* Notification+.swift in Sources */,
+				DB4956D9274920DD00FE512A /* NeumorphicWaveView.swift in Sources */,
 				DB67AE3D2738D678007EE7CE /* PowerMeters.swift in Sources */,
 				DBE2A38B273D17460098E52D /* DirectionAndDistanceMetersView.swift in Sources */,
 				DBF0E3F9272FEB07004DC546 /* SubscribeManager.swift in Sources */,
+				DB710E462745025700FD3304 /* AtomicValue.swift in Sources */,
+				DB710E492745F42A00FD3304 /* DispatchTime+.swift in Sources */,
 				DBA7EFCC272ABABA0037AA7E /* Codable+.swift in Sources */,
 				DBA7EFD9272AEEC50037AA7E /* DeclineCallingRequestRQ.swift in Sources */,
 				DBF0E41927338BDE004DC546 /* URAudioBuffer.swift in Sources */,
@@ -513,6 +545,7 @@
 				DBA7EFD3272AE8BA0037AA7E /* VoiceServerAPI.swift in Sources */,
 				DBF0E40D27327A6F004DC546 /* URAudioEngineDataSource.swift in Sources */,
 				DB9E3D052722BAF6008FCFAB /* View+.swift in Sources */,
+				DB4956DB2749401400FE512A /* UIDevice+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -520,6 +553,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB710E472745025D00FD3304 /* AtomicValue.swift in Sources */,
 				DBDD67DB27440F0100E91A5B /* UrbanRecorderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -816,6 +850,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		DB3321D027476312002446F1 /* XCRemoteSwiftPackageReference "neumorphic" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Holadddd/neumorphic";
+			requirement = {
+				branch = RecorderExtension;
+				kind = branch;
+			};
+		};
 		DB9E3CEA27213B77008FCFAB /* XCRemoteSwiftPackageReference "socket.io-client-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/socketio/socket.io-client-swift.git";
@@ -835,6 +877,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		DB3321D127476312002446F1 /* Neumorphic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DB3321D027476312002446F1 /* XCRemoteSwiftPackageReference "neumorphic" */;
+			productName = Neumorphic;
+		};
 		DB9E3CEB27213B77008FCFAB /* SocketIO */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = DB9E3CEA27213B77008FCFAB /* XCRemoteSwiftPackageReference "socket.io-client-swift" */;

@@ -48,6 +48,11 @@ class SubscribeManager: NSObject {
         client = manager?.defaultSocket
     }
     
+    deinit {
+        client?.disconnect()
+        manager?.disconnect()
+    }
+    
     func setupWith(_ userID: String) {
         self.userID = userID
         

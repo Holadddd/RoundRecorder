@@ -20,7 +20,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     @Published var recieverID: String = ""
     
-    @Published var cardPosition = CardPosition.bottom
+    @Published var cardPosition = CardPosition.middle
     
     var isUpdatedUserRegion: Bool = false
     
@@ -36,11 +36,27 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     private var firstAnchorMotion: CMDeviceMotion?
     
-    var yaw: Double = 0
+    private var firstAnchorMotionCompassDegrees: Double?
     
-    var roll: Double = 0
+    var trueNorthYawDegrees: Double = 0
     
-    var pitch: Double = 0
+    var trueNorthRollDegrees: Double = 0
+    
+    var trueNorthPitchDegrees: Double = 0
+    
+    var receiverDirection: Double {
+        return compassDegrees + receiverLastDirectionDegrees
+    }
+    // TrueNorthOrientationAnchor(Assume the first motion is faceing the phone)
+    var trueNorthMotionAnchor: CMDeviceMotion?
+    
+    @Published var compassDegrees: Double = 0
+    
+    var receiverLatitude: Double = 0
+    
+    var receiverLongitude: Double = 0
+    
+    var receiverAltitude: Double = 0
     
     @Published var receiverLastDirectionDegrees: Double = 0
     
@@ -54,15 +70,24 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     let headphoneMotionManager = CMHeadphoneMotionManager()
     
-    var annotationItems: [HomeMapAnnotationItem] = [HomeMapAnnotationItem.taipei101]
+    var annotationItems: [HomeMapAnnotationItem] {
+        var tmp = [HomeMapAnnotationItem.taipei101]
+        
+        tmp.append(receiverAnnotationItem)
+        
+        return tmp
+    }
+    
+    var receiverAnnotationItem: HomeMapAnnotationItem = HomeMapAnnotationItem(coordinate: CLLocationCoordinate2D(), type: .user, color: .clear)
     
     @Published var userCurrentRegion: MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 40.75773, longitude: -73.985708), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
     
     var udpSocket: UDPSocketManager = UDPSocketManager.shared
     
-    func updateUserCurrentRegion() {
-        
-    }
+    @Published var showWave: Bool = false
+    
+    var volumeMaxPeakPercentage: Double = 0.01
+    
     override init() {
         super.init()
         // Delegate/DataSource
@@ -76,6 +101,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
         locationManager.requestWhenInUseAuthorization()
         
         locationManager.startUpdatingLocation()
+        
+        if CLLocationManager.headingAvailable() {
+            self.locationManager.startUpdatingHeading()
+        }
         // Headphone Motion
         if headphoneMotionManager.isDeviceMotionAvailable {
             headphoneMotionManager.delegate = self
@@ -139,6 +168,26 @@ class HomeMapViewModel: NSObject, ObservableObject {
             self.startRecording()
         }
     }
+    
+    func didReceiveVolumePeakPercentage(_ percentage: Double) {
+        // Vivration is not working
+        UIDevice.vibrate()
+        withAnimation(.linear(duration: 0.4)) {
+            showWave = true
+            
+            volumeMaxPeakPercentage = percentage
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            self.resetVolumePeakPercentage()
+        }
+    }
+    
+    func resetVolumePeakPercentage() {
+        showWave = false
+        
+        volumeMaxPeakPercentage = 0.01
+    }
 }
 
 extension HomeMapViewModel: UDPSocketManagerDelegate {
@@ -189,17 +238,37 @@ extension HomeMapViewModel: CLLocationManagerDelegate, CMHeadphoneMotionManagerD
         }
     }
     
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        var newDegrees =  -newHeading.magneticHeading + 360
+        
+        if (newDegrees - compassDegrees) > 0 {
+            if abs(newDegrees - compassDegrees) > 180 {
+                newDegrees -= 360
+            }
+        } else {
+            if abs(newDegrees - compassDegrees) > 180 {
+                newDegrees += 360
+            }
+        }
+        
+        compassDegrees = newDegrees
+    }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Location Manager Did Fail With Error: \(error.localizedDescription)")
     }
     
     func headphoneMotionDidChange(_ motion: CMDeviceMotion) {
-        guard let anchorMotion = firstAnchorMotion else { firstAnchorMotion = motion; return}
+        guard let anchorMotion = firstAnchorMotion,
+              let firstAnchorMotionCompassDegrees = firstAnchorMotionCompassDegrees else {
+            firstAnchorMotionCompassDegrees = compassDegrees
+            firstAnchorMotion = motion
+            return}
         
-        yaw = motion.attitude.yaw - anchorMotion.attitude.yaw
-        pitch = motion.attitude.pitch - anchorMotion.attitude.pitch
-        roll = motion.attitude.roll - anchorMotion.attitude.roll
+        trueNorthYawDegrees = (anchorMotion.attitude.yaw - motion.attitude.yaw) / Double.pi * 180 - firstAnchorMotionCompassDegrees
+        trueNorthPitchDegrees = (anchorMotion.attitude.pitch - motion.attitude.pitch) / Double.pi * 180
+        trueNorthRollDegrees = (anchorMotion.attitude.roll - motion.attitude.roll) / Double.pi * 180
+        
     }
 }
 // URAudioEngineDataSource
@@ -209,14 +278,31 @@ extension HomeMapViewModel: URAudioEngineDataSource {
         return location
     }
     
-    func urAudioEngine(currentMotionForEngine: URAudioEngine) -> URMotionAttitude {
-        let attitude = URMotionAttitude(roll: roll, pitch: pitch, yaw: yaw)
+    func urAudioEngine(currentTrueNorthAnchorsMotionForEngine: URAudioEngine) -> URMotionAttitude {
+        let attitude = URMotionAttitude(rollDegrees: trueNorthRollDegrees, pitchDegrees: trueNorthPitchDegrees, yawDegrees: trueNorthYawDegrees)
         return attitude
     }
 }
 // URAudioEngineDelegate
 extension HomeMapViewModel: URAudioEngineDelegate {
-    func didUpdateReceiverDirectionAndDistance(_ engine: URAudioEngine, directionAndDistance: UR2DDirectionAndDistance) {
+    func didUpdateReceiversBufferMetaData(_ engine: URAudioEngine, metaData: URAudioBufferMetadata) {
+        receiverLatitude = metaData.locationCoordinate.latitude
+        receiverLongitude = metaData.locationCoordinate.longitude
+        receiverAltitude = metaData.locationCoordinate.altitude
+        
+        // Update Receiver Location
+        if receiverAnnotationItem.color == .clear {
+            receiverAnnotationItem = HomeMapAnnotationItem(coordinate: CLLocationCoordinate2D(latitude: receiverLatitude, longitude: receiverLongitude),
+                                                           type: .user, color: .orange)
+        } else {
+            receiverAnnotationItem.coordinate.latitude = receiverLatitude
+            receiverAnnotationItem.coordinate.longitude = receiverLongitude
+        }
+        
+        let userLocation = URLocationCoordinate3D(latitude: latitude, longitude: longitude, altitude: altitude)
+        
+        let directionAndDistance = userLocation.distanceAndDistance(from: metaData.locationCoordinate)
+        
         receiverLastDirectionDegrees = directionAndDistance.direction
         receiverLastDistanceMeters = directionAndDistance.distance
     }

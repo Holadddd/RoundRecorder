@@ -26,37 +26,19 @@ struct HomeMapView: View {
                 VStack{
                     Map(coordinateRegion: $viewmodel.userCurrentRegion, interactionModes: .all, showsUserLocation: true, userTrackingMode: nil, annotationItems: viewmodel.annotationItems, annotationContent: { item in
                         MapAnnotation(coordinate: item.coordinate) {
-                            Image(systemName: "gamecontroller.fill")
+                            Image(systemName: item.imageSystemName)
                                 .foregroundColor(item.tint)
+                                
                         }
                     })
                         .edgesIgnoringSafeArea(.all)
                 }
                 
-//                VStack{
-//                    Spacer()
-//                    HStack(alignment: .center, spacing: 50, content: {
-//                        Button {
-//                            viewmodel.recordButtonDidClicked()
-//                        } label: {
-//                            Image(systemName: "record.circle.fill")
-//                                .foregroundStyle(.red, .white)
-//                                .scaleEffect(viewmodel.buttonScale)
-//                        }
-//
-//                        Button {
-//                            viewmodel.playButtonDidClicked()
-//                        } label: {
-//                            Image(systemName: "play.circle.fill")
-//                                .foregroundStyle(viewmodel.isSelectedItemPlayAble ? .green : .gray, .white)
-//                                .scaleEffect(viewmodel.buttonScale)
-//                        }.disabled(!viewmodel.isSelectedItemPlayAble)
-//                    })
-//                }.padding(50)
                 VStack(alignment: .leading){
                     Text("Longitude: \(viewmodel.longitude)")
                     Text("Latitude: \(viewmodel.latitude)")
                     Text("Elevation: \(viewmodel.altitude)")
+                    Text("TrueNorthYawDegrees: \(viewmodel.trueNorthYawDegrees)")
                 }
                 
                 VStack(alignment: .leading){
@@ -74,14 +56,17 @@ struct HomeMapView: View {
                             viewmodel.setupCallSessionChannel()
                         }
                     }
-                    DirectionAndDistanceMetersView(directionDegrees: $viewmodel.receiverLastDirectionDegrees, distanceMeter: $viewmodel.receiverLastDistanceMeters)
                     Spacer()
                 }
                 
                 SegmentSlideOverCardView(content: {
-                    ForEach(0..<50) {i in
-                        Text("\(i)")
+                    DirectionAndDistanceMetersView(receiverDirection: viewmodel.receiverDirection,
+                                                   receiverMeters: $viewmodel.receiverLastDistanceMeters, showWave: viewmodel.showWave,
+                                                   volumeMaxPeakPercentage: viewmodel.volumeMaxPeakPercentage) {
+                        // TODO: Fixed the distance
+                        print("TODO: Fixed the distance")
                     }
+                        .scaleEffect(0.8)
                 }, cardPosition: $viewmodel.cardPosition, availableMode: AvailablePosition([.top, .middle, .bottom]))
             }
         }.onAppear {

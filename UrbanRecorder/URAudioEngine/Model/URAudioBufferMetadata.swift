@@ -23,7 +23,7 @@ struct URLocationCoordinate3D: Codable {
     
     public var altitude: URAltitudeMeters   //海拔
     
-    func distanceAndDistance(from destination: URLocationCoordinate3D) -> UR2DDirectionAndDistance {
+    func distanceAndDistance(from destination: URLocationCoordinate3D) -> UR3DDirectionAndDistance {
         func hypotenuse(_ a: Double, _ b: Double) -> Double {
             return (a * a + b * b).squareRoot()
         }
@@ -60,24 +60,28 @@ struct URLocationCoordinate3D: Codable {
         
         let distance = hypotenuse(latitudeMeters, longitudeMeters)
         
-        return UR2DDirectionAndDistance(direction: direction, distance: distance)
+        let altitudeDiffMeters = destination.altitude - self.altitude
+        
+        return UR3DDirectionAndDistance(direction: direction, distance: distance, altitudeDifference: altitudeDiffMeters)
     }
 }
 
 public typealias URMotionAttitudeDegrees = Double
 struct URMotionAttitude: Codable {
     
-    public var roll: URMotionAttitudeDegrees
+    public var rollDegrees: URMotionAttitudeDegrees
     
-    public var pitch: URMotionAttitudeDegrees
+    public var pitchDegrees: URMotionAttitudeDegrees
     
-    public var yaw: URMotionAttitudeDegrees
+    public var yawDegrees: URMotionAttitudeDegrees
 }
 
 public typealias URDirectionDegrees = Double
 public typealias URDistanceMeters = Double
-struct UR2DDirectionAndDistance {
+struct UR3DDirectionAndDistance {
     public var direction: URDirectionDegrees
     
     public var distance: URDistanceMeters
+    
+    public var altitudeDifference: URDistanceMeters
 }
