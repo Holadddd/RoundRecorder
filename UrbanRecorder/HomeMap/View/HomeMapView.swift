@@ -51,13 +51,14 @@ struct HomeMapView: View {
                             // Prompt Note
                             Text(" ")
                         }
-                        DirectionAndDistanceMetersView(receiverDirection: viewmodel.receiverDirection,
-                                                       receiverMeters: $viewmodel.receiverLastDistanceMeters, showWave: viewmodel.showWave,
-                                                       volumeMaxPeakPercentage: viewmodel.volumeMaxPeakPercentage) {
-                            // TODO: Fixed the distance
-                            print("TODO: Fixed the distance")
+                        HStack{
+                            DirectionAndDistanceMetersView(receiverDirection: viewmodel.receiverDirection,
+                                                           receiverMeters: $viewmodel.receiverLastDistanceMeters, showWave: viewmodel.showWave,
+                                                           volumeMaxPeakPercentage: viewmodel.volumeMaxPeakPercentage) {
+                                // TODO: Fixed the distance
+                                print("TODO: Fixed the distance")
+                            }.scaledToFit()
                         }
-                            .scaleEffect(0.9)
                     }
                 }, cardPosition: $viewmodel.cardPosition, availableMode: AvailablePosition([.top, .middle, .bottom]))
             }
