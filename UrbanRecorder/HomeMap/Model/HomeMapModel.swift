@@ -15,6 +15,7 @@ struct HomeMapAnnotationItem: Identifiable {
     var color: Color?
     var tint: Color { color ?? .red }
     let id = UUID()
+    var imageSystemName: String = "shareplay"
     
     enum MapAnnotationItemType {
         case undefine

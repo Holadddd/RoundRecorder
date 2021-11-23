@@ -26,8 +26,9 @@ struct HomeMapView: View {
                 VStack{
                     Map(coordinateRegion: $viewmodel.userCurrentRegion, interactionModes: .all, showsUserLocation: true, userTrackingMode: nil, annotationItems: viewmodel.annotationItems, annotationContent: { item in
                         MapAnnotation(coordinate: item.coordinate) {
-                            Image(systemName: "gamecontroller.fill")
+                            Image(systemName: item.imageSystemName)
                                 .foregroundColor(item.tint)
+                                
                         }
                     })
                         .edgesIgnoringSafeArea(.all)

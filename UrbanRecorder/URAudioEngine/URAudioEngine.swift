@@ -223,8 +223,11 @@ class URAudioEngine {
     
     public func schechuleRendererAudioBuffer(_ buffer: URAudioBuffer) {
         // MARK: Update Environment
-        if let metatdata = buffer.metadata {
+        if let receiversBufferMetatdata = buffer.metadata {
             #warning("Need to know the motion is on or not")
+            // View
+            delegate?.didUpdateReceiversBufferMetaData(self, metaData: receiversBufferMetatdata)
+            
             // MARK: Update Orientation
             if let userTrueNorthAnchorsMotion = dataSource?.urAudioEngine(currentTrueNorthAnchorsMotionForEngine: self) {
                 let yawDegrees: Float = Float(userTrueNorthAnchorsMotion.yawDegrees)
@@ -234,14 +237,13 @@ class URAudioEngine {
                 
                 updateListenerOrientation(userOrientation)
             }
-            let receiverMotion = metatdata.motionAttitude
+            // NotUsing
+            let _ = receiversBufferMetatdata.motionAttitude
             
             // MARK: Update Position
             if let userLocation = dataSource?.urAudioEngine(currentLocationForEngine: self) {
-                let receiverLocation = metatdata.locationCoordinate
+                let receiverLocation = receiversBufferMetatdata.locationCoordinate
                 let directionAndDistance = userLocation.distanceAndDistance(from: receiverLocation)
-                // View
-                delegate?.didUpdateReceiverDirectionAndDistance(self, directionAndDistance: directionAndDistance)
                 // Audio Engine
                 let listenerPosition = URAudioEngine.get3DMetersPositionWith(directionAndDistance)
                 

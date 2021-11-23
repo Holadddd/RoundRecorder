@@ -52,6 +52,12 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     @Published var compassDegrees: Double = 0
     
+    var receiverLatitude: Double = 0
+    
+    var receiverLongitude: Double = 0
+    
+    var receiverAltitude: Double = 0
+    
     @Published var receiverLastDirectionDegrees: Double = 0
     
     @Published var receiverLastDistanceMeters: Double = 0
@@ -64,7 +70,15 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     let headphoneMotionManager = CMHeadphoneMotionManager()
     
-    var annotationItems: [HomeMapAnnotationItem] = [HomeMapAnnotationItem.taipei101]
+    var annotationItems: [HomeMapAnnotationItem] {
+        var tmp = [HomeMapAnnotationItem.taipei101]
+        
+        tmp.append(receiverAnnotationItem)
+        
+        return tmp
+    }
+    
+    var receiverAnnotationItem: HomeMapAnnotationItem = HomeMapAnnotationItem(coordinate: CLLocationCoordinate2D(), type: .user, color: .clear)
     
     @Published var userCurrentRegion: MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 40.75773, longitude: -73.985708), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
     
@@ -271,7 +285,24 @@ extension HomeMapViewModel: URAudioEngineDataSource {
 }
 // URAudioEngineDelegate
 extension HomeMapViewModel: URAudioEngineDelegate {
-    func didUpdateReceiverDirectionAndDistance(_ engine: URAudioEngine, directionAndDistance: UR3DDirectionAndDistance) {
+    func didUpdateReceiversBufferMetaData(_ engine: URAudioEngine, metaData: URAudioBufferMetadata) {
+        receiverLatitude = metaData.locationCoordinate.latitude
+        receiverLongitude = metaData.locationCoordinate.longitude
+        receiverAltitude = metaData.locationCoordinate.altitude
+        
+        // Update Receiver Location
+        if receiverAnnotationItem.color == .clear {
+            receiverAnnotationItem = HomeMapAnnotationItem(coordinate: CLLocationCoordinate2D(latitude: receiverLatitude, longitude: receiverLongitude),
+                                                           type: .user, color: .orange)
+        } else {
+            receiverAnnotationItem.coordinate.latitude = receiverLatitude
+            receiverAnnotationItem.coordinate.longitude = receiverLongitude
+        }
+        
+        let userLocation = URLocationCoordinate3D(latitude: latitude, longitude: longitude, altitude: altitude)
+        
+        let directionAndDistance = userLocation.distanceAndDistance(from: metaData.locationCoordinate)
+        
         receiverLastDirectionDegrees = directionAndDistance.direction
         receiverLastDistanceMeters = directionAndDistance.distance
     }

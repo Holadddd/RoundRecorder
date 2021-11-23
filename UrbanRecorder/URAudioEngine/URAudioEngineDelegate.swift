@@ -8,5 +8,5 @@
 import Foundation
 
 protocol URAudioEngineDelegate: AnyObject {
-    func didUpdateReceiverDirectionAndDistance(_ engine: URAudioEngine, directionAndDistance: UR3DDirectionAndDistance)
+    func didUpdateReceiversBufferMetaData(_ engine: URAudioEngine, metaData: URAudioBufferMetadata)
 }
