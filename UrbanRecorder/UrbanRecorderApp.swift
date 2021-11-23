@@ -11,9 +11,11 @@ import SwiftUI
 struct UrbanRecorderApp: App {
     let persistenceController = PersistenceController.shared
 
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeMapView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
