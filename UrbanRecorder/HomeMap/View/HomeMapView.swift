@@ -34,39 +34,31 @@ struct HomeMapView: View {
                         .edgesIgnoringSafeArea(.all)
                 }
                 
-                VStack(alignment: .leading){
-                    Text("Longitude: \(viewmodel.longitude)")
-                    Text("Latitude: \(viewmodel.latitude)")
-                    Text("Elevation: \(viewmodel.altitude)")
-                    Text("TrueNorthYawDegrees: \(viewmodel.trueNorthYawDegrees)")
-                }
-                
-                VStack(alignment: .leading){
-                    HStack{
-                        Text("UserID: ")
-                        TextField.init("userID", text: $viewmodel.userID, prompt: nil)
-                    }
-                    
-                    HStack{
-                        Text("RecieverID: ")
-                        TextField.init("recieverID", text: $viewmodel.recieverID, prompt: nil)
-                    }
-                    HStack{
-                        Button("MakeCallSession") {
-                            viewmodel.setupCallSessionChannel()
-                        }
-                    }
-                    Spacer()
-                }
-                
                 SegmentSlideOverCardView(content: {
-                    DirectionAndDistanceMetersView(receiverDirection: viewmodel.receiverDirection,
-                                                   receiverMeters: $viewmodel.receiverLastDistanceMeters, showWave: viewmodel.showWave,
-                                                   volumeMaxPeakPercentage: viewmodel.volumeMaxPeakPercentage) {
-                        // TODO: Fixed the distance
-                        print("TODO: Fixed the distance")
+                    VStack{
+                        HStack{
+                            Text("ChannelID: ")
+                            TextField.init("SubscribeChannelID", text: $viewmodel.userID, prompt: nil)
+                        }
+                        HStack{
+                            Text("ChannelID: ")
+                            TextField.init("BroadcastChannelID", text: $viewmodel.recieverID, prompt: nil)
+                            Button("Broadcast") {
+                                viewmodel.setupCallSessionChannel()
+                            }.padding()
+                        }
+                        HStack{
+                            // Prompt Note
+                            Text(" ")
+                        }
+                        DirectionAndDistanceMetersView(receiverDirection: viewmodel.receiverDirection,
+                                                       receiverMeters: $viewmodel.receiverLastDistanceMeters, showWave: viewmodel.showWave,
+                                                       volumeMaxPeakPercentage: viewmodel.volumeMaxPeakPercentage) {
+                            // TODO: Fixed the distance
+                            print("TODO: Fixed the distance")
+                        }
+                            .scaleEffect(0.9)
                     }
-                        .scaleEffect(0.8)
                 }, cardPosition: $viewmodel.cardPosition, availableMode: AvailablePosition([.top, .middle, .bottom]))
             }
         }.onAppear {
