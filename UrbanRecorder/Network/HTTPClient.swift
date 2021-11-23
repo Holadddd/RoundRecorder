@@ -41,7 +41,7 @@ enum HTTPMethod: String {
 
 class HTTPClient {
     
-    static let hostIP: String = Bundle.main.object(forInfoDictionaryKey: "APIHostIP") as? String ?? ""
+    static let hostIP: String = Bundle.main.object(forInfoDictionaryKey: "APIHostIP") as? String ?? "52.192.242.163"
     
     static let shared = HTTPClient()
 
