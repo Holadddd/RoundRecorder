@@ -122,25 +122,14 @@ class URAudioEngine {
         
         engine.attach(streamingEnvironmentNode)
         
-        // MARK: RequestRecordPermission
-        requestRecordPermission { isGranted in
-            if isGranted {
-                self.beginTappingMicrophone()
-                //
-                self.setupAudioNodeConnection()
-                // Setup the renderer data
-                self.setupRendererAudioData()
-                // we're ready to start rendering so start the engine
-                self.startEngine()
-                
-                self.status = .readyWithRecordPermission
-                print("AudioEngine: \(self.status)")
-            } else {
-                #warning("Show Alert View")
-                print("Show Alert View")
-                // TODO: enable tourist mode
-            }
-        }
+        //
+        setupAudioNodeConnection()
+        // Setup the renderer data
+        setupRendererAudioData()
+        // we're ready to start rendering so start the engine
+        startEngine()
+
+        print("AudioEngine: \(self.status)")
     }
     
     private func setupInputAudioUnit() {
@@ -187,6 +176,14 @@ class URAudioEngine {
 //            let bufferSize: Int = Int(audioBuffers.mDataByteSize)
 //            let frameCounts = bufferSize / self.bytesPerFrame
 //            self.inputVolumeMeters.process_Int16(bufferData.assumingMemoryBound(to: Int16.self), 1, frameCounts)
+        }
+    }
+    
+    private func stopEngine() {
+        do {
+            try engine.stop()
+        } catch {
+            status = .unReady
         }
     }
     
@@ -413,15 +410,37 @@ extension URAudioEngine {
         }
     }
     
-    private func requestRecordPermission(_ complete: @escaping ((Bool)->Void) ) {
+    func requestRecordPermissionAndStartTappingMicrophone(_ complete: @escaping ((Bool)->Void) ) {
         // Record Permission
         switch AVAudioSession.sharedInstance().recordPermission {
         case .granted:
             complete(true)
+            if status != .readyWithRecordPermission {
+                stopEngine()
+                
+                self.beginTappingMicrophone()
+                
+                self.status = .readyWithRecordPermission
+                
+                startEngine()
+            }
         default:
             // RecordPermissionAndStartTapping
             AVAudioSession.sharedInstance().requestRecordPermission { isGranted in
                 complete(isGranted)
+                if isGranted {
+                    self.stopEngine()
+                    
+                    self.beginTappingMicrophone()
+                    
+                    self.status = .readyWithRecordPermission
+                    
+                    self.startEngine()
+                } else {
+                    self.status = .readyWithoutRecordPermission
+                }
+
+                print("AudioEngine: \(self.status)")
             }
         }
     }

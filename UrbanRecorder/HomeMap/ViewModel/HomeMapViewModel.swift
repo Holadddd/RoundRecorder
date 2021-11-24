@@ -114,6 +114,8 @@ class HomeMapViewModel: NSObject, ObservableObject {
                 self.headphoneMotionDidChange(motion)
             })
         }
+        
+        udpSocket.delegate = self
     }
     
     func menuButtonDidClisked() {
@@ -161,12 +163,29 @@ class HomeMapViewModel: NSObject, ObservableObject {
         }
     }
     
-    func setupCallSessionChannel() {
-        udpSocket.delegate = self
-        udpSocket.setupConnection {[weak self] in
-            guard let self = self else { return }
-            self.startRecording()
+    func subscribeChannel() {
+        self.udpSocket.setupConnection {
+            // TODO: Subscribe UDPSocket
+            
         }
+    }
+    
+    func broadcastChannel() {
+        // 1. Request Microphone
+        urAudioEngineInstance.requestRecordPermissionAndStartTappingMicrophone {[weak self] isGranted in
+            guard let self = self else { return }
+            if isGranted {
+                // 2. Connect and send audio buffer
+                self.udpSocket.setupConnection {
+                    self.startRecording()
+                }
+            } else {
+                #warning("Show Alert View")
+                print("Show Alert View")
+                // TODO: enable tourist mode
+            }
+        }
+        
     }
     
     func didReceiveVolumePeakPercentage(_ percentage: Double) {

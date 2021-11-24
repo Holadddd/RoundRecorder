@@ -56,6 +56,10 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
         }
     }
     
+    func subscribeChannel(from channelID: String = "") {
+        // TODO: Subscribe from UDPSocket
+    }
+    
     func sendBufferData(_ audioBufferData: NSMutableData, from userID: String = "", to recieverID: String = "") {
         guard status == .connected else { return }
         
