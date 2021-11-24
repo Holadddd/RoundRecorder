@@ -57,7 +57,9 @@ struct HomeMapView: View {
                                                            volumeMaxPeakPercentage: viewmodel.volumeMaxPeakPercentage) {
                                 // TODO: Fixed the distance
                                 print("TODO: Fixed the distance")
-                                fatalError()
+                                
+                            } resetAnchorDegreesDidClicked: {
+                                viewmodel.resetAnchorDegrees()
                             }.scaledToFit()
                         }
                     }

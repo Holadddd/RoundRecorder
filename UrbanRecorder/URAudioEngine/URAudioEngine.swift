@@ -105,7 +105,7 @@ class URAudioEngine {
         streamingMixer.sourceMode = .spatializeIfMono
         
         streamingEnvironmentNode.renderingAlgorithm = renderingAlgo
-        streamingEnvironmentNode.reverbParameters.enable = true
+        streamingEnvironmentNode.reverbParameters.enable = false
         streamingEnvironmentNode.reverbParameters.level = -20.0
         streamingEnvironmentNode.reverbParameters.loadFactoryReverbPreset(.plate)
         

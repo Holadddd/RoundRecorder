@@ -188,6 +188,11 @@ class HomeMapViewModel: NSObject, ObservableObject {
         
         volumeMaxPeakPercentage = 0.01
     }
+    
+    func resetAnchorDegrees() {
+        firstAnchorMotionCompassDegrees = nil
+        firstAnchorMotion = nil
+    }
 }
 
 extension HomeMapViewModel: UDPSocketManagerDelegate {
