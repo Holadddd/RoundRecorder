@@ -51,17 +51,11 @@ struct SegmentSlideOverCardView<Content: View> : View {
                             VStack{
                                 content()
                                     .expandHorizontally()
-                                    .background(GeometryReader{ insideProxy in  //
-                                        let offset = insideProxy.frame(in: .named("scroll")).minY
-                                        Color.clear.preference(key: ScrollOffsetPreferenceKey.self, value: offset)
-                                    })
                                 Spacer().padding(10)
                             }
                             .overlay(
                                 GeometryReader { proxy in
                                     Color.clear.onAppear {
-                                        print("ContentSize: \(proxy.size.height)")
-                                        print("ScrollviewSize: \(value.frame(in: .local).size)")
                                         scrollViewMaxOffset = value.frame(in: .local).size.height - proxy.size.height
                                     }
                                 }
@@ -70,10 +64,6 @@ struct SegmentSlideOverCardView<Content: View> : View {
                     }
                     .content.offset(x: 0, y: scrollViewOffset)
                     .coordinateSpace(name: "scroll")
-                    .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
-//                        print("Offset: \(Int(value))")
-                        
-                    }
                 }
             }
         }
@@ -99,17 +89,20 @@ struct SegmentSlideOverCardView<Content: View> : View {
                         } else {
                             let updatedOffset = scrollViewOffset + scrollShiftOffSet
                             if updatedOffset <= 0 && updatedOffset > scrollViewMaxOffset {
-                                
                                 isScrollingOnScrollView = true
                                 
                                 scrollViewOffset = updatedOffset
                             } else if !isScrollingOnScrollView {
                                 
                                 if isScrollingOnCard {
-                                    scrollViewOffset = updatedOffset
+                                    
+                                    if updatedOffset <= 0 && updatedOffset > scrollViewMaxOffset {
+                                        scrollViewOffset = updatedOffset
+                                    }
                                 } else {
                                     if updatedOffset > scrollViewMaxOffset {
-                                        cardViewOffset += drag.translation.height                                        }
+                                        cardViewOffset += drag.translation.height
+                                    }
                                 }
                             }
                         }

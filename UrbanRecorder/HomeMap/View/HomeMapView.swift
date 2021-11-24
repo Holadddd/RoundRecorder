@@ -60,7 +60,8 @@ struct HomeMapView: View {
                                 
                             } resetAnchorDegreesDidClicked: {
                                 viewmodel.resetAnchorDegrees()
-                            }.scaledToFit()
+                            }
+                            .scaledToFill()
                         }
                     }
                 }, cardPosition: $viewmodel.cardPosition, availableMode: AvailablePosition([.top, .middle, .bottom]))

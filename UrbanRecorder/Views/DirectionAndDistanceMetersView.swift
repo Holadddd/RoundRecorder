@@ -36,9 +36,9 @@ struct DirectionAndDistanceMetersView: View {
     }
     
     var body: some View {
-        GeometryReader{ reader in
-            ZStack {
-                
+        
+        ZStack {
+            GeometryReader{ reader in
                 ZStack{
                     Circle().fill(mainColor).frame(width: reader.size.width, height: reader.size.height)
                         .softInnerShadow(Circle(), spread: 0.05)
@@ -113,25 +113,25 @@ struct DirectionAndDistanceMetersView: View {
                     }) {
                         Text("\(receiverMeters.string(fractionDigits: 2)) M").font(.title).fontWeight(.heavy)
                     }.softButtonStyle(RoundedRectangle(cornerRadius: cornerRadius))
-                        .disabled(false)
+                        .disabled(true)
                     
+                }.aspectRatio(1, contentMode: .fit)
+            }
+            // Adjust user motion by reset anchor degrees
+            VStack(alignment: .center, spacing: 0) {
+                HStack(alignment: VerticalAlignment.center, spacing: 5) {
+                    Spacer()
+                    Button(action: {
+                        resetAnchorDegreesDidClicked()
+                    }) {
+                        Image(systemName: "pin")
+                            .frame(width: 5, height: 5, alignment: .center)
+                    }.softButtonStyle(Circle())
+                        .disabled(false)
+                        .padding(.trailing, 5)
                 }
-                .scaledToFit()
-                .scaleEffect(1)
-                // Adjust user motion by reset anchor degrees
-                Button(action: {
-                    resetAnchorDegreesDidClicked()
-                }) {
-                    Image(systemName: "pin")
-                        .frame(width: 5, height: 5, alignment: .center)
-                        .padding(0)
-                }.softButtonStyle(Circle())
-                    .ignoresSafeArea()
-                    .disabled(false)
-                    .offset(x: reader.frame(in: .local).maxX / 2, y:  -(reader.frame(in: .local).maxY/2))
-                
-                
-            }.padding(5)
+                Spacer()
+            }
         }
     }
 }
