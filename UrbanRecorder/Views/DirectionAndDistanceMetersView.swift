@@ -107,7 +107,7 @@ struct DirectionAndDistanceMetersView: View {
                 }) {
                     Text("\(receiverMeters.string(fractionDigits: 2)) M").font(.title).fontWeight(.heavy)
                 }.softButtonStyle(RoundedRectangle(cornerRadius: cornerRadius))
-                    .disabled(true)
+                    .disabled(false)
                 
             }
             .scaledToFit()

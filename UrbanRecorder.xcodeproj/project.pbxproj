@@ -31,6 +31,10 @@
 		DB9E3D052722BAF6008FCFAB /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3D042722BAF6008FCFAB /* View+.swift */; };
 		DB9E3D072722BB34008FCFAB /* CGFloat+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3D062722BB34008FCFAB /* CGFloat+.swift */; };
 		DB9E3D0B2726A1AE008FCFAB /* RecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3D0A2726A1AE008FCFAB /* RecorderView.swift */; };
+		DBA6DA50274E033000E80FF5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DBA6DA4F274E033000E80FF5 /* GoogleService-Info.plist */; };
+		DBA6DA54274E083800E80FF5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = DBA6DA53274E083800E80FF5 /* FirebaseAnalytics */; };
+		DBA6DA56274E083E00E80FF5 /* FirebaseAnalyticsSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = DBA6DA55274E083E00E80FF5 /* FirebaseAnalyticsSwift-Beta */; };
+		DBA6DA58274E08BD00E80FF5 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = DBA6DA57274E08BD00E80FF5 /* FirebaseCrashlytics */; };
 		DBA7EFC7272A9F880037AA7E /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFC6272A9F880037AA7E /* HTTPClient.swift */; };
 		DBA7EFCA272AB3440037AA7E /* DeviceInfoRQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFC9272AB3440037AA7E /* DeviceInfoRQ.swift */; };
 		DBA7EFCC272ABABA0037AA7E /* Codable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFCB272ABABA0037AA7E /* Codable+.swift */; };
@@ -96,6 +100,7 @@
 		DB9E3D042722BAF6008FCFAB /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		DB9E3D062722BB34008FCFAB /* CGFloat+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+.swift"; sourceTree = "<group>"; };
 		DB9E3D0A2726A1AE008FCFAB /* RecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecorderView.swift; sourceTree = "<group>"; };
+		DBA6DA4F274E033000E80FF5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DBA7EFC6272A9F880037AA7E /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		DBA7EFC9272AB3440037AA7E /* DeviceInfoRQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoRQ.swift; sourceTree = "<group>"; };
 		DBA7EFCB272ABABA0037AA7E /* Codable+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+.swift"; sourceTree = "<group>"; };
@@ -136,8 +141,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBA6DA56274E083E00E80FF5 /* FirebaseAnalyticsSwift-Beta in Frameworks */,
 				DB9E3CEF27213B8F008FCFAB /* CocoaAsyncSocket in Frameworks */,
 				DB9E3CEC27213B77008FCFAB /* SocketIO in Frameworks */,
+				DBA6DA58274E08BD00E80FF5 /* FirebaseCrashlytics in Frameworks */,
+				DBA6DA54274E083800E80FF5 /* FirebaseAnalytics in Frameworks */,
 				DB3321D227476312002446F1 /* Neumorphic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -192,6 +200,7 @@
 			children = (
 				DBF0E3FA2730FD99004DC546 /* UrbanRecorder.entitlements */,
 				DB9E3CF827216587008FCFAB /* Info.plist */,
+				DBA6DA4F274E033000E80FF5 /* GoogleService-Info.plist */,
 				DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */,
 				DB710E432744FA5E00FD3304 /* AppDelegate.swift */,
 				DB9E3CFC2722785F008FCFAB /* Helper.swift */,
@@ -399,6 +408,7 @@
 				DB9E3CB4272131CC008FCFAB /* Sources */,
 				DB9E3CB5272131CC008FCFAB /* Frameworks */,
 				DB9E3CB6272131CC008FCFAB /* Resources */,
+				DBA6DA52274E056D00E80FF5 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -409,6 +419,9 @@
 				DB9E3CEB27213B77008FCFAB /* SocketIO */,
 				DB9E3CEE27213B8F008FCFAB /* CocoaAsyncSocket */,
 				DB3321D127476312002446F1 /* Neumorphic */,
+				DBA6DA53274E083800E80FF5 /* FirebaseAnalytics */,
+				DBA6DA55274E083E00E80FF5 /* FirebaseAnalyticsSwift-Beta */,
+				DBA6DA57274E08BD00E80FF5 /* FirebaseCrashlytics */,
 			);
 			productName = UrbanRecorder;
 			productReference = DB9E3CB8272131CC008FCFAB /* UrbanRecorder.app */;
@@ -464,6 +477,7 @@
 				DB9E3CEA27213B77008FCFAB /* XCRemoteSwiftPackageReference "socket.io-client-swift" */,
 				DB9E3CED27213B8F008FCFAB /* XCRemoteSwiftPackageReference "CocoaAsyncSocket" */,
 				DB3321D027476312002446F1 /* XCRemoteSwiftPackageReference "neumorphic" */,
+				DBA6DA51274E037B00E80FF5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = DB9E3CB9272131CC008FCFAB /* Products */;
 			projectDirPath = "";
@@ -482,6 +496,7 @@
 			files = (
 				DB9E3CC3272131CE008FCFAB /* Preview Assets.xcassets in Resources */,
 				DB9E3CC0272131CE008FCFAB /* Assets.xcassets in Resources */,
+				DBA6DA50274E033000E80FF5 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -493,6 +508,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DBA6DA52274E056D00E80FF5 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${BUILD_DIR%Build/*}SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		DB9E3CB4272131CC008FCFAB /* Sources */ = {
@@ -603,7 +640,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -703,7 +740,10 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UrbanRecorder/Info.plist;
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "接收廣播";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "UrbanRecorder requires user’s location for better user experience.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "UrbanRecorder requires user’s location for better user experience.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "UrbanRecorder requires microphone access to record or broadcast audio.";
+				INFOPLIST_KEY_NSMotionUsageDescription = "UrbanRecorder requires motion information for better user experience.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -739,7 +779,10 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UrbanRecorder/Info.plist;
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "接收廣播";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "UrbanRecorder requires user’s location for better user experience.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "UrbanRecorder requires user’s location for better user experience.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "UrbanRecorder requires microphone access to record or broadcast audio.";
+				INFOPLIST_KEY_NSMotionUsageDescription = "UrbanRecorder requires motion information for better user experience.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -866,6 +909,14 @@
 				version = 7.6.5;
 			};
 		};
+		DBA6DA51274E037B00E80FF5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -883,6 +934,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DB9E3CED27213B8F008FCFAB /* XCRemoteSwiftPackageReference "CocoaAsyncSocket" */;
 			productName = CocoaAsyncSocket;
+		};
+		DBA6DA53274E083800E80FF5 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DBA6DA51274E037B00E80FF5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		DBA6DA55274E083E00E80FF5 /* FirebaseAnalyticsSwift-Beta */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DBA6DA51274E037B00E80FF5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseAnalyticsSwift-Beta";
+		};
+		DBA6DA57274E08BD00E80FF5 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DBA6DA51274E037B00E80FF5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
 		};
 /* End XCSwiftPackageProductDependency section */
 
