@@ -704,10 +704,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UrbanRecorder/Info.plist;
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "接收廣播";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "將使用您的地理位置以提升體驗";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "將使用您的地理位置以提升體驗";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "將使用您的麥克風";
-				INFOPLIST_KEY_NSMotionUsageDescription = "使用 motion";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -744,10 +740,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UrbanRecorder/Info.plist;
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "接收廣播";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "將使用您的地理位置以提升體驗";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "將使用您的地理位置以提升體驗";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "將使用您的麥克風";
-				INFOPLIST_KEY_NSMotionUsageDescription = "使用 motion";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

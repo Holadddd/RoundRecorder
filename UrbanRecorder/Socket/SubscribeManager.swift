@@ -21,7 +21,7 @@ protocol SocketManagerDelegate: AnyObject {
 
 class SubscribeManager: NSObject {
     
-    static let hostIP: String = Bundle.main.object(forInfoDictionaryKey: "SocketHostIP") as? String ?? "52.192.242.163"
+    static let hostIP: String = Bundle.main.object(forInfoDictionaryKey: "SocketHostIP") as? String ?? ""
     
     static let shared: SubscribeManager = SubscribeManager()
     

@@ -16,9 +16,9 @@ protocol UDPSocketManagerDelegate: AnyObject {
 
 class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
     
-    static let hostIP: String = Bundle.main.object(forInfoDictionaryKey: "UDPSocketHostIP") as? String ?? "52.192.242.163"
+    static let hostIP: String = Bundle.main.object(forInfoDictionaryKey: "UDPSocketHostIP") as? String ?? ""
     
-    static let port: String = Bundle.main.object(forInfoDictionaryKey: "UDPSocketPort") as? String ?? "8001"
+    static let port: String = Bundle.main.object(forInfoDictionaryKey: "UDPSocketPort") as? String ?? ""
     
     static let shared: UDPSocketManager = UDPSocketManager()
     

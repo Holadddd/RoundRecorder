@@ -9,7 +9,7 @@ import Foundation
 import CocoaAsyncSocket
 
 class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
-   //let IP = "10.123.45.2"
+    
     var IP = ""
     var PORT:UInt16 = 0
     var socket:GCDAsyncUdpSocket!

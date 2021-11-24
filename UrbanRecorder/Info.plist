@@ -2,18 +2,26 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>UrbanRecorder requires user’s location for better user experience.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>UrbanRecorder requires user’s location for better user experience.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>UrbanRecorder requires microphone access to record or broadcast audio.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>UrbanRecorder requires motion information for better user experience.</string>
 	<key>APIHostIP</key>
 	<string>52.192.242.163</string>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsLocalNetworking</key>
-		<true/>
-	</dict>
 	<key>SocketHostIP</key>
 	<string>52.192.242.163</string>
 	<key>UDPSocketHostIP</key>
 	<string>52.192.242.163</string>
 	<key>UDPSocketPort</key>
 	<string>8001</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 </dict>
 </plist>
