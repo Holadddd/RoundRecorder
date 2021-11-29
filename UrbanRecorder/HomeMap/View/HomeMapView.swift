@@ -38,14 +38,14 @@ struct HomeMapView: View {
                     VStack{
                         HStack{
                             Text("ChannelID: ")
-                            TextField.init("SubscribeChannelID", text: $viewmodel.userID, prompt: nil)
-//                            Button("Subscribe") {
-//                                viewmodel.subscribeChannel()
-//                            }.padding()
+                            TextField.init("SubscribeChannelID", text: $viewmodel.subscribeID, prompt: nil)
+                            Button("Subscribe") {
+                                viewmodel.subscribeChannel()
+                            }.padding()
                         }
                         HStack{
                             Text("ChannelID: ")
-                            TextField.init("BroadcastChannelID", text: $viewmodel.recieverID, prompt: nil)
+                            TextField.init("BroadcastChannelID", text: $viewmodel.broadcastID, prompt: nil)
                             Button("Broadcast") {
                                 viewmodel.broadcastChannel()
                             }.padding()

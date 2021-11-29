@@ -16,7 +16,7 @@
 		DB710E462745025700FD3304 /* AtomicValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB710E452745025700FD3304 /* AtomicValue.swift */; };
 		DB710E472745025D00FD3304 /* AtomicValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB710E452745025700FD3304 /* AtomicValue.swift */; };
 		DB710E492745F42A00FD3304 /* DispatchTime+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB710E482745F42A00FD3304 /* DispatchTime+.swift */; };
-		DB74024F273A6FFD00CD74A4 /* InOutUDPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB74024E273A6FFD00CD74A4 /* InOutUDPSocket.swift */; };
+		DB74024F273A6FFD00CD74A4 /* UDPSocketOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB74024E273A6FFD00CD74A4 /* UDPSocketOut.swift */; };
 		DB9E3CBC272131CC008FCFAB /* UrbanRecorderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */; };
 		DB9E3CC0272131CE008FCFAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB9E3CBF272131CE008FCFAB /* Assets.xcassets */; };
 		DB9E3CC3272131CE008FCFAB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB9E3CC2272131CE008FCFAB /* Preview Assets.xcassets */; };
@@ -47,6 +47,8 @@
 		DBA7EFDB272AEEDE0037AA7E /* CloseTheSessionRQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFDA272AEEDE0037AA7E /* CloseTheSessionRQ.swift */; };
 		DBA7EFDE272AF37D0037AA7E /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFDD272AF37D0037AA7E /* UserInfo.swift */; };
 		DBA7EFE0272AF3920037AA7E /* AvailableUserListRP.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFDF272AF3920037AA7E /* AvailableUserListRP.swift */; };
+		DBBB1D5C274F63F500E1B6C8 /* UDPSocketIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBB1D5B274F63F500E1B6C8 /* UDPSocketIn.swift */; };
+		DBBB1D602750D09300E1B6C8 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBB1D5F2750D09300E1B6C8 /* String+.swift */; };
 		DBDD67DB27440F0100E91A5B /* UrbanRecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDD67DA27440F0100E91A5B /* UrbanRecorderTests.swift */; };
 		DBE2A389273D0B2B0098E52D /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE2A388273D0B2B0098E52D /* Double+.swift */; };
 		DBE2A38B273D17460098E52D /* DirectionAndDistanceMetersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE2A38A273D17460098E52D /* DirectionAndDistanceMetersView.swift */; };
@@ -85,7 +87,7 @@
 		DB710E432744FA5E00FD3304 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DB710E452745025700FD3304 /* AtomicValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicValue.swift; sourceTree = "<group>"; };
 		DB710E482745F42A00FD3304 /* DispatchTime+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchTime+.swift"; sourceTree = "<group>"; };
-		DB74024E273A6FFD00CD74A4 /* InOutUDPSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutUDPSocket.swift; sourceTree = "<group>"; };
+		DB74024E273A6FFD00CD74A4 /* UDPSocketOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPSocketOut.swift; sourceTree = "<group>"; };
 		DB9E3CB8272131CC008FCFAB /* UrbanRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UrbanRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB9E3CBB272131CC008FCFAB /* UrbanRecorderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderApp.swift; sourceTree = "<group>"; };
 		DB9E3CBF272131CE008FCFAB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -113,6 +115,8 @@
 		DBA7EFDA272AEEDE0037AA7E /* CloseTheSessionRQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseTheSessionRQ.swift; sourceTree = "<group>"; };
 		DBA7EFDD272AF37D0037AA7E /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		DBA7EFDF272AF3920037AA7E /* AvailableUserListRP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableUserListRP.swift; sourceTree = "<group>"; };
+		DBBB1D5B274F63F500E1B6C8 /* UDPSocketIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPSocketIn.swift; sourceTree = "<group>"; };
+		DBBB1D5F2750D09300E1B6C8 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		DBDD67D827440F0100E91A5B /* UrbanRecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UrbanRecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBDD67DA27440F0100E91A5B /* UrbanRecorderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderTests.swift; sourceTree = "<group>"; };
 		DBE2A388273D0B2B0098E52D /* Double+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
@@ -277,6 +281,7 @@
 				DB710E452745025700FD3304 /* AtomicValue.swift */,
 				DB710E482745F42A00FD3304 /* DispatchTime+.swift */,
 				DB4956DA2749401400FE512A /* UIDevice+.swift */,
+				DBBB1D5F2750D09300E1B6C8 /* String+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -335,7 +340,8 @@
 			children = (
 				DBF0E3F8272FEB07004DC546 /* SubscribeManager.swift */,
 				DBF0E40027311DCF004DC546 /* UDPSocketManager.swift */,
-				DB74024E273A6FFD00CD74A4 /* InOutUDPSocket.swift */,
+				DB74024E273A6FFD00CD74A4 /* UDPSocketOut.swift */,
+				DBBB1D5B274F63F500E1B6C8 /* UDPSocketIn.swift */,
 			);
 			path = Socket;
 			sourceTree = "<group>";
@@ -541,6 +547,7 @@
 				DBF3C68E2727E10800292893 /* Color+.swift in Sources */,
 				DBF0E41327327CE7004DC546 /* URStreamBasicDescription.swift in Sources */,
 				DB9E3CC8272131CE008FCFAB /* UrbanRecorder.xcdatamodeld in Sources */,
+				DBBB1D602750D09300E1B6C8 /* String+.swift in Sources */,
 				DBA7EFC7272A9F880037AA7E /* HTTPClient.swift in Sources */,
 				DBA7EFCE272ABBF50037AA7E /* URLRequest+.swift in Sources */,
 				DBA7EFD1272AE89B0037AA7E /* UserAPI.swift in Sources */,
@@ -573,7 +580,8 @@
 				DB9E3D0B2726A1AE008FCFAB /* RecorderView.swift in Sources */,
 				DBF0E405273126C1004DC546 /* Date+.swift in Sources */,
 				DB9E3CFB27216E23008FCFAB /* HomeMapModel.swift in Sources */,
-				DB74024F273A6FFD00CD74A4 /* InOutUDPSocket.swift in Sources */,
+				DBBB1D5C274F63F500E1B6C8 /* UDPSocketIn.swift in Sources */,
+				DB74024F273A6FFD00CD74A4 /* UDPSocketOut.swift in Sources */,
 				DBE2A389273D0B2B0098E52D /* Double+.swift in Sources */,
 				DB9E3CBC272131CC008FCFAB /* UrbanRecorderApp.swift in Sources */,
 				DBF0E403273123ED004DC546 /* Data+.swift in Sources */,

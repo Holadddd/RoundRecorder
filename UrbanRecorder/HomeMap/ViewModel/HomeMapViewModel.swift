@@ -16,9 +16,9 @@ class HomeMapViewModel: NSObject, ObservableObject {
     var buttonScale: CGFloat {
         return DeviceInfo.isCurrentDeviceIsPad ? 3 : 2
     }
-    @Published var userID: String = ""
+    @Published var subscribeID: String = ""
     
-    @Published var recieverID: String = ""
+    @Published var broadcastID: String = ""
     
     @Published var cardPosition = CardPosition.middle
     
@@ -82,7 +82,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     @Published var userCurrentRegion: MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 40.75773, longitude: -73.985708), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
     
-    var udpSocket: UDPSocketManager = UDPSocketManager.shared
+    var udpSocketManager: UDPSocketManager = UDPSocketManager.shared
     
     @Published var showWave: Bool = false
     
@@ -115,7 +115,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
             })
         }
         
-        udpSocket.delegate = self
+        udpSocketManager.delegate = self
     }
     
     func menuButtonDidClisked() {
@@ -155,18 +155,20 @@ class HomeMapViewModel: NSObject, ObservableObject {
         
     }
     
-    func startRecording(){
-        urAudioEngineInstance.setupURAudioEngineCaptureCallBack {[weak self] audioData in
-            guard let self = self else { return }
-            // TODO: Send data through UDPSocket
-            self.udpSocket.sendBufferData(audioData, from: self.userID, to: self.recieverID)
+    func subscribeChannel() {
+        // 1. setupSubscribeEnviriment
+        self.urAudioEngineInstance.setupAudioEngineEnvironmentForSubscribe()
+        
+        self.udpSocketManager.setupSubscribeConnection {
+            self.udpSocketManager.subscribeChannel(from: "", with: self.subscribeID)
         }
     }
     
-    func subscribeChannel() {
-        self.udpSocket.setupConnection {
-            // TODO: Subscribe UDPSocket
-            
+    private func setupMicrophoneCaptureCallback(){
+        urAudioEngineInstance.setupURAudioEngineCaptureCallBack {[weak self] audioData in
+            guard let self = self else { return }
+            // TODO: Send data through UDPSocket
+            self.udpSocketManager.broadcastBufferData(audioData, from: "", to: self.broadcastID)
         }
     }
     
@@ -175,14 +177,15 @@ class HomeMapViewModel: NSObject, ObservableObject {
         urAudioEngineInstance.requestRecordPermissionAndStartTappingMicrophone {[weak self] isGranted in
             guard let self = self else { return }
             if isGranted {
-                // 2. Connect and send audio buffer
-                self.udpSocket.setupConnection {
-                    self.startRecording()
+                // 2. setupBroadcastEnviriment
+                self.urAudioEngineInstance.setupAudioEngineEnvironmentForBroadcast()
+                // 3. Connect and send audio buffer
+                self.udpSocketManager.setupBroadcastConnection {
+                    self.setupMicrophoneCaptureCallback()
                 }
             } else {
-                #warning("Show Alert View")
                 print("Show Alert View")
-                // TODO: enable tourist mode
+                // TODO: Show Alert View
             }
         }
         

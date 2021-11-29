@@ -11,11 +11,13 @@ import AVFAudio
 import AudioToolbox
 import UIKit
 
-class URAudioEngine {
+class URAudioEngine: NSObject {
     
     static let instance: URAudioEngine = URAudioEngine()
     
     private var engine: AVAudioEngine = AVAudioEngine()
+    
+    var currentAbility: URAudioEngineAbility = .undefined
     
     private var captureAudioBufferDataCallBack: ((NSMutableData)->Void)?
     
@@ -66,8 +68,13 @@ class URAudioEngine {
         return streamingEnvironmentNode.listenerAngularOrientation
     }
     
-    init() {
+    override init() {
+        super.init()
         // Set engine inActive
+        setupAudioSession()
+    }
+    
+    private func setupAudioSession() {
         do {
             var engineOption: AVAudioSession.CategoryOptions = []   // When BluetoothA2DP and the allowBluetooth option are both set, when a single device supports both the Hands-Free Profile (HFP) and A2DP, the system gives hands-free ports a higher priority for routing. But Only A2DP suport spatial audio.
             
@@ -95,51 +102,108 @@ class URAudioEngine {
         } catch {
             status = .failInSetUp
         }
-        // Set audioEngine
-        setupAudioEngine()
     }
     
-    private func setupAudioEngine() {
+    private func setupNodeParameters() {
         // MARK: AudioNode preset
         #warning("Check the precise using mode")
         streamingMixer.sourceMode = .spatializeIfMono
         
         streamingEnvironmentNode.renderingAlgorithm = renderingAlgo
-        streamingEnvironmentNode.reverbParameters.enable = false
+        streamingEnvironmentNode.reverbParameters.enable = true
         streamingEnvironmentNode.reverbParameters.level = -20.0
         streamingEnvironmentNode.reverbParameters.loadFactoryReverbPreset(.plate)
         
         updateListenerPosition(AVAudio3DPoint(x: 0, y: 0, z: 0))
-        // MARK: Generate Input AudioUnit
-        setupInputAudioUnit()
-        
-        // MARK: Attach AudioNode
+    }
+    /*
+     The AudioSession status is active
+     Subscribe: setupInputAudioUnit -> setupNodeAttachment -> setupAudioNodeConnection -> startEngine
+     Broadcast: setupNodeAttachment ->          setupAudioNodeConnection  -> setupRendererAudioData -> startEngine
+                                    \(IF Granted)               ^
+                                     - > beginTappingMicrophone/
+     
+     Case
+     Subscribe
+     Broadcast
+     SubscribeThenBroadcast
+     BroadcastThenSubscribe
+     */
+    // TODO: Write a Task for concurrenct queue
+    func setupAudioEngineEnvironmentForSubscribe() {
+        switch currentAbility {
+        case .undefined:
+            // TODO: setup Environment
+            // 1. Set up Audio Unit For render the input streaming data while engine is running
+            setupInputAudioUnit() {[weak self] in
+                guard let self = self else { return }
+                // 2. Store the incoming data with custom allocat size
+                self.setupRendererAudioData()
+                // 3. Attach node on audioEngine
+                self.setupNodeAttachment()
+                // 4. Connect node with specify sequence and format
+                self.setupAudioNodeConnection()
+                
+                self.startEngine()   // This will change hte AirPod connect to the device
+                
+                self.currentAbility = .Subscribe
+            }
+            
+        case .Broadcast:
+            // TODO: setup Environment
+            
+            currentAbility = .BroadcastThenSubscribe
+        default:
+            print("Unhandle ability")
+            break
+        }
+    }
+    // Make sure the microphone access is been granted
+    func setupAudioEngineEnvironmentForBroadcast() {
+        switch currentAbility {
+        case .undefined:
+            // TODO: setup Environment
+            beginTappingMicrophone()
+            
+            setupNodeAttachment()
+            
+            setupAudioNodeConnection()
+            
+            startEngine()   // This will change hte AirPod connect to the device
+            
+            currentAbility = .Broadcast
+            
+            print("Ability: \(currentAbility)")
+        case .Subscribe:
+            // TODO: setup Environment
+            
+            currentAbility = .SubscribeThenBroadcast
+        default:
+            print("Unhandle ability")
+            break
+        }
+    }
+    
+    private func setupNodeAttachment() {
         if let inputAudioUnit = inputAudioUnit {
             engine.attach(inputAudioUnit)
         }
         
-        engine.attach(streamingMixer)
+        engine.attach(streamingMixer)   // Console: UrbanRecorder[56842:741656] throwing -10878
         
         engine.attach(streamingEnvironmentNode)
-        
-        //
-        setupAudioNodeConnection()
-        // Setup the renderer data
-        setupRendererAudioData()
-        // we're ready to start rendering so start the engine
-        startEngine()
-
-        print("AudioEngine: \(self.status)")
     }
     
-    private func setupInputAudioUnit() {
+    private func setupInputAudioUnit(_ completion: @escaping()->Void ) {
         
         URAudioRenderAudioUnit.registerSubclassOnce
         
         AVAudioUnit.instantiate(with: URAudioRenderAudioUnit.audioCompoentDescription, options: []) { auUnit, error in
             guard error == nil, let auUnit = auUnit else { fatalError() }
-            
+
             self.inputAudioUnit = auUnit
+
+            completion()
         }
     }
     
@@ -180,34 +244,43 @@ class URAudioEngine {
     }
     
     private func stopEngine() {
-        do {
-            try engine.stop()
-        } catch {
-            status = .unReady
+        if engine.isRunning {
+            engine.stop()
+            status = .failInSetUp
+        } else {
+            print("Engine is not running")
         }
     }
     
     private func startEngine() {
-        do {
-            try engine.start()
-        } catch {
-            status = .failInSetUp
+        if !engine.isRunning {
+            do {
+                try engine.start()
+            } catch {
+                status = .failInSetUp
+            }
+        } else {
+            print("Engine is running")
         }
+        
     }
     //MARK: - AudioNode connect
     private func setupAudioNodeConnection() {
-        #warning("Keep Layout as Mono to play SpactialAudio")
-        guard let layout: AVAudioChannelLayout = AVAudioChannelLayout.init(layoutTag: kAudioChannelLayoutTag_Mono) else { return }
+        // Keep Layout as Mono to play SpactialAudio
+        guard let monoLayout: AVAudioChannelLayout = AVAudioChannelLayout.init(layoutTag: kAudioChannelLayoutTag_Mono) else { return }
         
-        let stereoFormat = AVAudioFormat(standardFormatWithSampleRate: 48000, channelLayout: layout)
+        let monoFormat = AVAudioFormat(standardFormatWithSampleRate: 48000, channelLayout: monoLayout)
         
         if let inputAudioUnit = inputAudioUnit {
-            engine.connect(inputAudioUnit, to: streamingMixer, format: stereoFormat)
+            engine.connect(inputAudioUnit, to: streamingMixer, format: monoFormat)
         }
         
-        engine.connect(streamingMixer, to: streamingEnvironmentNode, format: stereoFormat)
+        engine.connect(streamingMixer, to: streamingEnvironmentNode, format: monoFormat)
         
-        engine.connect(streamingEnvironmentNode, to: engine.outputNode, format: engine.outputNode.outputFormat(forBus: 0))
+        let outputFormat = engine.outputNode.outputFormat(forBus: 0)
+        print(outputFormat)
+        #warning("Check the 44.1 -> 48 ")
+        engine.connect(streamingEnvironmentNode, to: engine.outputNode, format: outputFormat)  // Console: [AUSpatialMixerV2] OutputElement: Unsupported number of channels 0 in audio channel layout UseChannelDescriptions: must be two or more
     }
     //MARK: - SetAudioOutputData
     private func setupRendererAudioData() {
@@ -414,32 +487,24 @@ extension URAudioEngine {
         // Record Permission
         switch AVAudioSession.sharedInstance().recordPermission {
         case .granted:
-            complete(true)
+            
             if status != .readyWithRecordPermission {
-                stopEngine()
-                
-                self.beginTappingMicrophone()
                 
                 self.status = .readyWithRecordPermission
                 
-                startEngine()
             }
+            complete(true)
         default:
             // RecordPermissionAndStartTapping
             AVAudioSession.sharedInstance().requestRecordPermission { isGranted in
-                complete(isGranted)
+                
                 if isGranted {
-                    self.stopEngine()
-                    
-                    self.beginTappingMicrophone()
-                    
                     self.status = .readyWithRecordPermission
                     
-                    self.startEngine()
                 } else {
                     self.status = .readyWithoutRecordPermission
                 }
-
+                complete(isGranted)
                 print("AudioEngine: \(self.status)")
             }
         }
@@ -478,6 +543,16 @@ extension URAudioEngine {
         return position
     }
 }
+
+enum URAudioEngineAbility {
+    case undefined
+    case Subscribe
+    case Broadcast
+    case SubscribeThenBroadcast
+    case BroadcastThenSubscribe
+}
+
+
 enum URAudioEngineStatus {
     case unReady
     

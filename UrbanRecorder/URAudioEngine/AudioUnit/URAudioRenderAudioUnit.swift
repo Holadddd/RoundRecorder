@@ -17,7 +17,7 @@ class URAudioRenderAudioUnit: AUAudioUnit {
         
         let AudioEngine: URAudioEngine = URAudioEngine.instance
         
-        guard AudioEngine.status == .readyWithRecordPermission else { return noErr}
+        guard AudioEngine.currentAbility != .undefined || AudioEngine.currentAbility != .Broadcast  else {print("No Subscribe ability"); return noErr}
         
         let bitsPerFrame = AudioEngine.bytesPerFrame
         
@@ -45,7 +45,7 @@ class URAudioRenderAudioUnit: AUAudioUnit {
                 outputABL[i].mDataByteSize = UInt32(bitToRead)
             }
         }
-        
+
         return noErr
     }
     
@@ -101,18 +101,15 @@ class URAudioRenderAudioUnit: AUAudioUnit {
     }
     
     override var outputBusses : AUAudioUnitBusArray {
-        // 随時呼ばれるので、動的には作らない
         return self._outputBusArray
     }
     override func allocateRenderResources() throws {
         do {
-            // super呼び出し必須
             try super.allocateRenderResources()
         } catch {
             throw error
         }
         
-        // バスのフォーマットに応じてKernelにバッファを作成する
         let bus = self.outputBusses[0]
         pcmBuffer = AVAudioPCMBuffer(pcmFormat: bus.format, frameCapacity: self.maximumFramesToRender)
     }
@@ -123,7 +120,6 @@ class URAudioRenderAudioUnit: AUAudioUnit {
     }
     
     override func shouldChange(to format: AVAudioFormat, for bus: AUAudioUnitBus) -> Bool {
-        // バスが接続されると呼ばれる。対応不可能なフォーマットならfalseを返す
         return true
     }
 }
