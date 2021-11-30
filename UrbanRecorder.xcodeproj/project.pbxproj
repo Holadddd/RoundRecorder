@@ -748,6 +748,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UrbanRecorder/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "This app will be able to discover and connect to devices on the network you use";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "UrbanRecorder requires user’s location for better user experience.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "UrbanRecorder requires user’s location for better user experience.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "UrbanRecorder requires microphone access to record or broadcast audio.";
@@ -787,6 +788,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UrbanRecorder/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "This app will be able to discover and connect to devices on the network you use";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "UrbanRecorder requires user’s location for better user experience.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "UrbanRecorder requires user’s location for better user experience.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "UrbanRecorder requires microphone access to record or broadcast audio.";

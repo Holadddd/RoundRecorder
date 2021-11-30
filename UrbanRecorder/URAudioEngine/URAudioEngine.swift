@@ -133,7 +133,6 @@ class URAudioEngine: NSObject {
     func setupAudioEngineEnvironmentForSubscribe() {
         switch currentAbility {
         case .undefined:
-            // TODO: setup Environment
             // 1. Set up Audio Unit For render the input streaming data while engine is running
             setupInputAudioUnit() {[weak self] in
                 guard let self = self else { return }
@@ -144,15 +143,26 @@ class URAudioEngine: NSObject {
                 // 4. Connect node with specify sequence and format
                 self.setupAudioNodeConnection()
                 
-                self.startEngine()   // This will change hte AirPod connect to the device
+                self.startEngine()   // This will change switch AirPod connection from other device
                 
                 self.currentAbility = .Subscribe
             }
             
         case .Broadcast:
-            // TODO: setup Environment
-            
-            currentAbility = .BroadcastThenSubscribe
+            // 1. Set up Audio Unit For render the input streaming data while engine is running
+            setupInputAudioUnit() {[weak self] in
+                guard let self = self else { return }
+                // 2. Store the incoming data with custom allocat size
+                self.setupRendererAudioData()
+                // 3. Attach node on audioEngine
+                self.setupNodeAttachment()
+                // 4. Connect node with specify sequence and format
+                self.setupAudioNodeConnection()
+                
+                self.startEngine()   // This will change switch AirPod connection from other device
+                
+                self.currentAbility = .BroadcastThenSubscribe
+            }
         default:
             print("Unhandle ability")
             break
@@ -162,7 +172,7 @@ class URAudioEngine: NSObject {
     func setupAudioEngineEnvironmentForBroadcast() {
         switch currentAbility {
         case .undefined:
-            // TODO: setup Environment
+            print("1isEngine on: \(engine.isRunning)")
             beginTappingMicrophone()
             
             setupNodeAttachment()
@@ -176,8 +186,20 @@ class URAudioEngine: NSObject {
             print("Ability: \(currentAbility)")
         case .Subscribe:
             // TODO: setup Environment
+            print("2isEngine on: \(engine.isRunning)")
+            stopEngine()
+            
+            beginTappingMicrophone()
+            
+            startEngine()   // Console: AUAudioUnit.mm:1352  Cannot set maximumFramesToRender while render resources allocated.
+            
+            setupNodeAttachment()
+            
+            setupAudioNodeConnection()
             
             currentAbility = .SubscribeThenBroadcast
+            
+            print("Ability: \(currentAbility)")
         default:
             print("Unhandle ability")
             break
@@ -185,6 +207,7 @@ class URAudioEngine: NSObject {
     }
     
     private func setupNodeAttachment() {
+        // Engine wont multi attaching node on
         if let inputAudioUnit = inputAudioUnit {
             engine.attach(inputAudioUnit)
         }
@@ -208,7 +231,10 @@ class URAudioEngine: NSObject {
     }
     
     private func beginTappingMicrophone() {
-        
+        guard !engine.isRunning else {
+            print("Tapping Microphone cant install while the engine is running")
+            return
+        }
         let inputNode = engine.inputNode
         let inputFormat = inputNode.inputFormat(forBus: 0)
         let sampleRate = inputFormat.sampleRate

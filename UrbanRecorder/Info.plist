@@ -3,19 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>APIHostIP</key>
-	<string>172.20.10.5:3000</string>
+	<string>192.168.0.100:3000</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
 	<key>SocketHostIP</key>
-	<string>172.20.10.5:3000</string>
+	<string>192.168.0.100:3000</string>
 	<key>UDPSocketHostIP</key>
-	<string>172.20.10.5</string>
+	<string>192.168.0.100</string>
 	<key>UDPSocketInPort</key>
 	<string>8001</string>
 	<key>UDPSocketOutPort</key>
 	<string>8000</string>
+	<key>UIBackgroundModes</key>
+	<array/>
 </dict>
 </plist>

@@ -36,7 +36,12 @@ class UDPSocketIn: NSObject, GCDAsyncUdpSocketDelegate {
     }
     typealias mtu = Int
     func setupConnection(success:((mtu)->Void)){
-        socket = GCDAsyncUdpSocket(delegate: self, delegateQueue:DispatchQueue.main)
+        if socket == nil {
+            socket = GCDAsyncUdpSocket(delegate: self, delegateQueue:DispatchQueue.main)
+        } else {
+            socket.close()
+        }
+        
         socket.setMaxReceiveIPv4BufferSize(UInt16.max)
         do { try socket.connect(toHost:IP, onPort: PORT)} catch { print("joinMulticastGroup not proceed")}
         do { try socket.enableBroadcast(true)} catch { print("not able to broad cast")}
@@ -52,7 +57,7 @@ class UDPSocketIn: NSObject, GCDAsyncUdpSocketDelegate {
     }
     //MARK:-GCDAsyncUdpSocketDelegate
     func udpSocket(_ sock: GCDAsyncUdpSocket, didConnectToAddress address: Data) {
-        print("didConnect")
+        print("UDPSocketIn didConnect")
         
     }
     
@@ -60,7 +65,7 @@ class UDPSocketIn: NSObject, GCDAsyncUdpSocketDelegate {
         receiveCallback?(data)
     }
     func udpSocket(_ sock: GCDAsyncUdpSocket, didNotConnect error: Error?) {
-        print("didNotConnect")
+        print("UDPSocketIn didNotConnect")
     }
     func udpSocket(_ sock: GCDAsyncUdpSocket, didSendDataWithTag tag: Int) {
         print("Subscribe Data did send")

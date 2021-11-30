@@ -32,7 +32,11 @@ class UDPSocketOut: NSObject, GCDAsyncUdpSocketDelegate {
     }
     typealias mtu = Int
     func setupConnection(success:((mtu)->Void)) {
-        socket = GCDAsyncUdpSocket(delegate: self, delegateQueue:DispatchQueue.main)
+        if socket == nil {
+            socket = GCDAsyncUdpSocket(delegate: self, delegateQueue:DispatchQueue.main)
+        } else {
+            socket.close()
+        }
         
         do { try socket.connect(toHost:IP, onPort: PORT)} catch { print("joinMulticastGroup not proceed")}
         do { try socket.enableBroadcast(true)} catch { print("not able to broad cast")}

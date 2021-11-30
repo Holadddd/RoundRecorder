@@ -18,7 +18,11 @@ class HomeMapViewModel: NSObject, ObservableObject {
     }
     @Published var subscribeID: String = ""
     
+    var currentSubscribeID: String = ""
+    
     @Published var broadcastID: String = ""
+    
+    var currentBroadcastID: String = ""
     
     @Published var cardPosition = CardPosition.middle
     
@@ -156,11 +160,15 @@ class HomeMapViewModel: NSObject, ObservableObject {
     }
     
     func subscribeChannel() {
+        currentSubscribeID = subscribeID
+        guard urAudioEngineInstance.currentAbility == .Broadcast && urAudioEngineInstance.currentAbility == .undefined else {
+            print("The ability is already establish only change the currentSubscribeID")
+            return }
         // 1. setupSubscribeEnviriment
         self.urAudioEngineInstance.setupAudioEngineEnvironmentForSubscribe()
         
         self.udpSocketManager.setupSubscribeConnection {
-            self.udpSocketManager.subscribeChannel(from: "", with: self.subscribeID)
+            self.udpSocketManager.subscribeChannel(from: "", with: self.currentSubscribeID)
         }
     }
     
@@ -168,11 +176,16 @@ class HomeMapViewModel: NSObject, ObservableObject {
         urAudioEngineInstance.setupURAudioEngineCaptureCallBack {[weak self] audioData in
             guard let self = self else { return }
             // TODO: Send data through UDPSocket
-            self.udpSocketManager.broadcastBufferData(audioData, from: "", to: self.broadcastID)
+            self.udpSocketManager.broadcastBufferData(audioData, from: "", to: self.currentBroadcastID)
         }
     }
     
     func broadcastChannel() {
+        currentBroadcastID = broadcastID
+        guard urAudioEngineInstance.currentAbility == .Subscribe && urAudioEngineInstance.currentAbility == .undefined else {
+            print("The ability is already establish only change the currentBroadcastID")
+            return }
+        
         // 1. Request Microphone
         urAudioEngineInstance.requestRecordPermissionAndStartTappingMicrophone {[weak self] isGranted in
             guard let self = self else { return }
