@@ -163,6 +163,8 @@ class URAudioEngine: NSObject {
                 
                 self.currentAbility = .BroadcastThenSubscribe
             }
+        case .Subscribe:
+            print("Replace subscribe Channel")
         default:
             print("Unhandle ability")
             break
@@ -200,6 +202,8 @@ class URAudioEngine: NSObject {
             currentAbility = .SubscribeThenBroadcast
             
             print("Ability: \(currentAbility)")
+        case .Broadcast:
+            print("Replace Broadcast Channel")
         default:
             print("Unhandle ability")
             break

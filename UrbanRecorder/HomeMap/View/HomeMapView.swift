@@ -52,11 +52,14 @@ struct HomeMapView: View {
                         }
                         HStack{
                             // Prompt Note
-                            Text(" ")
+                            Text("MS: \(viewmodel.udpsocketLatenctMs)")
+                                .foregroundColor(.fixedLightGray)
+                            Spacer()
                         }
                         HStack{
                             DirectionAndDistanceMetersView(receiverDirection: viewmodel.receiverDirection,
-                                                           receiverMeters: $viewmodel.receiverLastDistanceMeters, showWave: viewmodel.showWave,
+                                                           receiverMeters: $viewmodel.receiverLastDistanceMeters,
+                                                           showWave: viewmodel.showWave,
                                                            volumeMaxPeakPercentage: viewmodel.volumeMaxPeakPercentage) {
                                 // TODO: Fixed the distance
                                 print("TODO: Fixed the distance")

@@ -61,22 +61,29 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
         // UDPInSocket
         let ip = UDPSocketManager.hostIP
         guard let inPort = UInt16(UDPSocketManager.inPort) else { fatalError() }
-        udpSocketIn = UDPSocketIn(ip: ip, port: inPort)
-        udpSocketIn?.setupConnection { mtu in
-            self.mtu = mtu
-            setupUDPInReceive()
+        
+        if udpSocketIn == nil {
+            udpSocketIn = UDPSocketIn(ip: ip, port: inPort)
+            udpSocketIn?.setupConnection { mtu in
+                self.mtu = mtu
+                setupUDPInReceive()
+                complete()
+            }
+        } else {
             complete()
         }
     }
     
     func subscribeChannel(from userID: String, with channelID: String) {
-        // TODO: Subscribe from UDPSocket
-        guard let udpSocketIn = udpSocketIn,
-              udpSocketIn.isSocketReady,
-              let subscribeInfo = UDPSocketManager.encodeUDPSocketSubscribeInfo(userID, subscribeChannelID: channelID)
-        else { return }
+        guard let udpSocketIn = udpSocketIn else { print("udpSocketIn is not ready yet"); return }
         
-        udpSocketIn.subscibeChannel(with: subscribeInfo)
+        udpSocketIn.subscibeChannel(from: userID, with: channelID)
+    }
+    
+    func unsubscribeChannel(from userID: String, with channelID: String) {
+        guard let udpSocketIn = udpSocketIn else { print("udpSocketIn is not ready yet"); return }
+        
+        udpSocketIn.unsubscibeChannel(from: userID, with: channelID)
     }
     
     // OutputSocket
@@ -94,9 +101,7 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
                 
                 let audioData = Data(bytes: bufferDataByte, count: defaultMaximumBufferSize)
                 
-                guard let sendingPayload = UDPSocketManager.encodeUDPSocketPayload(audioData, userID: userID, channelID: channelID) else { break }
-                
-                udpSocketOut.send(data: sendingPayload)
+                udpSocketOut.broadcastChannel(userID: userID, channelID: channelID, payload: audioData)
                 
                 bufferDataByte += defaultMaximumBufferSize
                 bufferSize -= defaultMaximumBufferSize
@@ -104,9 +109,7 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
                 
                 let audioData = Data(bytes: bufferDataByte, count: bufferSize)
                 
-                guard let sendingPayload = UDPSocketManager.encodeUDPSocketPayload(audioData, userID: userID, channelID: channelID) else { break }
-                
-                udpSocketOut.send(data: sendingPayload)
+                udpSocketOut.broadcastChannel(userID: userID, channelID: channelID, payload: audioData)
                 
                 break
             }
@@ -119,15 +122,22 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
         // Set Up ReceiveCallback
         udpSocketIn.setupDidReceiveDataCallback({ [weak self]  incomingData in
             
-            let payloadType: UDPReceivedPayloadType = UDPSocketManager.getReceiviePayloadTypeAndData(incomingData)
+            let payloadType: UDPReceivedPayloadType = UDPSocketManager.getUDPSocketReceivingPayloadTypeAndData(incomingData)
             
             guard let self = self else { return }
             
             switch payloadType {
             case .subscribeProcess(let subscribeInfo):
-                print("Subscribe Success: \(subscribeInfo)")
-                udpSocketIn.subscribeOnChannel = subscribeInfo.subscribeChannelID
-            case .audioBuffer(let recievedPayload):
+                let channelID = subscribeInfo.subscribeChannelID
+                let ip = subscribeInfo.socketIP
+                let port = subscribeInfo.socketPort
+                print("=========    Success Subscribe On Channel: \(channelID), IP: \(ip), SOCKET PORT: \(port) ========")
+            case .unsubscribeProcess(let unsubscribeInfo):
+                let channelID = unsubscribeInfo.subscribeChannelID
+                let ip = unsubscribeInfo.socketIP
+                let port = unsubscribeInfo.socketPort
+                print("=========    Success Unsubscribe On Channel: \(channelID), IP: \(ip), SOCKET PORT: \(port) ========")
+            case .recievingBroadcastAudioBuffer(let recievedPayload):
                 let data = recievedPayload.data
                 let channelID = recievedPayload.channelID
                 
@@ -142,109 +152,25 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
                     }
                 }
             case .unknow:
+                print("UDPInReceive unknow data")
                 break
             }
             
         })
     }
     
-    static func encodeUDPSocketPayload(_ dataPtr: UnsafeMutableRawPointer, _ dataLength: Int, userID: String, channelID: String) -> Data? {
-        /*
-         UDPSocketOutSendPayload
-         --------------------------------------------------------------------
-         Field Offset | Field Name | Field type | Field Size(byte) | Description
-         --------------------------------------------------------------------
-         0              userID      String          16
-         16             channelID   String          16
-         32             date        UInt64          8               MillisecondsSince1970
-         40             data        UInt32
-         --------------------------------------------------------------------
-         */
-        let date = Date().millisecondsSince1970
+    static func getUDPSocketReceivingPayloadTypeAndData(_ data: Data) -> UDPReceivedPayloadType {
         
-        var data = withUnsafeBytes(of: userID) { Data($0) }   // Offset: 0
-        data.append(withUnsafeBytes(of: channelID) { Data($0) })   // Offset: 16
-        data.append(withUnsafeBytes(of: date) { Data($0) }) // Offset: 32
-        
-        if UDPSocketManager.enableCompresssionAlgorithm {
-            guard let compressData = Data(bytes: dataPtr, count: dataLength).compressed(using: UDPSocketManager.compressionAlgorithm) else {
-                print("CompressFail")
-                return data
-            }
-            data.append(compressData)    // Offset: 40
-            
-            return data
-        } else {
-            data.append(Data(bytes: dataPtr, count: dataLength))    // Offset: 40
-            
-            return data
-        }
-    }
-    
-    static func encodeUDPSocketPayload(_ data: Data, userID: String, channelID: String) -> Data? {
-        /*
-         UDPSocketSendPayload
-         --------------------------------------------------------------------
-         Field Offset | Field Name | Field type | Field Size(byte) | Description
-         --------------------------------------------------------------------
-         0              userID      String          16
-         16             channelID   String          16
-         32             date        UInt64          8               MillisecondsSince1970
-         40             data        UInt32
-         --------------------------------------------------------------------
-         */
-        let date = Date().millisecondsSince1970
-        
-        var newData = withUnsafeBytes(of: userID) { Data($0) }   // Offset: 0
-        newData.append(withUnsafeBytes(of: channelID) { Data($0) })   // Offset: 16
-        newData.append(withUnsafeBytes(of: date) { Data($0) }) // Offset: 32
-        
-        if UDPSocketManager.enableCompresssionAlgorithm {
-            guard let compressData = data.compressed(using: UDPSocketManager.compressionAlgorithm) else {
-                print("CompressFail")
-                return data
-            }
-            newData.append(compressData)    // Offset: 40
-            
-            return newData
-        } else {
-            newData.append(data)    // Offset: 40
-            
-            return newData
-        }
-    }
-    
-    static func encodeUDPSocketSubscribeInfo(_ userID: String, subscribeChannelID: String) -> Data? {
-        /*
-         UDPSocketInSendSubscribeInfo
-         --------------------------------------------------------------------
-         Field Offset | Field Name | Field type | Field Size(byte) | Description
-         --------------------------------------------------------------------
-         0              userID      String          16
-         16             channelID   String          16
-         --------------------------------------------------------------------
-         */
-        let date = Date().millisecondsSince1970
-        
-        var newData = withUnsafeBytes(of: userID) { Data($0) }   // Offset: 0
-        newData.append(withUnsafeBytes(of: subscribeChannelID) { Data($0) })   // Offset: 16
-        newData.append(withUnsafeBytes(of: date) { Data($0) }) // Offset: 32
-        
-        return newData
-    }
-    
-    static func getReceiviePayloadTypeAndData(_ data: Data) -> UDPReceivedPayloadType {
-        
-        let payloadType: UInt8 = NSMutableData(data: data.advanced(by: 0)).bytes.load(as: UInt8.self)
+        let payloadType: UInt8 = NSMutableData(data: data.advanced(by: 0)).bytes.load(as: UInt8.self)   // 0: Subscribe 1: Unsubscribe 11:AudioBuffer
         
         switch payloadType {
-        case 0:
+        case 0, 1:
             /*
              UDPSocketReceiveSubscribeInfo
              --------------------------------------------------------------------
              Field Offset | Field Name | Field type | Field Size(byte) | Description
              --------------------------------------------------------------------
-             0              payloadType Uint8           1               // 0: Subscribe 1:AudioBuffer
+             0              payloadType Uint8           1               // 0: Subscribe 1: Unsubscribe 11: BroadcastAudioBuffer 12: BroadcastFailWithRepeatChannelID
              1              channelID   String          16
              17             socketIP    String          16
              33             socketPort  UInt16          2
@@ -258,16 +184,22 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
             let socketIP: String = String(bytes: dataArray, encoding: .utf8, offset: 17, length: 16)
             let socketPort: UInt16 = NSMutableData(data: data.advanced(by: 33)).bytes.load(as: UInt16.self)
             
-            let recievedSubscribeInfo = UDPSocketRecievedSubscribeInfo(subscribeChannelID: channelID, socketIP: socketIP, socketPort: socketPort)
-            
-            return .subscribeProcess(recievedSubscribeInfo)
-        case 1:
+            if payloadType == 0 {
+                let recievedSubscribeInfo = UDPSocketRecievedSubscribeInfo(subscribeChannelID: channelID, socketIP: socketIP, socketPort: socketPort)
+                
+                return .subscribeProcess(recievedSubscribeInfo)
+            } else {
+                let recievedSubscribeInfo = UDPSocketRecievedSubscribeInfo(subscribeChannelID: channelID, socketIP: socketIP, socketPort: socketPort)
+                
+                return .unsubscribeProcess(recievedSubscribeInfo)
+            }
+        case 11:
             /*
              UDPSocketReceivePayload
              --------------------------------------------------------------------
              Field Offset | Field Name | Field type | Field Size(byte) | Description
              --------------------------------------------------------------------
-             0              payloadType Uint8           1               // 0: Subscribe 1:AudioBuffer
+             0              payloadType Uint8           1               // 0: Subscribe 1: Unsubscribe 11: BroadcastAudioBuffer 12: BroadcastFailWithRepeatChannelID
              1              channelID   String          16
              17             date        UInt64          8               MillisecondsSince1970
              25             data        UInt32
@@ -288,11 +220,11 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
                 
                 let recievedPayload = UDPSocketRecievedPayload(channelID: channelID, date: date, data: decompressedPayload)
                 
-                return .audioBuffer(recievedPayload)
+                return .recievingBroadcastAudioBuffer(recievedPayload)
             } else {
                 let recievedPayload = UDPSocketRecievedPayload(channelID: channelID, date: date, data: payload)
                 
-                return .audioBuffer(recievedPayload)
+                return .recievingBroadcastAudioBuffer(recievedPayload)
             }
         default:
             return .unknow
@@ -301,12 +233,12 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
 }
 /*
  payloadType
- 0: Subscribe session
- 1: Audiobuffer payload
+ 0: Subscribe 1: Unsubscribe 11:AudioBuffer
  */
 enum UDPReceivedPayloadType {
     case subscribeProcess(UDPSocketRecievedSubscribeInfo)
-    case audioBuffer(UDPSocketRecievedPayload)
+    case unsubscribeProcess(UDPSocketRecievedSubscribeInfo)
+    case recievingBroadcastAudioBuffer(UDPSocketRecievedPayload)
     case unknow
 }
 

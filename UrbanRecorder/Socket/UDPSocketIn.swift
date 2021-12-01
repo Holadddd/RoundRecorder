@@ -18,6 +18,8 @@ class UDPSocketIn: NSObject, GCDAsyncUdpSocketDelegate {
     
     var isSocketReady: Bool = false
     
+    var userID: String?
+    
     var subscribeOnChannel: String?
     
     override init(){
@@ -48,13 +50,32 @@ class UDPSocketIn: NSObject, GCDAsyncUdpSocketDelegate {
         do { try socket.beginReceiving()} catch { print("beginReceiving not proceed")}
         isSocketReady = true
         
-        print("MaxReceiveIPv4BufferSize: \(socket.maxReceiveIPv4BufferSize())")
         success(Int(socket.maxSendBufferSize()))
     }
-    func subscibeChannel(with data: Data) {
-        guard isSocketReady else { return }
+    
+    func subscibeChannel(from userID: String, with channelID: String) {
+        guard isSocketReady,
+        let data = UDPSocketIn.encodeUDPSocketSubscribeInfo(userID, subscribeChannelID: channelID)else { return }
+        
+        if let currentSubscrobeChannel = subscribeOnChannel {
+            // Unsubscribe Channel
+            unsubscibeChannel(from: userID, with: currentSubscrobeChannel)
+        }
+        
+        subscribeOnChannel = channelID
+        
+        socket.send(data, withTimeout: 2, tag: 1)
+    }
+    
+    func unsubscibeChannel(from userID: String, with channelID: String) {
+        guard isSocketReady,
+        let data = UDPSocketIn.encodeUDPSocketUnsubscribeInfo(userID, subscribeChannelID: channelID)else { return }
+        
+        subscribeOnChannel = nil
+        
         socket.send(data, withTimeout: 2, tag: 0)
     }
+    
     //MARK:-GCDAsyncUdpSocketDelegate
     func udpSocket(_ sock: GCDAsyncUdpSocket, didConnectToAddress address: Data) {
         print("UDPSocketIn didConnect")
@@ -68,10 +89,25 @@ class UDPSocketIn: NSObject, GCDAsyncUdpSocketDelegate {
         print("UDPSocketIn didNotConnect")
     }
     func udpSocket(_ sock: GCDAsyncUdpSocket, didSendDataWithTag tag: Int) {
-        print("Subscribe Data did send")
+        switch tag  {
+        case 0:
+            print("Unsubscribe Data did send")
+        case 1:
+            print("Subscribe Data did send")
+        default:
+            print("Unknow Data did send")
+        }
+        
     }
     func udpSocket(_ sock: GCDAsyncUdpSocket, didNotSendDataWithTag tag: Int, dueToError error: Error?) {
-        print("Subscribe Data did not send")
+        switch tag  {
+        case 0:
+            print("Unsubscribe Data did not send")
+        case 1:
+            print("Subscribe Data did not send")
+        default:
+            print("Unknow Data did not send")
+        }
     }
     func udpSocketDidClose(_ sock: GCDAsyncUdpSocket, withError error: Error?) {
         print("Error:\(String(describing: error))")
@@ -88,3 +124,42 @@ class UDPSocketIn: NSObject, GCDAsyncUdpSocketDelegate {
     }
 }
 
+extension UDPSocketIn {
+    static func encodeUDPSocketSubscribeInfo(_ userID: String, subscribeChannelID: String) -> Data? {
+        /*
+         UDPSocketInSendSubscriptionInfo
+         --------------------------------------------------------------------
+         Field Offset | Field Name | Field type | Field Size(byte) | Description
+         --------------------------------------------------------------------
+         0              userID      String          16
+         16             channelID   String          16
+         32             isSubscribe Uint8          1               // 0: Unsubscribe 1: Subscribe
+         --------------------------------------------------------------------
+         */
+        
+        var newData = withUnsafeBytes(of: userID) { Data($0) }   // Offset: 0
+        newData.append(withUnsafeBytes(of: subscribeChannelID) { Data($0) })   // Offset: 16
+        newData.append(withUnsafeBytes(of: UInt8(1)) { Data($0) }) // Offset: 32
+        
+        return newData
+    }
+    
+    static func encodeUDPSocketUnsubscribeInfo(_ userID: String, subscribeChannelID: String) -> Data? {
+        /*
+         UDPSocketInSendSubscriptionInfo
+         --------------------------------------------------------------------
+         Field Offset | Field Name | Field type | Field Size(byte) | Description
+         --------------------------------------------------------------------
+         0              userID      String          16
+         16             channelID   String          16
+         32             isSubscribe Uint8          1               // 0: Unsubscribe 1: Subscribe
+         --------------------------------------------------------------------
+         */
+        
+        var newData = withUnsafeBytes(of: userID) { Data($0) }   // Offset: 0
+        newData.append(withUnsafeBytes(of: subscribeChannelID) { Data($0) })   // Offset: 16
+        newData.append(withUnsafeBytes(of: UInt8(0)) { Data($0) }) // Offset: 32
+        
+        return newData
+    }
+}

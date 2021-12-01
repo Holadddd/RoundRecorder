@@ -16,6 +16,10 @@ class UDPSocketOut: NSObject, GCDAsyncUdpSocketDelegate {
     
     var isSocketReady: Bool = false
     
+    var userID: String?
+    
+    var broadcastOnChannel: String?
+    
     override init(){
         super.init()
     }
@@ -40,14 +44,16 @@ class UDPSocketOut: NSObject, GCDAsyncUdpSocketDelegate {
         
         do { try socket.connect(toHost:IP, onPort: PORT)} catch { print("joinMulticastGroup not proceed")}
         do { try socket.enableBroadcast(true)} catch { print("not able to broad cast")}
+        
         isSocketReady = true
         
-        print("MaxSendBufferSize: \(socket.maxSendBufferSize())")
         success(Int(socket.maxSendBufferSize()))
     }
     
-    func send(data: Data) {
-        guard isSocketReady else { return }
+    func broadcastChannel(userID: String, channelID: String, payload: Data) {
+        guard isSocketReady,
+        let data = UDPSocketOut.encodeUDPSocketPayload(payload, userID: userID, channelID: channelID) else { return }
+        
         socket.send(data, withTimeout: 0, tag: 0)
     }
     
@@ -76,6 +82,73 @@ class UDPSocketOut: NSObject, GCDAsyncUdpSocketDelegate {
     }
 }
 
+extension UDPSocketOut {
+    static func encodeUDPSocketPayload(_ dataPtr: UnsafeMutableRawPointer, _ dataLength: Int, userID: String, channelID: String) -> Data? {
+        /*
+         UDPSocketOutSendPayload
+         --------------------------------------------------------------------
+         Field Offset | Field Name | Field type | Field Size(byte) | Description
+         --------------------------------------------------------------------
+         0              userID      String          16
+         16             channelID   String          16
+         32             date        UInt64          8               MillisecondsSince1970
+         40             data        UInt32
+         --------------------------------------------------------------------
+         */
+        let date = Date().millisecondsSince1970
+        
+        var data = withUnsafeBytes(of: userID) { Data($0) }   // Offset: 0
+        data.append(withUnsafeBytes(of: channelID) { Data($0) })   // Offset: 16
+        data.append(withUnsafeBytes(of: date) { Data($0) }) // Offset: 32
+        
+        if UDPSocketManager.enableCompresssionAlgorithm {
+            guard let compressData = Data(bytes: dataPtr, count: dataLength).compressed(using: UDPSocketManager.compressionAlgorithm) else {
+                print("CompressFail")
+                return data
+            }
+            data.append(compressData)    // Offset: 40
+            
+            return data
+        } else {
+            data.append(Data(bytes: dataPtr, count: dataLength))    // Offset: 40
+            
+            return data
+        }
+    }
+    
+    static func encodeUDPSocketPayload(_ data: Data, userID: String, channelID: String) -> Data? {
+        /*
+         UDPSocketSendPayload
+         --------------------------------------------------------------------
+         Field Offset | Field Name | Field type | Field Size(byte) | Description
+         --------------------------------------------------------------------
+         0              userID      String          16
+         16             channelID   String          16
+         32             date        UInt64          8               MillisecondsSince1970
+         40             data        UInt32
+         --------------------------------------------------------------------
+         */
+        let date = Date().millisecondsSince1970
+        
+        var newData = withUnsafeBytes(of: userID) { Data($0) }   // Offset: 0
+        newData.append(withUnsafeBytes(of: channelID) { Data($0) })   // Offset: 16
+        newData.append(withUnsafeBytes(of: date) { Data($0) }) // Offset: 32
+        
+        if UDPSocketManager.enableCompresssionAlgorithm {
+            guard let compressData = data.compressed(using: UDPSocketManager.compressionAlgorithm) else {
+                print("CompressFail")
+                return data
+            }
+            newData.append(compressData)    // Offset: 40
+            
+            return newData
+        } else {
+            newData.append(data)    // Offset: 40
+            
+            return newData
+        }
+    }
+}
 enum UDPSocketOutError: Error {
     
 }

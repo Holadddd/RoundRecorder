@@ -70,6 +70,8 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     @Published var isSelectedItemPlayAble: Bool = false
     
+    var udpsocketLatenctMs: UInt64 = 0
+    
     let locationManager = CLLocationManager()
     
     let headphoneMotionManager = CMHeadphoneMotionManager()
@@ -120,6 +122,13 @@ class HomeMapViewModel: NSObject, ObservableObject {
         }
         
         udpSocketManager.delegate = self
+        
+        // add UDPSocket latency
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleUDPSocketConnectionLatency),
+                                               name: Notification.Name.UDPSocketConnectionLatency,
+                                               object: nil)
+        
     }
     
     func menuButtonDidClisked() {
@@ -161,9 +170,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     func subscribeChannel() {
         currentSubscribeID = subscribeID
-        guard urAudioEngineInstance.currentAbility == .Broadcast && urAudioEngineInstance.currentAbility == .undefined else {
-            print("The ability is already establish only change the currentSubscribeID")
-            return }
+        
         // 1. setupSubscribeEnviriment
         self.urAudioEngineInstance.setupAudioEngineEnvironmentForSubscribe()
         
@@ -182,9 +189,6 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     func broadcastChannel() {
         currentBroadcastID = broadcastID
-        guard urAudioEngineInstance.currentAbility == .Subscribe && urAudioEngineInstance.currentAbility == .undefined else {
-            print("The ability is already establish only change the currentBroadcastID")
-            return }
         
         // 1. Request Microphone
         urAudioEngineInstance.requestRecordPermissionAndStartTappingMicrophone {[weak self] isGranted in
@@ -227,6 +231,11 @@ class HomeMapViewModel: NSObject, ObservableObject {
     func resetAnchorDegrees() {
         firstAnchorMotionCompassDegrees = nil
         firstAnchorMotion = nil
+    }
+    
+    @objc func handleUDPSocketConnectionLatency(notification: Notification) {
+        guard let msSecond = notification.userInfo?["millisecond"] as? UInt64 else { return }
+        udpsocketLatenctMs = msSecond
     }
 }
 
