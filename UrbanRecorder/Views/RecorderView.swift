@@ -2,21 +2,14 @@
 //  RecorderView.swift
 //  UrbanRecorder
 //
-//  Created by ting hui wu on 2021/10/25.
+//  Created by ting hui wu on 2021/12/5.
 //
 
 import SwiftUI
 
 struct RecorderView: View {
-    @Environment(\.dismiss) var dismiss
-    
     var body: some View {
-        Button("Press to dismiss") {
-            dismiss()
-        }
-        .font(.title)
-        .padding()
-        .background(Color.black)
+        Text("This is Recorder")
     }
 }
 

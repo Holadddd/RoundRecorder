@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB2D9CFB275C982000100535 /* Grid+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9CFA275C982000100535 /* Grid+.swift */; };
+		DB2D9CFD275CCE7100100535 /* SubscribeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9CFC275CCE7100100535 /* SubscribeView.swift */; };
+		DB2D9CFF275CCFD800100535 /* BoradcastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9CFE275CCFD800100535 /* BoradcastView.swift */; };
+		DB2D9D01275CD17100100535 /* RecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D00275CD17100100535 /* RecorderView.swift */; };
 		DB3321D227476312002446F1 /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = DB3321D127476312002446F1 /* Neumorphic */; };
 		DB4956D9274920DD00FE512A /* NeumorphicWaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */; };
 		DB4956DB2749401400FE512A /* UIDevice+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4956DA2749401400FE512A /* UIDevice+.swift */; };
@@ -30,7 +34,6 @@
 		DB9E3CFD2722785F008FCFAB /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CFC2722785F008FCFAB /* Helper.swift */; };
 		DB9E3D052722BAF6008FCFAB /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3D042722BAF6008FCFAB /* View+.swift */; };
 		DB9E3D072722BB34008FCFAB /* CGFloat+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3D062722BB34008FCFAB /* CGFloat+.swift */; };
-		DB9E3D0B2726A1AE008FCFAB /* RecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3D0A2726A1AE008FCFAB /* RecorderView.swift */; };
 		DBA6DA50274E033000E80FF5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DBA6DA4F274E033000E80FF5 /* GoogleService-Info.plist */; };
 		DBA6DA54274E083800E80FF5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = DBA6DA53274E083800E80FF5 /* FirebaseAnalytics */; };
 		DBA6DA56274E083E00E80FF5 /* FirebaseAnalyticsSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = DBA6DA55274E083E00E80FF5 /* FirebaseAnalyticsSwift-Beta */; };
@@ -80,6 +83,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DB2D9CFA275C982000100535 /* Grid+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Grid+.swift"; sourceTree = "<group>"; };
+		DB2D9CFC275CCE7100100535 /* SubscribeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeView.swift; sourceTree = "<group>"; };
+		DB2D9CFE275CCFD800100535 /* BoradcastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoradcastView.swift; sourceTree = "<group>"; };
+		DB2D9D00275CD17100100535 /* RecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecorderView.swift; sourceTree = "<group>"; };
 		DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeumorphicWaveView.swift; sourceTree = "<group>"; };
 		DB4956DA2749401400FE512A /* UIDevice+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+.swift"; sourceTree = "<group>"; };
 		DB67AE3C2738D678007EE7CE /* PowerMeters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerMeters.swift; sourceTree = "<group>"; };
@@ -101,7 +108,6 @@
 		DB9E3CFC2722785F008FCFAB /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		DB9E3D042722BAF6008FCFAB /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		DB9E3D062722BB34008FCFAB /* CGFloat+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+.swift"; sourceTree = "<group>"; };
-		DB9E3D0A2726A1AE008FCFAB /* RecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecorderView.swift; sourceTree = "<group>"; };
 		DBA6DA4F274E033000E80FF5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DBA7EFC6272A9F880037AA7E /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		DBA7EFC9272AB3440037AA7E /* DeviceInfoRQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoRQ.swift; sourceTree = "<group>"; };
@@ -212,7 +218,6 @@
 				DB9E3D032722BAE7008FCFAB /* Extension */,
 				DBF3C68A2726AF9F00292893 /* Views */,
 				DB9E3CF527215D51008FCFAB /* HomeMap */,
-				DB9E3D0A2726A1AE008FCFAB /* RecorderView.swift */,
 				DBA7EFC5272A9F380037AA7E /* Network */,
 				DBF0E3F7272FCC43004DC546 /* Socket */,
 				DBF0E406273141C5004DC546 /* URAudioEngine */,
@@ -282,6 +287,7 @@
 				DB710E482745F42A00FD3304 /* DispatchTime+.swift */,
 				DB4956DA2749401400FE512A /* UIDevice+.swift */,
 				DBBB1D5F2750D09300E1B6C8 /* String+.swift */,
+				DB2D9CFA275C982000100535 /* Grid+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -400,6 +406,9 @@
 			children = (
 				DBF3C68B2726BCEC00292893 /* SegmentSlideOverCardView.swift */,
 				DBE2A38A273D17460098E52D /* DirectionAndDistanceMetersView.swift */,
+				DB2D9CFC275CCE7100100535 /* SubscribeView.swift */,
+				DB2D9CFE275CCFD800100535 /* BoradcastView.swift */,
+				DB2D9D00275CD17100100535 /* RecorderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -553,6 +562,8 @@
 				DBA7EFD1272AE89B0037AA7E /* UserAPI.swift in Sources */,
 				DBA7EFDE272AF37D0037AA7E /* UserInfo.swift in Sources */,
 				DB9E3CFD2722785F008FCFAB /* Helper.swift in Sources */,
+				DB2D9CFD275CCE7100100535 /* SubscribeView.swift in Sources */,
+				DB2D9D01275CD17100100535 /* RecorderView.swift in Sources */,
 				DB9E3CC5272131CE008FCFAB /* Persistence.swift in Sources */,
 				DBF3C68C2726BCEC00292893 /* SegmentSlideOverCardView.swift in Sources */,
 				DBF0E40B273144B6004DC546 /* URAudioBufferMetadata.swift in Sources */,
@@ -565,6 +576,7 @@
 				DB68DD9C2733DB7500336001 /* URAudioEngineDelegate.swift in Sources */,
 				DBF0E3FF27311959004DC546 /* Notification+.swift in Sources */,
 				DB4956D9274920DD00FE512A /* NeumorphicWaveView.swift in Sources */,
+				DB2D9CFF275CCFD800100535 /* BoradcastView.swift in Sources */,
 				DB67AE3D2738D678007EE7CE /* PowerMeters.swift in Sources */,
 				DBE2A38B273D17460098E52D /* DirectionAndDistanceMetersView.swift in Sources */,
 				DBF0E3F9272FEB07004DC546 /* SubscribeManager.swift in Sources */,
@@ -577,7 +589,7 @@
 				DBF0E41527327D1B004DC546 /* EngineHelper.swift in Sources */,
 				DBA7EFCA272AB3440037AA7E /* DeviceInfoRQ.swift in Sources */,
 				DBA7EFD5272AEB1C0037AA7E /* CallRequestRQ.swift in Sources */,
-				DB9E3D0B2726A1AE008FCFAB /* RecorderView.swift in Sources */,
+				DB2D9CFB275C982000100535 /* Grid+.swift in Sources */,
 				DBF0E405273126C1004DC546 /* Date+.swift in Sources */,
 				DB9E3CFB27216E23008FCFAB /* HomeMapModel.swift in Sources */,
 				DBBB1D5C274F63F500E1B6C8 /* UDPSocketIn.swift in Sources */,

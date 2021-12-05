@@ -8,6 +8,8 @@
 import Foundation
 import SwiftUI
 import MapKit
+import Neumorphic
+import UniformTypeIdentifiers
 
 struct HomeMapView: View {
     
@@ -18,6 +20,8 @@ struct HomeMapView: View {
     @State private var lastDragPosition: DragGesture.Value?
     
     @State private var menuScrollViewOffset: CGFloat = 0
+    
+    @State private var dragging: GridData?
     
     var body: some View {
         GeometryReader { outsideProxy in
@@ -35,40 +39,69 @@ struct HomeMapView: View {
                 }
                 
                 SegmentSlideOverCardView(content: {
-                    VStack{
-                        HStack{
-                            Text("ChannelID: ")
-                            TextField.init("SubscribeChannelID", text: $viewmodel.subscribeID, prompt: nil)
-                            Button("Subscribe") {
-                                viewmodel.subscribeChannel()
-                            }.padding()
-                        }
-                        HStack{
-                            Text("ChannelID: ")
-                            TextField.init("BroadcastChannelID", text: $viewmodel.broadcastID, prompt: nil)
-                            Button("Broadcast") {
-                                viewmodel.broadcastChannel()
-                            }.padding()
-                        }
-                        HStack{
-                            // Prompt Note
-                            Text("MS: \(viewmodel.udpsocketLatenctMs)")
-                                .foregroundColor(.fixedLightGray)
-                            Spacer()
-                        }
-                        HStack{
-                            DirectionAndDistanceMetersView(receiverDirection: viewmodel.receiverDirection,
-                                                           receiverMeters: $viewmodel.receiverLastDistanceMeters,
-                                                           showWave: viewmodel.showWave,
-                                                           volumeMaxPeakPercentage: viewmodel.volumeMaxPeakPercentage) {
-                                // TODO: Fixed the distance
-                                print("TODO: Fixed the distance")
+                    
+                        VStack{
+                            HStack(alignment: .top){
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 30) {
+                                        Spacer(minLength: 10)
+                                        ForEach(viewmodel.featureData) { data in
+                                            Button {
+                                                data.action?()
+                                                viewmodel.featureData[data.id].isShowing.toggle()
+                                            } label: {
+                                                Text(data.title).fontWeight(.bold)
+                                                    .frame(width: 120, height: 60)
+                                            }.softButtonStyle(RoundedRectangle(cornerRadius: 15), padding: 5, isPressed: viewmodel.featureData[data.id].isShowing)
+                                            
+                                        }
+                                        
+                                        Spacer(minLength: 10)
+                                    }
+                                    .padding()
+                                }
                                 
-                            } resetAnchorDegreesDidClicked: {
-                                viewmodel.resetAnchorDegrees()
+                            }.frame(width: outsideProxy.frame(in: .local).width)
+                            
+                            ForEach(viewmodel.featureData) { data in
+                                if data.isShowing {
+                                    switch data.id {
+                                    case 0:
+                                            BoradcastView(channelID: $viewmodel.broadcastID, broadcastAction: {
+                                                viewmodel.broadcastChannel()
+                                            })
+                                    case 1:
+                                            VStack{
+                                                SubscribeView(channelID: $viewmodel.subscribeID) {
+                                                    viewmodel.subscribeChannel()
+                                                }
+                                                HStack{
+                                                    // Prompt Note
+                                                    Text("MS: \(viewmodel.udpsocketLatenctMs)")
+                                                        .foregroundColor(.fixedLightGray)
+                                                    Spacer()
+                                                }
+                                                HStack{
+                                                    DirectionAndDistanceMetersView(receiverDirection: viewmodel.receiverDirection,
+                                                                                   receiverMeters: $viewmodel.receiverLastDistanceMeters,
+                                                                                   showWave: viewmodel.showWave,
+                                                                                   volumeMaxPeakPercentage: viewmodel.volumeMaxPeakPercentage) {
+                                                        // TODO: Fixed the distance
+                                                        print("TODO: Fixed the distance")
+
+                                                    } resetAnchorDegreesDidClicked: {
+                                                        viewmodel.resetAnchorDegrees()
+                                                    }
+                                                    .scaledToFill()
+                                                }
+                                            }
+                                    case 2:
+                                        RecorderView()
+                                    default:
+                                        Spacer(minLength: 0)
+                                    }
+                                }
                             }
-                            .scaledToFill()
-                        }
                     }
                 }, cardPosition: $viewmodel.cardPosition, availableMode: AvailablePosition([.top, .middle, .bottom]))
             }
@@ -87,5 +120,31 @@ struct HomeMapView_Preview: PreviewProvider {
     
     static var previews: some View {
         HomeMapView()
+    }
+}
+
+struct DragRelocateDelegate: DropDelegate {
+    let item: GridData
+    @Binding var listData: [GridData]
+    @Binding var current: GridData?
+
+    func dropEntered(info: DropInfo) {
+        if item != current {
+            let from = listData.firstIndex(of: current!)!
+            let to = listData.firstIndex(of: item)!
+            if listData[to].id != current!.id {
+                listData.move(fromOffsets: IndexSet(integer: from),
+                    toOffset: to > from ? to + 1 : to)
+            }
+        }
+    }
+
+    func dropUpdated(info: DropInfo) -> DropProposal? {
+        return DropProposal(operation: .move)
+    }
+
+    func performDrop(info: DropInfo) -> Bool {
+        self.current = nil
+        return true
     }
 }

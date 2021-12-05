@@ -24,7 +24,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     var currentBroadcastID: String = ""
     
-    @Published var cardPosition = CardPosition.middle
+    @Published var cardPosition = CardPosition.bottom
     
     var isUpdatedUserRegion: Bool = false
     
@@ -94,8 +94,15 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     var volumeMaxPeakPercentage: Double = 0.01
     
+    var featureColumns: [GridItem] = [GridItem(.fixed(160)),
+                                      GridItem(.fixed(160)),
+                                      GridItem(.fixed(160)),]
+    @Published var featureData: [GridData] = []
+    
     override init() {
         super.init()
+        generateFeatureData()
+        
         // Delegate/DataSource
         urAudioEngineInstance.dataSource = self
         urAudioEngineInstance.delegate = self
@@ -129,6 +136,22 @@ class HomeMapViewModel: NSObject, ObservableObject {
                                                name: Notification.Name.UDPSocketConnectionLatency,
                                                object: nil)
         
+    }
+    
+    private func generateFeatureData() {
+        let broadcastFeature = GridData(id: 0, title: "Broadcast", isShowing: false) {
+            print("Broadcast")
+        }
+        
+        let subscribeFeature = GridData(id: 1, title: "Subscribe", isShowing: false) {
+            print("Subscribe")
+        }
+        
+        let motionRecord = GridData(id: 2, title: "Record", isShowing: false) {
+            print("Record")
+        }
+        
+        featureData = [broadcastFeature, subscribeFeature, motionRecord]
     }
     
     func menuButtonDidClisked() {
