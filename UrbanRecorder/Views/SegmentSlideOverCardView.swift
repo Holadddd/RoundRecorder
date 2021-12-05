@@ -6,6 +6,7 @@
 //
 import Foundation
 import SwiftUI
+import Neumorphic
 
 struct SegmentSlideOverCardView<Content: View> : View {
     
@@ -44,26 +45,30 @@ struct SegmentSlideOverCardView<Content: View> : View {
                     .background(Color.themeBackgroud)
                     .zIndex(1)
                 
+                
                 GeometryReader{ value in
-                    
-                    ScrollView {
-                        ZStack{
-                            VStack{
-                                content()
-                                    .expandHorizontally()
-                                Spacer().padding(10)
-                            }
-                            .overlay(
-                                GeometryReader { proxy in
-                                    Color.clear.onAppear {
-                                        scrollViewMaxOffset = value.frame(in: .local).size.height - proxy.size.height
-                                    }
+                    NavigationView{
+                        ScrollView {
+                            ZStack{
+                                VStack{
+                                    content()
+                                        .expandHorizontally()
+                                    Spacer().padding(10)
                                 }
-                            ).background(Color.themeBackgroud)
+                                .overlay(
+                                    GeometryReader { proxy in
+                                        Color.clear.onAppear {
+                                            scrollViewMaxOffset = value.frame(in: .local).size.height - proxy.size.height
+                                        }
+                                    }
+                                ).background(Color.themeBackgroud)
+                            }
                         }
-                    }
-                    .content.offset(x: 0, y: scrollViewOffset)
-                    .coordinateSpace(name: "scroll")
+                        .content.offset(x: 0, y: scrollViewOffset)
+                        .coordinateSpace(name: "scroll")
+                        .padding(0)
+                        .navigationBarHidden(true)
+                    }.navigationBarTitleDisplayMode(.inline)
                 }
             }
         }
@@ -102,6 +107,10 @@ struct SegmentSlideOverCardView<Content: View> : View {
                                 } else {
                                     if updatedOffset > scrollViewMaxOffset {
                                         cardViewOffset += drag.translation.height
+                                    } else {
+                                        if drag.translation.height > 0 {
+                                            cardViewOffset -= drag.translation.height
+                                        }
                                     }
                                 }
                             }
@@ -154,7 +163,7 @@ struct SegmentSlideOverCardView<Content: View> : View {
                     lastDragPosition = nil
                 })
         )
-        .background(Color.themeBackgroud)
+        .background(Color.Neumorphic.main)
         .cornerRadius(10)
         .softOuterShadow(darkShadow: .fixedDarkGray, lightShadow: .fixedLightGray, offset: 5, radius: 5)
         .offset(y: cardPosition.offsetValue + cardViewOffset)
