@@ -19,8 +19,6 @@ class URAudioEngine: NSObject {
     
     var currentAbility: URAudioEngineAbility = .undefined
     
-    private var captureAudioBufferDataCallBack: ((NSMutableData)->Void)?
-    
     var status: URAudioEngineStatus = .unReady
     
     var useCase: URAudioEngineUseCase = .singleRecordWithHighQuality
@@ -130,7 +128,7 @@ class URAudioEngine: NSObject {
      BroadcastThenSubscribe
      */
     // TODO: Write a Task for concurrenct queue
-    func setupAudioEngineEnvironmentForSubscribe() {
+    func setupAudioEngineEnvironmentForScheduleAudioData() {
         switch currentAbility {
         case .undefined:
             // 1. Set up Audio Unit For render the input streaming data while engine is running
@@ -145,10 +143,10 @@ class URAudioEngine: NSObject {
                 
                 self.startEngine()   // This will change switch AirPod connection from other device
                 
-                self.currentAbility = .Subscribe
+                self.currentAbility = .ScheduleAudioData
             }
             
-        case .Broadcast:
+        case .CaptureAudioData:
             // 1. Set up Audio Unit For render the input streaming data while engine is running
             setupInputAudioUnit() {[weak self] in
                 guard let self = self else { return }
@@ -161,17 +159,17 @@ class URAudioEngine: NSObject {
                 
                 self.startEngine()   // This will change switch AirPod connection from other device
                 
-                self.currentAbility = .BroadcastThenSubscribe
+                self.currentAbility = .ScheduleAndCaptureAudioData
             }
-        case .Subscribe:
-            print("Replace subscribe Channel")
+        case .ScheduleAudioData:
+            print("The Ability of Schechule AudioData is been active")
         default:
             print("Unhandle ability")
             break
         }
     }
     // Make sure the microphone access is been granted
-    func setupAudioEngineEnvironmentForBroadcast() {
+    func setupAudioEngineEnvironmentForCaptureAudioData() {
         switch currentAbility {
         case .undefined:
             print("1isEngine on: \(engine.isRunning)")
@@ -183,10 +181,10 @@ class URAudioEngine: NSObject {
             
             startEngine()   // This will change hte AirPod connect to the device
             
-            currentAbility = .Broadcast
+            currentAbility = .CaptureAudioData
             
             print("Ability: \(currentAbility)")
-        case .Subscribe:
+        case .ScheduleAudioData:
             // TODO: setup Environment
             print("2isEngine on: \(engine.isRunning)")
             stopEngine()
@@ -199,11 +197,11 @@ class URAudioEngine: NSObject {
             
             setupAudioNodeConnection()
             
-            currentAbility = .SubscribeThenBroadcast
+            currentAbility = .ScheduleAndCaptureAudioData
             
             print("Ability: \(currentAbility)")
-        case .Broadcast:
-            print("Replace Broadcast Channel")
+        case .CaptureAudioData:
+            print("The Ability of CaptureAudioData is been active")
         default:
             print("Unhandle ability")
             break
@@ -359,10 +357,6 @@ class URAudioEngine: NSObject {
 //        inputVolumeMeters.process_Int16(buffer.audioData.bytes.assumingMemoryBound(to: Int16.self), 1, Int(frameCounts))
     }
     
-    public func setupURAudioEngineCaptureCallBack(_ handler: @escaping ((NSMutableData)->Void)) {
-        captureAudioBufferDataCallBack = handler
-    }
-    
     private func captureAudioInputBuffer(_ audioBuffer: AudioBuffer) {
         let currentLocation = dataSource?.urAudioEngine(currentLocationForEngine: self)
         let trueNorthAnchorsMotion = dataSource?.urAudioEngine(currentTrueNorthAnchorsMotionForEngine: self)
@@ -388,11 +382,11 @@ class URAudioEngine: NSObject {
         
         let urAudioData = URAudioEngine.encodeURAudioBufferData(date, bufferLenght, nChannel, sampleRate, bitRate, latitude, longitude, altitude, roll, pitch, yaw, audioData)
         
-        captureAudioBufferDataCallBack?(urAudioData)
+        delegate?.captureAudioBufferDataCallBack(self, urAudioData: urAudioData)
     }
     
     /*
-     URAudio Formatt
+     URAudioBuffer Formatt
      --------------------------------------------------------------------
      Field Offset | Field Name | Field type | Field Size(byte) | Description
      --------------------------------------------------------------------
@@ -576,10 +570,9 @@ extension URAudioEngine {
 
 enum URAudioEngineAbility {
     case undefined
-    case Subscribe
-    case Broadcast
-    case SubscribeThenBroadcast
-    case BroadcastThenSubscribe
+    case ScheduleAudioData
+    case CaptureAudioData
+    case ScheduleAndCaptureAudioData
 }
 
 

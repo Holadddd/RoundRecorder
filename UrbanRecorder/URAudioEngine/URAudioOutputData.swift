@@ -74,7 +74,7 @@ class URAudioOutputData: NSObject {
     func scheduleOutput(data: NSMutableData) {
         
         // The async thread need captured the data before write into the outputData
-        DispatchQueue.global().async { [weak self ,data] in
+        DispatchQueue.global().sync { [weak self ,data] in
             guard let self = self else { return }
             
             let inputDataPtr = data.mutableBytes

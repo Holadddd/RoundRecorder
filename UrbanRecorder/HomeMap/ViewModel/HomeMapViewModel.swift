@@ -66,8 +66,6 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     @Published var receiverLastDistanceMeters: Double = 0
     
-    @Published var isShowingRecorderView: Bool = false
-    
     @Published var isSelectedItemPlayAble: Bool = false
     
     var udpsocketLatenctMs: UInt64 = 0
@@ -98,6 +96,12 @@ class HomeMapViewModel: NSObject, ObservableObject {
                                       GridItem(.fixed(160)),
                                       GridItem(.fixed(160)),]
     @Published var featureData: [GridData] = []
+    
+    private var broadcastMicrophoneCaptureCallback: ((NSMutableData)->Void)?
+    
+    private var recordingMicrophoneCaptureCallback: ((NSMutableData)->Void)?
+    
+    @Published var isRecording: Bool = false
     
     override init() {
         super.init()
@@ -158,11 +162,6 @@ class HomeMapViewModel: NSObject, ObservableObject {
         print("menuButtonDidClisked")
     }
     
-    func recordButtonDidClicked() {
-        print("recordButtonDidClicked")
-        isShowingRecorderView.toggle()
-    }
-    
     func playButtonDidClicked() {
         print("playButtonDidClicked")
     }
@@ -195,18 +194,26 @@ class HomeMapViewModel: NSObject, ObservableObject {
         currentSubscribeID = subscribeID
         
         // 1. setupSubscribeEnviriment
-        self.urAudioEngineInstance.setupAudioEngineEnvironmentForSubscribe()
+        self.urAudioEngineInstance.setupAudioEngineEnvironmentForScheduleAudioData()
         
         self.udpSocketManager.setupSubscribeConnection {
             self.udpSocketManager.subscribeChannel(from: "", with: self.currentSubscribeID)
         }
     }
     
-    private func setupMicrophoneCaptureCallback(){
-        urAudioEngineInstance.setupURAudioEngineCaptureCallBack {[weak self] audioData in
+    private func setupBroadcastMicrophoneCaptureCallback(){
+        broadcastMicrophoneCaptureCallback = {[weak self] audioData in
             guard let self = self else { return }
             // TODO: Send data through UDPSocket
             self.udpSocketManager.broadcastBufferData(audioData, from: "", to: self.currentBroadcastID)
+        }
+    }
+    
+    private func setupRecordingMicrophoneCaptureCallback(){
+        recordingMicrophoneCaptureCallback = {[weak self] audioData in
+            guard let self = self else { return }
+            // TODO: Send data through UDPSocket
+            print("Handel recording audio")
         }
     }
     
@@ -218,15 +225,39 @@ class HomeMapViewModel: NSObject, ObservableObject {
             guard let self = self else { return }
             if isGranted {
                 // 2. setupBroadcastEnviriment
-                self.urAudioEngineInstance.setupAudioEngineEnvironmentForBroadcast()
+                self.urAudioEngineInstance.setupAudioEngineEnvironmentForCaptureAudioData()
                 // 3. Connect and send audio buffer
                 self.udpSocketManager.setupBroadcastConnection {
-                    self.setupMicrophoneCaptureCallback()
+                    self.setupBroadcastMicrophoneCaptureCallback()
                 }
             } else {
                 print("Show Alert View")
                 // TODO: Show Alert View
             }
+        }
+        
+    }
+    
+    func recordButtonDidClicked() {
+        isRecording.toggle()
+        
+        if isRecording {
+            // 1. Request Microphone
+            urAudioEngineInstance.requestRecordPermissionAndStartTappingMicrophone {[weak self] isGranted in
+                guard let self = self else { return }
+                if isGranted {
+                    // 2. setupBroadcastEnviriment
+                    self.urAudioEngineInstance.setupAudioEngineEnvironmentForCaptureAudioData()
+                    // 3.setupRecordingEnviriment
+                    self.setupRecordingMicrophoneCaptureCallback()
+                } else {
+                    print("Show Alert View")
+                    // TODO: Show Alert View
+                }
+            }
+        } else {
+            recordingMicrophoneCaptureCallback = nil
+            print("TODO: Stop recording")
         }
         
     }
@@ -377,5 +408,10 @@ extension HomeMapViewModel: URAudioEngineDelegate {
         
         receiverLastDirectionDegrees = directionAndDistance.direction
         receiverLastDistanceMeters = directionAndDistance.distance
+    }
+    
+    func captureAudioBufferDataCallBack(_ engine: URAudioEngine, urAudioData: NSMutableData) {
+        broadcastMicrophoneCaptureCallback?(urAudioData)
+        recordingMicrophoneCaptureCallback?(urAudioData)
     }
 }

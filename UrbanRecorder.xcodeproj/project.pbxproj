@@ -11,6 +11,9 @@
 		DB2D9CFD275CCE7100100535 /* SubscribeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9CFC275CCE7100100535 /* SubscribeView.swift */; };
 		DB2D9CFF275CCFD800100535 /* BoradcastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9CFE275CCFD800100535 /* BoradcastView.swift */; };
 		DB2D9D01275CD17100100535 /* RecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D00275CD17100100535 /* RecorderView.swift */; };
+		DB2D9D03275E180400100535 /* URRecordingDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D02275E180400100535 /* URRecordingDataHelper.swift */; };
+		DB2D9D05275F3B8400100535 /* URAudioData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D04275F3B8400100535 /* URAudioData.swift */; };
+		DB2D9D07275F49C000100535 /* URRecordingDataHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D06275F49BF00100535 /* URRecordingDataHelperTests.swift */; };
 		DB3321D227476312002446F1 /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = DB3321D127476312002446F1 /* Neumorphic */; };
 		DB4956D9274920DD00FE512A /* NeumorphicWaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */; };
 		DB4956DB2749401400FE512A /* UIDevice+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4956DA2749401400FE512A /* UIDevice+.swift */; };
@@ -87,6 +90,9 @@
 		DB2D9CFC275CCE7100100535 /* SubscribeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeView.swift; sourceTree = "<group>"; };
 		DB2D9CFE275CCFD800100535 /* BoradcastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoradcastView.swift; sourceTree = "<group>"; };
 		DB2D9D00275CD17100100535 /* RecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecorderView.swift; sourceTree = "<group>"; };
+		DB2D9D02275E180400100535 /* URRecordingDataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URRecordingDataHelper.swift; sourceTree = "<group>"; };
+		DB2D9D04275F3B8400100535 /* URAudioData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioData.swift; sourceTree = "<group>"; };
+		DB2D9D06275F49BF00100535 /* URRecordingDataHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URRecordingDataHelperTests.swift; sourceTree = "<group>"; };
 		DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeumorphicWaveView.swift; sourceTree = "<group>"; };
 		DB4956DA2749401400FE512A /* UIDevice+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+.swift"; sourceTree = "<group>"; };
 		DB67AE3C2738D678007EE7CE /* PowerMeters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerMeters.swift; sourceTree = "<group>"; };
@@ -337,6 +343,7 @@
 			isa = PBXGroup;
 			children = (
 				DBDD67DA27440F0100E91A5B /* UrbanRecorderTests.swift */,
+				DB2D9D06275F49BF00100535 /* URRecordingDataHelperTests.swift */,
 			);
 			path = UrbanRecorderTests;
 			sourceTree = "<group>";
@@ -367,6 +374,7 @@
 				DBF0E40C27327A6F004DC546 /* URAudioEngineDataSource.swift */,
 				DB68DD9B2733DB7500336001 /* URAudioEngineDelegate.swift */,
 				DBF0E416273288BE004DC546 /* URAudioOutputData.swift */,
+				DB2D9D02275E180400100535 /* URRecordingDataHelper.swift */,
 				DBF0E40E27327ABB004DC546 /* AudioUnit */,
 				DBF0E41127327CC7004DC546 /* AudioStreamBasicDescription */,
 				DB67AE3B2738D65F007EE7CE /* PowerMeters */,
@@ -381,6 +389,7 @@
 			children = (
 				DBF0E40A273144B6004DC546 /* URAudioBufferMetadata.swift */,
 				DBF0E41827338BDE004DC546 /* URAudioBuffer.swift */,
+				DB2D9D04275F3B8400100535 /* URAudioData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -582,6 +591,7 @@
 				DBF0E3F9272FEB07004DC546 /* SubscribeManager.swift in Sources */,
 				DB710E462745025700FD3304 /* AtomicValue.swift in Sources */,
 				DB710E492745F42A00FD3304 /* DispatchTime+.swift in Sources */,
+				DB2D9D05275F3B8400100535 /* URAudioData.swift in Sources */,
 				DBA7EFCC272ABABA0037AA7E /* Codable+.swift in Sources */,
 				DBA7EFD9272AEEC50037AA7E /* DeclineCallingRequestRQ.swift in Sources */,
 				DBF0E41927338BDE004DC546 /* URAudioBuffer.swift in Sources */,
@@ -592,6 +602,7 @@
 				DB2D9CFB275C982000100535 /* Grid+.swift in Sources */,
 				DBF0E405273126C1004DC546 /* Date+.swift in Sources */,
 				DB9E3CFB27216E23008FCFAB /* HomeMapModel.swift in Sources */,
+				DB2D9D03275E180400100535 /* URRecordingDataHelper.swift in Sources */,
 				DBBB1D5C274F63F500E1B6C8 /* UDPSocketIn.swift in Sources */,
 				DB74024F273A6FFD00CD74A4 /* UDPSocketOut.swift in Sources */,
 				DBE2A389273D0B2B0098E52D /* Double+.swift in Sources */,
@@ -610,6 +621,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB2D9D07275F49C000100535 /* URRecordingDataHelperTests.swift in Sources */,
 				DB710E472745025D00FD3304 /* AtomicValue.swift in Sources */,
 				DBDD67DB27440F0100E91A5B /* UrbanRecorderTests.swift in Sources */,
 			);

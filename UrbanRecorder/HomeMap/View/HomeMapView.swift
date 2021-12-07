@@ -96,7 +96,9 @@ struct HomeMapView: View {
                                                 }
                                             }
                                     case 2:
-                                        RecorderView()
+                                        RecorderView(recordDidClicked: {
+                                            viewmodel.recordButtonDidClicked()
+                                        }, isRecordButtonPressed: $viewmodel.isRecording)
                                     default:
                                         Spacer(minLength: 0)
                                     }
@@ -120,6 +122,7 @@ struct HomeMapView_Preview: PreviewProvider {
     
     static var previews: some View {
         HomeMapView()
+            .environment(\.colorScheme, .light)
     }
 }
 
