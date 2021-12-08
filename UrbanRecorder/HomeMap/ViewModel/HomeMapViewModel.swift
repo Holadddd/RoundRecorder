@@ -99,9 +99,13 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     private var broadcastMicrophoneCaptureCallback: ((NSMutableData)->Void)?
     
-    private var recordingMicrophoneCaptureCallback: ((NSMutableData)->Void)?
+    private var recordingMicrophoneCaptureCallback: ((Data)->Void)?
     
     @Published var isRecording: Bool = false
+    
+    var recordingHelper = URRecordingDataHelper()
+    
+    @Published var recordDuration: UInt = 0
     
     override init() {
         super.init()
@@ -133,7 +137,8 @@ class HomeMapViewModel: NSObject, ObservableObject {
         }
         
         udpSocketManager.delegate = self
-        
+        // RecordHelper
+        recordingHelper.delagete = self
         // add UDPSocket latency
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(handleUDPSocketConnectionLatency),
@@ -213,7 +218,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
         recordingMicrophoneCaptureCallback = {[weak self] audioData in
             guard let self = self else { return }
             // TODO: Send data through UDPSocket
-            print("Handel recording audio")
+            self.recordingHelper.schechuleURAudioBuffer(audioData)
         }
     }
     
@@ -248,7 +253,11 @@ class HomeMapViewModel: NSObject, ObservableObject {
                 if isGranted {
                     // 2. setupBroadcastEnviriment
                     self.urAudioEngineInstance.setupAudioEngineEnvironmentForCaptureAudioData()
-                    // 3.setupRecordingEnviriment
+                    // 3. generateEmpty URAudioData
+                    let inputFormat = self.urAudioEngineInstance.convertFormat
+                    
+                    let _ = self.recordingHelper.generateEmptyURRecordingData(audioFormat: inputFormat)
+                    // 4.setupRecordingEnviriment
                     self.setupRecordingMicrophoneCaptureCallback()
                 } else {
                     print("Show Alert View")
@@ -257,7 +266,14 @@ class HomeMapViewModel: NSObject, ObservableObject {
             }
         } else {
             recordingMicrophoneCaptureCallback = nil
-            print("TODO: Stop recording")
+            
+            guard let currentRecordingData = recordingHelper.getCurrentRecordingData() else { return }
+            
+            let bytes = currentRecordingData.count
+            
+            let bytesFornatter = ByteCountFormatter.string(fromByteCount: Int64(bytes), countStyle: .file)
+            
+            print("File Size: \(bytesFornatter)")
         }
         
     }
@@ -410,8 +426,18 @@ extension HomeMapViewModel: URAudioEngineDelegate {
         receiverLastDistanceMeters = directionAndDistance.distance
     }
     
-    func captureAudioBufferDataCallBack(_ engine: URAudioEngine, urAudioData: NSMutableData) {
-        broadcastMicrophoneCaptureCallback?(urAudioData)
+    func captureAudioBufferDataCallBack(_ engine: URAudioEngine, urAudioData: Data) {
+        broadcastMicrophoneCaptureCallback?(NSMutableData(data: urAudioData))
         recordingMicrophoneCaptureCallback?(urAudioData)
+    }
+}
+// URRecordingDataHelperDelegate
+extension HomeMapViewModel: URRecordingDataHelperDelegate {
+    func didUpdateAudioRecordingDuration(_ seconds: UInt) {
+        if featureData[2].isShowing {
+            DispatchQueue.main.async {[weak self] in
+                self?.recordDuration = seconds
+            }
+        }
     }
 }

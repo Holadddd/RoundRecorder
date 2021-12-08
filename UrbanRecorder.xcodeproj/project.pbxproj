@@ -14,6 +14,7 @@
 		DB2D9D03275E180400100535 /* URRecordingDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D02275E180400100535 /* URRecordingDataHelper.swift */; };
 		DB2D9D05275F3B8400100535 /* URAudioData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D04275F3B8400100535 /* URAudioData.swift */; };
 		DB2D9D07275F49C000100535 /* URRecordingDataHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D06275F49BF00100535 /* URRecordingDataHelperTests.swift */; };
+		DB2D9D0C2760A44000100535 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D0B2760A44000100535 /* Int+.swift */; };
 		DB3321D227476312002446F1 /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = DB3321D127476312002446F1 /* Neumorphic */; };
 		DB4956D9274920DD00FE512A /* NeumorphicWaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */; };
 		DB4956DB2749401400FE512A /* UIDevice+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4956DA2749401400FE512A /* UIDevice+.swift */; };
@@ -93,6 +94,7 @@
 		DB2D9D02275E180400100535 /* URRecordingDataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URRecordingDataHelper.swift; sourceTree = "<group>"; };
 		DB2D9D04275F3B8400100535 /* URAudioData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioData.swift; sourceTree = "<group>"; };
 		DB2D9D06275F49BF00100535 /* URRecordingDataHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URRecordingDataHelperTests.swift; sourceTree = "<group>"; };
+		DB2D9D0B2760A44000100535 /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
 		DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeumorphicWaveView.swift; sourceTree = "<group>"; };
 		DB4956DA2749401400FE512A /* UIDevice+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+.swift"; sourceTree = "<group>"; };
 		DB67AE3C2738D678007EE7CE /* PowerMeters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerMeters.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 			children = (
 				DB9E3D042722BAF6008FCFAB /* View+.swift */,
 				DB9E3D062722BB34008FCFAB /* CGFloat+.swift */,
+				DB2D9D0B2760A44000100535 /* Int+.swift */,
 				DBE2A388273D0B2B0098E52D /* Double+.swift */,
 				DBF3C68D2727E10800292893 /* Color+.swift */,
 				DBA7EFCB272ABABA0037AA7E /* Codable+.swift */,
@@ -597,6 +600,7 @@
 				DBF0E41927338BDE004DC546 /* URAudioBuffer.swift in Sources */,
 				DBF0E417273288BE004DC546 /* URAudioOutputData.swift in Sources */,
 				DBF0E41527327D1B004DC546 /* EngineHelper.swift in Sources */,
+				DB2D9D0C2760A44000100535 /* Int+.swift in Sources */,
 				DBA7EFCA272AB3440037AA7E /* DeviceInfoRQ.swift in Sources */,
 				DBA7EFD5272AEB1C0037AA7E /* CallRequestRQ.swift in Sources */,
 				DB2D9CFB275C982000100535 /* Grid+.swift in Sources */,

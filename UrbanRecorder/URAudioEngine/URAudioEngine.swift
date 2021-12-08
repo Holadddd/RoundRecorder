@@ -30,6 +30,8 @@ class URAudioEngine: NSObject {
     // The convert format default as stereo layout & sampleRate is 48000
     var convertFormat: AVAudioFormat = AVAudioFormat(standardFormatWithSampleRate: 48000, channelLayout: ChannelLayout.stereo.object)
     
+    lazy var inputFormat: AVAudioFormat = engine.inputNode.inputFormat(forBus: 0)
+    
     var bytesPerFrame: Int {
         return convertFormat.streamDescription.pointee.framesToBytes(1)
     }
@@ -364,7 +366,7 @@ class URAudioEngine: NSObject {
         let date = Date().millisecondsSince1970
         
         #warning("Check channel count")
-        let nChannel = UInt32(1)
+        let nChannel = UInt32(audioBuffer.mNumberChannels)
         let sampleRate = UInt32(convertFormat.sampleRate)
         let bitRate = UInt32(convertFormat.bitRate)
         
@@ -456,7 +458,7 @@ class URAudioEngine: NSObject {
                                          _ roll: Double,
                                          _ pitch: Double,
                                          _ yaw: Double,
-                                         _ audioData: Data) -> NSMutableData {
+                                         _ audioData: Data) -> Data {
         
         var data = withUnsafeBytes(of: date) { Data($0) }   // Offset: 0
         data.append(withUnsafeBytes(of: bufferLength) { Data($0) }) // Offset: 8
@@ -471,7 +473,7 @@ class URAudioEngine: NSObject {
         data.append(withUnsafeBytes(of: yaw) { Data($0) })  // Offset: 64
         data.append(audioData)    // Offset: 72
         
-        return NSMutableData(data: data)
+        return data
     }
     // MARK: - Update Environment
     private func updateListenerPosition(_ position: AVAudio3DPoint) {

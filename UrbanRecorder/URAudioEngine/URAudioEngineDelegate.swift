@@ -10,9 +10,9 @@ import Foundation
 protocol URAudioEngineDelegate: AnyObject {
     func didUpdateReceiversBufferMetaData(_ engine: URAudioEngine, metaData: URAudioBufferMetadata)
     
-    func captureAudioBufferDataCallBack(_ engine: URAudioEngine, urAudioData: NSMutableData)
+    func captureAudioBufferDataCallBack(_ engine: URAudioEngine, urAudioData: Data)
 }
 
 extension URAudioEngineDelegate {
-    func captureAudioBufferDataCallBack(_ engine: URAudioEngine, urAudioData: NSMutableData) {}
+    func captureAudioBufferDataCallBack(_ engine: URAudioEngine, urAudioData: Data) {}
 }

@@ -14,9 +14,11 @@ struct RecorderView: View {
     
     @Binding var isRecordButtonPressed: Bool
     
+    @Binding var recordDuration: UInt
+    
     var body: some View {
         return VStack {
-            Text("00:00")
+            Text(getRecorderTimeFormat(recordDuration))
                 .fontWeight(.thin)
                 .foregroundColor(Color.Neumorphic.secondary)
             HStack {
@@ -42,12 +44,26 @@ struct RecorderView: View {
             }
         }
     }
+    
+    private func getRecorderTimeFormat(_ seconds: UInt) -> String {
+        let timeUnit = seconds.toHoursMinutesSeconds()
+        
+        let hourUnit = timeUnit.0
+        let minuteUnit = timeUnit.1.toTimeUnit()
+        let secondUnit = timeUnit.2.toTimeUnit()
+        
+        if timeUnit.0 > 0 {
+            return "\(hourUnit):\(minuteUnit):\(secondUnit)"
+        } else {
+            return "\(minuteUnit):\(secondUnit)"
+        }
+    }
 }
  
 struct RecorderView_Previews: PreviewProvider {
     static var previews: some View {
         RecorderView(recordDidClicked: {
             
-        }, isRecordButtonPressed: .constant(false))
+        }, isRecordButtonPressed: .constant(false), recordDuration: .constant(0))
     }
 }

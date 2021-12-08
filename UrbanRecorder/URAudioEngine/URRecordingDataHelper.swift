@@ -8,27 +8,46 @@
 import Foundation
 import AVFoundation
 
+protocol URRecordingDataHelperDelegate: AnyObject {
+    func didUpdateAudioRecordingDuration(_ seconds: UInt)
+}
+
 class URRecordingDataHelper: NSObject {
 
     static let URAudioDataFormatVersion: UInt8 = 1
     
     private var recordData: Data?
     
+    private var numChannels: UInt8 = 1
+    
+    private var sampleRate: UInt32?
+    
+    private var bitRate: UInt8?
+    
     private var numberOfFrames: Int = 0
     
-    private var dataSize: Int = 0
+    private var audioSizeInRecordData: UInt = 0 {
+        didSet{
+            guard let sampleRate = sampleRate,
+                  let bitRate = bitRate   else {
+                      return
+                  }
+            let bytesPerSecond = UInt(numChannels) * UInt(sampleRate) * UInt(bitRate)
+            
+            let result = audioSizeInRecordData / (bytesPerSecond / 8)
+            
+            if result != audioDuration {
+                audioDuration = result
+                delagete?.didUpdateAudioRecordingDuration(audioDuration)
+            }
+        }
+    }
     
-    private var outputDataBufferSize: Int = 0
+    private var startTime: UInt = 0 // MillisecondsSince1970
     
-    private var outputDataOffset: Int = 0
+    private var audioDuration: UInt = 0
     
-    private var tmpOutputDataOffset: Int = 0
-    
-    private var readingDataOffset: Int = 0
-    
-    private var startTime: Int64 = 0 // MillisecondsSince1970
-    
-    private var audioDuration: Int64 = 0 // Second
+    weak var delagete: URRecordingDataHelperDelegate?
     
     override init() {
         super.init()
@@ -50,9 +69,37 @@ class URRecordingDataHelper: NSObject {
      --------------------------------------------------------------------
      */
     // MARK: Write
-    public func generateEmptyURRecordingData(chunkID: String = UUID().uuidString, numChannels: UInt8, sampleRate: UInt32, bitRate: UInt8) -> Bool {
+    public func generateEmptyURRecordingData(chunkID: String = UUID().uuidString, sampleRate: UInt32, bitRate: UInt8) -> Bool {
+        recordData = nil    // Deallocate the old file
         var newData = Data(count: 35)
         numberOfFrames = 0
+        audioSizeInRecordData = 0
+        
+        self.sampleRate = sampleRate
+        self.bitRate = bitRate
+        
+        newData.replaceSubrange(0..<16, with: withUnsafeBytes(of: chunkID) { Data($0) })    //  Offset: 0, chunkID
+        
+        newData.replaceSubrange(24..<25, with: withUnsafeBytes(of: URRecordingDataHelper.URAudioDataFormatVersion) { Data($0) })    //  Offset: 24, formatVersion
+        
+        newData.replaceSubrange(25..<26, with: withUnsafeBytes(of: numChannels) { Data($0) })    //  Offset: 25, numChannels
+        
+        newData.replaceSubrange(26..<30, with: withUnsafeBytes(of: sampleRate) { Data($0) })    //  Offset: 26, sampleRate
+        
+        newData.replaceSubrange(30..<31, with: withUnsafeBytes(of: bitRate) { Data($0) })    //  Offset: 30, bitRate
+        
+        recordData = newData
+        return true
+    }
+    
+    public func generateEmptyURRecordingData(chunkID: String = UUID().uuidString, audioFormat: AVAudioFormat) -> Bool {
+        recordData = nil    // Deallocate the old file
+        var newData = Data(count: 35)
+        sampleRate = UInt32(audioFormat.sampleRate)
+        bitRate = UInt8(audioFormat.bitRate)
+        numberOfFrames = 0
+        audioSizeInRecordData = 0
+        
         newData.replaceSubrange(0..<16, with: withUnsafeBytes(of: chunkID) { Data($0) })    //  Offset: 0, chunkID
         
         newData.replaceSubrange(24..<25, with: withUnsafeBytes(of: URRecordingDataHelper.URAudioDataFormatVersion) { Data($0) })    //  Offset: 24, formatVersion
@@ -69,6 +116,7 @@ class URRecordingDataHelper: NSObject {
     
     public func schechuleURAudioBuffer(_ buffer:  Data) {
         guard recordData != nil else { print("Record Data is not generate"); return }
+        audioSizeInRecordData += UInt(URRecordingDataHelper.getURAudioBufferAudioSize(buffer))
         numberOfFrames += 1
         recordData!.append(buffer)
     }
@@ -194,5 +242,10 @@ extension URRecordingDataHelper {
         let buffer = URAudioBuffer(mData, audioBufferLength, channel, sampleRate, bitRate, metadata, date)
         
         return buffer
+    }
+    
+    static func getURAudioBufferAudioSize(_ data: Data) -> UInt32 {
+        let bufferLength: UInt32 = NSMutableData(data: data.advanced(by: 8)).bytes.load(as: UInt32.self)    // Offset: 8, bufferLength
+        return bufferLength
     }
 }
