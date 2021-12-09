@@ -16,13 +16,41 @@ struct RecorderView: View {
     
     @Binding var recordDuration: UInt
     
+    @Binding var movingDistance: Double
+    
+    @Binding var recordName: String
+    
+    var recorderLocation: URLocationCoordinate3D?
+    
     var body: some View {
+        
         return VStack {
-            Text(getRecorderTimeFormat(recordDuration))
-                .fontWeight(.thin)
-                .foregroundColor(Color.Neumorphic.secondary)
             HStack {
+                TextField.init("",
+                               text: $recordName,
+                               prompt: Text("\(getDefaultRecordName())"))
+                    .fixedSize()
+            }.padding(0)
+            
+            ZStack {
+                HStack(alignment: .center) {
+                    VStack(alignment: .leading) {
+                        Text("Distance: \(movingDistance.string(fractionDigits: 1)) m")
+                            .fontWeight(.thin)
+                            .foregroundColor(Color.Neumorphic.secondary)
+                        Text("Time: \(getRecorderTimeFormat(recordDuration))")
+                            .fontWeight(.thin)
+                            .foregroundColor(Color.Neumorphic.secondary)
+                        
+                    }.padding(EdgeInsets(top: 0,
+                                         leading: 10,
+                                         bottom: 0,
+                                         trailing: 0))
+                    Spacer()
+                }
+                
                 Button {
+                    checkFileNaming()
                     recordDidClicked()
                 } label: {
                     if isRecordButtonPressed {
@@ -39,8 +67,6 @@ struct RecorderView: View {
                     
                 }
                 .softButtonStyle(RoundedRectangle(cornerRadius: 15), padding: 3, textColor: .red, pressedEffect: .hard, isPressed: self.isRecordButtonPressed)
-                
-                
             }
         }
     }
@@ -58,12 +84,26 @@ struct RecorderView: View {
             return "\(minuteUnit):\(secondUnit)"
         }
     }
+    
+    private func getDefaultRecordName() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-dd_HH:mm"
+        
+        
+        return dateFormatter.string(from: Date())
+    }
+    
+    private func checkFileNaming() {
+        if recordName == "" {
+            recordName = getDefaultRecordName()
+        }
+    }
 }
- 
+
 struct RecorderView_Previews: PreviewProvider {
     static var previews: some View {
         RecorderView(recordDidClicked: {
             
-        }, isRecordButtonPressed: .constant(false), recordDuration: .constant(0))
+        }, isRecordButtonPressed: .constant(false), recordDuration: .constant(0), movingDistance: .constant(5.5), recordName: .constant(""), recorderLocation: URLocationCoordinate3D(latitude: 121.1, longitude: 25.4, altitude: 0))
     }
 }

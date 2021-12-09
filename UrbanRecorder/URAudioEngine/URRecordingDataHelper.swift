@@ -10,6 +10,8 @@ import AVFoundation
 
 protocol URRecordingDataHelperDelegate: AnyObject {
     func didUpdateAudioRecordingDuration(_ seconds: UInt)
+    
+    func didUpdateAudioRecordingMovingDistance(_ meters: Double)
 }
 
 class URRecordingDataHelper: NSObject {
@@ -39,6 +41,16 @@ class URRecordingDataHelper: NSObject {
             if result != audioDuration {
                 audioDuration = result
                 delagete?.didUpdateAudioRecordingDuration(audioDuration)
+                // TODO:- Update distance
+                if let lastLocationCodinate = lastLocationCodinate, let currentLocationCodinate = currentLocationCodinate {
+                    let movinDistanceInLastSecond = lastLocationCodinate.distanceAndDistance(from: currentLocationCodinate)
+                    
+                    movingDistanceMeters += movinDistanceInLastSecond.distance
+                    
+                    self.lastLocationCodinate = currentLocationCodinate
+                    
+                    delagete?.didUpdateAudioRecordingMovingDistance(movingDistanceMeters)
+                }
             }
         }
     }
@@ -46,6 +58,12 @@ class URRecordingDataHelper: NSObject {
     private var startTime: UInt = 0 // MillisecondsSince1970
     
     private var audioDuration: UInt = 0
+    
+    private var movingDistanceMeters: Double = 0
+    
+    private var lastLocationCodinate: URLocationCoordinate3D?
+    
+    private var currentLocationCodinate: URLocationCoordinate3D?
     
     weak var delagete: URRecordingDataHelperDelegate?
     
@@ -68,12 +86,20 @@ class URRecordingDataHelper: NSObject {
      35             URAudioBuffers
      --------------------------------------------------------------------
      */
-    // MARK: Write
-    public func generateEmptyURRecordingData(chunkID: String = UUID().uuidString, sampleRate: UInt32, bitRate: UInt8) -> Bool {
-        recordData = nil    // Deallocate the old file
-        var newData = Data(count: 35)
+    private func resetRecordingStatus() {
+        recordData = nil // Deallocate the old file
+        
         numberOfFrames = 0
         audioSizeInRecordData = 0
+        movingDistanceMeters = 0
+        sampleRate = 0
+        bitRate = 0
+    }
+    // MARK: Write
+    public func generateEmptyURRecordingData(chunkID: String = UUID().uuidString, sampleRate: UInt32, bitRate: UInt8) -> Bool {
+        resetRecordingStatus()
+        
+        var newData = Data(count: 35)
         
         self.sampleRate = sampleRate
         self.bitRate = bitRate
@@ -93,12 +119,11 @@ class URRecordingDataHelper: NSObject {
     }
     
     public func generateEmptyURRecordingData(chunkID: String = UUID().uuidString, audioFormat: AVAudioFormat) -> Bool {
-        recordData = nil    // Deallocate the old file
+        resetRecordingStatus()
+        
         var newData = Data(count: 35)
         sampleRate = UInt32(audioFormat.sampleRate)
         bitRate = UInt8(audioFormat.bitRate)
-        numberOfFrames = 0
-        audioSizeInRecordData = 0
         
         newData.replaceSubrange(0..<16, with: withUnsafeBytes(of: chunkID) { Data($0) })    //  Offset: 0, chunkID
         
@@ -247,5 +272,16 @@ extension URRecordingDataHelper {
     static func getURAudioBufferAudioSize(_ data: Data) -> UInt32 {
         let bufferLength: UInt32 = NSMutableData(data: data.advanced(by: 8)).bytes.load(as: UInt32.self)    // Offset: 8, bufferLength
         return bufferLength
+    }
+    
+    static func getURAudioBufferLocationCoordinate(_ data: Data) -> URLocationCoordinate3D {
+        
+        let latitude: Double = NSMutableData(data: data.advanced(by: 24)).bytes.load(as: Double.self)
+        let longitude: Double = NSMutableData(data: data.advanced(by: 32)).bytes.load(as: Double.self)
+        let altitude: Double = NSMutableData(data: data.advanced(by: 40)).bytes.load(as: Double.self)
+        
+        return URLocationCoordinate3D(latitude: latitude,
+                                      longitude: longitude,
+                                      altitude: altitude)
     }
 }

@@ -96,9 +96,13 @@ struct HomeMapView: View {
                                                 }
                                             }
                                     case 2:
-                                        RecorderView(recordDidClicked: {
-                                            viewmodel.recordButtonDidClicked()
-                                        }, isRecordButtonPressed: $viewmodel.isRecording, recordDuration: $viewmodel.recordDuration)
+                                        RecorderView(recordDidClicked: { viewmodel.recordButtonDidClicked() },
+                                                     isRecordButtonPressed: $viewmodel.isRecording,
+                                                     recordDuration: $viewmodel.recordDuration,
+                                                     movingDistance: $viewmodel.recordMovingDistance,
+                                                     recordName: $viewmodel.recordName,
+                                                     recorderLocation: viewmodel.userLocation
+                                        )
                                     default:
                                         Spacer(minLength: 0)
                                     }

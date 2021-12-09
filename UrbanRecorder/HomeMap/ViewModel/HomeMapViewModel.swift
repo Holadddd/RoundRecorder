@@ -32,21 +32,13 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     var urAudioEngineInstance = URAudioEngine.instance
     
-    @Published var latitude: Double = 0
-    
-    @Published var longitude: Double = 0
-    
-    @Published var altitude: Double = 0
+    var userLocation: URLocationCoordinate3D?
     
     private var firstAnchorMotion: CMDeviceMotion?
     
     private var firstAnchorMotionCompassDegrees: Double?
     
-    var trueNorthYawDegrees: Double = 0
-    
-    var trueNorthRollDegrees: Double = 0
-    
-    var trueNorthPitchDegrees: Double = 0
+    var userTrueNorthURMotionAttitude: URMotionAttitude?
     
     var receiverDirection: Double {
         return compassDegrees + receiverLastDirectionDegrees
@@ -106,6 +98,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
     var recordingHelper = URRecordingDataHelper()
     
     @Published var recordDuration: UInt = 0
+    
+    @Published var recordMovingDistance: Double = 0
+    
+    @Published var recordName: String = ""
     
     override init() {
         super.init()
@@ -259,21 +255,33 @@ class HomeMapViewModel: NSObject, ObservableObject {
                     let _ = self.recordingHelper.generateEmptyURRecordingData(audioFormat: inputFormat)
                     // 4.setupRecordingEnviriment
                     self.setupRecordingMicrophoneCaptureCallback()
+                    
+                    print("Start Recording With File: \(self.recordName)")
                 } else {
                     print("Show Alert View")
                     // TODO: Show Alert View
                 }
             }
         } else {
-            recordingMicrophoneCaptureCallback = nil
-            
             guard let currentRecordingData = recordingHelper.getCurrentRecordingData() else { return }
             
             let bytes = currentRecordingData.count
             
             let bytesFornatter = ByteCountFormatter.string(fromByteCount: Int64(bytes), countStyle: .file)
             
-            print("File Size: \(bytesFornatter)")
+            print("File(\(recordName)) Size: \(bytesFornatter)")
+            // RESET THE RECORD STATUS
+            recordName = ""
+            
+            recordDuration = 0
+            
+            recordMovingDistance = 0
+            
+            recordingMicrophoneCaptureCallback = nil
+            
+            
+            
+            
         }
         
     }
@@ -346,10 +354,7 @@ extension HomeMapViewModel: CLLocationManagerDelegate, CMHeadphoneMotionManagerD
         let locationCoordinate = CLLocationCoordinate2D(latitude: latitude,
                                                         longitude: longitude)
         DispatchQueue.main.async {
-            self.latitude = latitude
-            self.longitude = longitude
-            self.altitude = altitude
-            
+            self.userLocation = URLocationCoordinate3D(latitude: latitude, longitude: longitude, altitude: altitude)
             if !self.isUpdatedUserRegion {
                 self.userCurrentRegion.center = locationCoordinate
                 self.isUpdatedUserRegion.toggle()
@@ -384,21 +389,22 @@ extension HomeMapViewModel: CLLocationManagerDelegate, CMHeadphoneMotionManagerD
             firstAnchorMotion = motion
             return}
         
-        trueNorthYawDegrees = (anchorMotion.attitude.yaw - motion.attitude.yaw) / Double.pi * 180 - firstAnchorMotionCompassDegrees
-        trueNorthPitchDegrees = (anchorMotion.attitude.pitch - motion.attitude.pitch) / Double.pi * 180
-        trueNorthRollDegrees = (anchorMotion.attitude.roll - motion.attitude.roll) / Double.pi * 180
+        let trueNorthYawDegrees = (anchorMotion.attitude.yaw - motion.attitude.yaw) / Double.pi * 180 - firstAnchorMotionCompassDegrees
+        let trueNorthPitchDegrees = (anchorMotion.attitude.pitch - motion.attitude.pitch) / Double.pi * 180
+        let trueNorthRollDegrees = (anchorMotion.attitude.roll - motion.attitude.roll) / Double.pi * 180
         
+        userTrueNorthURMotionAttitude = URMotionAttitude(rollDegrees: trueNorthRollDegrees, pitchDegrees: trueNorthPitchDegrees, yawDegrees: trueNorthYawDegrees)
     }
 }
 // URAudioEngineDataSource
 extension HomeMapViewModel: URAudioEngineDataSource {
-    func urAudioEngine(currentLocationForEngine: URAudioEngine) -> URLocationCoordinate3D {
-        let location = URLocationCoordinate3D(latitude: latitude, longitude: longitude, altitude: altitude)
-        return location
+    func urAudioEngine(currentLocationForEngine: URAudioEngine) -> URLocationCoordinate3D? {
+        guard let userLocation = userLocation else { return nil }
+        return userLocation
     }
     
-    func urAudioEngine(currentTrueNorthAnchorsMotionForEngine: URAudioEngine) -> URMotionAttitude {
-        let attitude = URMotionAttitude(rollDegrees: trueNorthRollDegrees, pitchDegrees: trueNorthPitchDegrees, yawDegrees: trueNorthYawDegrees)
+    func urAudioEngine(currentTrueNorthAnchorsMotionForEngine: URAudioEngine) -> URMotionAttitude? {
+        guard let attitude = userTrueNorthURMotionAttitude else { return nil}
         return attitude
     }
 }
@@ -418,7 +424,7 @@ extension HomeMapViewModel: URAudioEngineDelegate {
             receiverAnnotationItem.coordinate.longitude = receiverLongitude
         }
         
-        let userLocation = URLocationCoordinate3D(latitude: latitude, longitude: longitude, altitude: altitude)
+        guard let userLocation = userLocation else {print("Fail in getting userlocation"); return }
         
         let directionAndDistance = userLocation.distanceAndDistance(from: metaData.locationCoordinate)
         
@@ -437,6 +443,14 @@ extension HomeMapViewModel: URRecordingDataHelperDelegate {
         if featureData[2].isShowing {
             DispatchQueue.main.async {[weak self] in
                 self?.recordDuration = seconds
+            }
+        }
+    }
+    
+    func didUpdateAudioRecordingMovingDistance(_ meters: Double) {
+        if featureData[2].isShowing {
+            DispatchQueue.main.async {[weak self] in
+                self?.recordMovingDistance = meters
             }
         }
     }

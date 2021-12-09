@@ -360,7 +360,7 @@ class URAudioEngine: NSObject {
     }
     
     private func captureAudioInputBuffer(_ audioBuffer: AudioBuffer) {
-        let currentLocation = dataSource?.urAudioEngine(currentLocationForEngine: self)
+        guard let currentLocation = dataSource?.urAudioEngine(currentLocationForEngine: self) else { return }
         let trueNorthAnchorsMotion = dataSource?.urAudioEngine(currentTrueNorthAnchorsMotionForEngine: self)
         
         let date = Date().millisecondsSince1970
@@ -370,9 +370,9 @@ class URAudioEngine: NSObject {
         let sampleRate = UInt32(convertFormat.sampleRate)
         let bitRate = UInt32(convertFormat.bitRate)
         
-        let latitude = currentLocation?.latitude ?? 0
-        let longitude = currentLocation?.longitude ?? 0
-        let altitude = currentLocation?.altitude ?? 0
+        let latitude = currentLocation.latitude
+        let longitude = currentLocation.longitude
+        let altitude = currentLocation.altitude
         
         let roll = trueNorthAnchorsMotion?.rollDegrees ?? 0
         let pitch = trueNorthAnchorsMotion?.pitchDegrees ?? 0
