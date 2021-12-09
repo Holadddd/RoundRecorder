@@ -15,6 +15,8 @@
 		DB2D9D05275F3B8400100535 /* URAudioData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D04275F3B8400100535 /* URAudioData.swift */; };
 		DB2D9D07275F49C000100535 /* URRecordingDataHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D06275F49BF00100535 /* URRecordingDataHelperTests.swift */; };
 		DB2D9D0C2760A44000100535 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D0B2760A44000100535 /* Int+.swift */; };
+		DB2D9D112762019A00100535 /* DataStorageStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D102762019A00100535 /* DataStorageStatus.swift */; };
+		DB2D9D132762036300100535 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D122762036300100535 /* Array+.swift */; };
 		DB3321D227476312002446F1 /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = DB3321D127476312002446F1 /* Neumorphic */; };
 		DB4956D9274920DD00FE512A /* NeumorphicWaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */; };
 		DB4956DB2749401400FE512A /* UIDevice+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4956DA2749401400FE512A /* UIDevice+.swift */; };
@@ -95,6 +97,8 @@
 		DB2D9D04275F3B8400100535 /* URAudioData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioData.swift; sourceTree = "<group>"; };
 		DB2D9D06275F49BF00100535 /* URRecordingDataHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URRecordingDataHelperTests.swift; sourceTree = "<group>"; };
 		DB2D9D0B2760A44000100535 /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
+		DB2D9D102762019A00100535 /* DataStorageStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStorageStatus.swift; sourceTree = "<group>"; };
+		DB2D9D122762036300100535 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
 		DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeumorphicWaveView.swift; sourceTree = "<group>"; };
 		DB4956DA2749401400FE512A /* UIDevice+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+.swift"; sourceTree = "<group>"; };
 		DB67AE3C2738D678007EE7CE /* PowerMeters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerMeters.swift; sourceTree = "<group>"; };
@@ -178,6 +182,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DB2D9D0D2761FCE200100535 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				DB2D9D102762019A00100535 /* DataStorageStatus.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
 		DB3321C627474951002446F1 /* Neumorphic View */ = {
 			isa = PBXGroup;
 			children = (
@@ -228,6 +240,7 @@
 				DB9E3CF527215D51008FCFAB /* HomeMap */,
 				DBA7EFC5272A9F380037AA7E /* Network */,
 				DBF0E3F7272FCC43004DC546 /* Socket */,
+				DB2D9D0D2761FCE200100535 /* Storage */,
 				DBF0E406273141C5004DC546 /* URAudioEngine */,
 				DB9E3CC4272131CE008FCFAB /* Persistence.swift */,
 				DB9E3CBF272131CE008FCFAB /* Assets.xcassets */,
@@ -297,6 +310,7 @@
 				DB4956DA2749401400FE512A /* UIDevice+.swift */,
 				DBBB1D5F2750D09300E1B6C8 /* String+.swift */,
 				DB2D9CFA275C982000100535 /* Grid+.swift */,
+				DB2D9D122762036300100535 /* Array+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -568,6 +582,7 @@
 				DBF3C68E2727E10800292893 /* Color+.swift in Sources */,
 				DBF0E41327327CE7004DC546 /* URStreamBasicDescription.swift in Sources */,
 				DB9E3CC8272131CE008FCFAB /* UrbanRecorder.xcdatamodeld in Sources */,
+				DB2D9D112762019A00100535 /* DataStorageStatus.swift in Sources */,
 				DBBB1D602750D09300E1B6C8 /* String+.swift in Sources */,
 				DBA7EFC7272A9F880037AA7E /* HTTPClient.swift in Sources */,
 				DBA7EFCE272ABBF50037AA7E /* URLRequest+.swift in Sources */,
@@ -587,6 +602,7 @@
 				DB9E3CF227215B8A008FCFAB /* HomeMapView.swift in Sources */,
 				DB68DD9C2733DB7500336001 /* URAudioEngineDelegate.swift in Sources */,
 				DBF0E3FF27311959004DC546 /* Notification+.swift in Sources */,
+				DB2D9D132762036300100535 /* Array+.swift in Sources */,
 				DB4956D9274920DD00FE512A /* NeumorphicWaveView.swift in Sources */,
 				DB2D9CFF275CCFD800100535 /* BoradcastView.swift in Sources */,
 				DB67AE3D2738D678007EE7CE /* PowerMeters.swift in Sources */,

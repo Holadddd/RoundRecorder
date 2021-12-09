@@ -12,6 +12,8 @@ struct RecorderView: View {
     
     var recordDidClicked: (()->Void)
     
+    var saveButtonDidClicked: ((Int)->Void)
+    
     @Binding var isRecordButtonPressed: Bool
     
     @Binding var recordDuration: UInt
@@ -19,6 +21,8 @@ struct RecorderView: View {
     @Binding var movingDistance: Double
     
     @Binding var recordName: String
+    
+    @Binding var dataInfoList: [RecordDataInfo]
     
     var recorderLocation: URLocationCoordinate3D?
     
@@ -68,6 +72,12 @@ struct RecorderView: View {
                 }
                 .softButtonStyle(RoundedRectangle(cornerRadius: 15), padding: 3, textColor: .red, pressedEffect: .hard, isPressed: self.isRecordButtonPressed)
             }
+            
+            ForEach(dataInfoList.indices, id: \.self) { index in
+                let dataInfo = dataInfoList[index]
+                Text("\(dataInfo.fileName)")
+                    .foregroundColor(.black)
+            }
         }
     }
     
@@ -89,7 +99,6 @@ struct RecorderView: View {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-dd_HH:mm"
         
-        
         return dateFormatter.string(from: Date())
     }
     
@@ -104,6 +113,11 @@ struct RecorderView_Previews: PreviewProvider {
     static var previews: some View {
         RecorderView(recordDidClicked: {
             
-        }, isRecordButtonPressed: .constant(false), recordDuration: .constant(0), movingDistance: .constant(5.5), recordName: .constant(""), recorderLocation: URLocationCoordinate3D(latitude: 121.1, longitude: 25.4, altitude: 0))
+        }, saveButtonDidClicked: {_ in }, isRecordButtonPressed: .constant(false),
+                     recordDuration: .constant(0),
+                     movingDistance: .constant(5.5),
+                     recordName: .constant(""),
+                     dataInfoList: .constant([]),
+                     recorderLocation: URLocationCoordinate3D(latitude: 121.1, longitude: 25.4, altitude: 0))
     }
 }

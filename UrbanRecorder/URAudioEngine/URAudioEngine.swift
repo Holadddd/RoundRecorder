@@ -174,7 +174,6 @@ class URAudioEngine: NSObject {
     func setupAudioEngineEnvironmentForCaptureAudioData() {
         switch currentAbility {
         case .undefined:
-            print("1isEngine on: \(engine.isRunning)")
             beginTappingMicrophone()
             
             setupNodeAttachment()
@@ -188,7 +187,6 @@ class URAudioEngine: NSObject {
             print("Ability: \(currentAbility)")
         case .ScheduleAudioData:
             // TODO: setup Environment
-            print("2isEngine on: \(engine.isRunning)")
             stopEngine()
             
             beginTappingMicrophone()

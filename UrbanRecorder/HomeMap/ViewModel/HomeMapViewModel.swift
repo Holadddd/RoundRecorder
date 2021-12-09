@@ -103,6 +103,8 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     @Published var recordName: String = ""
     
+    var urAudioDataInfoCollection: [RecordDataInfo] = []
+    
     override init() {
         super.init()
         generateFeatureData()
@@ -263,13 +265,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
                 }
             }
         } else {
-            guard let currentRecordingData = recordingHelper.getCurrentRecordingData() else { return }
+            guard let currentRecordingData = recordingHelper.getCurrentRecordingURAudioData() else { return }
             
-            let bytes = currentRecordingData.count
+            urAudioDataInfoCollection.append(RecordDataInfo(fileName: recordName, file: currentRecordingData))
             
-            let bytesFornatter = ByteCountFormatter.string(fromByteCount: Int64(bytes), countStyle: .file)
-            
-            print("File(\(recordName)) Size: \(bytesFornatter)")
             // RESET THE RECORD STATUS
             recordName = ""
             
@@ -278,12 +277,24 @@ class HomeMapViewModel: NSObject, ObservableObject {
             recordMovingDistance = 0
             
             recordingMicrophoneCaptureCallback = nil
-            
-            
-            
-            
+       
         }
+    }
+    
+    func saveURAudioData(at index: Int) {
+        guard let audioDataInfo = urAudioDataInfoCollection[safe: index] else { return }
         
+        let dataName = audioDataInfo.fileName
+        
+        let audioData = audioDataInfo.file
+        
+        let data: Data = URRecordingDataHelper.encodeURAudioData(urAudioData: audioData)
+        
+        let bytes = data.count
+        
+        let bytesFornatter = ByteCountFormatter.string(fromByteCount: Int64(bytes), countStyle: .file)
+        
+        print("Save File(\(dataName)) Size: \(bytesFornatter)")
     }
     
     func didReceiveVolumePeakPercentage(_ percentage: Double) {
@@ -454,4 +465,15 @@ extension HomeMapViewModel: URRecordingDataHelperDelegate {
             }
         }
     }
+}
+
+struct RecordDataInfo: Identifiable {
+    
+    var id: String = UUID().uuidString
+    
+    var fileName: String
+    
+    var file: URAudioData
+    
+    var isSaved: Bool = false
 }

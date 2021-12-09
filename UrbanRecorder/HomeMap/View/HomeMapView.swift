@@ -96,11 +96,14 @@ struct HomeMapView: View {
                                                 }
                                             }
                                     case 2:
-                                        RecorderView(recordDidClicked: { viewmodel.recordButtonDidClicked() },
+                                        RecorderView(recordDidClicked: { viewmodel.recordButtonDidClicked() }, saveButtonDidClicked: { index in
+                                            viewmodel.saveURAudioData(at: index)
+                                        },
                                                      isRecordButtonPressed: $viewmodel.isRecording,
                                                      recordDuration: $viewmodel.recordDuration,
                                                      movingDistance: $viewmodel.recordMovingDistance,
                                                      recordName: $viewmodel.recordName,
+                                                     dataInfoList: $viewmodel.urAudioDataInfoCollection,
                                                      recorderLocation: viewmodel.userLocation
                                         )
                                     default:

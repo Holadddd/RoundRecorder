@@ -7,6 +7,7 @@
 
 import Foundation
 import AVFoundation
+import SwiftUI
 
 protocol URRecordingDataHelperDelegate: AnyObject {
     func didUpdateAudioRecordingDuration(_ seconds: UInt)
@@ -18,7 +19,9 @@ class URRecordingDataHelper: NSObject {
 
     static let URAudioDataFormatVersion: UInt8 = 1
     
-    private var recordData: Data?
+    private var recordAudioBufferCollection: [URAudioBuffer]?
+    
+    private var chunkID: String = ""
     
     private var numChannels: UInt8 = 1
     
@@ -77,7 +80,7 @@ class URRecordingDataHelper: NSObject {
      Field Offset | Field Name | Field type | Field Size(byte) | Description
      --------------------------------------------------------------------
      0              chunkID     String          16
-     16             chunkSize   UInt64          8                   35 + URAudioBuffers
+     16             chunkSize   UInt64          8                   35
      24             formatVersionUint8          1
      25             numChannels UInt8           1                   Default is 1(Mono
      26             sampleRate  UInt32          4                   ex: 441000, 48000
@@ -87,8 +90,9 @@ class URRecordingDataHelper: NSObject {
      --------------------------------------------------------------------
      */
     private func resetRecordingStatus() {
-        recordData = nil // Deallocate the old file
+        recordAudioBufferCollection = nil // Deallocate the old file
         
+        chunkID = ""
         numberOfFrames = 0
         audioSizeInRecordData = 0
         movingDistanceMeters = 0
@@ -99,62 +103,50 @@ class URRecordingDataHelper: NSObject {
     public func generateEmptyURRecordingData(chunkID: String = UUID().uuidString, sampleRate: UInt32, bitRate: UInt8) -> Bool {
         resetRecordingStatus()
         
-        var newData = Data(count: 35)
-        
+        self.chunkID = chunkID
         self.sampleRate = sampleRate
         self.bitRate = bitRate
         
-        newData.replaceSubrange(0..<16, with: withUnsafeBytes(of: chunkID) { Data($0) })    //  Offset: 0, chunkID
-        
-        newData.replaceSubrange(24..<25, with: withUnsafeBytes(of: URRecordingDataHelper.URAudioDataFormatVersion) { Data($0) })    //  Offset: 24, formatVersion
-        
-        newData.replaceSubrange(25..<26, with: withUnsafeBytes(of: numChannels) { Data($0) })    //  Offset: 25, numChannels
-        
-        newData.replaceSubrange(26..<30, with: withUnsafeBytes(of: sampleRate) { Data($0) })    //  Offset: 26, sampleRate
-        
-        newData.replaceSubrange(30..<31, with: withUnsafeBytes(of: bitRate) { Data($0) })    //  Offset: 30, bitRate
-        
-        recordData = newData
         return true
     }
     
     public func generateEmptyURRecordingData(chunkID: String = UUID().uuidString, audioFormat: AVAudioFormat) -> Bool {
         resetRecordingStatus()
         
-        var newData = Data(count: 35)
         sampleRate = UInt32(audioFormat.sampleRate)
         bitRate = UInt8(audioFormat.bitRate)
         
-        newData.replaceSubrange(0..<16, with: withUnsafeBytes(of: chunkID) { Data($0) })    //  Offset: 0, chunkID
-        
-        newData.replaceSubrange(24..<25, with: withUnsafeBytes(of: URRecordingDataHelper.URAudioDataFormatVersion) { Data($0) })    //  Offset: 24, formatVersion
-        
-        newData.replaceSubrange(25..<26, with: withUnsafeBytes(of: numChannels) { Data($0) })    //  Offset: 25, numChannels
-        
-        newData.replaceSubrange(26..<30, with: withUnsafeBytes(of: sampleRate) { Data($0) })    //  Offset: 26, sampleRate
-        
-        newData.replaceSubrange(30..<31, with: withUnsafeBytes(of: bitRate) { Data($0) })    //  Offset: 30, bitRate
-        
-        recordData = newData
         return true
     }
     
     public func schechuleURAudioBuffer(_ buffer:  Data) {
-        guard recordData != nil else { print("Record Data is not generate"); return }
-        audioSizeInRecordData += UInt(URRecordingDataHelper.getURAudioBufferAudioSize(buffer))
+        let urAudioBuffer = URAudioEngine.parseURAudioBufferData(buffer)
+        
         numberOfFrames += 1
-        recordData!.append(buffer)
+        
+        audioSizeInRecordData += UInt(urAudioBuffer.mDataByteSize)
+        
+        if recordAudioBufferCollection == nil {
+            recordAudioBufferCollection = [urAudioBuffer]
+        } else {
+            recordAudioBufferCollection?.append(urAudioBuffer)
+        }
+        
     }
     // MARK: Read
-    public func getCurrentRecordingData() -> Data? {
-        guard var currentData = recordData else { print("Fail to get recordData") ;return nil }
-        //TODO: Write the empty info(chunkSize, numFrames)
+    public func getCurrentRecordingURAudioData() -> URAudioData? {
+        guard let sampleRate = sampleRate,
+              let bitRate = bitRate,
+              let recordAudioBufferCollection = recordAudioBufferCollection else { return nil }
         
-        currentData.replaceSubrange(16..<24, with: withUnsafeBytes(of: UInt64(currentData.count)) { Data($0) })     //  Offset: 16, chunckSize
-        
-        currentData.replaceSubrange(31..<35, with: withUnsafeBytes(of: UInt32(numberOfFrames)) { Data($0) })     //  Offset: 31, numFrames
-        
-        return currentData
+        return URAudioData(chunkID: chunkID,
+                           chunkSize: UInt64(35),
+                           formatVersion: UInt8(1),
+                           numChannels: numChannels,
+                           sampleRate: sampleRate,
+                           bitRate: bitRate,
+                           numFrames: UInt32(numberOfFrames),
+                           audioBuffers: recordAudioBufferCollection)
     }
 }
 
@@ -211,7 +203,8 @@ extension URRecordingDataHelper {
             
             let currentBufferSize: UInt32 = NSMutableData(data: data.advanced(by: readingOffset + 8)).bytes.load(as: UInt32.self)
             
-            let audioBuffer = URRecordingDataHelper.parseURAudioBufferData(source: NSMutableData(data: data.advanced(by: readingOffset)).bytes, urAudioBufferSize: currentBufferSize)
+            let audioBuffer = URAudioEngine.parseURAudioBufferData( data.advanced(by: readingOffset)
+            )
             
             readingOffset += (Int(currentBufferSize) + audioBufferMetaDataSize)
             
@@ -231,42 +224,64 @@ extension URRecordingDataHelper {
                            audioBuffers: audioBufferCollection)
     }
     
-    static func parseURAudioBufferData(source: UnsafeRawPointer, urAudioBufferSize: UInt32)->URAudioBuffer {
-        
-        let metadataLenght = 72
-        
-        let date: UInt64 = source.load(fromByteOffset: 0, as: UInt64.self)
-        
-        let audioBufferLength: UInt32 =  source.load(fromByteOffset: 8, as: UInt32.self)
-        
-        let channel: UInt32 =  source.load(fromByteOffset: 12, as: UInt32.self)
-        let sampleRate: UInt32 =  source.load(fromByteOffset: 16, as: UInt32.self)
-        let bitRate: UInt32 =  source.load(fromByteOffset: 20, as: UInt32.self)
-        
-        let latitude: Double = source.load(fromByteOffset: 24, as: Double.self)
-        let longitude: Double = source.load(fromByteOffset: 32, as: Double.self)
-        let altitude: Double = source.load(fromByteOffset: 40, as: Double.self)
-        
-        let trueNorthRollDegrees: Double = source.load(fromByteOffset: 48, as: Double.self)
-        let trueNorthPitchDegrees: Double = source.load(fromByteOffset: 56, as: Double.self)
-        let trueNorthYawDegrees: Double = source.load(fromByteOffset: 64, as: Double.self)
-        
-        let mData = NSMutableData.init(bytes: source.advanced(by: metadataLenght), length: Int(urAudioBufferSize))
+    static func encodeURAudioData( urAudioData: URAudioData) -> Data {
+        // 1. urAudioBufferCollectionSize
+        let urAudioBufferCollection = urAudioData.audioBuffers
+        var urAudioBufferCollectionSize = 0
+        var urAudioBufferDataCollection: [Data] = []
+        for buffer in urAudioBufferCollection {
+            let date = buffer.date ?? Date().millisecondsSince1970
+            let latitude = buffer.metadata?.locationCoordinate.latitude ?? 0
+            let longitude = buffer.metadata?.locationCoordinate.longitude ?? 0
+            let altitude = buffer.metadata?.locationCoordinate.altitude ?? 0
             
-        let location = URLocationCoordinate3D(latitude: latitude,
-                                              longitude: longitude,
-                                              altitude: altitude)
+            let roll = buffer.metadata?.motionAttitude.rollDegrees ?? 0
+            let pitch = buffer.metadata?.motionAttitude.pitchDegrees ?? 0
+            let yaw = buffer.metadata?.motionAttitude.yawDegrees ?? 0
+            
+            let audioData = Data.init(bytes: buffer.audioData.bytes, count: Int(buffer.mDataByteSize))
+            
+            let bufferData = URAudioEngine.encodeURAudioBufferData(date,
+                                                                   buffer.mDataByteSize,
+                                                                   buffer.mNumberChannels,
+                                                                   buffer.sampleRate,
+                                                                   buffer.bitRate,
+                                                                   latitude,
+                                                                   longitude,
+                                                                   altitude,
+                                                                   roll,
+                                                                   pitch,
+                                                                   yaw,
+                                                                   audioData)
+            
+            urAudioBufferDataCollection.append(bufferData)
+            urAudioBufferCollectionSize += bufferData.count
+        }
         
-        let trueNorthMotion = URMotionAttitude(rollDegrees: trueNorthRollDegrees,
-                                      pitchDegrees: trueNorthPitchDegrees,
-                                      yawDegrees: trueNorthYawDegrees)
+        let newDataSize: Int = urAudioBufferCollectionSize + Int(urAudioData.chunkSize)
         
-        let metadata: URAudioBufferMetadata = URAudioBufferMetadata(locationCoordinate: location,
-                                                                    motionAttitude: trueNorthMotion)
+        var newData = Data(count: newDataSize)
         
-        let buffer = URAudioBuffer(mData, audioBufferLength, channel, sampleRate, bitRate, metadata, date)
+        // MARK: Encode URAudioData
+        newData.replaceSubrange(0..<16, with: withUnsafeBytes(of: urAudioData.chunkID) { Data($0) })    //  Offset: 0, chunkID
+
+        newData.replaceSubrange(16..<24, with: withUnsafeBytes(of: urAudioData.chunkSize) { Data($0) })    //  Offset: 16, chunkSize
         
-        return buffer
+        newData.replaceSubrange(24..<25, with: withUnsafeBytes(of: urAudioData.formatVersion) { Data($0) })    //  Offset: 24, formatVersion
+
+        newData.replaceSubrange(25..<26, with: withUnsafeBytes(of: urAudioData.numChannels) { Data($0) })    //  Offset: 25, numChannels
+
+        newData.replaceSubrange(26..<30, with: withUnsafeBytes(of: urAudioData.sampleRate) { Data($0) })    //  Offset: 26, sampleRate
+
+        newData.replaceSubrange(30..<31, with: withUnsafeBytes(of: urAudioData.bitRate) { Data($0) })    //  Offset: 30, bitRate
+        
+        newData.replaceSubrange(31..<35, with: withUnsafeBytes(of: urAudioData.numFrames) { Data($0) })    //  Offset: 30, numFrames
+        // Encode AudioBuffer
+        for data in urAudioBufferDataCollection {   // Start at offset: 35, urAudioBufferData
+            newData.append(data)
+        }
+        
+        return newData
     }
     
     static func getURAudioBufferAudioSize(_ data: Data) -> UInt32 {
