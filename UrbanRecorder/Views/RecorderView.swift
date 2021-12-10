@@ -22,8 +22,6 @@ struct RecorderView: View {
     
     @Binding var recordName: String
     
-    @Binding var dataInfoList: [RecordDataInfo]
-    
     var recorderLocation: URLocationCoordinate3D?
     
     var body: some View {
@@ -72,13 +70,14 @@ struct RecorderView: View {
                 }
                 .softButtonStyle(RoundedRectangle(cornerRadius: 15), padding: 3, textColor: .red, pressedEffect: .hard, isPressed: self.isRecordButtonPressed)
             }
-            
-            ForEach(dataInfoList.indices, id: \.self) { index in
-                let dataInfo = dataInfoList[index]
-                Text("\(dataInfo.fileName)")
-                    .foregroundColor(.black)
-            }
         }
+    }
+    
+    private func getDefaultRecordName() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-dd_HH:mm"
+        
+        return dateFormatter.string(from: Date())
     }
     
     private func getRecorderTimeFormat(_ seconds: UInt) -> String {
@@ -93,13 +92,6 @@ struct RecorderView: View {
         } else {
             return "\(minuteUnit):\(secondUnit)"
         }
-    }
-    
-    private func getDefaultRecordName() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM-dd_HH:mm"
-        
-        return dateFormatter.string(from: Date())
     }
     
     private func checkFileNaming() {
@@ -117,7 +109,6 @@ struct RecorderView_Previews: PreviewProvider {
                      recordDuration: .constant(0),
                      movingDistance: .constant(5.5),
                      recordName: .constant(""),
-                     dataInfoList: .constant([]),
                      recorderLocation: URLocationCoordinate3D(latitude: 121.1, longitude: 25.4, altitude: 0))
     }
 }

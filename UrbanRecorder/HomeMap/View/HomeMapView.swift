@@ -103,7 +103,6 @@ struct HomeMapView: View {
                                                      recordDuration: $viewmodel.recordDuration,
                                                      movingDistance: $viewmodel.recordMovingDistance,
                                                      recordName: $viewmodel.recordName,
-                                                     dataInfoList: $viewmodel.urAudioDataInfoCollection,
                                                      recorderLocation: viewmodel.userLocation
                                         )
                                     default:

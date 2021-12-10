@@ -267,7 +267,11 @@ class HomeMapViewModel: NSObject, ObservableObject {
         } else {
             guard let currentRecordingData = recordingHelper.getCurrentRecordingURAudioData() else { return }
             
-            urAudioDataInfoCollection.append(RecordDataInfo(fileName: recordName, file: currentRecordingData))
+            let data = URRecordingDataHelper.encodeURAudioData(urAudioData: currentRecordingData)
+            
+            let recordDataInfo = RecordDataInfo(dataName: recordName, data: data, movingDistance: recordMovingDistance, recordDuration: Int(recordDuration))
+            
+            urAudioDataInfoCollection.append(recordDataInfo)
             
             // RESET THE RECORD STATUS
             recordName = ""
@@ -284,13 +288,11 @@ class HomeMapViewModel: NSObject, ObservableObject {
     func saveURAudioData(at index: Int) {
         guard let audioDataInfo = urAudioDataInfoCollection[safe: index] else { return }
         
-        let dataName = audioDataInfo.fileName
+        let dataName = audioDataInfo.dataName
         
-        let audioData = audioDataInfo.file
+        let audioData = audioDataInfo.data
         
-        let data: Data = URRecordingDataHelper.encodeURAudioData(urAudioData: audioData)
-        
-        let bytes = data.count
+        let bytes = audioData.count
         
         let bytesFornatter = ByteCountFormatter.string(fromByteCount: Int64(bytes), countStyle: .file)
         
@@ -467,13 +469,17 @@ extension HomeMapViewModel: URRecordingDataHelperDelegate {
     }
 }
 
-struct RecordDataInfo: Identifiable {
+struct RecordDataInfo: Identifiable, Codable {
     
     var id: String = UUID().uuidString
     
-    var fileName: String
+    var dataName: String
     
-    var file: URAudioData
+    var data: Data
+    
+    var movingDistance: Double
+    
+    var recordDuration: Int
     
     var isSaved: Bool = false
 }
