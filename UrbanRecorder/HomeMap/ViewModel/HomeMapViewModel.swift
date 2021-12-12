@@ -84,9 +84,11 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     var volumeMaxPeakPercentage: Double = 0.01
     
-    var featureColumns: [GridItem] = [GridItem(.fixed(160)),
-                                      GridItem(.fixed(160)),
-                                      GridItem(.fixed(160)),]
+    var featureColumns: [GridItem] = [GridItem(.fixed(100)),
+                                      GridItem(.fixed(100)),
+                                      GridItem(.fixed(100)),
+                                      GridItem(.fixed(100))]
+    
     @Published var featureData: [GridData] = []
     
     private var broadcastMicrophoneCaptureCallback: ((NSMutableData)->Void)?
@@ -102,8 +104,6 @@ class HomeMapViewModel: NSObject, ObservableObject {
     @Published var recordMovingDistance: Double = 0
     
     @Published var recordName: String = ""
-    
-    var urAudioDataInfoCollection: [RecordDataInfo] = []
     
     override init() {
         super.init()
@@ -158,7 +158,11 @@ class HomeMapViewModel: NSObject, ObservableObject {
             print("Record")
         }
         
-        featureData = [broadcastFeature, subscribeFeature, motionRecord]
+        let fileList = GridData(id: 3, title: "FileList", isShowing: false) {
+            print("FileList")
+        }
+        
+        featureData = [broadcastFeature, subscribeFeature, motionRecord, fileList]
     }
     
     func menuButtonDidClisked() {
@@ -269,9 +273,20 @@ class HomeMapViewModel: NSObject, ObservableObject {
             
             let data = URRecordingDataHelper.encodeURAudioData(urAudioData: currentRecordingData)
             
-            let recordDataInfo = RecordDataInfo(dataName: recordName, data: data, movingDistance: recordMovingDistance, recordDuration: Int(recordDuration))
+            let bytes = data.count
             
-            urAudioDataInfoCollection.append(recordDataInfo)
+            let bytesFornatter = ByteCountFormatter.string(fromByteCount: Int64(bytes), countStyle: .file)
+            
+            print("Create File(\(recordName)) Size: \(bytesFornatter)")
+            // Create a Core Data Object
+            PersistenceController.shared.creatRecordedData {[recordName, recordDuration, recordMovingDistance] newRecordedData in
+                newRecordedData.id = UUID()
+                newRecordedData.timestamp = Date()
+                newRecordedData.fileName = recordName
+                newRecordedData.file = data
+                newRecordedData.recordDuration = Int64(recordDuration)
+                newRecordedData.movingDistance = recordMovingDistance
+            }
             
             // RESET THE RECORD STATUS
             recordName = ""
@@ -283,20 +298,6 @@ class HomeMapViewModel: NSObject, ObservableObject {
             recordingMicrophoneCaptureCallback = nil
        
         }
-    }
-    
-    func saveURAudioData(at index: Int) {
-        guard let audioDataInfo = urAudioDataInfoCollection[safe: index] else { return }
-        
-        let dataName = audioDataInfo.dataName
-        
-        let audioData = audioDataInfo.data
-        
-        let bytes = audioData.count
-        
-        let bytesFornatter = ByteCountFormatter.string(fromByteCount: Int64(bytes), countStyle: .file)
-        
-        print("Save File(\(dataName)) Size: \(bytesFornatter)")
     }
     
     func didReceiveVolumePeakPercentage(_ percentage: Double) {
@@ -467,19 +468,4 @@ extension HomeMapViewModel: URRecordingDataHelperDelegate {
             }
         }
     }
-}
-
-struct RecordDataInfo: Identifiable, Codable {
-    
-    var id: String = UUID().uuidString
-    
-    var dataName: String
-    
-    var data: Data
-    
-    var movingDistance: Double
-    
-    var recordDuration: Int
-    
-    var isSaved: Bool = false
 }

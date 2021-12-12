@@ -96,20 +96,21 @@ struct HomeMapView: View {
                                                 }
                                             }
                                     case 2:
-                                        RecorderView(recordDidClicked: { viewmodel.recordButtonDidClicked() }, saveButtonDidClicked: { index in
-                                            viewmodel.saveURAudioData(at: index)
-                                        },
+                                        RecorderView(recordDidClicked: { viewmodel.recordButtonDidClicked() },
                                                      isRecordButtonPressed: $viewmodel.isRecording,
                                                      recordDuration: $viewmodel.recordDuration,
                                                      movingDistance: $viewmodel.recordMovingDistance,
                                                      recordName: $viewmodel.recordName,
                                                      recorderLocation: viewmodel.userLocation
                                         )
+                                    case 3:
+                                        FileListView()
                                     default:
                                         Spacer(minLength: 0)
                                     }
                                 }
                             }
+                            
                     }
                 }, cardPosition: $viewmodel.cardPosition, availableMode: AvailablePosition([.top, .middle, .bottom]))
             }
@@ -129,6 +130,7 @@ struct HomeMapView_Preview: PreviewProvider {
     static var previews: some View {
         HomeMapView()
             .environment(\.colorScheme, .light)
+            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }
 

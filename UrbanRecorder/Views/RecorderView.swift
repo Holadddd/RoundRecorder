@@ -12,8 +12,6 @@ struct RecorderView: View {
     
     var recordDidClicked: (()->Void)
     
-    var saveButtonDidClicked: ((Int)->Void)
-    
     @Binding var isRecordButtonPressed: Bool
     
     @Binding var recordDuration: UInt
@@ -105,7 +103,7 @@ struct RecorderView_Previews: PreviewProvider {
     static var previews: some View {
         RecorderView(recordDidClicked: {
             
-        }, saveButtonDidClicked: {_ in }, isRecordButtonPressed: .constant(false),
+        }, isRecordButtonPressed: .constant(false),
                      recordDuration: .constant(0),
                      movingDistance: .constant(5.5),
                      recordName: .constant(""),

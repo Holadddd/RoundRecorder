@@ -15,9 +15,9 @@
 		DB2D9D05275F3B8400100535 /* URAudioData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D04275F3B8400100535 /* URAudioData.swift */; };
 		DB2D9D07275F49C000100535 /* URRecordingDataHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D06275F49BF00100535 /* URRecordingDataHelperTests.swift */; };
 		DB2D9D0C2760A44000100535 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D0B2760A44000100535 /* Int+.swift */; };
-		DB2D9D112762019A00100535 /* DataStorageStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D102762019A00100535 /* DataStorageStatus.swift */; };
 		DB2D9D132762036300100535 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D122762036300100535 /* Array+.swift */; };
 		DB2D9D1527633F2D00100535 /* FileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D1427633F2D00100535 /* FileListView.swift */; };
+		DB2D9D192763627200100535 /* UrbanRecorderModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D172763627200100535 /* UrbanRecorderModel.xcdatamodeld */; };
 		DB3321D227476312002446F1 /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = DB3321D127476312002446F1 /* Neumorphic */; };
 		DB4956D9274920DD00FE512A /* NeumorphicWaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */; };
 		DB4956DB2749401400FE512A /* UIDevice+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4956DA2749401400FE512A /* UIDevice+.swift */; };
@@ -32,7 +32,6 @@
 		DB9E3CC0272131CE008FCFAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB9E3CBF272131CE008FCFAB /* Assets.xcassets */; };
 		DB9E3CC3272131CE008FCFAB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB9E3CC2272131CE008FCFAB /* Preview Assets.xcassets */; };
 		DB9E3CC5272131CE008FCFAB /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CC4272131CE008FCFAB /* Persistence.swift */; };
-		DB9E3CC8272131CE008FCFAB /* UrbanRecorder.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CC6272131CE008FCFAB /* UrbanRecorder.xcdatamodeld */; };
 		DB9E3CEC27213B77008FCFAB /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = DB9E3CEB27213B77008FCFAB /* SocketIO */; };
 		DB9E3CEF27213B8F008FCFAB /* CocoaAsyncSocket in Frameworks */ = {isa = PBXBuildFile; productRef = DB9E3CEE27213B8F008FCFAB /* CocoaAsyncSocket */; };
 		DB9E3CF227215B8A008FCFAB /* HomeMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CF127215B8A008FCFAB /* HomeMapView.swift */; };
@@ -98,9 +97,9 @@
 		DB2D9D04275F3B8400100535 /* URAudioData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioData.swift; sourceTree = "<group>"; };
 		DB2D9D06275F49BF00100535 /* URRecordingDataHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URRecordingDataHelperTests.swift; sourceTree = "<group>"; };
 		DB2D9D0B2760A44000100535 /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
-		DB2D9D102762019A00100535 /* DataStorageStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStorageStatus.swift; sourceTree = "<group>"; };
 		DB2D9D122762036300100535 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
 		DB2D9D1427633F2D00100535 /* FileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListView.swift; sourceTree = "<group>"; };
+		DB2D9D182763627200100535 /* UrbanRecorderModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UrbanRecorderModel.xcdatamodel; sourceTree = "<group>"; };
 		DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeumorphicWaveView.swift; sourceTree = "<group>"; };
 		DB4956DA2749401400FE512A /* UIDevice+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+.swift"; sourceTree = "<group>"; };
 		DB67AE3C2738D678007EE7CE /* PowerMeters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerMeters.swift; sourceTree = "<group>"; };
@@ -114,7 +113,6 @@
 		DB9E3CBF272131CE008FCFAB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DB9E3CC2272131CE008FCFAB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DB9E3CC4272131CE008FCFAB /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
-		DB9E3CC7272131CE008FCFAB /* UrbanRecorder.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UrbanRecorder.xcdatamodel; sourceTree = "<group>"; };
 		DB9E3CF127215B8A008FCFAB /* HomeMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMapView.swift; sourceTree = "<group>"; };
 		DB9E3CF627215D81008FCFAB /* HomeMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMapViewModel.swift; sourceTree = "<group>"; };
 		DB9E3CF827216587008FCFAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -187,9 +185,16 @@
 		DB2D9D0D2761FCE200100535 /* Storage */ = {
 			isa = PBXGroup;
 			children = (
-				DB2D9D102762019A00100535 /* DataStorageStatus.swift */,
+				DB2D9D2027636EDF00100535 /* Model */,
 			);
 			path = Storage;
+			sourceTree = "<group>";
+		};
+		DB2D9D2027636EDF00100535 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		DB3321C627474951002446F1 /* Neumorphic View */ = {
@@ -246,7 +251,7 @@
 				DBF0E406273141C5004DC546 /* URAudioEngine */,
 				DB9E3CC4272131CE008FCFAB /* Persistence.swift */,
 				DB9E3CBF272131CE008FCFAB /* Assets.xcassets */,
-				DB9E3CC6272131CE008FCFAB /* UrbanRecorder.xcdatamodeld */,
+				DB2D9D172763627200100535 /* UrbanRecorderModel.xcdatamodeld */,
 				DB9E3CC1272131CE008FCFAB /* Preview Content */,
 			);
 			path = UrbanRecorder;
@@ -584,8 +589,6 @@
 				DBA7EFDB272AEEDE0037AA7E /* CloseTheSessionRQ.swift in Sources */,
 				DBF3C68E2727E10800292893 /* Color+.swift in Sources */,
 				DBF0E41327327CE7004DC546 /* URStreamBasicDescription.swift in Sources */,
-				DB9E3CC8272131CE008FCFAB /* UrbanRecorder.xcdatamodeld in Sources */,
-				DB2D9D112762019A00100535 /* DataStorageStatus.swift in Sources */,
 				DBBB1D602750D09300E1B6C8 /* String+.swift in Sources */,
 				DBA7EFC7272A9F880037AA7E /* HTTPClient.swift in Sources */,
 				DBA7EFCE272ABBF50037AA7E /* URLRequest+.swift in Sources */,
@@ -604,6 +607,7 @@
 				DBF0E41027327B69004DC546 /* URAudioRenderAudioUnit.swift in Sources */,
 				DB9E3CF227215B8A008FCFAB /* HomeMapView.swift in Sources */,
 				DB68DD9C2733DB7500336001 /* URAudioEngineDelegate.swift in Sources */,
+				DB2D9D192763627200100535 /* UrbanRecorderModel.xcdatamodeld in Sources */,
 				DBF0E3FF27311959004DC546 /* Notification+.swift in Sources */,
 				DB2D9D132762036300100535 /* Array+.swift in Sources */,
 				DB4956D9274920DD00FE512A /* NeumorphicWaveView.swift in Sources */,
@@ -1011,13 +1015,13 @@
 /* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
-		DB9E3CC6272131CE008FCFAB /* UrbanRecorder.xcdatamodeld */ = {
+		DB2D9D172763627200100535 /* UrbanRecorderModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				DB9E3CC7272131CE008FCFAB /* UrbanRecorder.xcdatamodel */,
+				DB2D9D182763627200100535 /* UrbanRecorderModel.xcdatamodel */,
 			);
-			currentVersion = DB9E3CC7272131CE008FCFAB /* UrbanRecorder.xcdatamodel */;
-			path = UrbanRecorder.xcdatamodeld;
+			currentVersion = DB2D9D182763627200100535 /* UrbanRecorderModel.xcdatamodel */;
+			path = UrbanRecorderModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

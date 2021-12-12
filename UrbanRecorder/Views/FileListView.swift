@@ -9,15 +9,19 @@ import SwiftUI
 
 struct FileListView: View {
     
-    @Binding var dataInfoList: [RecordDataInfo]
+    @FetchRequest(entity: RecordedData.entity(),
+                  sortDescriptors: [NSSortDescriptor(keyPath: \RecordedData.timestamp, ascending: false)],
+                  predicate: nil,
+                  animation: .default)
+    var recordedDatas: FetchedResults<RecordedData>
+    
     
     var body: some View {
         return VStack {
-            ForEach(dataInfoList.indices, id: \.self) { index in
+            ForEach(recordedDatas) { data in
                 
                 HStack {
-                    let dataInfo = dataInfoList[index]
-                    Text("\(dataInfo.dataName)")
+                    Text("\(data.fileName!)")
                         .foregroundColor(.black)
                         .background(.clear)
                     
@@ -44,9 +48,6 @@ struct FileListView: View {
 
 struct FileListView_Previews: PreviewProvider {
     static var previews: some View {
-        FileListView(dataInfoList: .constant([RecordDataInfo(dataName: "Test",
-                                                             data: Data(),
-                                                             movingDistance: 12.3,
-                                                             recordDuration: 66)]))
+        FileListView()
     }
 }
