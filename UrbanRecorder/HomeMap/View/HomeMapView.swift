@@ -120,7 +120,7 @@ struct HomeMapView: View {
                                                 
                                                 viewmodel.fileListOnDelete(deletedData)
                                             },
-                                            dataOnExpanded: $viewmodel.selectedData,
+                                            dataOnExpanded: $viewmodel.expandedData,
                                             dataOnPlaying: $viewmodel.playingData)
                                     default:
                                         Spacer(minLength: 0)

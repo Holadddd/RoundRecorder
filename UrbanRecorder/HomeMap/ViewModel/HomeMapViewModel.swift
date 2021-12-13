@@ -104,8 +104,8 @@ class HomeMapViewModel: NSObject, ObservableObject {
     @Published var recordMovingDistance: Double = 0
     
     @Published var recordName: String = ""
-    
-    @Published var selectedData: RecordedData? = nil
+    // FileList
+    @Published var expandedData: RecordedData? = nil
     
     @Published var playingData: RecordedData? = nil
     
@@ -310,9 +310,9 @@ class HomeMapViewModel: NSObject, ObservableObject {
         PersistenceController.shared.deleteRecordedData(recordedData)
     }
     
-    func fileListOnSelected(_ recordedData: RecordedData?) {
+    func fileListOnSelected(_ expandedData: RecordedData?) {
         // TODO: Show path on map
-        selectedData = recordedData
+        self.expandedData = expandedData
     }
     
     func fileListOnPlaying(_ playingData: RecordedData?) {
