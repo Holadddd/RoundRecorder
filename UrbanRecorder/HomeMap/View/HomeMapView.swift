@@ -104,7 +104,24 @@ struct HomeMapView: View {
                                                      recorderLocation: viewmodel.userLocation
                                         )
                                     case 3:
-                                        FileListView()
+                                        FileListView(
+                                            onPlaying: {playingData in
+                                                
+                                                viewmodel.fileListOnPlaying(playingData)
+                                            },
+                                            onPause: { 
+                                                
+                                                viewmodel.fileListOnPause()
+                                            }, onSelected: { selectedData in
+                                                
+                                                viewmodel.fileListOnSelected(selectedData)
+                                            },
+                                            onDelete: { deletedData in
+                                                
+                                                viewmodel.fileListOnDelete(deletedData)
+                                            },
+                                            dataOnExpanded: $viewmodel.selectedData,
+                                            dataOnPlaying: $viewmodel.playingData)
                                     default:
                                         Spacer(minLength: 0)
                                     }

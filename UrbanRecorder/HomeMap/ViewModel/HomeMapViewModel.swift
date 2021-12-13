@@ -105,6 +105,12 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     @Published var recordName: String = ""
     
+    @Published var selectedData: RecordedData? = nil
+    
+    @Published var playingData: RecordedData? = nil
+    
+    @Published var pauseData: RecordedData? = nil
+    
     override init() {
         super.init()
         generateFeatureData()
@@ -298,6 +304,34 @@ class HomeMapViewModel: NSObject, ObservableObject {
             recordingMicrophoneCaptureCallback = nil
        
         }
+    }
+    
+    func fileListOnDelete(_ recordedData: RecordedData) {
+        PersistenceController.shared.deleteRecordedData(recordedData)
+    }
+    
+    func fileListOnSelected(_ recordedData: RecordedData?) {
+        // TODO: Show path on map
+        selectedData = recordedData
+    }
+    
+    func fileListOnPlaying(_ playingData: RecordedData?) {
+        
+        if let pauseData = pauseData,  (pauseData == playingData) {
+            print("Playing pause data")
+            self.playingData = pauseData
+        } else {
+            print("Play")
+            self.pauseData = nil
+            self.playingData = playingData
+        }
+        
+    }
+    
+    func fileListOnPause() {
+        print("Pause")
+        self.pauseData = self.playingData
+        self.playingData = nil
     }
     
     func didReceiveVolumePeakPercentage(_ percentage: Double) {

@@ -25,50 +25,55 @@ struct RecorderView: View {
     var body: some View {
         
         return VStack {
-            HStack {
-                TextField.init("",
-                               text: $recordName,
-                               prompt: Text("\(getDefaultRecordName())"))
-                    .fixedSize()
-            }.padding(0)
-            
-            ZStack {
-                HStack(alignment: .center) {
-                    VStack(alignment: .leading) {
-                        Text("Distance: \(movingDistance.string(fractionDigits: 1)) m")
-                            .fontWeight(.thin)
+            VStack {
+                HStack {
+                    Spacer()
+                    TextField.init("",
+                                   text: $recordName,
+                                   prompt: Text("\(getDefaultRecordName())")
+                                    .fontWeight(.semibold)
+                    )
+                    Spacer()
+                }.padding(0)
+                
+                ZStack {
+                    HStack(alignment: .center) {
+                        Text("Distance: \(movingDistance.string(fractionDigits: 1)) M")
+                            .fontWeight(.light)
                             .foregroundColor(Color.Neumorphic.secondary)
-                        Text("Time: \(getRecorderTimeFormat(recordDuration))")
-                            .fontWeight(.thin)
+                        Spacer()
+                        Text("\(getRecorderTimeFormat(recordDuration))")
+                            .fontWeight(.light)
                             .foregroundColor(Color.Neumorphic.secondary)
-                        
                     }.padding(EdgeInsets(top: 0,
                                          leading: 10,
                                          bottom: 0,
                                          trailing: 0))
-                    Spacer()
-                }
-                
-                Button {
-                    checkFileNaming()
-                    recordDidClicked()
-                } label: {
-                    if isRecordButtonPressed {
-                        RoundedRectangle(cornerRadius: 5)
-                            .frame(width: 40, height: 40)
-                            .scaleEffect(0.4)
-                            .softOuterShadow()
-                    } else {
-                        Circle()
-                            .frame(width: 40, height: 40)
-                            .scaleEffect(0.4)
-                            .softOuterShadow()
-                    }
                     
+                    Button {
+                        checkFileNaming()
+                        recordDidClicked()
+                    } label: {
+                        if isRecordButtonPressed {
+                            RoundedRectangle(cornerRadius: 5)
+                                .frame(width: 40, height: 40)
+                                .scaleEffect(0.4)
+                                .softOuterShadow()
+                        } else {
+                            Circle()
+                                .frame(width: 40, height: 40)
+                                .scaleEffect(0.4)
+                                .softOuterShadow()
+                        }
+                        
+                    }
+                    .softButtonStyle(RoundedRectangle(cornerRadius: 15), padding: 3, textColor: .red, pressedEffect: .hard, isPressed: self.isRecordButtonPressed)
                 }
-                .softButtonStyle(RoundedRectangle(cornerRadius: 15), padding: 3, textColor: .red, pressedEffect: .hard, isPressed: self.isRecordButtonPressed)
-            }
-        }
+            }.padding(5)
+                .background(Color.Neumorphic.main)
+                .cornerRadius(15)
+                .softOuterShadow(offset: 2)
+        }.padding(10)
     }
     
     private func getDefaultRecordName() -> String {

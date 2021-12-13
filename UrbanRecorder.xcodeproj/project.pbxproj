@@ -18,6 +18,8 @@
 		DB2D9D132762036300100535 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D122762036300100535 /* Array+.swift */; };
 		DB2D9D1527633F2D00100535 /* FileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D1427633F2D00100535 /* FileListView.swift */; };
 		DB2D9D192763627200100535 /* UrbanRecorderModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D172763627200100535 /* UrbanRecorderModel.xcdatamodeld */; };
+		DB2D9D2F27671F4A00100535 /* RecordedData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D2D27671F4900100535 /* RecordedData+CoreDataClass.swift */; };
+		DB2D9D3027671F4A00100535 /* RecordedData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D2E27671F4900100535 /* RecordedData+CoreDataProperties.swift */; };
 		DB3321D227476312002446F1 /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = DB3321D127476312002446F1 /* Neumorphic */; };
 		DB4956D9274920DD00FE512A /* NeumorphicWaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */; };
 		DB4956DB2749401400FE512A /* UIDevice+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4956DA2749401400FE512A /* UIDevice+.swift */; };
@@ -100,6 +102,8 @@
 		DB2D9D122762036300100535 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
 		DB2D9D1427633F2D00100535 /* FileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListView.swift; sourceTree = "<group>"; };
 		DB2D9D182763627200100535 /* UrbanRecorderModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UrbanRecorderModel.xcdatamodel; sourceTree = "<group>"; };
+		DB2D9D2D27671F4900100535 /* RecordedData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecordedData+CoreDataClass.swift"; sourceTree = "<group>"; };
+		DB2D9D2E27671F4900100535 /* RecordedData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecordedData+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeumorphicWaveView.swift; sourceTree = "<group>"; };
 		DB4956DA2749401400FE512A /* UIDevice+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+.swift"; sourceTree = "<group>"; };
 		DB67AE3C2738D678007EE7CE /* PowerMeters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerMeters.swift; sourceTree = "<group>"; };
@@ -193,6 +197,8 @@
 		DB2D9D2027636EDF00100535 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				DB2D9D2E27671F4900100535 /* RecordedData+CoreDataProperties.swift */,
+				DB2D9D2D27671F4900100535 /* RecordedData+CoreDataClass.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -599,6 +605,7 @@
 				DB2D9D01275CD17100100535 /* RecorderView.swift in Sources */,
 				DB9E3CC5272131CE008FCFAB /* Persistence.swift in Sources */,
 				DBF3C68C2726BCEC00292893 /* SegmentSlideOverCardView.swift in Sources */,
+				DB2D9D3027671F4A00100535 /* RecordedData+CoreDataProperties.swift in Sources */,
 				DBF0E40B273144B6004DC546 /* URAudioBufferMetadata.swift in Sources */,
 				DBA7EFE0272AF3920037AA7E /* AvailableUserListRP.swift in Sources */,
 				DB9E3D072722BB34008FCFAB /* CGFloat+.swift in Sources */,
@@ -631,6 +638,7 @@
 				DB9E3CFB27216E23008FCFAB /* HomeMapModel.swift in Sources */,
 				DB2D9D03275E180400100535 /* URRecordingDataHelper.swift in Sources */,
 				DBBB1D5C274F63F500E1B6C8 /* UDPSocketIn.swift in Sources */,
+				DB2D9D2F27671F4A00100535 /* RecordedData+CoreDataClass.swift in Sources */,
 				DB74024F273A6FFD00CD74A4 /* UDPSocketOut.swift in Sources */,
 				DBE2A389273D0B2B0098E52D /* Double+.swift in Sources */,
 				DB9E3CBC272131CC008FCFAB /* UrbanRecorderApp.swift in Sources */,
