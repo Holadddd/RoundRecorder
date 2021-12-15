@@ -43,16 +43,14 @@ class URRecordingDataHelperTests: XCTestCase {
     func test_generateEmptyURRecordingData() {
         // given
         let chuckID = UUID().uuidString
-        let numberOfChannels: UInt8 = 1
         let sampleRate: UInt32 = 48000
         let bitRate: UInt8 = 16
         // when
         let result = sut.generateEmptyURRecordingData(chunkID: chuckID,
-                                         numChannels: numberOfChannels,
                                          sampleRate: sampleRate,
                                                       bitRate: bitRate)
         
-        let emptyData = sut.getCurrentRecordingData()
+        let emptyData = sut.getCurrentRecordingURAudioData()
         // then
         XCTAssertTrue(result)
         XCTAssertNotNil(emptyData)
@@ -64,23 +62,21 @@ class URRecordingDataHelperTests: XCTestCase {
         let numberOfChannels: UInt8 = 1
         let sampleRate: UInt32 = 48000
         let bitRate: UInt8 = 16
+        
         // when
         let result = sut.generateEmptyURRecordingData(chunkID: chuckID,
-                                         numChannels: numberOfChannels,
                                          sampleRate: sampleRate,
                                                       bitRate: bitRate)
         
-        let emptyData = sut.getCurrentRecordingData()
-        
-        let urAudioData = URRecordingDataHelper.parseURAudioData(emptyData!)
+        let emptyData = sut.getCurrentRecordingURAudioData()
         // then
         XCTAssertTrue(result)
         XCTAssertNotNil(emptyData)
         
-        XCTAssertEqual(chuckID, urAudioData.chunkID)
-        XCTAssertEqual(numberOfChannels, urAudioData.numChannels)
-        XCTAssertEqual(sampleRate, urAudioData.sampleRate)
-        XCTAssertEqual(bitRate, urAudioData.bitRate)
+        XCTAssertEqual(chuckID, emptyData!.chunkID)
+        XCTAssertEqual(numberOfChannels, emptyData!.numChannels)
+        XCTAssertEqual(sampleRate, emptyData!.sampleRate)
+        XCTAssertEqual(bitRate, emptyData!.bitRate)
     }
     
     func test_schechuleURAudioBufferThenParseIntoURAudioData() {
@@ -92,11 +88,15 @@ class URRecordingDataHelperTests: XCTestCase {
         
         var audioBufferDataCollection: [Data] = []
         
-        let bufferCount: Int = Int.random(in: 0..<1000)
+        let bufferCount: Int = Int.random(in: 0..<100)
+        
+        var generateAudioBuffersSize: Int = 0
+        
+        let audioBufferMetaDataSize: Int = 72
         
         for _ in 0..<bufferCount {
             let date: UInt64 = Date().millisecondsSince1970
-            let bufferLength: UInt32  = UInt32 .random(in: 0...65356)
+            let bufferLength: UInt32  = UInt32.random(in: 0...65356)
             let nChannel: UInt32 = UInt32(1)
             let sampleRate: UInt32 = UInt32(48000)
             let bitRate: UInt32 = UInt32(16)
@@ -110,11 +110,12 @@ class URRecordingDataHelperTests: XCTestCase {
             let givenData = URAudioEngine.encodeURAudioBufferData(date, bufferLength, nChannel, sampleRate, bitRate, latitude, longitude, altitude, roll, pitch, yaw, audioData) as Data
             
             audioBufferDataCollection.append(givenData)
+            
+            generateAudioBuffersSize += Int(bufferLength) + audioBufferMetaDataSize
         }
         
         // when
         let result = sut.generateEmptyURRecordingData(chunkID: chuckID,
-                                         numChannels: numberOfChannels,
                                          sampleRate: sampleRate,
                                                       bitRate: bitRate)
         
@@ -122,19 +123,22 @@ class URRecordingDataHelperTests: XCTestCase {
             sut.schechuleURAudioBuffer(data)
         }
         
-        let currentData = sut.getCurrentRecordingData()
+        let currentData = sut.getCurrentRecordingURAudioData()
         
-        let urAudioData = URRecordingDataHelper.parseURAudioData(currentData!)
+        let data = URRecordingDataHelper.encodeURAudioData(urAudioData: currentData!)
+        // Problem vvv
+        let urAudioData = URRecordingDataHelper.parseURAudioData(data)
         // then
         XCTAssertTrue(result)
         XCTAssertNotNil(currentData)
         
         XCTAssertEqual(chuckID, urAudioData.chunkID)
-        XCTAssertEqual(UInt64(currentData!.count), urAudioData.chunkSize)
+        XCTAssertEqual(UInt64(data.count), urAudioData.chunkSize + UInt64(generateAudioBuffersSize))
         XCTAssertEqual(numberOfChannels, urAudioData.numChannels)
         XCTAssertEqual(sampleRate, urAudioData.sampleRate)
         XCTAssertEqual(bitRate, urAudioData.bitRate)
         XCTAssertEqual(UInt32(bufferCount), urAudioData.numFrames)
+        XCTAssertEqual(bufferCount, urAudioData.audioBuffers.count)
         
         for (index, element) in urAudioData.audioBuffers.enumerated() {
             let inputData = URAudioEngine.parseURAudioBufferData(audioBufferDataCollection[index])

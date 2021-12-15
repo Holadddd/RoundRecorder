@@ -74,7 +74,7 @@ class UrbanRecorderTests: XCTestCase {
         
         let expectedSize: Int = Int(bufferLength) + metaDataSize
         
-        XCTAssertEqual(urAudioData.length, expectedSize)
+        XCTAssertEqual(urAudioData.count, expectedSize)
     }
     
     func test_parseURAudioBufferData() {

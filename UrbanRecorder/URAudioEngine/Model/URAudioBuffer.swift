@@ -8,7 +8,7 @@
 import Foundation
 import CoreAudioTypes
 
-class URAudioBuffer {
+struct URAudioBuffer {
     
     var audioData: NSMutableData
     

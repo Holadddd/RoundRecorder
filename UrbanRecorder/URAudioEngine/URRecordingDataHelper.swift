@@ -19,7 +19,7 @@ class URRecordingDataHelper: NSObject {
 
     static let URAudioDataFormatVersion: UInt8 = 1
     
-    private var recordAudioBufferCollection: [URAudioBuffer]?
+    private var recordAudioBufferCollection: [URAudioBuffer] = []
     
     private var chunkID: String = ""
     
@@ -90,7 +90,7 @@ class URRecordingDataHelper: NSObject {
      --------------------------------------------------------------------
      */
     private func resetRecordingStatus() {
-        recordAudioBufferCollection = nil // Deallocate the old file
+        recordAudioBufferCollection.removeAll() // Deallocate the old file
         
         chunkID = ""
         numberOfFrames = 0
@@ -113,6 +113,7 @@ class URRecordingDataHelper: NSObject {
     public func generateEmptyURRecordingData(chunkID: String = UUID().uuidString, audioFormat: AVAudioFormat) -> Bool {
         resetRecordingStatus()
         
+        self.chunkID = chunkID
         sampleRate = UInt32(audioFormat.sampleRate)
         bitRate = UInt8(audioFormat.bitRate)
         
@@ -126,18 +127,13 @@ class URRecordingDataHelper: NSObject {
         
         audioSizeInRecordData += UInt(urAudioBuffer.mDataByteSize)
         
-        if recordAudioBufferCollection == nil {
-            recordAudioBufferCollection = [urAudioBuffer]
-        } else {
-            recordAudioBufferCollection?.append(urAudioBuffer)
-        }
-        
+        recordAudioBufferCollection.append(urAudioBuffer)
     }
     // MARK: Read
     public func getCurrentRecordingURAudioData() -> URAudioData? {
         guard let sampleRate = sampleRate,
-              let bitRate = bitRate,
-              let recordAudioBufferCollection = recordAudioBufferCollection else { return nil }
+              let bitRate = bitRate
+        else { return nil }
         
         return URAudioData(chunkID: chunkID,
                            chunkSize: UInt64(35),
@@ -199,20 +195,16 @@ extension URRecordingDataHelper {
         var readingOffset = 35
         let audioBufferMetaDataSize = 72
         
-        while readingOffset < (data.count - audioBufferMetaDataSize) {
+        let audioBuffersEndOffset = data.count
+        
+        while readingOffset < audioBuffersEndOffset {
             
-            let currentBufferSize: UInt32 = NSMutableData(data: data.advanced(by: readingOffset + 8)).bytes.load(as: UInt32.self)
+            let audioBuffer = URAudioEngine.parseURAudioBufferData( data.advanced(by: readingOffset))
             
-            let audioBuffer = URAudioEngine.parseURAudioBufferData( data.advanced(by: readingOffset)
-            )
-            
-            readingOffset += (Int(currentBufferSize) + audioBufferMetaDataSize)
+            readingOffset += (Int(audioBuffer.mDataByteSize) + audioBufferMetaDataSize)
             
             audioBufferCollection.append(audioBuffer)
         }
-        
-        
-        
         
         return URAudioData(chunkID: chunckID,
                            chunkSize: chunkSize,
@@ -229,6 +221,9 @@ extension URRecordingDataHelper {
         let urAudioBufferCollection = urAudioData.audioBuffers
         var urAudioBufferCollectionSize = 0
         var urAudioBufferDataCollection: [Data] = []
+        
+        let urAudioBufferMetadataSize: Int = 72
+        
         for buffer in urAudioBufferCollection {
             let date = buffer.date ?? Date().millisecondsSince1970
             let latitude = buffer.metadata?.locationCoordinate.latitude ?? 0
@@ -259,7 +254,7 @@ extension URRecordingDataHelper {
         }
         
         let newDataSize: Int = urAudioBufferCollectionSize + Int(urAudioData.chunkSize)
-        
+        // Allocate Memory
         var newData = Data(count: newDataSize)
         
         // MARK: Encode URAudioData
@@ -277,8 +272,13 @@ extension URRecordingDataHelper {
         
         newData.replaceSubrange(31..<35, with: withUnsafeBytes(of: urAudioData.numFrames) { Data($0) })    //  Offset: 30, numFrames
         // Encode AudioBuffer
+        var dataWritingOffset: Int = 35
+        
         for data in urAudioBufferDataCollection {   // Start at offset: 35, urAudioBufferData
-            newData.append(data)
+            let endOfDataOffset = dataWritingOffset + data.count
+            newData.replaceSubrange(dataWritingOffset..<endOfDataOffset, with: data)
+            
+            dataWritingOffset = endOfDataOffset
         }
         
         return newData

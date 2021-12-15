@@ -427,7 +427,8 @@ class URAudioEngine: NSObject {
         let trueNorthPitchDegrees: Double = NSMutableData(data: data.advanced(by: 56)).bytes.load(as: Double.self)
         let trueNorthYawDegrees: Double = NSMutableData(data: data.advanced(by: 64)).bytes.load(as: Double.self)
         
-        let mData = NSMutableData(data: data.advanced(by: metadataLenght))
+        let mDataPtr = NSMutableData(data: data.advanced(by: metadataLenght)).bytes
+        let mData = NSMutableData(bytes: mDataPtr, length: Int(audioBufferLength))
             
         let location = URLocationCoordinate3D(latitude: latitude,
                                               longitude: longitude,
