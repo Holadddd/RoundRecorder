@@ -126,8 +126,14 @@ class URRecordingDataHelperTests: XCTestCase {
         let currentData = sut.getCurrentRecordingURAudioData()
         
         let data = URRecordingDataHelper.encodeURAudioData(urAudioData: currentData!)
-        // Problem vvv
+        
         let urAudioData = URRecordingDataHelper.parseURAudioData(data)
+        
+        let readingOffset = 35
+        
+        let audioBuffersSize = data.count - readingOffset
+        
+        let urAudioBuffers = URAudioEngine.parseURAudioBufferData(data.advanced(by: readingOffset), audioBuffersSize: audioBuffersSize)
         // then
         XCTAssertTrue(result)
         XCTAssertNotNil(currentData)
@@ -164,5 +170,31 @@ class URRecordingDataHelperTests: XCTestCase {
             XCTAssertEqual(inputMotion?.pitchDegrees, parseMotion?.pitchDegrees)
             XCTAssertEqual(inputMotion?.yawDegrees, parseMotion?.yawDegrees)
         }
+        
+        for (index, element) in urAudioData.audioBuffers.enumerated() {
+            let parsingData = urAudioBuffers[index]
+            
+            XCTAssertEqual(parsingData.date, element.date)
+            XCTAssertEqual(parsingData.mNumberChannels, element.mNumberChannels)
+            XCTAssertEqual(parsingData.sampleRate, element.sampleRate)
+            XCTAssertEqual(parsingData.bitRate, element.bitRate)
+            
+            let inputLocation = parsingData.metadata?.locationCoordinate
+            let parseLocation = element.metadata?.locationCoordinate
+            XCTAssertNotNil(inputLocation)
+            XCTAssertNotNil(parseLocation)
+            XCTAssertEqual(inputLocation?.altitude, parseLocation?.altitude)
+            XCTAssertEqual(inputLocation?.latitude, parseLocation?.latitude)
+            XCTAssertEqual(inputLocation?.longitude, parseLocation?.longitude)
+            
+            let inputMotion = parsingData.metadata?.motionAttitude
+            let parseMotion = element.metadata?.motionAttitude
+            XCTAssertNotNil(inputMotion)
+            XCTAssertNotNil(parseMotion)
+            XCTAssertEqual(inputMotion?.rollDegrees, parseMotion?.rollDegrees)
+            XCTAssertEqual(inputMotion?.pitchDegrees, parseMotion?.pitchDegrees)
+            XCTAssertEqual(inputMotion?.yawDegrees, parseMotion?.yawDegrees)
+        }
+        
     }
 }

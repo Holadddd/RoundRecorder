@@ -406,30 +406,32 @@ class URAudioEngine: NSObject {
      */
     // MARK: - Parse data
     static func parseURAudioBufferData(_ data: Data)->(URAudioBuffer) {
-        // TODO: parse data into URAudioBuffer
         
-        
+        // Prevent data is not been aligned
+        let dataArray = [UInt8](data)
         // Parse into URAudioBuffer
         let metadataLenght = 72
-        let date: UInt64 = NSMutableData(data: data.advanced(by: 0)).bytes.load(as: UInt64.self)
+        let date: UInt64 = dataArray.readLittleEndian(offset: 0, as: UInt64.self)
         
-        let audioBufferLength: UInt32 = NSMutableData(data: data.advanced(by: 8)).bytes.load(as: UInt32.self)
+        let audioBufferLength: UInt32 = dataArray.readLittleEndian(offset: 8, as: UInt32.self)
         
-        let channel: UInt32 =  NSMutableData(data: data.advanced(by: 12)).bytes.load(as: UInt32.self)
-        let sampleRate: UInt32 =  NSMutableData(data: data.advanced(by: 16)).bytes.load(as: UInt32.self)
-        let bitRate: UInt32 =  NSMutableData(data: data.advanced(by: 20)).bytes.load(as: UInt32.self)
+        let channel: UInt32 =  dataArray.readLittleEndian(offset: 12, as: UInt32.self)
+        let sampleRate: UInt32 =  dataArray.readLittleEndian(offset: 16, as: UInt32.self)
+        let bitRate: UInt32 =  dataArray.readLittleEndian(offset: 20, as: UInt32.self)
         
-        let latitude: Double = NSMutableData(data: data.advanced(by: 24)).bytes.load(as: Double.self)
-        let longitude: Double = NSMutableData(data: data.advanced(by: 32)).bytes.load(as: Double.self)
-        let altitude: Double = NSMutableData(data: data.advanced(by: 40)).bytes.load(as: Double.self)
+        let latitude: Double = dataArray.readFloatingPoint(offset: 24, as: Double.self)
+        let longitude: Double = dataArray.readFloatingPoint(offset: 32, as: Double.self)
+        let altitude: Double = dataArray.readFloatingPoint(offset: 40, as: Double.self)
         
-        let trueNorthRollDegrees: Double = NSMutableData(data: data.advanced(by: 48)).bytes.load(as: Double.self)
-        let trueNorthPitchDegrees: Double = NSMutableData(data: data.advanced(by: 56)).bytes.load(as: Double.self)
-        let trueNorthYawDegrees: Double = NSMutableData(data: data.advanced(by: 64)).bytes.load(as: Double.self)
+        let trueNorthRollDegrees: Double = dataArray.readFloatingPoint(offset: 48, as: Double.self)
+        let trueNorthPitchDegrees: Double = dataArray.readFloatingPoint(offset: 56, as: Double.self)
+        let trueNorthYawDegrees: Double = dataArray.readFloatingPoint(offset: 64, as: Double.self)
         
-        let mDataPtr = NSMutableData(data: data.advanced(by: metadataLenght)).bytes
-        let mData = NSMutableData(bytes: mDataPtr, length: Int(audioBufferLength))
-            
+        let startOffset = metadataLenght
+        let endOffset = metadataLenght + Int(audioBufferLength)
+        let mDataArray = dataArray[startOffset..<endOffset]
+        let mData = NSMutableData(data: Data(mDataArray))
+        
         let location = URLocationCoordinate3D(latitude: latitude,
                                               longitude: longitude,
                                               altitude: altitude)
@@ -444,6 +446,59 @@ class URAudioEngine: NSObject {
         let buffer = URAudioBuffer(mData, audioBufferLength, channel, sampleRate, bitRate, metadata, date)
         
         return buffer
+    }
+    
+    static func parseURAudioBufferData(_ data: Data, audioBuffersSize: Int)->[URAudioBuffer] {
+        var readingOffset: Int = 0
+        
+        var bufferCollectinos: [URAudioBuffer] = []
+        
+        let metadataLenght = 72
+        
+        // Prevent data is not been aligned
+        let dataArray = [UInt8](data)
+        
+        while readingOffset < audioBuffersSize {
+            let date: UInt64 = dataArray.readLittleEndian(offset: readingOffset + 0, as: UInt64.self)
+            
+            let audioBufferLength: UInt32 = dataArray.readLittleEndian(offset: readingOffset + 8, as: UInt32.self)
+            
+            let channel: UInt32 =  dataArray.readLittleEndian(offset: readingOffset + 12, as: UInt32.self)
+            let sampleRate: UInt32 =  dataArray.readLittleEndian(offset: readingOffset + 16, as: UInt32.self)
+            let bitRate: UInt32 =  dataArray.readLittleEndian(offset: readingOffset + 20, as: UInt32.self)
+            
+            let latitude: Double = dataArray.readFloatingPoint(offset: readingOffset + 24, as: Double.self)
+            let longitude: Double = dataArray.readFloatingPoint(offset: readingOffset + 32, as: Double.self)
+            let altitude: Double = dataArray.readFloatingPoint(offset: readingOffset + 40, as: Double.self)
+            
+            let trueNorthRollDegrees: Double = dataArray.readFloatingPoint(offset: readingOffset + 48, as: Double.self)
+            let trueNorthPitchDegrees: Double = dataArray.readFloatingPoint(offset: readingOffset + 56, as: Double.self)
+            let trueNorthYawDegrees: Double = dataArray.readFloatingPoint(offset: readingOffset + 64, as: Double.self)
+            
+            let startOffset = readingOffset + metadataLenght
+            let endOffset = readingOffset + metadataLenght + Int(audioBufferLength)
+            let mDataArray = dataArray[startOffset..<endOffset]
+            let mData = NSMutableData(data: Data(mDataArray))
+            
+            let location = URLocationCoordinate3D(latitude: latitude,
+                                                  longitude: longitude,
+                                                  altitude: altitude)
+            
+            let trueNorthMotion = URMotionAttitude(rollDegrees: trueNorthRollDegrees,
+                                          pitchDegrees: trueNorthPitchDegrees,
+                                          yawDegrees: trueNorthYawDegrees)
+            
+            let metadata: URAudioBufferMetadata = URAudioBufferMetadata(locationCoordinate: location,
+                                                                        motionAttitude: trueNorthMotion)
+            
+            let buffer = URAudioBuffer(mData, audioBufferLength, channel, sampleRate, bitRate, metadata, date)
+            
+            bufferCollectinos.append(buffer)
+            
+            readingOffset += (Int(audioBufferLength) + metadataLenght)
+        }
+        
+        return bufferCollectinos
     }
     
     static func encodeURAudioBufferData(_ date: UInt64,

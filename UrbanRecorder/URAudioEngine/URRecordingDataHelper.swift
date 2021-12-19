@@ -181,39 +181,34 @@ extension URRecordingDataHelper {
          72             data
          --------------------------------------------------------------------
          */
+        // Prevent data is not been aligned
+        let dataArray = [UInt8](data)
         
-        let chunckID: String = NSMutableData(data: data.advanced(by: 0)).bytes.load(as: String.self)
-        let chunkSize: UInt64 = NSMutableData(data: data.advanced(by: 16)).bytes.load(as: UInt64.self)
-        let formatVersion: UInt8 = NSMutableData(data: data.advanced(by: 24)).bytes.load(as: UInt8.self)
-        let numChannels: UInt8 = NSMutableData(data: data.advanced(by: 25)).bytes.load(as: UInt8.self)
-        let sampleRate: UInt32 = NSMutableData(data: data.advanced(by: 26)).bytes.load(as: UInt32.self)
-        let bitRate: UInt8 = NSMutableData(data: data.advanced(by: 30)).bytes.load(as: UInt8.self)
-        let numFrames: UInt32 = NSMutableData(data: data.advanced(by: 31)).bytes.load(as: UInt32.self)
+        let chunckID: String = data.withUnsafeBytes { $0.load(fromByteOffset: 0, as: String.self)}
+        let chunkSize: UInt64 = dataArray.readLittleEndian(offset: 16, as: UInt64.self)
+        let formatVersion: UInt8 = dataArray.readLittleEndian(offset: 24, as: UInt8.self)
+        let numChannels: UInt8 = dataArray.readLittleEndian(offset: 25, as: UInt8.self)
+        let sampleRate: UInt32 = dataArray.readLittleEndian(offset: 26, as: UInt32.self)
+        let bitRate: UInt8 = dataArray.readLittleEndian(offset: 30, as: UInt8.self)
+        let numFrames: UInt32 = dataArray.readLittleEndian(offset: 31, as: UInt32.self)
         
         //AudioBufferCollection
-        var audioBufferCollection: [URAudioBuffer] = []
-        var readingOffset = 35
-        let audioBufferMetaDataSize = 72
+        let readingOffset = 35
         
-        let audioBuffersEndOffset = data.count
+        let audioBuffersSize = data.count - readingOffset
         
-        while readingOffset < audioBuffersEndOffset {
-            
-            let audioBuffer = URAudioEngine.parseURAudioBufferData( data.advanced(by: readingOffset))
-            
-            readingOffset += (Int(audioBuffer.mDataByteSize) + audioBufferMetaDataSize)
-            
-            audioBufferCollection.append(audioBuffer)
-        }
+        let audioBufferCollection = URAudioEngine.parseURAudioBufferData(data.advanced(by: readingOffset), audioBuffersSize: audioBuffersSize)
         
-        return URAudioData(chunkID: chunckID,
-                           chunkSize: chunkSize,
-                           formatVersion: formatVersion,
-                           numChannels: numChannels,
-                           sampleRate: sampleRate,
-                           bitRate: bitRate,
-                           numFrames: numFrames,
-                           audioBuffers: audioBufferCollection)
+        let urAudioData = URAudioData(chunkID: chunckID,
+                                      chunkSize: chunkSize,
+                                      formatVersion: formatVersion,
+                                      numChannels: numChannels,
+                                      sampleRate: sampleRate,
+                                      bitRate: bitRate,
+                                      numFrames: numFrames,
+                                      audioBuffers: audioBufferCollection)
+        
+        return urAudioData
     }
     
     static func encodeURAudioData( urAudioData: URAudioData) -> Data {
@@ -221,8 +216,6 @@ extension URRecordingDataHelper {
         let urAudioBufferCollection = urAudioData.audioBuffers
         var urAudioBufferCollectionSize = 0
         var urAudioBufferDataCollection: [Data] = []
-        
-        let urAudioBufferMetadataSize: Int = 72
         
         for buffer in urAudioBufferCollection {
             let date = buffer.date ?? Date().millisecondsSince1970
@@ -285,15 +278,20 @@ extension URRecordingDataHelper {
     }
     
     static func getURAudioBufferAudioSize(_ data: Data) -> UInt32 {
-        let bufferLength: UInt32 = NSMutableData(data: data.advanced(by: 8)).bytes.load(as: UInt32.self)    // Offset: 8, bufferLength
+        // Prevent data is not been aligned
+        let dataArray = [UInt8](data)
+        
+        let bufferLength: UInt32 = dataArray.readLittleEndian(offset: 8, as: UInt32.self)    // Offset: 8, bufferLength
         return bufferLength
     }
     
     static func getURAudioBufferLocationCoordinate(_ data: Data) -> URLocationCoordinate3D {
+        // Prevent data is not been aligned
+        let dataArray = [UInt8](data)
         
-        let latitude: Double = NSMutableData(data: data.advanced(by: 24)).bytes.load(as: Double.self)
-        let longitude: Double = NSMutableData(data: data.advanced(by: 32)).bytes.load(as: Double.self)
-        let altitude: Double = NSMutableData(data: data.advanced(by: 40)).bytes.load(as: Double.self)
+        let latitude: Double = dataArray.readFloatingPoint(offset: 24, as: Double.self)
+        let longitude: Double = dataArray.readFloatingPoint(offset: 32, as: Double.self)
+        let altitude: Double = dataArray.readFloatingPoint(offset: 40, as: Double.self)
         
         return URLocationCoordinate3D(latitude: latitude,
                                       longitude: longitude,
