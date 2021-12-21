@@ -45,14 +45,19 @@ class URRecordingDataHelper: NSObject {
                 audioDuration = result
                 delagete?.didUpdateAudioRecordingDuration(audioDuration)
                 // TODO:- Update distance
-                if let lastLocationCodinate = lastLocationCodinate, let currentLocationCodinate = currentLocationCodinate {
-                    let movinDistanceInLastSecond = lastLocationCodinate.distanceAndDistance(from: currentLocationCodinate)
-                    
-                    movingDistanceMeters += movinDistanceInLastSecond.distance
-                    
-                    self.lastLocationCodinate = currentLocationCodinate
-                    
-                    delagete?.didUpdateAudioRecordingMovingDistance(movingDistanceMeters)
+                if let currentLocationCodinate = currentLocationCodinate {
+                    if let lastLocationCodinate = lastLocationCodinate {
+                        let movinDistanceInLastSecond = lastLocationCodinate.distanceAndDistance(from: currentLocationCodinate)
+                        
+                        guard movinDistanceInLastSecond.distance > 1 else { return }
+                        movingDistanceMeters += movinDistanceInLastSecond.distance
+                        
+                        self.lastLocationCodinate = currentLocationCodinate
+                        
+                        delagete?.didUpdateAudioRecordingMovingDistance(movingDistanceMeters)
+                    } else {
+                        lastLocationCodinate = currentLocationCodinate
+                    }
                 }
             }
         }
@@ -98,6 +103,9 @@ class URRecordingDataHelper: NSObject {
         movingDistanceMeters = 0
         sampleRate = 0
         bitRate = 0
+        
+        currentLocationCodinate = nil
+        lastLocationCodinate = nil
     }
     // MARK: Write
     public func generateEmptyURRecordingData(chunkID: String = UUID().uuidString, sampleRate: UInt32, bitRate: UInt8) -> Bool {
@@ -128,6 +136,8 @@ class URRecordingDataHelper: NSObject {
         audioSizeInRecordData += UInt(urAudioBuffer.mDataByteSize)
         
         recordAudioBufferCollection.append(urAudioBuffer)
+        
+        currentLocationCodinate = urAudioBuffer.metadata?.locationCoordinate
     }
     // MARK: Read
     public func getCurrentRecordingURAudioData() -> URAudioData? {

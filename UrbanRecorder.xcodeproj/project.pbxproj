@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB12B39A27701F34005B8AAC /* RouteBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB12B39927701F34005B8AAC /* RouteBuilder.swift */; };
+		DB12B39C27703E31005B8AAC /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB12B39B27703E31005B8AAC /* MapView.swift */; };
 		DB2D9CFB275C982000100535 /* Grid+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9CFA275C982000100535 /* Grid+.swift */; };
 		DB2D9CFD275CCE7100100535 /* SubscribeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9CFC275CCE7100100535 /* SubscribeView.swift */; };
 		DB2D9CFF275CCFD800100535 /* BoradcastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9CFE275CCFD800100535 /* BoradcastView.swift */; };
@@ -61,7 +63,7 @@
 		DBBB1D5C274F63F500E1B6C8 /* UDPSocketIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBB1D5B274F63F500E1B6C8 /* UDPSocketIn.swift */; };
 		DBBB1D602750D09300E1B6C8 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBB1D5F2750D09300E1B6C8 /* String+.swift */; };
 		DBDD67DB27440F0100E91A5B /* UrbanRecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDD67DA27440F0100E91A5B /* UrbanRecorderTests.swift */; };
-		DBE2A389273D0B2B0098E52D /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE2A388273D0B2B0098E52D /* Double+.swift */; };
+		DBE2A389273D0B2B0098E52D /* FloatingPoint+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE2A388273D0B2B0098E52D /* FloatingPoint+.swift */; };
 		DBE2A38B273D17460098E52D /* DirectionAndDistanceMetersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE2A38A273D17460098E52D /* DirectionAndDistanceMetersView.swift */; };
 		DBF0E3F9272FEB07004DC546 /* SubscribeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E3F8272FEB07004DC546 /* SubscribeManager.swift */; };
 		DBF0E3FF27311959004DC546 /* Notification+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E3FE27311959004DC546 /* Notification+.swift */; };
@@ -91,6 +93,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DB12B39927701F34005B8AAC /* RouteBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteBuilder.swift; sourceTree = "<group>"; };
+		DB12B39B27703E31005B8AAC /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		DB2D9CFA275C982000100535 /* Grid+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Grid+.swift"; sourceTree = "<group>"; };
 		DB2D9CFC275CCE7100100535 /* SubscribeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeView.swift; sourceTree = "<group>"; };
 		DB2D9CFE275CCFD800100535 /* BoradcastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoradcastView.swift; sourceTree = "<group>"; };
@@ -141,7 +145,7 @@
 		DBBB1D5F2750D09300E1B6C8 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		DBDD67D827440F0100E91A5B /* UrbanRecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UrbanRecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBDD67DA27440F0100E91A5B /* UrbanRecorderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderTests.swift; sourceTree = "<group>"; };
-		DBE2A388273D0B2B0098E52D /* Double+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
+		DBE2A388273D0B2B0098E52D /* FloatingPoint+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingPoint+.swift"; sourceTree = "<group>"; };
 		DBE2A38A273D17460098E52D /* DirectionAndDistanceMetersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionAndDistanceMetersView.swift; sourceTree = "<group>"; };
 		DBF0E3F8272FEB07004DC546 /* SubscribeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeManager.swift; sourceTree = "<group>"; };
 		DBF0E3FA2730FD99004DC546 /* UrbanRecorder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UrbanRecorder.entitlements; sourceTree = "<group>"; };
@@ -301,6 +305,7 @@
 			isa = PBXGroup;
 			children = (
 				DB9E3CFA27216E23008FCFAB /* HomeMapModel.swift */,
+				DB12B39927701F34005B8AAC /* RouteBuilder.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -311,7 +316,7 @@
 				DB9E3D042722BAF6008FCFAB /* View+.swift */,
 				DB9E3D062722BB34008FCFAB /* CGFloat+.swift */,
 				DB2D9D0B2760A44000100535 /* Int+.swift */,
-				DBE2A388273D0B2B0098E52D /* Double+.swift */,
+				DBE2A388273D0B2B0098E52D /* FloatingPoint+.swift */,
 				DBF3C68D2727E10800292893 /* Color+.swift */,
 				DBA7EFCB272ABABA0037AA7E /* Codable+.swift */,
 				DBA7EFCD272ABBF50037AA7E /* URLRequest+.swift */,
@@ -449,6 +454,7 @@
 				DB2D9CFE275CCFD800100535 /* BoradcastView.swift */,
 				DB2D9D00275CD17100100535 /* RecorderView.swift */,
 				DB2D9D1427633F2D00100535 /* FileListView.swift */,
+				DB12B39B27703E31005B8AAC /* MapView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -598,6 +604,7 @@
 				DBBB1D602750D09300E1B6C8 /* String+.swift in Sources */,
 				DBA7EFC7272A9F880037AA7E /* HTTPClient.swift in Sources */,
 				DBA7EFCE272ABBF50037AA7E /* URLRequest+.swift in Sources */,
+				DB12B39A27701F34005B8AAC /* RouteBuilder.swift in Sources */,
 				DBA7EFD1272AE89B0037AA7E /* UserAPI.swift in Sources */,
 				DBA7EFDE272AF37D0037AA7E /* UserInfo.swift in Sources */,
 				DB9E3CFD2722785F008FCFAB /* Helper.swift in Sources */,
@@ -634,13 +641,14 @@
 				DBA7EFCA272AB3440037AA7E /* DeviceInfoRQ.swift in Sources */,
 				DBA7EFD5272AEB1C0037AA7E /* CallRequestRQ.swift in Sources */,
 				DB2D9CFB275C982000100535 /* Grid+.swift in Sources */,
+				DB12B39C27703E31005B8AAC /* MapView.swift in Sources */,
 				DBF0E405273126C1004DC546 /* Date+.swift in Sources */,
 				DB9E3CFB27216E23008FCFAB /* HomeMapModel.swift in Sources */,
 				DB2D9D03275E180400100535 /* URRecordingDataHelper.swift in Sources */,
 				DBBB1D5C274F63F500E1B6C8 /* UDPSocketIn.swift in Sources */,
 				DB2D9D2F27671F4A00100535 /* RecordedData+CoreDataClass.swift in Sources */,
 				DB74024F273A6FFD00CD74A4 /* UDPSocketOut.swift in Sources */,
-				DBE2A389273D0B2B0098E52D /* Double+.swift in Sources */,
+				DBE2A389273D0B2B0098E52D /* FloatingPoint+.swift in Sources */,
 				DB9E3CBC272131CC008FCFAB /* UrbanRecorderApp.swift in Sources */,
 				DB2D9D1527633F2D00100535 /* FileListView.swift in Sources */,
 				DBF0E403273123ED004DC546 /* Data+.swift in Sources */,

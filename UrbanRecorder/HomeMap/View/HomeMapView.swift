@@ -28,13 +28,13 @@ struct HomeMapView: View {
             ZStack(alignment: Alignment.leading) {
                 
                 VStack{
-                    Map(coordinateRegion: $viewmodel.userCurrentRegion, interactionModes: .all, showsUserLocation: true, userTrackingMode: nil, annotationItems: viewmodel.annotationItems, annotationContent: { item in
-                        MapAnnotation(coordinate: item.coordinate) {
-                            Image(systemName: item.imageSystemName)
-                                .foregroundColor(item.tint)
-                                
-                        }
-                    })
+                    
+                    MapView(userCurrentRegion: $viewmodel.userCurrentRegion,
+                            isUpdatedUserRegion: $viewmodel.isUpdatedUserRegion,
+                            showsUserLocation: true,
+                            annotationItems: viewmodel.annotationItems,
+                            displayRoutes: $viewmodel.displayRoutes,
+                            removeRoutes: $viewmodel.removeRoutes)
                         .edgesIgnoringSafeArea(.all)
                 }
                 

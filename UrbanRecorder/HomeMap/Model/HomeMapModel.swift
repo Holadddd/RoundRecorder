@@ -9,13 +9,19 @@ import Foundation
 import SwiftUI
 import MapKit
 
-struct HomeMapAnnotationItem: Identifiable {
+class HomeMapAnnotation: NSObject, MKAnnotation {
     var coordinate: CLLocationCoordinate2D
     var type: MapAnnotationItemType = .undefine
-    var color: Color?
-    var tint: Color { color ?? .red }
+    var color: UIColor?
+    var tint: UIColor { color ?? .red }
     let id = UUID()
     var imageSystemName: String = "shareplay"
+    
+    init(coordinate: CLLocationCoordinate2D, type: MapAnnotationItemType = .undefine, color: UIColor) {
+        self.coordinate = coordinate
+        self.color = color
+        self.type = type
+    }
     
     enum MapAnnotationItemType {
         case undefine
@@ -25,10 +31,11 @@ struct HomeMapAnnotationItem: Identifiable {
     }
 }
 //
-extension HomeMapAnnotationItem {
-    static var taipei101: HomeMapAnnotationItem {
+extension HomeMapAnnotation {
+    static var taipei101: HomeMapAnnotation {
         let locationCoordinate = CLLocationCoordinate2D(latitude: 25.03376, longitude: 121.56488)
-        let item = HomeMapAnnotationItem(coordinate: locationCoordinate, color: .blue)
+        let item = HomeMapAnnotation(coordinate: locationCoordinate, color: .blue)
         return item
     }
 }
+

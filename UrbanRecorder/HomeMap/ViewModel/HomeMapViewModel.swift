@@ -13,6 +13,8 @@ import SwiftUI
 
 class HomeMapViewModel: NSObject, ObservableObject {
     
+    static let desiredAccuracy:CLLocationAccuracy = kCLLocationAccuracyBest
+    
     var buttonScale: CGFloat {
         return DeviceInfo.isCurrentDeviceIsPad ? 3 : 2
     }
@@ -66,17 +68,17 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     let headphoneMotionManager = CMHeadphoneMotionManager()
     
-    var annotationItems: [HomeMapAnnotationItem] {
-        var tmp: [HomeMapAnnotationItem] = []
+    var annotationItems: [HomeMapAnnotation] {
+        var tmp: [HomeMapAnnotation] = []
         
         tmp.append(receiverAnnotationItem)
         
         return tmp
     }
     
-    var receiverAnnotationItem: HomeMapAnnotationItem = HomeMapAnnotationItem(coordinate: CLLocationCoordinate2D(), type: .user, color: .clear)
+    var receiverAnnotationItem: HomeMapAnnotation = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), type: .user, color: .clear)
     
-    @Published var userCurrentRegion: MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 40.75773, longitude: -73.985708), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
+    @Published var userCurrentRegion: MKCoordinateRegion?
     
     var udpSocketManager: UDPSocketManager = UDPSocketManager.shared
     
@@ -110,6 +112,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
     @Published var playingData: RecordedData? = nil
     
     @Published var pauseData: RecordedData? = nil
+    // Map
+    @Published var displayRoutes: [MKRoute] = []
+    
+    @Published var removeRoutes: [MKRoute] = []
     
     override init() {
         super.init()
@@ -121,7 +127,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
         // Location
         locationManager.delegate = self
         
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.desiredAccuracy = HomeMapViewModel.desiredAccuracy
         
         locationManager.requestWhenInUseAuthorization()
         
@@ -313,6 +319,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
     func fileListOnSelected(_ expandedData: RecordedData?) {
         // TODO: Show path on map
         self.expandedData = expandedData
+        
+        if let displayData = expandedData{
+            displayRecordedDataOnMap(displayData)
+        }
     }
     
     func fileListOnPlaying(_ playingData: RecordedData?) {
@@ -332,6 +342,49 @@ class HomeMapViewModel: NSObject, ObservableObject {
         print("Pause")
         self.pauseData = self.playingData
         self.playingData = nil
+    }
+    
+    func displayRecordedDataOnMap(_ displayData: RecordedData) {
+        // TODO: Display Data On Map
+        // 1. Parse URAudioBuffers in locatinos
+        guard let data = displayData.file else { return }
+        
+        let urAudioData = URRecordingDataHelper.parseURAudioData(data)
+        
+        let buffersLocation: [CLLocationCoordinate2D] = urAudioData.audioBuffers.filter { buffer->Bool in
+            buffer.metadata != nil
+        }.map { buffer in
+            return CLLocationCoordinate2D(latitude: buffer.metadata!.locationCoordinate.latitude,
+                                          longitude: buffer.metadata!.locationCoordinate.longitude)
+        }
+        
+        let routeBuilder = RouteBuilder(locationCollection: buffersLocation)
+        // 2. Generate MKPlaceMark with location => The distance bigger than 1 M as a one MKPlaceMark
+        let oneMeterPlaceMark = routeBuilder.generatePlaceMarkDistanceOver(meters: 1)
+        
+        // 3. Connect Location -> MKPlaceMark -> MapItem, each MapItem into a GroupedRoute
+        let mapItems = RouteBuilder.converToMapItems(placeMarks: oneMeterPlaceMark)
+        
+        
+        // 4. Generate MKRout And call the map method addOverlay for add the line on the map => MKDirections.Request(source, destination),
+        RouteBuilder.generateRouteWith(mapItems: mapItems) {[weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let routes):
+                DispatchQueue.main.async {
+                    //Remove the last routes
+                    self.removeRoutes = self.displayRoutes
+                    self.displayRoutes = routes
+                    print(routes)
+                    guard let startLocation = buffersLocation.first else { return }
+                    self.isUpdatedUserRegion = false
+                    self.userCurrentRegion = MKCoordinateRegion(center: startLocation, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
     }
     
     func didReceiveVolumePeakPercentage(_ percentage: Double) {
@@ -401,12 +454,11 @@ extension HomeMapViewModel: CLLocationManagerDelegate, CMHeadphoneMotionManagerD
         let altitude = location.altitude
         let locationCoordinate = CLLocationCoordinate2D(latitude: latitude,
                                                         longitude: longitude)
-        DispatchQueue.main.async {
-            self.userLocation = URLocationCoordinate3D(latitude: latitude, longitude: longitude, altitude: altitude)
-            if !self.isUpdatedUserRegion {
-                self.userCurrentRegion.center = locationCoordinate
-                self.isUpdatedUserRegion.toggle()
-            }
+        
+        self.userLocation = URLocationCoordinate3D(latitude: latitude, longitude: longitude, altitude: altitude)
+        if !self.isUpdatedUserRegion {
+            self.userCurrentRegion = MKCoordinateRegion(center: locationCoordinate,
+                                                        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
         }
     }
     
@@ -465,7 +517,7 @@ extension HomeMapViewModel: URAudioEngineDelegate {
         
         // Update Receiver Location
         if receiverAnnotationItem.color == .clear {
-            receiverAnnotationItem = HomeMapAnnotationItem(coordinate: CLLocationCoordinate2D(latitude: receiverLatitude, longitude: receiverLongitude),
+            receiverAnnotationItem = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(latitude: receiverLatitude, longitude: receiverLongitude),
                                                            type: .user, color: .orange)
         } else {
             receiverAnnotationItem.coordinate.latitude = receiverLatitude
