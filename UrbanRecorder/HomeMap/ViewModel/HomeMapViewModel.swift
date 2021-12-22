@@ -317,7 +317,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
     }
     
     func fileListOnSelected(_ expandedData: RecordedData?) {
-        // TODO: Show path on map
+        
         self.expandedData = expandedData
         
         if let displayData = expandedData{
@@ -335,6 +335,25 @@ class HomeMapViewModel: NSObject, ObservableObject {
             self.pauseData = nil
             self.playingData = playingData
         }
+        // 2 Parse and schechule in audioengine
+        guard let data = playingData?.file else { return }
+        
+        let urAudioData = URRecordingDataHelper.parseURAudioData(data)
+        
+        urAudioEngineInstance.setupPlayerDataAndStartPlayingAtSeconds(urAudioData, startOffset: 0, updateInterval: 1) { duration in
+            print("The File Is Playing At: \(duration)")
+        } endOfFilePlayingCallback: { endSecond in
+            print("The File Is End Of Playing At: \(endSecond)")
+            // TODO: Stop the engine
+            DispatchQueue.main.async {
+                self.playingData = nil
+            }
+            self.urAudioEngineInstance.removePlayerData()
+        }
+
+        // 3. SetUp engine environment
+        urAudioEngineInstance.setupAudioEngineEnvironmentForScheduleAudioData()
+        
         
     }
     
@@ -344,8 +363,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
         self.playingData = nil
     }
     
-    func displayRecordedDataOnMap(_ displayData: RecordedData) {
-        // TODO: Display Data On Map
+    private func displayRecordedDataOnMap(_ displayData: RecordedData) {
         // 1. Parse URAudioBuffers in locatinos
         guard let data = displayData.file else { return }
         
@@ -527,9 +545,11 @@ extension HomeMapViewModel: URAudioEngineDelegate {
         guard let userLocation = userLocation else {print("Fail in getting userlocation"); return }
         
         let directionAndDistance = userLocation.distanceAndDistance(from: metaData.locationCoordinate)
-        
-        receiverLastDirectionDegrees = directionAndDistance.direction
-        receiverLastDistanceMeters = directionAndDistance.distance
+        DispatchQueue.main.async {[weak self, directionAndDistance] in
+            guard let self = self else { return }
+            self.receiverLastDirectionDegrees = directionAndDistance.direction
+            self.receiverLastDistanceMeters = directionAndDistance.distance
+        }
     }
     
     func captureAudioBufferDataCallBack(_ engine: URAudioEngine, urAudioData: Data) {
