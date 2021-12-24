@@ -32,7 +32,8 @@ struct HomeMapView: View {
                     MapView(userCurrentRegion: $viewmodel.userCurrentRegion,
                             isUpdatedUserRegion: $viewmodel.isUpdatedUserRegion,
                             showsUserLocation: true,
-                            annotationItems: viewmodel.annotationItems,
+                            removeAnnotationItem: $viewmodel.removeAnnotationItem,
+                            addAnnotationItem: $viewmodel.receiverAnnotationItem,
                             displayRoutes: $viewmodel.displayRoutes,
                             removeRoutes: $viewmodel.removeRoutes)
                         .edgesIgnoringSafeArea(.all)

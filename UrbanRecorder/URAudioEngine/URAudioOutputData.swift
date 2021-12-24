@@ -8,10 +8,6 @@
 import Foundation
 import AVFoundation
 
-protocol URAudioOutputDataDelegate: AnyObject {
-    func endOfFilePlaying(data: URAudioOutputData, duration: Double)
-}
-
 class URAudioOutputData: NSObject {
     
     // Data type
@@ -52,12 +48,17 @@ class URAudioOutputData: NSObject {
     private var resetCount: Int = 0
     // Start Writing Data
     private var isBlankData: Bool = true
-    // Callback
-    private var endOfFilePlayingCallback: ((Second)->Void)?
-    
-    private var interval: Second = 10
+    /* Callback */
+    // Duration
+    private var durationInterval: Second = 10
     private var lastUpdatedDuration: Second = 0
     private var currentDurationCallback: ((Second)->Void)?
+    // Metadata
+    private var metadataInterval: Second = 10
+    private var lastUpdatedMetadata: Second = 0
+    private var currentMetadataCallback: ((URAudioBufferMetadata)->Void)?
+    // End Of File
+    private var endOfFilePlayingCallback: ((Second)->Void)?
     
     init(dataSize: Int, bufferBytesSize: Int) {
         
@@ -118,8 +119,13 @@ class URAudioOutputData: NSObject {
     }
     
     func setupReadingDurationCallback(interval: Second, _ callback:@escaping ((Second)->Void)) {
-        self.interval = interval
+        self.durationInterval = interval
         currentDurationCallback = callback
+    }
+    
+    func setupReadingMetadataCallback(interval: Second, _ callback:@escaping ((URAudioBufferMetadata)->Void)) {
+        self.metadataInterval = interval
+        currentMetadataCallback = callback
     }
     
     func setReadingOffset(second: Second) {
@@ -188,10 +194,10 @@ class URAudioOutputData: NSObject {
         }
     }
     
-    func getReadingDataAndCurrentMetaData(with bytesToRead: Int) -> (UnsafeMutableRawPointer?, URAudioBufferMetadata?) {
-        guard isReadyForReading(with: bytesToRead) else { return (nil, nil)}
+    func getReadingDataPtr(with bytesToRead: Int) -> UnsafeMutableRawPointer? {
+        guard isReadyForReading(with: bytesToRead) else { return nil}
         
-        guard let readingData = outputData else { return (nil, nil) }
+        guard let readingData = outputData else { return nil}
         
         // Adjust the reading position is not over the data size, the status are include the data is losing too much when transport the data and read at the end of the data memory
         if (readingDataOffset + bytesToRead) > outputDataSize {
@@ -216,12 +222,17 @@ class URAudioOutputData: NSObject {
         readingDataOffset += bytesToRead
         
         let readingDuration: Double = (Double(readingDataOffset) / bytesPerMs) / 1000
-        if (readingDuration - lastUpdatedDuration) > interval {
-            lastUpdatedDuration += interval
+        if (readingDuration - lastUpdatedDuration) > durationInterval {
+            lastUpdatedDuration += durationInterval
             currentDurationCallback?(lastUpdatedDuration)
         }
         
-        return (readingPtr, metadata)
+        if (readingDuration - lastUpdatedMetadata) > metadataInterval , let metadata = metadata {
+            lastUpdatedMetadata += metadataInterval
+            currentMetadataCallback?(metadata)
+        }
+        
+        return readingPtr
     }
     
     private func writeDataAtFront() {
@@ -247,6 +258,8 @@ class URAudioOutputData: NSObject {
         audioBufferMetadatas = tmpAudioBufferMetadatas
         tmpOutputDataOffset = 0
         metadatasReadingIndex = 0
+        lastUpdatedDuration = 0
+        lastUpdatedMetadata = 0
         tmpAudioBufferMetadatas.removeAll()
         readingDataOffset = 0
         print("Read Data In Next Cycle")

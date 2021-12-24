@@ -68,15 +68,9 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     let headphoneMotionManager = CMHeadphoneMotionManager()
     
-    var annotationItems: [HomeMapAnnotation] {
-        var tmp: [HomeMapAnnotation] = []
-        
-        tmp.append(receiverAnnotationItem)
-        
-        return tmp
-    }
+    @Published var removeAnnotationItem: HomeMapAnnotation?
     
-    var receiverAnnotationItem: HomeMapAnnotation = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), type: .user, color: .clear)
+    @Published var receiverAnnotationItem: HomeMapAnnotation = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), type: .user, color: .clear)
     
     @Published var userCurrentRegion: MKCoordinateRegion?
     
@@ -329,6 +323,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
         
         if let pauseData = pauseData,  (pauseData == playingData) {
             print("Playing pause data")
+            // TODO: get Puase Duration and setup Player
             self.playingData = pauseData
         } else {
             print("Play")
@@ -336,16 +331,25 @@ class HomeMapViewModel: NSObject, ObservableObject {
             self.playingData = playingData
         }
         // 2 Parse and schechule in audioengine
-        guard let data = playingData?.file else { return }
+        guard let playingData = playingData,
+              let file = playingData.file else { return }
         
-        let urAudioData = URRecordingDataHelper.parseURAudioData(data)
+        let playingDuration = playingData.playingDuration
         
-        urAudioEngineInstance.setupPlayerDataAndStartPlayingAtSeconds(urAudioData, startOffset: 0, updateInterval: 1) { duration in
-            print("The File Is Playing At: \(duration)")
+        let urAudioData = URRecordingDataHelper.parseURAudioData(file)
+        
+        urAudioEngineInstance.setupPlayerDataAndStartPlayingAtSeconds(urAudioData, startOffset: playingDuration, updateInterval: 1) { updatedDuration in
+            // TODO: Record playing duration
+            DispatchQueue.main.async {
+                withAnimation {
+                    self.playingData?.playingDuration = updatedDuration
+                }
+            }
         } endOfFilePlayingCallback: { endSecond in
             print("The File Is End Of Playing At: \(endSecond)")
             // TODO: Stop the engine
             DispatchQueue.main.async {
+                self.playingData?.playingDuration = 0
                 self.playingData = nil
             }
             self.urAudioEngineInstance.removePlayerData()
@@ -359,8 +363,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     func fileListOnPause() {
         print("Pause")
+        // TODO: record pause duration
         self.pauseData = self.playingData
         self.playingData = nil
+        self.urAudioEngineInstance.removePlayerData()
     }
     
     private func displayRecordedDataOnMap(_ displayData: RecordedData) {
@@ -472,8 +478,15 @@ extension HomeMapViewModel: CLLocationManagerDelegate, CMHeadphoneMotionManagerD
         let altitude = location.altitude
         let locationCoordinate = CLLocationCoordinate2D(latitude: latitude,
                                                         longitude: longitude)
+        if userLocation != nil {
+            userLocation!.latitude = latitude
+            userLocation!.longitude = longitude
+            userLocation!.altitude = altitude
+        } else {
+            userLocation = URLocationCoordinate3D(latitude: latitude, longitude: longitude, altitude: altitude)
+            print("latitude: \(latitude), longitude: \(longitude)")
+        }
         
-        self.userLocation = URLocationCoordinate3D(latitude: latitude, longitude: longitude, altitude: altitude)
         if !self.isUpdatedUserRegion {
             self.userCurrentRegion = MKCoordinateRegion(center: locationCoordinate,
                                                         span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
@@ -517,13 +530,11 @@ extension HomeMapViewModel: CLLocationManagerDelegate, CMHeadphoneMotionManagerD
 // URAudioEngineDataSource
 extension HomeMapViewModel: URAudioEngineDataSource {
     func urAudioEngine(currentLocationForEngine: URAudioEngine) -> URLocationCoordinate3D? {
-        guard let userLocation = userLocation else { return nil }
         return userLocation
     }
     
     func urAudioEngine(currentTrueNorthAnchorsMotionForEngine: URAudioEngine) -> URMotionAttitude? {
-        guard let attitude = userTrueNorthURMotionAttitude else { return nil}
-        return attitude
+        return userTrueNorthURMotionAttitude
     }
 }
 // URAudioEngineDelegate
@@ -534,12 +545,11 @@ extension HomeMapViewModel: URAudioEngineDelegate {
         receiverAltitude = metaData.locationCoordinate.altitude
         
         // Update Receiver Location
-        if receiverAnnotationItem.color == .clear {
-            receiverAnnotationItem = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(latitude: receiverLatitude, longitude: receiverLongitude),
-                                                           type: .user, color: .orange)
-        } else {
-            receiverAnnotationItem.coordinate.latitude = receiverLatitude
-            receiverAnnotationItem.coordinate.longitude = receiverLongitude
+        DispatchQueue.main.async {[weak self, receiverLatitude, receiverLongitude] in
+            guard let self = self else { return }
+            self.removeAnnotationItem = self.receiverAnnotationItem
+            
+            self.receiverAnnotationItem = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(latitude: receiverLatitude, longitude: receiverLongitude), type: .user, color: .orange)
         }
         
         guard let userLocation = userLocation else {print("Fail in getting userlocation"); return }

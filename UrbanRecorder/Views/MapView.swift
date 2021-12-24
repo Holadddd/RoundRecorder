@@ -18,7 +18,9 @@ struct MapView: UIViewRepresentable {
     
     var showsUserLocation: Bool
     
-    var annotationItems: [HomeMapAnnotation]
+    @Binding var removeAnnotationItem: HomeMapAnnotation?
+    
+    @Binding var addAnnotationItem: HomeMapAnnotation
     
     @Binding var displayRoutes: [MKRoute]
     
@@ -45,7 +47,12 @@ struct MapView: UIViewRepresentable {
             isUpdatedUserRegion.toggle()
         }
         
-        uiView.addAnnotations(annotationItems)
+        if let removeAnnotationItem = removeAnnotationItem {
+            uiView.removeAnnotation(removeAnnotationItem)
+        }
+        
+        
+        uiView.addAnnotation(addAnnotationItem)
         
         if !removeRoutes.isEmpty {
             for route in removeRoutes {

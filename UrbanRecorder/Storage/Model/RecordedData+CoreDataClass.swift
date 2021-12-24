@@ -11,5 +11,5 @@ import CoreData
 
 @objc(RecordedData)
 public class RecordedData: NSManagedObject {
-
+    var playingDuration: Second = 0
 }

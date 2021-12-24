@@ -16,6 +16,8 @@ class URAudioEngine: NSObject {
     
     static let instance: URAudioEngine = URAudioEngine()
     
+    static let metaDataUpdatedInterval: Second = 0.5
+    
     private var engine: AVAudioEngine = AVAudioEngine()
     
     var currentAbility: URAudioEngineAbility = .undefined
@@ -141,7 +143,7 @@ class URAudioEngine: NSObject {
             setupInputAudioUnit() {[weak self] in
                 guard let self = self else { return }
                 // 2. Store the incoming data with custom allocat size
-                self.setupRendererAudioData()
+                self.setupRendererAudioData(updatedInterval: URAudioEngine.metaDataUpdatedInterval)
                 // 3. Attach node on audioEngine
                 self.setupNodeAttachment()
                 // 4. Connect node with specify sequence and format
@@ -157,7 +159,7 @@ class URAudioEngine: NSObject {
             setupInputAudioUnit() {[weak self] in
                 guard let self = self else { return }
                 // 2. Store the incoming data with custom allocat size
-                self.setupRendererAudioData()
+                self.setupRendererAudioData(updatedInterval: URAudioEngine.metaDataUpdatedInterval)
                 // 3. Attach node on audioEngine
                 self.setupNodeAttachment()
                 // 4. Connect node with specify sequence and format
@@ -305,12 +307,17 @@ class URAudioEngine: NSObject {
         
         let outputFormat = engine.outputNode.outputFormat(forBus: 0)
         print(outputFormat)
-        #warning("Check the 44.1 -> 48 ")
+        
         engine.connect(streamingEnvironmentNode, to: engine.outputNode, format: outputFormat)  // Console: [AUSpatialMixerV2] OutputElement: Unsupported number of channels 0 in audio channel layout UseChannelDescriptions: must be two or more
     }
     //MARK: - SetAudioOutputData
-    private func setupRendererAudioData() {
+    private func setupRendererAudioData(updatedInterval: Double) {
         rendererData = URAudioOutputData(format: convertFormat, dataMS: rendererDataMilliseconds, bufferMS: rendererDataBufferMilliseconds)
+        
+        rendererData?.setupReadingMetadataCallback(interval: updatedInterval, {[weak self] receivingMetadata in
+            guard let self = self else { return }
+            self.updateReceivingMetadata(receivingMetadata)
+        })
     }
     //MARK: - AudioIOCallback
     public func schechuleRendererAudioBuffer(_ buffer: URAudioBuffer) {
@@ -324,7 +331,6 @@ class URAudioEngine: NSObject {
         
         let date = Date().millisecondsSince1970
         
-        #warning("Check channel count")
         let nChannel = UInt32(audioBuffer.mNumberChannels)
         let sampleRate = UInt32(convertFormat.sampleRate)
         let bitRate = UInt32(convertFormat.bitRate)
@@ -353,6 +359,11 @@ class URAudioEngine: NSObject {
         playerData?.setupEndOfFilePlayingCallback(endOfFilePlayingCallback)
         
         playerData?.setupReadingDurationCallback(interval: updateInterval, updateDurationCallback)
+        
+        playerData?.setupReadingMetadataCallback(interval: updateInterval, {[weak self] receivingMetadata in
+            guard let self = self else { return }
+            self.updateReceivingMetadata(receivingMetadata)
+        })
         // 2. Calculate the offset and schechule rest of the frame
         playerData?.setReadingOffset(second: startOffset)
         // 3. Setup audioEngine environment
@@ -362,6 +373,33 @@ class URAudioEngine: NSObject {
     
     public func removePlayerData() {
         playerData = nil
+    }
+    
+    private func updateReceivingMetadata(_ receivingMetadata: URAudioBufferMetadata) {
+        // View
+        delegate?.didUpdateReceiversBufferMetaData(self, metaData: receivingMetadata)
+        
+        // MARK: Update Orientation
+        if let userTrueNorthAnchorsMotion = self.dataSource?.urAudioEngine(currentTrueNorthAnchorsMotionForEngine: self) {
+            let yawDegrees: Float = Float(userTrueNorthAnchorsMotion.yawDegrees)
+            let pitchDegrees: Float = Float(userTrueNorthAnchorsMotion.pitchDegrees)
+            let rollDegrees: Float = Float(userTrueNorthAnchorsMotion.rollDegrees)
+            let userOrientation = AVAudio3DAngularOrientation(yaw: yawDegrees, pitch: pitchDegrees, roll: rollDegrees)
+            
+            updateListenerOrientation(userOrientation)
+        }
+        // NotUsing
+        let _ = receivingMetadata.motionAttitude
+        
+        // MARK: Update Position
+        if let userLocation = self.dataSource?.urAudioEngine(currentLocationForEngine: self) {
+            let receiverLocation = receivingMetadata.locationCoordinate
+            let directionAndDistance = userLocation.distanceAndDistance(from: receiverLocation)
+            // Audio Engine
+            let listenerPosition = URAudioEngine.get3DMetersPositionWith(directionAndDistance)
+            
+            updateListenerPosition(listenerPosition)
+        }
     }
     /*
      URAudioBuffer Formatt
@@ -567,51 +605,12 @@ extension URAudioEngine: URAudioRenderAudioUnitDelegate {
     func renderAudioBufferPointer(length bitToRead: Int) -> UnsafeMutableRawPointer? {
         guard engine.isRunning else { return nil }
         
-        var dataPtr: UnsafeMutableRawPointer? = nil
-        var renderingMetaData: URAudioBufferMetadata? = nil
-        
         switch useCase {
-        case .streamingWithHighQuality, .streaming:
-            guard let tmp = rendererData?.getReadingDataAndCurrentMetaData(with: bitToRead) else { return nil }
-            dataPtr = tmp.0
-            renderingMetaData = tmp.1
+        case .streaming, .streamingWithHighQuality:
+            return rendererData?.getReadingDataPtr(with: bitToRead)
         case .player:
-            guard let tmp = playerData?.getReadingDataAndCurrentMetaData(with: bitToRead) else { return nil }
-            dataPtr = tmp.0
-            renderingMetaData = tmp.1
+            return playerData?.getReadingDataPtr(with: bitToRead)
         }
-        
-        // MARK: Update Environment
-        if let renderingMetaData = renderingMetaData {
-            #warning("Need to know the motion is on or not")
-            // View
-            delegate?.didUpdateReceiversBufferMetaData(self, metaData: renderingMetaData)
-            
-            // MARK: Update Orientation
-            if let userTrueNorthAnchorsMotion = dataSource?.urAudioEngine(currentTrueNorthAnchorsMotionForEngine: self) {
-                let yawDegrees: Float = Float(userTrueNorthAnchorsMotion.yawDegrees)
-                let pitchDegrees: Float = Float(userTrueNorthAnchorsMotion.pitchDegrees)
-                let rollDegrees: Float = Float(userTrueNorthAnchorsMotion.rollDegrees)
-                let userOrientation = AVAudio3DAngularOrientation(yaw: yawDegrees, pitch: pitchDegrees, roll: rollDegrees)
-                
-                updateListenerOrientation(userOrientation)
-            }
-            // NotUsing
-            let _ = renderingMetaData.motionAttitude
-            
-            // MARK: Update Position
-            if let userLocation = dataSource?.urAudioEngine(currentLocationForEngine: self) {
-                let receiverLocation = renderingMetaData.locationCoordinate
-                let directionAndDistance = userLocation.distanceAndDistance(from: receiverLocation)
-                // Audio Engine
-                let listenerPosition = URAudioEngine.get3DMetersPositionWith(directionAndDistance)
-                
-                updateListenerPosition(listenerPosition)
-            }
-            
-        }
-        
-        return dataPtr
     }
 }
 
@@ -622,7 +621,6 @@ extension URAudioEngine {
         // Positive X is direct to the east
         // Negitive Z is direct to the north
         // Y is for elevation
-        #warning("The distance temporary set as 20 meters for demo")
         // Transfer TrueNorth degrees to quadrant degrees
         let quadrantDegrees = -directionAndDistance.direction + 90
         let degreesInPi = (quadrantDegrees / 180 * Double.pi)

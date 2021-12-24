@@ -43,18 +43,18 @@ struct DirectionAndDistanceMetersView: View {
                     Circle().fill(mainColor).frame(width: reader.size.width, height: reader.size.height)
                         .softInnerShadow(Circle(), spread: 0.05)
                     
-                    //                Canvas { context, size in
-                    //                    context.withCGContext { cgContext in
-                    //                        let rect = CGRect(origin: .zero, size: size).insetBy(dx: 20, dy: 20)
-                    //                        let path = CGPath(ellipseIn: rect, transform: nil)
-                    //                        cgContext.addPath(path)
-                    //                        cgContext.setStrokeColor(UIColor.black.cgColor)
-                    //                        cgContext.setFillColor(UIColor.green.cgColor)
-                    //                        cgContext.setLineWidth(10)
-                    //                        cgContext.setAlpha(0.5)
-                    //                        cgContext.drawPath(using: .eoFillStroke)
-                    //
-                    //                    }
+//                                    Canvas { context, size in
+//                                        context.withCGContext { cgContext in
+//                                            let rect = CGRect(origin: .zero, size: size).insetBy(dx: 20, dy: 20)
+//                                            let path = CGPath(ellipseIn: rect, transform: nil)
+//                                            cgContext.addPath(path)
+//                                            cgContext.setStrokeColor(UIColor.black.cgColor)
+//                                            cgContext.setFillColor(UIColor.green.cgColor)
+//                                            cgContext.setLineWidth(10)
+//                                            cgContext.setAlpha(0.5)
+//                                            cgContext.drawPath(using: .eoFillStroke)
+//                    
+//                                        }
                     //
                     //                    context.withCGContext { cgContext in
                     //                        let midPoint = CGPoint(x: size.width/2.0, y: size.height/2.0)
