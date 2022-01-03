@@ -39,98 +39,104 @@ struct HomeMapView: View {
                         .edgesIgnoringSafeArea(.all)
                 }
                 
-                SegmentSlideOverCardView(content: {
-                    
-                        VStack{
-                            HStack(alignment: .top){
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack(spacing: 30) {
-                                        Spacer(minLength: 10)
-                                        ForEach(viewmodel.featureData) { data in
-                                            Button {
-                                                data.action?()
-                                                viewmodel.featureData[data.id].isShowing.toggle()
-                                            } label: {
-                                                Text(data.title).fontWeight(.bold)
-                                                    .frame(width: 120, height: 60)
-                                            }.softButtonStyle(RoundedRectangle(cornerRadius: 15), padding: 5, isPressed: viewmodel.featureData[data.id].isShowing)
-                                            
-                                        }
-                                        
-                                        Spacer(minLength: 10)
+                SegmentSlideOverCardView(isSetReload: $viewmodel.setNeedReload, content: {
+                    VStack {
+                        HStack(alignment: .top){
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 20) {
+                                    Spacer(minLength: 10)
+                                    ForEach(viewmodel.featureData) { data in
+                                        Button {
+                                            data.action?()
+                                            viewmodel.featureData[data.id].isShowing.toggle()
+                                        } label: {
+                                            Text(data.title).fontWeight(.bold)
+                                                .frame(width: 120, height: 30)
+                                        }.softButtonStyle(RoundedRectangle(cornerRadius: 10), padding: 5,
+                                                          isPressed: viewmodel.featureData[data.id].isShowing)
                                     }
-                                    .padding()
+                                    
+                                    Spacer(minLength: 10)
                                 }
-                                
-                            }.frame(width: outsideProxy.frame(in: .local).width)
-                            
-                            ForEach(viewmodel.featureData) { data in
-                                if data.isShowing {
-                                    switch data.id {
-                                    case 0:
-                                            BoradcastView(channelID: $viewmodel.broadcastID, broadcastAction: {
-                                                viewmodel.broadcastChannel()
-                                            })
-                                    case 1:
-                                            VStack{
-                                                SubscribeView(channelID: $viewmodel.subscribeID) {
-                                                    viewmodel.subscribeChannel()
-                                                }
-                                                HStack{
-                                                    // Prompt Note
-                                                    Text("MS: \(viewmodel.udpsocketLatenctMs)")
-                                                        .foregroundColor(.fixedLightGray)
-                                                    Spacer()
-                                                }
-                                                HStack{
-                                                    DirectionAndDistanceMetersView(receiverDirection: viewmodel.receiverDirection,
-                                                                                   receiverMeters: $viewmodel.receiverLastDistanceMeters,
-                                                                                   showWave: viewmodel.showWave,
-                                                                                   volumeMaxPeakPercentage: viewmodel.volumeMaxPeakPercentage) {
-                                                        // TODO: Fixed the distance
-                                                        print("TODO: Fixed the distance")
-
-                                                    } resetAnchorDegreesDidClicked: {
-                                                        viewmodel.resetAnchorDegrees()
-                                                    }
-                                                    .scaledToFill()
-                                                }
+                                .padding()
+                            }
+                        }.frame(width: UIScreen.main.bounds.width)
+                        
+                        ForEach(viewmodel.featureData) { data in
+                            if data.isShowing {
+                                switch data.id {
+                                case 0:
+                                    BoradcastView(channelID: $viewmodel.broadcastID, broadcastAction: {
+                                        viewmodel.broadcastChannel()
+                                    })
+                                case 1:
+                                    VStack{
+                                        SubscribeView(channelID: $viewmodel.subscribeID) {
+                                            viewmodel.subscribeChannel()
+                                        }
+                                        HStack{
+                                            // Prompt Note
+                                            Text("MS: \(viewmodel.udpsocketLatenctMs)")
+                                                .foregroundColor(.fixedLightGray)
+                                            Spacer()
+                                        }
+                                        HStack{
+                                            DirectionAndDistanceMetersView(receiverDirection: viewmodel.receiverDirection,
+                                                                           receiverMeters: $viewmodel.receiverLastDistanceMeters,
+                                                                           showWave: viewmodel.showWave,
+                                                                           volumeMaxPeakPercentage: viewmodel.volumeMaxPeakPercentage) {
+                                                // TODO: Fixed the distance
+                                                print("TODO: Fixed the distance")
+                                                
+                                            } resetAnchorDegreesDidClicked: {
+                                                viewmodel.resetAnchorDegrees()
                                             }
-                                    case 2:
-                                        RecorderView(recordDidClicked: { viewmodel.recordButtonDidClicked() },
-                                                     isRecordButtonPressed: $viewmodel.isRecording,
-                                                     recordDuration: $viewmodel.recordDuration,
-                                                     movingDistance: $viewmodel.recordMovingDistance,
-                                                     recordName: $viewmodel.recordName,
-                                                     recorderLocation: viewmodel.userLocation
-                                        )
-                                    case 3:
-                                        FileListView(
-                                            onPlaying: {playingData in
-                                                
-                                                viewmodel.fileListOnPlaying(playingData)
-                                            },
-                                            onPause: { 
-                                                
-                                                viewmodel.fileListOnPause()
-                                            }, onSelected: { selectedData in
-                                                
-                                                viewmodel.fileListOnSelected(selectedData)
-                                            },
-                                            onDelete: { deletedData in
-                                                
-                                                viewmodel.fileListOnDelete(deletedData)
-                                            },
-                                            dataOnExpanded: $viewmodel.expandedData,
-                                            dataOnPlaying: $viewmodel.playingData)
-                                    default:
-                                        Spacer(minLength: 0)
+                                            .scaledToFill()
+                                        }
                                     }
+                                case 2:
+                                    RecorderView(recordDidClicked: { viewmodel.recordButtonDidClicked() },
+                                                 isRecordButtonPressed: $viewmodel.isRecording,
+                                                 recordDuration: $viewmodel.recordDuration,
+                                                 movingDistance: $viewmodel.recordMovingDistance,
+                                                 recordName: $viewmodel.recordName,
+                                                 recorderLocation: viewmodel.userLocation)
+                                case 3:
+                                    FileListView(
+                                        setReload: {
+                                            viewmodel.setNeedReload = true
+                                        },
+                                        fileListCount: $viewmodel.fileListCount,
+                                        onPlaying: {playingData in
+                                            
+                                            viewmodel.fileListOnPlaying(playingData)
+                                        },
+                                        onPause: {
+                                            
+                                            viewmodel.fileListOnPause()
+                                        }, onSelected: { selectedData in
+                                            
+                                            viewmodel.fileListOnSelected(selectedData)
+                                        },
+                                        onDelete: { deletedData in
+                                            
+                                            viewmodel.fileListOnDelete(deletedData)
+                                        },
+                                        dataOnExpanded: $viewmodel.expandedData,
+                                        dataOnPlaying: $viewmodel.playingData)
+                                default:
+                                    Spacer(minLength: 0)
                                 }
                             }
-                            
+                        }
                     }
-                }, cardPosition: $viewmodel.cardPosition, availableMode: AvailablePosition([.top, .middle, .bottom]))
+                },
+                                         cardPosition: $viewmodel.cardPosition,
+                                         availableMode: AvailablePosition([.top, .middle, .bottom])
+                )
+                    .onChange(of: viewmodel.featureData) { _ in
+                        viewmodel.setNeedReload = true
+                    }
             }
         }.onAppear {
             #warning("Test Api work for temporarily")

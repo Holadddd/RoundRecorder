@@ -10,7 +10,7 @@ import UniformTypeIdentifiers
 
 struct GridData: Identifiable, Equatable {
     static func == (lhs: GridData, rhs: GridData) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.id == rhs.id && lhs.isShowing == rhs.isShowing && lhs.title == rhs.title
     }
     
     let id: Int

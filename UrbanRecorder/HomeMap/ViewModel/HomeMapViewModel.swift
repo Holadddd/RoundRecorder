@@ -26,7 +26,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     var currentBroadcastID: String = ""
     
-    @Published var cardPosition = CardPosition.bottom
+    @Published var cardPosition = CardPosition.middle
     
     var isUpdatedUserRegion: Bool = false
     
@@ -101,6 +101,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     @Published var recordName: String = ""
     // FileList
+    @Published var setNeedReload: Bool = false
+    
+    @Published var fileListCount: Int = 0
+    
     @Published var expandedData: RecordedData? = nil
     
     @Published var playingData: RecordedData? = nil

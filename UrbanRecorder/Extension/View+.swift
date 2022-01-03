@@ -11,6 +11,9 @@ extension View {
     func expandHorizontally() -> some View {
         frame(maxWidth: .infinity)
     }
+    func expandVertically() -> some View {
+        frame(maxHeight: .infinity)
+    }
     func show(isVisible: Bool) -> some View {
         ModifiedContent(content: self, modifier: Show(isVisible: isVisible))
     }

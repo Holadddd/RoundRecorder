@@ -14,7 +14,7 @@ struct SegmentSlideOverCardView<Content: View> : View {
     
     @State private var cardViewOffset: CGFloat = 0
     
-    @State private var scrollViewOffset: CGFloat = 0
+    @Binding var isSetReload: Bool
     
     var content: () -> Content
     
@@ -24,13 +24,31 @@ struct SegmentSlideOverCardView<Content: View> : View {
     
     let axes: Axis.Set = .vertical
     
-    @State var scrollAble: Bool = false
+    @State var onScrollingSession: Bool = false
     
     @State var isScrollingOnScrollView: Bool = false
     
     @State var isScrollingOnCard: Bool = false
     
     @State var scrollViewMaxOffset: CGFloat = 0
+    // Scroll Offset
+    var minusIndicatorHeight: CGFloat = 30
+    
+    @State private var scrollViewSizeHeight: CGFloat = 0
+    
+    @State private var scrollViewContentHeight: CGFloat = 0
+    
+    @State private var scrollViewOffset: CGFloat = 0
+    
+    var adjustmentScrollViewOffset: CGFloat {
+        return scrollViewOffset + diffInSizeAndContentHeight / 2
+    }
+    
+    var diffInSizeAndContentHeight: CGFloat {
+        let diffInSizeAndContentHeight: CGFloat = scrollViewContentHeight > scrollViewSizeHeight ? scrollViewContentHeight - scrollViewSizeHeight + minusIndicatorHeight + 5 : 0
+        
+        return diffInSizeAndContentHeight
+    }
     
     var body: some View {
         
@@ -44,6 +62,7 @@ struct SegmentSlideOverCardView<Content: View> : View {
                     .scaleEffect(2)
                     .background(Color.themeBackgroud)
                     .zIndex(1)
+                    .frame(height: 30)
                 
                 
                 GeometryReader{ value in
@@ -52,23 +71,37 @@ struct SegmentSlideOverCardView<Content: View> : View {
                             ZStack{
                                 VStack{
                                     content()
-                                        .expandHorizontally()
                                     Spacer().padding(10)
                                 }
+                                .expandHorizontally()
                                 .overlay(
                                     GeometryReader { proxy in
                                         Color.clear.onAppear {
-                                            scrollViewMaxOffset = value.frame(in: .local).size.height - proxy.size.height
+                                            scrollViewSizeHeight = value.size.height
+                                            scrollViewContentHeight = proxy.size.height
+                                            print("value.size: \(value.size.height)")
+                                            print("proxy.size: \(proxy.size.height)")
                                         }
+                                        .onChange(of: isSetReload) { _ in
+                                            if isSetReload {
+                                                print("value.size: \(value.size.height)")
+                                                print("Reload size: \(proxy.size.height)")
+                                                scrollViewContentHeight = proxy.size.height
+                                                isSetReload.toggle()
+                                            }
+                                        }
+                                        
                                     }
-                                ).background(Color.themeBackgroud)
+                                )
                             }
                         }
-                        .content.offset(x: 0, y: scrollViewOffset)
+                        .content.offset(x: 0, y: adjustmentScrollViewOffset)
                         .coordinateSpace(name: "scroll")
                         .padding(0)
                         .navigationBarHidden(true)
+                        .background(Color.themeBackgroud)
                     }.navigationBarTitleDisplayMode(.inline)
+                        
                 }
             }
         }
@@ -76,43 +109,73 @@ struct SegmentSlideOverCardView<Content: View> : View {
             DragGesture()
                 .onChanged({ drag in
                     
-                    if let lastDragPosition = lastDragPosition {
-                        
+                    let predictShiftOffset = drag.predictedEndLocation.y - drag.location.y
+                    
+                    let currentCardOffset = cardPosition.offsetValue + cardViewOffset
+                    
+                    let updatePosition = cardPosition.updatePositionResult(with: currentCardOffset + predictShiftOffset, availableMode: availableMode.modes)
+                    
+                    let isCardReachTopOffset = currentCardOffset <= (availableMode.maxMode.offsetValue)
+                    
+                    let isUpdatedPermit = abs(predictShiftOffset) > 0.1
+                    
+                    // Update offset
+                    if isScrollingOnScrollView && onScrollingSession , let lastDragPosition = lastDragPosition  {
                         let scrollShiftOffSet = drag.location.y - lastDragPosition.location.y
-                        
-                        let currentCardOffset = cardPosition.offsetValue + cardViewOffset
-                        if currentCardOffset > (availableMode.maxMode.offsetValue) && !isScrollingOnScrollView {
-                            isScrollingOnCard = true
-                            scrollViewOffset = 0
-                            
-                            cardViewOffset += drag.translation.height
-                            
-                            let currentCardOffset = cardPosition.offsetValue + cardViewOffset
-                            if currentCardOffset > availableMode.minMode.offsetValue {
-                                cardViewOffset -= drag.translation.height
+                        let updatedScrollViewOffset = scrollViewOffset + scrollShiftOffSet
+                        // update scrollView offset
+                        cardViewOffset = 0
+                        if updatedScrollViewOffset < 0 && (updatedScrollViewOffset > -diffInSizeAndContentHeight) {
+                            scrollViewOffset = updatedScrollViewOffset
+                        }
+                    }
+                    
+                    if isScrollingOnCard && onScrollingSession {
+                        // update card offset
+                        cardViewOffset += drag.translation.height
+                        scrollViewOffset = 0
+                    }
+                    
+                    let updatedScrollViewOffset = scrollViewOffset + predictShiftOffset
+                    
+                    if  isUpdatedPermit {
+                        if (predictShiftOffset <= 0) {
+                            // Scroll Up
+                            // if CardOffset Cant be updated
+                            if !onScrollingSession {
+                                if isCardReachTopOffset {
+                                    // Setting is On scrolling session
+                                    isScrollingOnScrollView = true
+                                    isScrollingOnCard = false
+                                } else {
+                                    // Update card offset
+                                    isScrollingOnScrollView = false
+                                    isScrollingOnCard = true
+                                }
+                                
+                                onScrollingSession = true
+                            } else {
+                                // Switch Scrolling target while on session
+                                if isCardReachTopOffset {
+                                    isScrollingOnScrollView = true
+                                    isScrollingOnCard = false
+                                    cardPosition = updatePosition
+                                }
                             }
                         } else {
-                            let updatedOffset = scrollViewOffset + scrollShiftOffSet
-                            if updatedOffset <= 0 && updatedOffset > scrollViewMaxOffset {
-                                isScrollingOnScrollView = true
-                                
-                                scrollViewOffset = updatedOffset
-                            } else if !isScrollingOnScrollView {
-                                
-                                if isScrollingOnCard {
-                                    
-                                    if updatedOffset <= 0 && updatedOffset > scrollViewMaxOffset {
-                                        scrollViewOffset = updatedOffset
-                                    }
+                            // Scroll Down
+                            // if scrollOffset Cant be updated
+                            if !onScrollingSession {
+                                if updatedScrollViewOffset < 0 && isScrollingOnScrollView {
+                                    // Update On ScrollView
+                                    isScrollingOnScrollView = true
+                                    isScrollingOnCard = false
                                 } else {
-                                    if updatedOffset > scrollViewMaxOffset {
-                                        cardViewOffset += drag.translation.height
-                                    } else {
-                                        if drag.translation.height > 0 {
-                                            cardViewOffset -= drag.translation.height
-                                        }
-                                    }
+                                    isScrollingOnScrollView = false
+                                    isScrollingOnCard = true
                                 }
+                                
+                                onScrollingSession = true
                             }
                         }
                     }
@@ -120,47 +183,28 @@ struct SegmentSlideOverCardView<Content: View> : View {
                     lastDragPosition = drag
                 })
                 .onEnded({ drag in
+                    onScrollingSession = false
+                    
                     let predictShiftOffset = drag.predictedEndLocation.y - drag.location.y
-                    
-                    let currentOffset = cardPosition.offsetValue + cardViewOffset
-                    
-                    let updatePosition = cardPosition.updatePositionResult(with: currentOffset + predictShiftOffset, availableMode: availableMode.modes)
+
+                    let currentCardOffset = cardPosition.offsetValue + cardViewOffset
+
+                    let updatePosition = cardPosition.updatePositionResult(with: currentCardOffset + predictShiftOffset, availableMode: availableMode.modes)
                     
                     let isCardWillOnTop = cardPosition.isPositionStatusIsOnTop(updatePosition, availableMode: availableMode.modes)
-                    
+
                     withAnimation(.spring(response: 0.3, dampingFraction: 0.7, blendDuration: 0)) {
                         if isScrollingOnCard {
+                            // Finish at the middel between card position
                             cardPosition = updatePosition
-                            
                             cardViewOffset = 0
-                            
-                            if !isCardWillOnTop {
-                                scrollViewOffset = 0
-                                scrollAble = false
-                            }
                         }
-                        
+
                         if isScrollingOnScrollView {
-                            if (scrollViewOffset + predictShiftOffset) > 0 {
-                                scrollViewOffset = 0
-                                scrollAble = false
-                            } else if (scrollViewOffset + predictShiftOffset) < scrollViewMaxOffset {
-                                scrollViewOffset = scrollViewMaxOffset
-                            } else {
-                                scrollViewOffset += predictShiftOffset
-                                scrollAble = true
-                            }
-                            
+                            cardViewOffset = 0
                         }
                     }
                     
-                    isScrollingOnScrollView = false
-                    
-                    if scrollViewOffset == 0 {
-                        isScrollingOnCard = false
-                    }
-                    
-                    lastDragPosition = nil
                 })
         )
         .background(Color.Neumorphic.main)

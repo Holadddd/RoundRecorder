@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Neumorphic
 
 struct SubscribeView: View {
     
@@ -17,11 +18,15 @@ struct SubscribeView: View {
         return 
         VStack{
             HStack{
-                Text("ChannelID: ")
+                Text("ChannelID: ").fontWeight(.bold)
+                    .foregroundColor(Color.Neumorphic.secondary)
+                
                 TextField.init("SubscribeChannelID", text: $channelID, prompt: nil)
+                
                 Button("Subscribe") {
                     subscribetAction()
-                }.padding()
+                }.softButtonStyle(RoundedRectangle(cornerRadius: 5), padding: 3, textColor: Color.Neumorphic.secondary, pressedEffect: .hard)
+                    .padding()
             }
         }
     }

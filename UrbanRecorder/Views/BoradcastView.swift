@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Neumorphic
 
 struct BoradcastView: View {
     @Binding var channelID: String
@@ -14,11 +15,13 @@ struct BoradcastView: View {
     
     var body: some View {
         return HStack{
-            Text("ChannelID: ")
+            Text("ChannelID: ").fontWeight(.bold)
+                .foregroundColor(Color.Neumorphic.secondary)
             TextField.init("BroadcastChannelID", text: $channelID, prompt: nil)
             Button("Broadcast") {
                 broadcastAction()
-            }.padding()
+            }.softButtonStyle(RoundedRectangle(cornerRadius: 5), padding: 3, textColor: Color.Neumorphic.secondary, pressedEffect: .hard)
+                .padding()
         }
     }
 }
