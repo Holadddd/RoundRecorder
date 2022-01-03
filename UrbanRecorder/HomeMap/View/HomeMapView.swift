@@ -130,10 +130,7 @@ struct HomeMapView: View {
                             }
                         }
                     }
-                },
-                                         cardPosition: $viewmodel.cardPosition,
-                                         availableMode: AvailablePosition([.top, .middle, .bottom])
-                )
+                }, cardPosition: $viewmodel.cardPosition, availableMode: AvailablePosition([.top, .middle, .bottom]))
                     .onChange(of: viewmodel.featureData) { _ in
                         viewmodel.setNeedReload = true
                     }
