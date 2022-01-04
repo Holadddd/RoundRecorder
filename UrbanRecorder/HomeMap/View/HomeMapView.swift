@@ -40,7 +40,7 @@ struct HomeMapView: View {
                 }
                 
                 SegmentSlideOverCardView(isSetReload: $viewmodel.setNeedReload, content: {
-                    VStack {
+                    VStack(spacing: 0) {
                         HStack(alignment: .top){
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 20) {
@@ -51,14 +51,14 @@ struct HomeMapView: View {
                                             viewmodel.featureData[data.id].isShowing.toggle()
                                         } label: {
                                             Text(data.title).fontWeight(.bold)
-                                                .frame(width: 120, height: 30)
+                                                .frame(width: 120, height: 20)
                                         }.softButtonStyle(RoundedRectangle(cornerRadius: 10), padding: 5,
                                                           isPressed: viewmodel.featureData[data.id].isShowing)
                                     }
                                     
                                     Spacer(minLength: 10)
                                 }
-                                .padding()
+                                .padding(EdgeInsets(top: 10, leading: 0, bottom: 15, trailing: 0))
                             }
                         }.frame(width: UIScreen.main.bounds.width)
                         
@@ -70,38 +70,30 @@ struct HomeMapView: View {
                                         viewmodel.broadcastChannel()
                                     })
                                 case 1:
-                                    VStack{
-                                        SubscribeView(channelID: $viewmodel.subscribeID) {
-                                            viewmodel.subscribeChannel()
-                                        }
-                                        HStack{
-                                            // Prompt Note
-                                            Text("MS: \(viewmodel.udpsocketLatenctMs)")
-                                                .foregroundColor(.fixedLightGray)
-                                            Spacer()
-                                        }
-                                        HStack{
-                                            DirectionAndDistanceMetersView(receiverDirection: viewmodel.receiverDirection,
-                                                                           receiverMeters: $viewmodel.receiverLastDistanceMeters,
-                                                                           showWave: viewmodel.showWave,
-                                                                           volumeMaxPeakPercentage: viewmodel.volumeMaxPeakPercentage) {
-                                                // TODO: Fixed the distance
-                                                print("TODO: Fixed the distance")
-                                                
-                                            } resetAnchorDegreesDidClicked: {
-                                                viewmodel.resetAnchorDegrees()
-                                            }
-                                            .scaledToFill()
-                                        }
+                                    SubscribeView(channelID: $viewmodel.subscribeID) {
+                                        viewmodel.subscribeChannel()
                                     }
                                 case 2:
+                                    DirectionAndDistanceMetersView(udpsocketLatenctMs: viewmodel.udpsocketLatenctMs,
+                                                                   receiverDirection: viewmodel.receiverDirection,
+                                                                   receiverMeters: $viewmodel.receiverLastDistanceMeters,
+                                                                   showWave: viewmodel.showWave,
+                                                                   volumeMaxPeakPercentage: viewmodel.volumeMaxPeakPercentage) {
+                                        // TODO: Fixed the distance
+                                        print("TODO: Fixed the distance")
+                                        
+                                    } resetAnchorDegreesDidClicked: {
+                                        viewmodel.resetAnchorDegrees()
+                                    }
+                                    .scaledToFill()
+                                case 3:
                                     RecorderView(recordDidClicked: { viewmodel.recordButtonDidClicked() },
                                                  isRecordButtonPressed: $viewmodel.isRecording,
                                                  recordDuration: $viewmodel.recordDuration,
                                                  movingDistance: $viewmodel.recordMovingDistance,
                                                  recordName: $viewmodel.recordName,
                                                  recorderLocation: viewmodel.userLocation)
-                                case 3:
+                                case 4:
                                     FileListView(
                                         setReload: {
                                             viewmodel.setNeedReload = true

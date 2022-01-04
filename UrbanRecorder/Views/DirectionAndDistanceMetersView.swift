@@ -12,6 +12,12 @@ struct DirectionAndDistanceMetersView: View {
     var receiverDirection: Double
     @Binding var receiverMeters: Double
     
+    var udpsocketLatenctMs: UInt64
+    
+    var udpsocketLatenctMsString: String {
+        return udpsocketLatenctMs == 0 ? "MS:" : "MS: \(udpsocketLatenctMs)"
+    }
+    
     var volumeMaxPeakPercentage: Double
     
     var showWave: Bool
@@ -26,7 +32,10 @@ struct DirectionAndDistanceMetersView: View {
     
     let redDotSize: CGSize = CGSize(width: 25, height: 25)
     
-    init(receiverDirection: Double, receiverMeters: Binding<Double>, showWave: Bool, volumeMaxPeakPercentage: Double, distanceMeteDidClicked: @escaping (()->Void), resetAnchorDegreesDidClicked: @escaping (()->Void)) {
+    let compassWidth:CGFloat = UIScreen.main.bounds.width * 0.8
+    
+    init(udpsocketLatenctMs: UInt64, receiverDirection: Double, receiverMeters: Binding<Double>, showWave: Bool, volumeMaxPeakPercentage: Double, distanceMeteDidClicked: @escaping (()->Void), resetAnchorDegreesDidClicked: @escaping (()->Void)) {
+        self.udpsocketLatenctMs = udpsocketLatenctMs
         self.receiverDirection = receiverDirection
         self._receiverMeters = receiverMeters
         self.showWave = showWave
@@ -37,45 +46,28 @@ struct DirectionAndDistanceMetersView: View {
     
     var body: some View {
         
+        // Adjust user motion by reset anchor degrees
         ZStack {
+            VStack(alignment: .center, spacing: 0) {
+                HStack(alignment: VerticalAlignment.center) {
+                    Text(udpsocketLatenctMsString)
+                        .foregroundColor(.fixedLightGray)
+                    Spacer()
+                    Button(action: {
+                        resetAnchorDegreesDidClicked()
+                    }) {
+                        Image(systemName: "pin")
+                            .frame(width: 5, height: 5, alignment: .center)
+                    }.softButtonStyle(Circle())
+                        .disabled(false)
+                }.padding(EdgeInsets(top: 0, leading: 5, bottom: 5, trailing: 5))
+                Spacer()
+            }
+            
             GeometryReader{ reader in
                 ZStack{
                     Circle().fill(mainColor).frame(width: reader.size.width, height: reader.size.height)
                         .softInnerShadow(Circle(), spread: 0.05)
-                    
-//                                    Canvas { context, size in
-//                                        context.withCGContext { cgContext in
-//                                            let rect = CGRect(origin: .zero, size: size).insetBy(dx: 20, dy: 20)
-//                                            let path = CGPath(ellipseIn: rect, transform: nil)
-//                                            cgContext.addPath(path)
-//                                            cgContext.setStrokeColor(UIColor.black.cgColor)
-//                                            cgContext.setFillColor(UIColor.green.cgColor)
-//                                            cgContext.setLineWidth(10)
-//                                            cgContext.setAlpha(0.5)
-//                                            cgContext.drawPath(using: .eoFillStroke)
-//                    
-//                                        }
-                    //
-                    //                    context.withCGContext { cgContext in
-                    //                        let midPoint = CGPoint(x: size.width/2.0, y: size.height/2.0)
-                    //                        let text = Text("\(receiverMeters.string(fractionDigits: 2)) M").font(.title).fontWeight(.heavy)
-                    //                        context.blendMode = GraphicsContext.BlendMode.softLight
-                    //                        context.draw(text, at: midPoint)
-                    //                    }
-                    //                }
-                    //
-                    //                Canvas { context, size in
-                    //
-                    //                    context.withCGContext { cgContext in
-                    //                        let midPoint = CGPoint(x: size.width/2.0, y: size.height/2.0)   // ZStack is scaled to fit the size(squre), the weight and width are same value
-                    //                        let nexPoint = CGPoint(x: size.width/2.0, y: 0)
-                    //                        cgContext.move(to: nexPoint)
-                    //                        cgContext.setStrokeColor(UIColor.red.cgColor)
-                    //                        cgContext.setLineWidth(10)
-                    //                        cgContext.addLine(to: midPoint)
-                    //                        cgContext.drawPath(using: CGPathDrawingMode.eoFillStroke)
-                    //                    }
-                    //                }.rotationEffect(.degrees(receiverDirection))
                     
                     Circle().fill(mainColor).frame(width: reader.size.width - (redDotSize.width * 2), height: reader.size.height - (redDotSize.height * 2))
                         .softOuterShadow()
@@ -116,22 +108,7 @@ struct DirectionAndDistanceMetersView: View {
                         .disabled(true)
                     
                 }.aspectRatio(1, contentMode: .fit)
-            }
-            // Adjust user motion by reset anchor degrees
-            VStack(alignment: .center, spacing: 0) {
-                HStack(alignment: VerticalAlignment.center, spacing: 5) {
-                    Spacer()
-                    Button(action: {
-                        resetAnchorDegreesDidClicked()
-                    }) {
-                        Image(systemName: "pin")
-                            .frame(width: 5, height: 5, alignment: .center)
-                    }.softButtonStyle(Circle())
-                        .disabled(false)
-                        .padding(.trailing, 5)
-                }
-                Spacer()
-            }
+            }.frame(width: compassWidth, height: compassWidth, alignment: .center)
         }
     }
 }
@@ -139,7 +116,7 @@ struct DirectionAndDistanceMetersView: View {
 struct DirectionAndDistanceMetersView_Previews: PreviewProvider {
     static var previews: some View {
         
-        DirectionAndDistanceMetersView(receiverDirection: 315, receiverMeters: .constant(5), showWave: false, volumeMaxPeakPercentage: 0.8) {
+        DirectionAndDistanceMetersView(udpsocketLatenctMs: 11, receiverDirection: 315, receiverMeters: .constant(5), showWave: false, volumeMaxPeakPercentage: 0.8) {
             
         } resetAnchorDegreesDidClicked: {
             

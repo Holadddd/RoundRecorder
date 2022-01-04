@@ -54,17 +54,16 @@ struct SegmentSlideOverCardView<Content: View> : View {
                 GeometryReader{ value in
                         ScrollView {
                             ZStack{
-                                VStack{
+                                VStack(spacing:0) {
                                     HStack(alignment: .center) {
                                         Image(systemName: "minus")
                                             .foregroundColor(.gray)
-                                            .padding(SwiftUI.EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                                             .scaleEffect(2)
-                                            .frame(height: 30)
-                                    }
-                                    .expandHorizontally()
+                                            .frame(height: 10)
+                                    }.padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0))
                                     
                                     content()
+                                    
                                     Spacer().padding(EdgeInsets(top: 0, leading: 0, bottom: 30, trailing: 0))
                                 }
                                 .expandHorizontally()

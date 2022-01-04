@@ -83,6 +83,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
     var featureColumns: [GridItem] = [GridItem(.fixed(100)),
                                       GridItem(.fixed(100)),
                                       GridItem(.fixed(100)),
+                                      GridItem(.fixed(100)),
                                       GridItem(.fixed(100))]
     
     @Published var featureData: [GridData] = []
@@ -164,15 +165,19 @@ class HomeMapViewModel: NSObject, ObservableObject {
             print("Subscribe")
         }
         
-        let motionRecord = GridData(id: 2, title: "Record", isShowing: false) {
+        let compassFeature = GridData(id: 2, title: "Compass", isShowing: false) {
+            print("Compass")
+        }
+        
+        let motionRecord = GridData(id: 3, title: "Record", isShowing: false) {
             print("Record")
         }
         
-        let fileList = GridData(id: 3, title: "FileList", isShowing: false) {
+        let fileList = GridData(id: 4, title: "FileList", isShowing: false) {
             print("FileList")
         }
         
-        featureData = [broadcastFeature, subscribeFeature, motionRecord, fileList]
+        featureData = [broadcastFeature, subscribeFeature,compassFeature, motionRecord, fileList]
     }
     
     func menuButtonDidClisked() {
