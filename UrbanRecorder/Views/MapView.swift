@@ -63,7 +63,7 @@ struct MapView: UIViewRepresentable {
         }
         
         for route in displayRoutes {
-            uiView.addOverlay(route.polyline)
+            uiView.addOverlay(route.polyline, level: .aboveLabels)
         }
     }
     

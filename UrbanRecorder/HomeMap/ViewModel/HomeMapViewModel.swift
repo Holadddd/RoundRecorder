@@ -579,7 +579,7 @@ extension HomeMapViewModel: URAudioEngineDelegate {
 // URRecordingDataHelperDelegate
 extension HomeMapViewModel: URRecordingDataHelperDelegate {
     func didUpdateAudioRecordingDuration(_ seconds: UInt) {
-        if featureData[2].isShowing {
+        if featureData[3].isShowing {
             DispatchQueue.main.async {[weak self] in
                 self?.recordDuration = seconds
             }
@@ -587,7 +587,7 @@ extension HomeMapViewModel: URRecordingDataHelperDelegate {
     }
     
     func didUpdateAudioRecordingMovingDistance(_ meters: Double) {
-        if featureData[2].isShowing {
+        if featureData[3].isShowing {
             DispatchQueue.main.async {[weak self] in
                 self?.recordMovingDistance = meters
             }
