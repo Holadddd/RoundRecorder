@@ -120,8 +120,6 @@ struct SegmentSlideOverCardView<Content: View> : View {
                             
                             let currentCardOffset = cardPosition.offsetValue + cardViewOffset
                             
-                            let updatePosition = cardPosition.updatePositionResult(with: currentCardOffset + predictShiftOffset, availableMode: availableMode.modes)
-                            
                             let isCardReachTopOffset = currentCardOffset <= (availableMode.maxMode.offsetValue)
                             
                             let isUpdatedPermit = abs(predictShiftOffset) > 0.1
@@ -167,7 +165,6 @@ struct SegmentSlideOverCardView<Content: View> : View {
                                         if isCardReachTopOffset {
                                             isScrollingOnScrollView = true
                                             isScrollingOnCard = false
-        //                                    cardPosition = updatePosition
                                         }
                                     }
                                 } else {
@@ -193,14 +190,12 @@ struct SegmentSlideOverCardView<Content: View> : View {
                         .onEnded({ drag in
                             onScrollingSession = false
                             
-        //                    let predictShiftOffset = drag.predictedEndLocation.y - drag.location.y
+                            let predictShiftOffset = drag.predictedEndLocation.y - drag.location.y
 
                             let currentCardOffset = cardPosition.offsetValue + cardViewOffset
 
-                            let updatePosition = cardPosition.updatePositionResult(with: currentCardOffset , availableMode: availableMode.modes)
+                            let updatePosition = cardPosition.updatePositionResult(with: currentCardOffset + predictShiftOffset , availableMode: availableMode.modes)
                             
-                            let isCardWillOnTop = cardPosition.isPositionStatusIsOnTop(updatePosition, availableMode: availableMode.modes)
-
                             withAnimation(.spring(response: 0.3, dampingFraction: 0.7, blendDuration: 0.2)) {
                                 cardViewOffset = 0
                                 
