@@ -30,15 +30,40 @@ struct HomeMapView: View {
                 VStack{
                     
                     MapView(userCurrentRegion: $viewmodel.userCurrentRegion,
-                            isUpdatedUserRegion: $viewmodel.isUpdatedUserRegion,
+                            isLocationLocked: $viewmodel.isLocationLocked,
+                            updateByMapItem: $viewmodel.updateByMapItem,
                             showsUserLocation: true,
-                            removeAnnotationItem: $viewmodel.removeAnnotationItem,
+                            removeAnnotationItems: $viewmodel.removeAnnotationItems,
                             addAnnotationItem: $viewmodel.receiverAnnotationItem,
                             displayRoutes: $viewmodel.displayRoutes,
                             removeRoutes: $viewmodel.removeRoutes)
                         .edgesIgnoringSafeArea(.all)
                 }
-                
+                VStack {
+                    HStack {
+                        Spacer()
+                        VStack{
+                            Button {
+                                viewmodel.locateButtonDidClicked()
+                            } label: {
+                                Image(systemName: viewmodel.isLocationLocked ? "location.north.line.fill" : "location.fill")
+                                    .tint(Color.Neumorphic.secondary)
+                                    .frame(width: 30, height: 30)
+                            }.softButtonStyle(RoundedRectangle(cornerRadius: 3), padding: 0, pressedEffect: .hard, isPressed: viewmodel.isLocationLocked)
+                            
+                            Button {
+                                viewmodel.clearRoutesButtonDidClicked()
+                            } label: {
+                                Image(systemName: "goforward")
+                                    .tint(Color.Neumorphic.secondary)
+                                    .frame(width: 30, height: 30)
+                            }.softButtonStyle(RoundedRectangle(cornerRadius: 3), padding: 0, pressedEffect: .hard, isPressed: viewmodel.isLocationLocked)
+                        }
+                        
+                            
+                    }.padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 5))
+                    Spacer()
+                }
                 SegmentSlideOverCardView(isSetReload: $viewmodel.setNeedReload, content: {
                     VStack(spacing: 0) {
                         HStack(alignment: .top){

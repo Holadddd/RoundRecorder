@@ -94,7 +94,7 @@ class URAudioEngine: NSObject {
             }
             
             // .measurement Filter the ambient sound, able recording, motion detect
-            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .measurement, options: engineOption)
+            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .videoChat, options: engineOption)
             
             try AVAudioSession.sharedInstance().setActive(true)
             

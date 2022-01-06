@@ -26,9 +26,13 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     var currentBroadcastID: String = ""
     
-    @Published var cardPosition = CardPosition.middle
+    var isTappingMap: Bool = false
     
-    var isUpdatedUserRegion: Bool = false
+    @Published var isLocationLocked: Bool = false
+    
+    var updateByMapItem: Bool = false
+    
+    @Published var cardPosition = CardPosition.middle
     
     var isMapDisplayFullScreen: Bool = true
     
@@ -68,9 +72,14 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     let headphoneMotionManager = CMHeadphoneMotionManager()
     
-    @Published var removeAnnotationItem: HomeMapAnnotation?
+    @Published var removeAnnotationItems: [HomeMapAnnotation] = []
     
-    @Published var receiverAnnotationItem: HomeMapAnnotation = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), type: .user, color: .clear)
+    @Published var receiverAnnotationItem: HomeMapAnnotation = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), type: .user, color: .clear) {
+        willSet {
+            // Remove the last receiver annotion
+            removeAnnotationItems.append(receiverAnnotationItem)
+        }
+    }
     
     @Published var userCurrentRegion: MKCoordinateRegion?
     
@@ -112,9 +121,15 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     @Published var pauseData: RecordedData? = nil
     // Map
+    var cacheRoutes: [RecordedData] = []
+    
     @Published var displayRoutes: [MKRoute] = []
     
     @Published var removeRoutes: [MKRoute] = []
+    // Backgroud Task
+    var recordingBackgroundTaskID: UIBackgroundTaskIdentifier?
+    
+    var playingBackgroundTaskID: UIBackgroundTaskIdentifier?
     
     override init() {
         super.init()
@@ -222,6 +237,17 @@ class HomeMapViewModel: NSObject, ObservableObject {
             self.udpSocketManager.subscribeChannel(from: "", with: self.currentSubscribeID)
         }
     }
+    // Map
+    func locateButtonDidClicked() {
+        isLocationLocked.toggle()
+    }
+    
+    func clearRoutesButtonDidClicked() {
+        removeRoutes = displayRoutes
+        removeAnnotationItems.append(receiverAnnotationItem)
+        receiverAnnotationItem = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), color: .clear)
+        displayRoutes.removeAll()
+    }
     
     private func setupBroadcastMicrophoneCaptureCallback(){
         broadcastMicrophoneCaptureCallback = {[weak self] audioData in
@@ -264,23 +290,31 @@ class HomeMapViewModel: NSObject, ObservableObject {
         isRecording.toggle()
         
         if isRecording {
-            // 1. Request Microphone
-            urAudioEngineInstance.requestRecordPermissionAndStartTappingMicrophone {[weak self] isGranted in
-                guard let self = self else { return }
-                if isGranted {
-                    // 2. setupBroadcastEnviriment
-                    self.urAudioEngineInstance.setupAudioEngineEnvironmentForCaptureAudioData()
-                    // 3. generateEmpty URAudioData
-                    let inputFormat = self.urAudioEngineInstance.convertFormat
-                    
-                    let _ = self.recordingHelper.generateEmptyURRecordingData(audioFormat: inputFormat)
-                    // 4.setupRecordingEnviriment
-                    self.setupRecordingMicrophoneCaptureCallback()
-                    
-                    print("Start Recording With File: \(self.recordName)")
-                } else {
-                    print("Show Alert View")
-                    // TODO: Show Alert View
+            DispatchQueue.global().async {
+                // Request the task assertion and save the ID.
+                self.recordingBackgroundTaskID = UIApplication.shared.beginBackgroundTask (withName: "RecordingBackgroundTask") {
+                    // End the task if time expires.
+                    UIApplication.shared.endBackgroundTask(self.recordingBackgroundTaskID!)
+                    self.recordingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
+                }
+                // 1. Request Microphone
+                self.urAudioEngineInstance.requestRecordPermissionAndStartTappingMicrophone {[weak self] isGranted in
+                    guard let self = self else { return }
+                    if isGranted {
+                        // 2. setupBroadcastEnviriment
+                        self.urAudioEngineInstance.setupAudioEngineEnvironmentForCaptureAudioData()
+                        // 3. generateEmpty URAudioData
+                        let inputFormat = self.urAudioEngineInstance.convertFormat
+                        
+                        let _ = self.recordingHelper.generateEmptyURRecordingData(audioFormat: inputFormat)
+                        // 4.setupRecordingEnviriment
+                        self.setupRecordingMicrophoneCaptureCallback()
+                        
+                        print("Start Recording With File: \(self.recordName)")
+                    } else {
+                        print("Show Alert View")
+                        // TODO: Show Alert View
+                    }
                 }
             }
         } else {
@@ -311,7 +345,13 @@ class HomeMapViewModel: NSObject, ObservableObject {
             recordMovingDistance = 0
             
             recordingMicrophoneCaptureCallback = nil
-       
+            #warning("Stop engine")
+            
+            DispatchQueue.global().async {
+                // End the task assertion.
+                UIApplication.shared.endBackgroundTask(self.recordingBackgroundTaskID!)
+                self.recordingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
+            }
         }
     }
     
@@ -347,27 +387,42 @@ class HomeMapViewModel: NSObject, ObservableObject {
         
         let urAudioData = URRecordingDataHelper.parseURAudioData(file)
         
-        urAudioEngineInstance.setupPlayerDataAndStartPlayingAtSeconds(urAudioData, startOffset: playingDuration, updateInterval: 1) { updatedDuration in
-            // TODO: Record playing duration
-            DispatchQueue.main.async {
-                withAnimation {
-                    self.playingData?.playingDuration = updatedDuration
+        DispatchQueue.global().async { [weak self] in
+            guard let self = self else { return }
+            // Request the task assertion and save the ID.
+            self.playingBackgroundTaskID = UIApplication.shared.beginBackgroundTask (withName: "PlayingBackgroundTask") {
+                // End the task if time expires.
+                UIApplication.shared.endBackgroundTask(self.playingBackgroundTaskID!)
+                self.playingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
+            }
+            
+            self.urAudioEngineInstance.setupPlayerDataAndStartPlayingAtSeconds(urAudioData, startOffset: playingDuration, updateInterval: 1) { updatedDuration in
+                // TODO: Record playing duration
+                DispatchQueue.main.async {
+                    withAnimation {
+                        self.playingData?.playingDuration = updatedDuration
+                    }
                 }
+            } endOfFilePlayingCallback: { endSecond in
+                print("The File Is End Of Playing At: \(endSecond)")
+                // TODO: Stop the engine
+                DispatchQueue.main.async {
+                    self.playingData?.playingDuration = 0
+                    self.playingData = nil
+                    
+                    self.receiverAnnotationItem = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), color: .clear)
+                }
+                self.urAudioEngineInstance.removePlayerData()
+                
+                // End the task assertion.
+                UIApplication.shared.endBackgroundTask(self.playingBackgroundTaskID!)
+                self.playingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
             }
-        } endOfFilePlayingCallback: { endSecond in
-            print("The File Is End Of Playing At: \(endSecond)")
-            // TODO: Stop the engine
-            DispatchQueue.main.async {
-                self.playingData?.playingDuration = 0
-                self.playingData = nil
-            }
-            self.urAudioEngineInstance.removePlayerData()
+            
+            // 3. SetUp engine environment
+            self.urAudioEngineInstance.setupAudioEngineEnvironmentForScheduleAudioData()
+            
         }
-
-        // 3. SetUp engine environment
-        urAudioEngineInstance.setupAudioEngineEnvironmentForScheduleAudioData()
-        
-        
     }
     
     func fileListOnPause() {
@@ -376,9 +431,38 @@ class HomeMapViewModel: NSObject, ObservableObject {
         self.pauseData = self.playingData
         self.playingData = nil
         self.urAudioEngineInstance.removePlayerData()
+        
+        DispatchQueue.global().async { [weak self] in
+            guard let self = self else { return }
+            // End the task assertion.
+            UIApplication.shared.endBackgroundTask(self.playingBackgroundTaskID!)
+            self.playingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
+        }
     }
     
     private func displayRecordedDataOnMap(_ displayData: RecordedData) {
+        // Check cache
+        for data in cacheRoutes {
+            if data == displayData {
+                // 1. Parse URAudioBuffers in locatinos
+                guard let data = displayData.file else { return }
+                
+                let urAudioData = URRecordingDataHelper.parseURAudioData(data)
+                
+                let buffersLocation: [CLLocationCoordinate2D] = urAudioData.audioBuffers.filter { buffer->Bool in
+                    buffer.metadata != nil
+                }.map { buffer in
+                    return CLLocationCoordinate2D(latitude: buffer.metadata!.locationCoordinate.latitude,
+                                                  longitude: buffer.metadata!.locationCoordinate.longitude)
+                }
+                
+                guard let startLocation = buffersLocation.first, let routes = displayData.routes else { continue }
+                
+                self.displayRoutesOnMap(centerLocation: startLocation, routes: routes)
+                return
+            }
+        }
+        // No routes cache
         // 1. Parse URAudioBuffers in locatinos
         guard let data = displayData.file else { return }
         
@@ -404,20 +488,31 @@ class HomeMapViewModel: NSObject, ObservableObject {
             guard let self = self else { return }
             switch result {
             case .success(let routes):
+                guard let startLocation = buffersLocation.first else { return }
                 DispatchQueue.main.async {
-                    //Remove the last routes
-                    self.removeRoutes = self.displayRoutes
-                    self.displayRoutes = routes
-                    print(routes)
-                    guard let startLocation = buffersLocation.first else { return }
-                    self.isUpdatedUserRegion = false
-                    self.userCurrentRegion = MKCoordinateRegion(center: startLocation, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
+                    self.displayRoutesOnMap(centerLocation: startLocation, routes: routes)
+                    // Cache generated routes
+                    displayData.routes = routes
                 }
+                self.cacheRoutes.append(displayData)
             case .failure(let error):
                 print(error)
             }
         }
+    }
+    
+    private func displayRoutesOnMap(centerLocation: CLLocationCoordinate2D, routes: [MKRoute]) {
+        //Remove the last routes
+        self.removeRoutes = self.displayRoutes
+        self.displayRoutes = routes
+        // Clear the last display
+        self.removeAnnotationItems.append(self.receiverAnnotationItem)
+        self.receiverAnnotationItem = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), color: .clear)
         
+        print(routes)
+        self.isLocationLocked = false
+        self.updateByMapItem = true
+        self.userCurrentRegion = MKCoordinateRegion(center: centerLocation, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
     }
     
     func didReceiveVolumePeakPercentage(_ percentage: Double) {
@@ -496,7 +591,8 @@ extension HomeMapViewModel: CLLocationManagerDelegate, CMHeadphoneMotionManagerD
             print("latitude: \(latitude), longitude: \(longitude)")
         }
         
-        if !self.isUpdatedUserRegion {
+        
+        if isLocationLocked || userCurrentRegion == nil  {
             self.userCurrentRegion = MKCoordinateRegion(center: locationCoordinate,
                                                         span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
         }
@@ -556,7 +652,6 @@ extension HomeMapViewModel: URAudioEngineDelegate {
         // Update Receiver Location
         DispatchQueue.main.async {[weak self, receiverLatitude, receiverLongitude] in
             guard let self = self else { return }
-            self.removeAnnotationItem = self.receiverAnnotationItem
             
             self.receiverAnnotationItem = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(latitude: receiverLatitude, longitude: receiverLongitude), type: .user, color: .orange)
         }

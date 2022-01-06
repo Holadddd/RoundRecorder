@@ -8,8 +8,11 @@
 
 import Foundation
 import CoreData
+import MapKit
 
 @objc(RecordedData)
 public class RecordedData: NSManagedObject {
     var playingDuration: Second = 0
+    
+    var routes: [MKRoute]?
 }

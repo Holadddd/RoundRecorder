@@ -14,11 +14,13 @@ struct MapView: UIViewRepresentable {
     
     @Binding var userCurrentRegion: MKCoordinateRegion?
     
-    @Binding var isUpdatedUserRegion: Bool
+    @Binding var isLocationLocked: Bool
+    
+    @Binding var updateByMapItem: Bool
     
     var showsUserLocation: Bool
     
-    @Binding var removeAnnotationItem: HomeMapAnnotation?
+    @Binding var removeAnnotationItems: [HomeMapAnnotation]
     
     @Binding var addAnnotationItem: HomeMapAnnotation
     
@@ -36,19 +38,23 @@ struct MapView: UIViewRepresentable {
         mapView.delegate = context.coordinator
         mapView.showsUserLocation = showsUserLocation
         mapView.showsTraffic = false
+        if let userCurrentRegion = userCurrentRegion {
+            mapView.region = userCurrentRegion
+        }
         
         return mapView
     }
     
     func updateUIView(_ uiView: MKMapView, context: Context) {
         
-        if !isUpdatedUserRegion, let userCurrentRegion = userCurrentRegion {
-            uiView.region = userCurrentRegion
-            isUpdatedUserRegion.toggle()
+        if (isLocationLocked || updateByMapItem), let userCurrentRegion = userCurrentRegion {
+            uiView.region.center = userCurrentRegion.center
+            // Also update compass direction
         }
         
-        if let removeAnnotationItem = removeAnnotationItem {
-            uiView.removeAnnotation(removeAnnotationItem)
+        if !removeAnnotationItems.isEmpty {
+            uiView.removeAnnotations(removeAnnotationItems)
+            removeAnnotationItems.removeAll()
         }
         
         
@@ -87,5 +93,6 @@ struct MapView: UIViewRepresentable {
 
             return annotionView
         }
+        
     }
 }
