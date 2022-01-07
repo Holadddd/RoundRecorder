@@ -15,9 +15,9 @@ class URAudioOutputData: NSObject {
     // Data from UDP socket
     private var outputData: NSMutableData?
     // Allocate size for data memory
-    private var outputDataSize: Int
+    private var outputDataSize: Int = 0
     // Buffer size for real time connection unlinear trasfer
-    private var outputDataBufferSize: Int
+    private var outputDataBufferSize: Int = 0
     // Count for real data size
     private var outputDataOffset: Int = 0
     // Count for real data size in different cycle
@@ -61,12 +61,17 @@ class URAudioOutputData: NSObject {
     private var endOfFilePlayingCallback: ((Second)->Void)?
     
     init(dataSize: Int, bufferBytesSize: Int) {
+        super.init()
         
         outputDataSize = dataSize
         
         outputDataBufferSize = bufferBytesSize
         
-        outputData = NSMutableData(length: dataSize)
+        self.generateEmptyData()
+    }
+    
+    private func generateEmptyData() {
+        outputData = NSMutableData(length: outputDataSize)
         //Input empty bufferData
         let emptyBufferData = NSMutableData(length: outputDataBufferSize)
         
@@ -74,7 +79,7 @@ class URAudioOutputData: NSObject {
         
         readingDataOffset = 0
         
-        print("Init Audio Output Data||Size:\(dataSize) buffer:\(bufferBytesSize)")
+        print("Init Audio Output Data||Size:\(outputDataSize) buffer:\(outputDataBufferSize)")
     }
     // Streaming
     convenience init(format: AVAudioFormat, dataMS: Int, bufferMS: Int) {
@@ -263,5 +268,22 @@ class URAudioOutputData: NSObject {
         tmpAudioBufferMetadatas.removeAll()
         readingDataOffset = 0
         print("Read Data In Next Cycle")
+    }
+    
+    private func resetAllParameters() {
+        isReadAndWriteInSameCycling = true
+        outputDataOffset = 0
+        tmpOutputDataOffset = 0
+        audioBufferMetadatas.removeAll()
+        tmpAudioBufferMetadatas.removeAll()
+        tmpOutputDataOffset = 0
+        metadatasReadingIndex = 0
+        lastUpdatedDuration = 0
+        lastUpdatedMetadata = 0
+        tmpAudioBufferMetadatas.removeAll()
+        readingDataOffset = 0
+        resetCount = 0
+        
+        generateEmptyData()
     }
 }

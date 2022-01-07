@@ -197,11 +197,11 @@ class URAudioEngine: NSObject {
             
             beginTappingMicrophone()
             
-            startEngine()   // Console: AUAudioUnit.mm:1352  Cannot set maximumFramesToRender while render resources allocated.
-            
             setupNodeAttachment()
             
             setupAudioNodeConnection()
+            
+            startEngine()   // Console: AUAudioUnit.mm:1352  Cannot set maximumFramesToRender while render resources allocated.
             
             currentAbility = .ScheduleAndCaptureAudioData
             
@@ -211,6 +211,24 @@ class URAudioEngine: NSObject {
         default:
             print("Unhandle ability")
             break
+        }
+    }
+    
+    func stopBroadcasting() {
+        switch currentAbility {
+        case .undefined:
+            print("No Broadcast ability can be terminate")
+        case .ScheduleAudioData:
+            print("No Broadcast ability can be terminate")
+        case .CaptureAudioData:
+            print("Terminate Broadcast ability and stop engine")
+            stopEngine()
+            
+            currentAbility = .undefined
+        case .ScheduleAndCaptureAudioData:
+            print("Terminate Broadcast ability(remove capture callback) and keep schedule ability")
+            
+            currentAbility = .ScheduleAudioData
         }
     }
     
@@ -248,7 +266,8 @@ class URAudioEngine: NSObject {
         let sampleRate = inputFormat.sampleRate
         // Setup Converter
         let formatConverter = AVAudioConverter(from: inputFormat, to: convertFormat)!
-        
+        // Remove tap on bus 0 for prevent multiple install tap
+        inputNode.removeTap(onBus: 0)
         inputNode.installTap(onBus: 0, bufferSize: AVAudioFrameCount(0.1*sampleRate), format: inputFormat) {[weak self, formatConverter, convertFormat] (buffer, time) in
             guard let self = self else { return }
             // Convert received buffer in required format

@@ -91,8 +91,11 @@ struct HomeMapView: View {
                             if data.isShowing {
                                 switch data.id {
                                 case 0:
-                                    BoradcastView(channelID: $viewmodel.broadcastID, broadcastAction: {
-                                        viewmodel.broadcastChannel()
+                                    BroadcastView(channelID: $viewmodel.broadcastID,
+                                                  isBroadcasting: $viewmodel.isBroadcasting, broadcastAction: { channelID in
+                                        viewmodel.broadcastChannel(channelID: channelID)
+                                    }, stopBroadcastAction: { channelID in
+                                        viewmodel.stopBroadcastChannel(channelID: channelID)
                                     })
                                 case 1:
                                     SubscribeView(channelID: $viewmodel.subscribeID) {

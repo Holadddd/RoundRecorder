@@ -57,6 +57,12 @@ class UDPSocketOut: NSObject, GCDAsyncUdpSocketDelegate {
         socket.send(data, withTimeout: 0, tag: 0)
     }
     
+    func cancelBroadcastChannel() {
+        socket.close()
+        
+        isSocketReady = false
+    }
+    
     //MARK:-GCDAsyncUdpSocketDelegate
     func udpSocket(_ sock: GCDAsyncUdpSocket, didConnectToAddress address: Data) {
         print("UDPSocketOut didConnect")

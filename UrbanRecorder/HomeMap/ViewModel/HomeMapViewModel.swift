@@ -21,10 +21,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
     @Published var subscribeID: String = ""
     
     var currentSubscribeID: String = ""
+    // Broadcast
+    @Published var isBroadcasting: Bool = false
     
     @Published var broadcastID: String = ""
-    
-    var currentBroadcastID: String = ""
     
     var isTappingMap: Bool = false
     
@@ -127,6 +127,8 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     @Published var removeRoutes: [MKRoute] = []
     // Backgroud Task
+    var broadcastingBackgroundTaskID: UIBackgroundTaskIdentifier?
+    
     var recordingBackgroundTaskID: UIBackgroundTaskIdentifier?
     
     var playingBackgroundTaskID: UIBackgroundTaskIdentifier?
@@ -249,12 +251,16 @@ class HomeMapViewModel: NSObject, ObservableObject {
         displayRoutes.removeAll()
     }
     
-    private func setupBroadcastMicrophoneCaptureCallback(){
-        broadcastMicrophoneCaptureCallback = {[weak self] audioData in
+    private func setupBroadcastMicrophoneCaptureCallback(channelID: String) {
+        broadcastMicrophoneCaptureCallback = {[weak self, channelID] audioData in
             guard let self = self else { return }
             // TODO: Send data through UDPSocket
-            self.udpSocketManager.broadcastBufferData(audioData, from: "", to: self.currentBroadcastID)
+            self.udpSocketManager.broadcastBufferData(audioData, from: "", to: channelID)
         }
+    }
+    
+    private func removeBroadcastMicrophoneCaptureCallback() {
+        broadcastMicrophoneCaptureCallback = nil
     }
     
     private func setupRecordingMicrophoneCaptureCallback(){
@@ -264,26 +270,58 @@ class HomeMapViewModel: NSObject, ObservableObject {
             self.recordingHelper.schechuleURAudioBuffer(audioData)
         }
     }
-    
-    func broadcastChannel() {
-        currentBroadcastID = broadcastID
-        
-        // 1. Request Microphone
-        urAudioEngineInstance.requestRecordPermissionAndStartTappingMicrophone {[weak self] isGranted in
-            guard let self = self else { return }
-            if isGranted {
-                // 2. setupBroadcastEnviriment
-                self.urAudioEngineInstance.setupAudioEngineEnvironmentForCaptureAudioData()
-                // 3. Connect and send audio buffer
-                self.udpSocketManager.setupBroadcastConnection {
-                    self.setupBroadcastMicrophoneCaptureCallback()
+    // Broadcast
+    func broadcastChannel(channelID: String) {
+        DispatchQueue.global().async {
+            // Request the task assertion and save the ID.
+            self.broadcastingBackgroundTaskID = UIApplication.shared.beginBackgroundTask (withName: "BroadcastingBackgroundTask") {
+                // End the task if time expires.
+                UIApplication.shared.endBackgroundTask(self.broadcastingBackgroundTaskID!)
+                self.broadcastingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
+            }
+            // 1. Request Microphone
+            self.urAudioEngineInstance.requestRecordPermissionAndStartTappingMicrophone {[weak self, channelID] isGranted in
+                guard let self = self else { return }
+                if isGranted {
+                    // 2. setupBroadcastEnviriment
+                    self.urAudioEngineInstance.setupAudioEngineEnvironmentForCaptureAudioData()
+                    // 3. Connect and send audio buffer
+                    self.udpSocketManager.setupBroadcastConnection {
+                        self.setupBroadcastMicrophoneCaptureCallback(channelID: channelID)
+                        // Broadcast state
+                        DispatchQueue.main.async {[weak self] in
+                            guard let self = self else { return }
+                            self.isBroadcasting = true
+                        }
+                    }
+                } else {
+                    print("Show Alert View")
+                    // TODO: Show Alert View
+                    // Broadcast state
+                    DispatchQueue.main.async {[weak self] in
+                        guard let self = self else { return }
+                        self.isBroadcasting = false
+                    }
                 }
-            } else {
-                print("Show Alert View")
-                // TODO: Show Alert View
             }
         }
+    }
+    
+    func stopBroadcastChannel(channelID: String) {
+        // Broadcast state
+        self.isBroadcasting = false
+        print("TODO stop broadcast: \(channelID)")
+        // Stop AudioEngine
+        urAudioEngineInstance.stopBroadcasting()
+        removeBroadcastMicrophoneCaptureCallback()
+        // Stop Socket
+        udpSocketManager.stopBroadcastConnection()
         
+        DispatchQueue.global().async {
+            // End the task assertion.
+            UIApplication.shared.endBackgroundTask(self.broadcastingBackgroundTaskID!)
+            self.broadcastingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
+        }
     }
     
     func recordButtonDidClicked() {

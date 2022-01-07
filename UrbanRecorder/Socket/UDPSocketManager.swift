@@ -57,6 +57,11 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
         }
     }
     
+    func stopBroadcastConnection() {
+        // UDPOutSocket
+        udpSocketOut?.cancelBroadcastChannel()
+    }
+    
     func setupSubscribeConnection(_ complete: @escaping()->Void) {
         // UDPInSocket
         let ip = UDPSocketManager.hostIP

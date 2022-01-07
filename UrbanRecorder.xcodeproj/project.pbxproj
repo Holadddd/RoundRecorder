@@ -11,7 +11,7 @@
 		DB12B39C27703E31005B8AAC /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB12B39B27703E31005B8AAC /* MapView.swift */; };
 		DB2D9CFB275C982000100535 /* Grid+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9CFA275C982000100535 /* Grid+.swift */; };
 		DB2D9CFD275CCE7100100535 /* SubscribeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9CFC275CCE7100100535 /* SubscribeView.swift */; };
-		DB2D9CFF275CCFD800100535 /* BoradcastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9CFE275CCFD800100535 /* BoradcastView.swift */; };
+		DB2D9CFF275CCFD800100535 /* BroadcastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9CFE275CCFD800100535 /* BroadcastView.swift */; };
 		DB2D9D01275CD17100100535 /* RecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D00275CD17100100535 /* RecorderView.swift */; };
 		DB2D9D03275E180400100535 /* URRecordingDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D02275E180400100535 /* URRecordingDataHelper.swift */; };
 		DB2D9D05275F3B8400100535 /* URAudioData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D04275F3B8400100535 /* URAudioData.swift */; };
@@ -97,7 +97,7 @@
 		DB12B39B27703E31005B8AAC /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		DB2D9CFA275C982000100535 /* Grid+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Grid+.swift"; sourceTree = "<group>"; };
 		DB2D9CFC275CCE7100100535 /* SubscribeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeView.swift; sourceTree = "<group>"; };
-		DB2D9CFE275CCFD800100535 /* BoradcastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoradcastView.swift; sourceTree = "<group>"; };
+		DB2D9CFE275CCFD800100535 /* BroadcastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastView.swift; sourceTree = "<group>"; };
 		DB2D9D00275CD17100100535 /* RecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecorderView.swift; sourceTree = "<group>"; };
 		DB2D9D02275E180400100535 /* URRecordingDataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URRecordingDataHelper.swift; sourceTree = "<group>"; };
 		DB2D9D04275F3B8400100535 /* URAudioData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URAudioData.swift; sourceTree = "<group>"; };
@@ -451,7 +451,7 @@
 				DBF3C68B2726BCEC00292893 /* SegmentSlideOverCardView.swift */,
 				DBE2A38A273D17460098E52D /* DirectionAndDistanceMetersView.swift */,
 				DB2D9CFC275CCE7100100535 /* SubscribeView.swift */,
-				DB2D9CFE275CCFD800100535 /* BoradcastView.swift */,
+				DB2D9CFE275CCFD800100535 /* BroadcastView.swift */,
 				DB2D9D00275CD17100100535 /* RecorderView.swift */,
 				DB2D9D1427633F2D00100535 /* FileListView.swift */,
 				DB12B39B27703E31005B8AAC /* MapView.swift */,
@@ -625,7 +625,7 @@
 				DBF0E3FF27311959004DC546 /* Notification+.swift in Sources */,
 				DB2D9D132762036300100535 /* Array+.swift in Sources */,
 				DB4956D9274920DD00FE512A /* NeumorphicWaveView.swift in Sources */,
-				DB2D9CFF275CCFD800100535 /* BoradcastView.swift in Sources */,
+				DB2D9CFF275CCFD800100535 /* BroadcastView.swift in Sources */,
 				DB67AE3D2738D678007EE7CE /* PowerMeters.swift in Sources */,
 				DBE2A38B273D17460098E52D /* DirectionAndDistanceMetersView.swift in Sources */,
 				DBF0E3F9272FEB07004DC546 /* SubscribeManager.swift in Sources */,
