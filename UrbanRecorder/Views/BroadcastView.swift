@@ -21,7 +21,13 @@ struct BroadcastView: View {
         return HStack{
             Text("ChannelID: ").fontWeight(.bold)
                 .foregroundColor(Color.Neumorphic.secondary)
-            TextField.init("BroadcastChannelID", text: $channelID, prompt: nil).disabled(isBroadcasting)
+            // Prvent Modifying state during view update
+            if isBroadcasting {
+                TextField.init("BroadcastChannelID", text: $channelID, prompt: nil).disabled(true)
+            } else {
+                TextField.init("BroadcastChannelID", text: $channelID, prompt: nil).disabled(false)
+            }
+            
             Button(isBroadcasting ? "Stop" : "Broadcast") {
                 if isBroadcasting {
                     stopBroadcastAction(channelID)

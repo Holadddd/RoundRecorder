@@ -98,8 +98,11 @@ struct HomeMapView: View {
                                         viewmodel.stopBroadcastChannel(channelID: channelID)
                                     })
                                 case 1:
-                                    SubscribeView(channelID: $viewmodel.subscribeID) {
+                                    SubscribeView(channelID: $viewmodel.subscribeID,
+                                                  isSubscribing: $viewmodel.isSubscribing) {
                                         viewmodel.subscribeChannel()
+                                    } stopSubscribetAction: {
+                                        viewmodel.stopSubscribeChannel()
                                     }
                                 case 2:
                                     DirectionAndDistanceMetersView(udpsocketLatenctMs: viewmodel.udpsocketLatenctMs,

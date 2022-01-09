@@ -138,10 +138,11 @@ class URAudioEngine: NSObject {
     // TODO: Write a Task for concurrenct queue
     func setupAudioEngineEnvironmentForScheduleAudioData() {
         switch currentAbility {
-        case .undefined:
-            // 1. Set up Audio Unit For render the input streaming data while engine is running
-            setupInputAudioUnit() {[weak self] in
+        case .undefined, .CaptureAudioData:
+            let taskAfterSetupInputAudioUnit = {[weak self] in
                 guard let self = self else { return }
+                
+                self.stopEngine()
                 // 2. Store the incoming data with custom allocat size
                 self.setupRendererAudioData(updatedInterval: URAudioEngine.metaDataUpdatedInterval)
                 // 3. Attach node on audioEngine
@@ -151,23 +152,15 @@ class URAudioEngine: NSObject {
                 
                 self.startEngine()   // This will change switch AirPod connection from other device
                 
-                self.currentAbility = .ScheduleAudioData
+                self.currentAbility = self.currentAbility == .CaptureAudioData ? .ScheduleAndCaptureAudioData : .ScheduleAudioData
             }
-            
-        case .CaptureAudioData:
             // 1. Set up Audio Unit For render the input streaming data while engine is running
-            setupInputAudioUnit() {[weak self] in
-                guard let self = self else { return }
-                // 2. Store the incoming data with custom allocat size
-                self.setupRendererAudioData(updatedInterval: URAudioEngine.metaDataUpdatedInterval)
-                // 3. Attach node on audioEngine
-                self.setupNodeAttachment()
-                // 4. Connect node with specify sequence and format
-                self.setupAudioNodeConnection()
-                
-                self.startEngine()   // This will change switch AirPod connection from other device
-                
-                self.currentAbility = .ScheduleAndCaptureAudioData
+            if inputAudioUnit == nil {
+                setupInputAudioUnit() {
+                    taskAfterSetupInputAudioUnit()
+                }
+            } else {
+                taskAfterSetupInputAudioUnit()
             }
         case .ScheduleAudioData:
             print("The Ability of Schechule AudioData is been active")
@@ -229,6 +222,30 @@ class URAudioEngine: NSObject {
             print("Terminate Broadcast ability(remove capture callback) and keep schedule ability")
             
             currentAbility = .ScheduleAudioData
+        }
+    }
+    
+    func stopSubscribing() {
+        switch currentAbility {
+        case .undefined:
+            print("No ScheduleAudioData ability can be terminate")
+        case .CaptureAudioData:
+            print("No ScheduleAudioData ability can be terminate")
+        case .ScheduleAudioData:
+            print("Terminate ScheduleAudioData ability and stop engine")
+            stopEngine()
+            
+            currentAbility = .undefined
+        case .ScheduleAndCaptureAudioData:
+            print("Terminate ScheduleAudioData ability(remove rendererData & inputUnit) and keep CaptureAudioData ability")
+            
+            rendererData = nil
+            
+            if let inputAudioUnit = inputAudioUnit {
+                engine.detach(inputAudioUnit)
+            }
+            
+            currentAbility = .CaptureAudioData
         }
     }
     

@@ -18,9 +18,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
     var buttonScale: CGFloat {
         return DeviceInfo.isCurrentDeviceIsPad ? 3 : 2
     }
-    @Published var subscribeID: String = ""
+    // Subscribe
+    @Published var isSubscribing: Bool = false
     
-    var currentSubscribeID: String = ""
+    @Published var subscribeID: String = ""
     // Broadcast
     @Published var isBroadcasting: Bool = false
     
@@ -129,6 +130,8 @@ class HomeMapViewModel: NSObject, ObservableObject {
     // Backgroud Task
     var broadcastingBackgroundTaskID: UIBackgroundTaskIdentifier?
     
+    var subscribingBackgroundTaskID: UIBackgroundTaskIdentifier?
+    
     var recordingBackgroundTaskID: UIBackgroundTaskIdentifier?
     
     var playingBackgroundTaskID: UIBackgroundTaskIdentifier?
@@ -230,24 +233,74 @@ class HomeMapViewModel: NSObject, ObservableObject {
     }
     
     func subscribeChannel() {
-        currentSubscribeID = subscribeID
-        
+        self.isSubscribing = true
         // 1. setupSubscribeEnviriment
-        self.urAudioEngineInstance.setupAudioEngineEnvironmentForScheduleAudioData()
-        
-        self.udpSocketManager.setupSubscribeConnection {
-            self.udpSocketManager.subscribeChannel(from: "", with: self.currentSubscribeID)
+        DispatchQueue.global().async {
+            // Request the task assertion and save the ID.
+            self.subscribingBackgroundTaskID = UIApplication.shared.beginBackgroundTask (withName: "SubscribingingBackgroundTask") {
+                // End the task if time expires.
+                UIApplication.shared.endBackgroundTask(self.subscribingBackgroundTaskID!)
+                self.subscribingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
+            }
+            self.urAudioEngineInstance.setupAudioEngineEnvironmentForScheduleAudioData()
+            
+            self.udpSocketManager.setupSubscribeConnection {[weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(_):
+                    self.udpSocketManager.subscribeChannel(from: "", with: self.subscribeID)
+                    
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self.isSubscribing = false
+                    }
+                    print("Setup Subscribe Connection with error: \(error)")
+                    // End the task assertion.
+                    UIApplication.shared.endBackgroundTask(self.subscribingBackgroundTaskID!)
+                    self.subscribingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
+                }
+            }
         }
+    }
+    
+    func stopSubscribeChannel() {
+        self.isSubscribing = false
+        print("Stop Subscribing")
+        // Socket
+        self.udpSocketManager.unsubscribeChannel(from: "", with: self.subscribeID)
+        // AudioEngine
+        urAudioEngineInstance.stopSubscribing()
+        // Clear DistanceAndDirectionView
+        clearDirectionAndDistanceMetersView()
+        // Map
+        removeAnnotionOnMap()
+        // Background Task
+        DispatchQueue.global().async {
+            // End the task assertion.
+            UIApplication.shared.endBackgroundTask(self.subscribingBackgroundTaskID!)
+            self.subscribingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
+        }
+    }
+    // DirectionAndDistanceMetersView
+    func clearDirectionAndDistanceMetersView() {
+        udpsocketLatenctMs = 0
+        receiverLastDirectionDegrees = 0
+        receiverLastDistanceMeters = 0
     }
     // Map
     func locateButtonDidClicked() {
         isLocationLocked.toggle()
     }
     
+    private func removeAnnotionOnMap() {
+        self.removeAnnotationItems.append(receiverAnnotationItem)
+        
+        self.receiverAnnotationItem = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), color: .clear)
+    }
+    
     func clearRoutesButtonDidClicked() {
         removeRoutes = displayRoutes
-        removeAnnotationItems.append(receiverAnnotationItem)
-        receiverAnnotationItem = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), color: .clear)
+        removeAnnotionOnMap()
         displayRoutes.removeAll()
     }
     
@@ -272,6 +325,8 @@ class HomeMapViewModel: NSObject, ObservableObject {
     }
     // Broadcast
     func broadcastChannel(channelID: String) {
+        isBroadcasting = true
+        
         DispatchQueue.global().async {
             // Request the task assertion and save the ID.
             self.broadcastingBackgroundTaskID = UIApplication.shared.beginBackgroundTask (withName: "BroadcastingBackgroundTask") {
@@ -288,11 +343,6 @@ class HomeMapViewModel: NSObject, ObservableObject {
                     // 3. Connect and send audio buffer
                     self.udpSocketManager.setupBroadcastConnection {
                         self.setupBroadcastMicrophoneCaptureCallback(channelID: channelID)
-                        // Broadcast state
-                        DispatchQueue.main.async {[weak self] in
-                            guard let self = self else { return }
-                            self.isBroadcasting = true
-                        }
                     }
                 } else {
                     print("Show Alert View")
@@ -302,6 +352,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
                         guard let self = self else { return }
                         self.isBroadcasting = false
                     }
+                    
+                    // End the task assertion.
+                    UIApplication.shared.endBackgroundTask(self.broadcastingBackgroundTaskID!)
+                    self.broadcastingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
                 }
             }
         }
@@ -309,13 +363,14 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     func stopBroadcastChannel(channelID: String) {
         // Broadcast state
-        self.isBroadcasting = false
-        print("TODO stop broadcast: \(channelID)")
+        isBroadcasting = false
         // Stop AudioEngine
         urAudioEngineInstance.stopBroadcasting()
         removeBroadcastMicrophoneCaptureCallback()
         // Stop Socket
         udpSocketManager.stopBroadcastConnection()
+        
+        // Map
         
         DispatchQueue.global().async {
             // End the task assertion.
@@ -448,7 +503,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
                     self.playingData?.playingDuration = 0
                     self.playingData = nil
                     
-                    self.receiverAnnotationItem = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), color: .clear)
+                    self.removeAnnotionOnMap()
                 }
                 self.urAudioEngineInstance.removePlayerData()
                 
@@ -544,8 +599,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
         self.removeRoutes = self.displayRoutes
         self.displayRoutes = routes
         // Clear the last display
-        self.removeAnnotationItems.append(self.receiverAnnotationItem)
-        self.receiverAnnotationItem = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), color: .clear)
+        removeAnnotionOnMap()
         
         print(routes)
         self.isLocationLocked = false

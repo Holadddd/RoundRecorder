@@ -221,7 +221,7 @@ class URAudioOutputData: NSObject {
             }
             metadata = element.1
         } else {
-            print("Error: Reading audioBufferMetadatas out of range")
+            print("Reading audioBufferMetadatas out of range, skip updating metadatas")
         }
         
         readingDataOffset += bytesToRead
