@@ -22,7 +22,11 @@ struct FileListView: View {
     
     @State var isEditing: Bool = false
     
-    var onPlaying: (RecordedData?)->Void
+    @Binding var isShowingAlert: Bool
+    
+    var requestOnPlaying: (RecordedData?)->Void
+    
+    var stopSubscriptionAndPlaying: (RecordedData?)->Void
     
     var onPause: ()->Void
     
@@ -37,6 +41,8 @@ struct FileListView: View {
     @Binding var dataOnExpanded: RecordedData?
     
     @Binding var dataOnPlaying: RecordedData?
+    
+    let alertMessage: String = "Cancel channel subscriptions?"
     
     var playingDurationScale: Double {
         guard let dataOnExpanded = dataOnExpanded else { return 0}
@@ -133,7 +139,7 @@ struct FileListView: View {
                                                     if data == dataOnPlaying {
                                                         onPause()
                                                     } else {
-                                                        onPlaying(data)
+                                                        requestOnPlaying(data)
                                                     }
                                                 } label: {
                                                     if data == dataOnPlaying {
@@ -143,7 +149,14 @@ struct FileListView: View {
                                                     }
                                                 }.softButtonStyle(RoundedRectangle(cornerRadius: 5),
                                                                   padding: paddingValue)
-                                                
+                                                    .alert(alertMessage, isPresented: $isShowingAlert) {
+                                                        Button("No", role: .cancel) {
+                                                            print("Keep channel subscription")
+                                                        }
+                                                        Button("Yes", role: .destructive) {
+                                                            stopSubscriptionAndPlaying(data)
+                                                        }
+                                                    }
                                                 Spacer()
                                             }
                                         }
@@ -199,7 +212,9 @@ struct FileListView_Previews: PreviewProvider {
     static var previews: some View {
         FileListView(setReload: {
             
-        }, fileListCount: .constant(0),onPlaying: {_ in
+        }, fileListCount: .constant(0), isShowingAlert: .constant(false), requestOnPlaying: {_ in
+            
+        }, stopSubscriptionAndPlaying: { _ in
             
         }, onPause: {
             

@@ -99,11 +99,15 @@ struct HomeMapView: View {
                                     })
                                 case 1:
                                     SubscribeView(channelID: $viewmodel.subscribeID,
-                                                  isSubscribing: $viewmodel.isSubscribing) {
-                                        viewmodel.subscribeChannel()
-                                    } stopSubscribetAction: {
+                                                  isSubscribing: $viewmodel.isSubscribing,
+                                                  isShowingAlert: $viewmodel.showSubscribePermissionAlert,
+                                                  requestForSubscribeChannel: {
+                                        viewmodel.requestForSubscribeChannel()
+                                    }, stopPlayingOnFileAndSubscribeChannel: {
+                                        viewmodel.stopPlayingOnFileAndSubscribeChannel()
+                                    }, stopSubscribetAction: {
                                         viewmodel.stopSubscribeChannel()
-                                    }
+                                    })
                                 case 2:
                                     DirectionAndDistanceMetersView(udpsocketLatenctMs: viewmodel.udpsocketLatenctMs,
                                                                    receiverDirection: viewmodel.receiverDirection,
@@ -130,12 +134,14 @@ struct HomeMapView: View {
                                             viewmodel.setNeedReload = true
                                         },
                                         fileListCount: $viewmodel.fileListCount,
-                                        onPlaying: {playingData in
-                                            
-                                            viewmodel.fileListOnPlaying(playingData)
+                                        isShowingAlert: $viewmodel.showPlayingPermissionAlert,
+                                        requestOnPlaying: {data in
+                                            viewmodel.requestFileOnPlaying(data)
+                                        },
+                                        stopSubscriptionAndPlaying: {data in
+                                            viewmodel.stopSubscriptionAndPlaying(data)
                                         },
                                         onPause: {
-                                            
                                             viewmodel.fileListOnPause()
                                         }, onSelected: { selectedData in
                                             

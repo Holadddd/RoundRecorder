@@ -14,9 +14,15 @@ struct SubscribeView: View {
     
     @Binding var isSubscribing: Bool
     
-    var subscribetAction: (()->Void)
+    @Binding var isShowingAlert: Bool
+    
+    var requestForSubscribeChannel: (()->Void)
+    
+    var stopPlayingOnFileAndSubscribeChannel: (()->Void)
     
     var stopSubscribetAction: (()->Void)
+    
+    let alertMessage: String = "Stop the file on playing?"
     
     var body: some View {
         return VStack{
@@ -33,10 +39,19 @@ struct SubscribeView: View {
                     if isSubscribing {
                         stopSubscribetAction()
                     } else {
-                        subscribetAction()
+                        // Request subscribe
+                        requestForSubscribeChannel()
                     }
                 }.softButtonStyle(RoundedRectangle(cornerRadius: 5), padding: 3, textColor: Color.Neumorphic.secondary, pressedEffect: .hard)
                     .padding()
+                    .alert(alertMessage, isPresented: $isShowingAlert) {
+                        Button("No", role: .cancel) {
+                            print("Keep playing with file")
+                        }
+                        Button("Yes", role: .destructive) {
+                            stopPlayingOnFileAndSubscribeChannel()
+                        }
+                    }
             }
         }
     }
@@ -44,8 +59,6 @@ struct SubscribeView: View {
 
 struct SubscribeView_Previews: PreviewProvider {
     static var previews: some View {
-        SubscribeView(channelID: .constant("1234"), isSubscribing:.constant(false) ,subscribetAction: {
-            
-        }, stopSubscribetAction: { })
+        SubscribeView(channelID: .constant("Test"), isSubscribing: .constant(false), isShowingAlert: .constant(false), requestForSubscribeChannel: {}, stopPlayingOnFileAndSubscribeChannel: {}, stopSubscribetAction: {})
     }
 }
