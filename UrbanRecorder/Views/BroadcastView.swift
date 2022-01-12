@@ -13,9 +13,15 @@ struct BroadcastView: View {
     
     @Binding var isBroadcasting: Bool
     
-    var broadcastAction: (String)->()
+    @Binding var isShowingAlert: Bool
+    
+    var requestForBroadcastWithId: ((String)->Void)
+    
+    var keepRecordingWithBroadcastWithId: ((String)->Void)
     
     var stopBroadcastAction: (String)->()
+    
+    let alertMessage: String = "Broadcast while recording?"
     
     var body: some View {
         return HStack{
@@ -32,20 +38,24 @@ struct BroadcastView: View {
                 if isBroadcasting {
                     stopBroadcastAction(channelID)
                 } else {
-                    broadcastAction(channelID)
+                    requestForBroadcastWithId(channelID)
                 }
             }.softButtonStyle(RoundedRectangle(cornerRadius: 5), padding: 3, textColor: Color.Neumorphic.secondary, pressedEffect: .hard)
                 .padding()
+                .alert(alertMessage, isPresented: $isShowingAlert) {
+                    Button("No", role: .cancel) {
+                        print("Keep recording with file")
+                    }
+                    Button("Yes", role: .destructive) {
+                        keepRecordingWithBroadcastWithId(channelID)
+                    }
+                }
         }
     }
 }
 
 struct BroadcastView_Previews: PreviewProvider {
     static var previews: some View {
-        BroadcastView(channelID: .constant("TEST"), isBroadcasting: .constant(false), broadcastAction: { _ in
-            
-        }, stopBroadcastAction: { _ in
-            
-        })
+        BroadcastView(channelID: .constant("Test"), isBroadcasting: .constant(false), isShowingAlert: .constant(false), requestForBroadcastWithId: {_ in}, keepRecordingWithBroadcastWithId: {_ in}, stopBroadcastAction: {_ in})
     }
 }

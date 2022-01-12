@@ -16,6 +16,8 @@ struct MapView: UIViewRepresentable {
     
     @Binding var isLocationLocked: Bool
     
+    var headingDirection: CLLocationDirection
+    
     @Binding var updateByMapItem: Bool
     
     var showsUserLocation: Bool
@@ -48,8 +50,13 @@ struct MapView: UIViewRepresentable {
     func updateUIView(_ uiView: MKMapView, context: Context) {
         
         if (isLocationLocked || updateByMapItem), let userCurrentRegion = userCurrentRegion {
+            updateByMapItem = false
+            
             uiView.region.center = userCurrentRegion.center
             // Also update compass direction
+            uiView.camera.heading = headingDirection
+            // TODO: ShowsUserLocation with arrow
+            
         }
         
         if !removeAnnotationItems.isEmpty {

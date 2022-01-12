@@ -19,6 +19,8 @@ class HomeMapViewModel: NSObject, ObservableObject {
     // MARK: - Broadcast
     @Published var isBroadcasting: Bool = false
     
+    @Published var showBroadcastPermissionAlert: Bool = false
+    
     @Published var broadcastID: String = ""
     
     private var broadcastMicrophoneCaptureCallback: ((NSMutableData)->Void)?
@@ -36,6 +38,8 @@ class HomeMapViewModel: NSObject, ObservableObject {
     @Published var recordMovingDistance: Double = 0
     
     @Published var recordName: String = ""
+    
+    @Published var showRecordingPermissionAlert: Bool = false
     
     var recordingHelper = URRecordingDataHelper()
     
@@ -56,6 +60,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     // MARK: - Map & Compass
     @Published var isLocationLocked: Bool = false
+    
+    var headingDirection: CLLocationDirection {
+        CLLocationDirection(-self.compassDegrees)
+    }
     
     var cacheRoutes: [RecordedData] = []
     
@@ -93,7 +101,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     @Published var removeAnnotationItems: [HomeMapAnnotation] = []
     
-    @Published var receiverAnnotationItem: HomeMapAnnotation = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), type: .user, color: .clear) {
+    @Published var receiverAnnotationItem: HomeMapAnnotation = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), type: .receiver, color: .clear) {
         willSet {
             // Remove the last receiver annotion
             removeAnnotationItems.append(receiverAnnotationItem)
@@ -234,7 +242,19 @@ class HomeMapViewModel: NSObject, ObservableObject {
         broadcastMicrophoneCaptureCallback = nil
     }
     
-    func broadcastChannel(channelID: String) {
+    func requestForBroadcastChannelWith(_ channelID: String) {
+        showBroadcastPermissionAlert = isRecording
+        guard !showBroadcastPermissionAlert else { return }
+        broadcastChannelWith(channelID)
+    }
+    
+    func keepRecordingWithBroadcastWithId(_ channelID: String) {
+        // Keep Recording
+        // Broadcast
+        broadcastChannelWith(channelID)
+    }
+    
+    private func broadcastChannelWith(_ channelID: String) {
         isBroadcasting = true
         
         DispatchQueue.global().async {
@@ -271,11 +291,16 @@ class HomeMapViewModel: NSObject, ObservableObject {
         }
     }
     
-    func stopBroadcastChannel(channelID: String) {
+    func stopBroadcastChannelWith(_ channelID: String) {
         // Broadcast state
         isBroadcasting = false
-        // Stop AudioEngine
-        urAudioEngineInstance.stopBroadcasting()
+        
+        if isRecording {
+            // Keep AudioEngine Alive
+        } else {
+            // Stop AudioEngine
+            urAudioEngineInstance.stopCaptureAudioData()
+        }
         removeBroadcastMicrophoneCaptureCallback()
         // Stop Socket
         udpSocketManager.stopBroadcastConnection()
@@ -303,7 +328,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
         subscribeChannel()
     }
     
-    func stopPlayingOnFileAndSubscribeChannel() {
+    func stopPlayingOnFileThenSubscribeChannel() {
         // Stop file on playing and display
         fileListOnStop()
         // Subscribe Channel
@@ -347,7 +372,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
         // Socket
         self.udpSocketManager.unsubscribeChannel(from: "", with: self.subscribeID)
         // AudioEngine
-        urAudioEngineInstance.stopSubscribing()
+        urAudioEngineInstance.stopScheduleAudioData()
         // Clear DistanceAndDirectionView
         clearDirectionAndDistanceMetersView()
         // Map
@@ -359,102 +384,6 @@ class HomeMapViewModel: NSObject, ObservableObject {
             self.subscribingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
         }
     }
-    // MARK: - DirectionAndDistanceMetersView
-    func clearDirectionAndDistanceMetersView() {
-        udpsocketLatenctMs = 0
-        receiverLastDirectionDegrees = 0
-        receiverLastDistanceMeters = 0
-    }
-    // MARK: - Map
-    func locateButtonDidClicked() {
-        isLocationLocked.toggle()
-    }
-    
-    private func removeAnnotionOnMap() {
-        self.removeAnnotationItems.append(receiverAnnotationItem)
-        
-        self.receiverAnnotationItem = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), color: .clear)
-    }
-    
-    func clearRoutesButtonDidClicked() {
-        removeRoutes = displayRoutes
-        removeAnnotionOnMap()
-        displayRoutes.removeAll()
-    }
-    
-    private func displayRecordedDataOnMap(_ displayData: RecordedData) {
-        // Check cache
-        for data in cacheRoutes {
-            if data == displayData {
-                // 1. Parse URAudioBuffers in locatinos
-                guard let data = displayData.file else { return }
-                
-                let urAudioData = URRecordingDataHelper.parseURAudioData(data)
-                
-                let buffersLocation: [CLLocationCoordinate2D] = urAudioData.audioBuffers.filter { buffer->Bool in
-                    buffer.metadata != nil
-                }.map { buffer in
-                    return CLLocationCoordinate2D(latitude: buffer.metadata!.locationCoordinate.latitude,
-                                                  longitude: buffer.metadata!.locationCoordinate.longitude)
-                }
-                
-                guard let startLocation = buffersLocation.first, let routes = displayData.routes else { continue }
-                
-                self.displayRoutesOnMap(centerLocation: startLocation, routes: routes)
-                return
-            }
-        }
-        // No routes cache
-        // 1. Parse URAudioBuffers in locatinos
-        guard let data = displayData.file else { return }
-        
-        let urAudioData = URRecordingDataHelper.parseURAudioData(data)
-        
-        let buffersLocation: [CLLocationCoordinate2D] = urAudioData.audioBuffers.filter { buffer->Bool in
-            buffer.metadata != nil
-        }.map { buffer in
-            return CLLocationCoordinate2D(latitude: buffer.metadata!.locationCoordinate.latitude,
-                                          longitude: buffer.metadata!.locationCoordinate.longitude)
-        }
-        
-        let routeBuilder = RouteBuilder(locationCollection: buffersLocation)
-        // 2. Generate MKPlaceMark with location => The distance bigger than 1 M as a one MKPlaceMark
-        let oneMeterPlaceMark = routeBuilder.generatePlaceMarkDistanceOver(meters: 1)
-        
-        // 3. Connect Location -> MKPlaceMark -> MapItem, each MapItem into a GroupedRoute
-        let mapItems = RouteBuilder.converToMapItems(placeMarks: oneMeterPlaceMark)
-        
-        
-        // 4. Generate MKRout And call the map method addOverlay for add the line on the map => MKDirections.Request(source, destination),
-        RouteBuilder.generateRouteWith(mapItems: mapItems) {[weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let routes):
-                guard let startLocation = buffersLocation.first else { return }
-                DispatchQueue.main.async {
-                    self.displayRoutesOnMap(centerLocation: startLocation, routes: routes)
-                    // Cache generated routes
-                    displayData.routes = routes
-                }
-                self.cacheRoutes.append(displayData)
-            case .failure(let error):
-                print(error)
-            }
-        }
-    }
-    
-    private func displayRoutesOnMap(centerLocation: CLLocationCoordinate2D, routes: [MKRoute]) {
-        //Remove the last routes
-        self.removeRoutes = self.displayRoutes
-        self.displayRoutes = routes
-        // Clear the last display
-        removeAnnotionOnMap()
-        
-        print(routes)
-        self.isLocationLocked = false
-        self.updateByMapItem = true
-        self.userCurrentRegion = MKCoordinateRegion(center: centerLocation, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
-    }
     // MARK: - Record
     private func setupRecordingMicrophoneCaptureCallback(){
         recordingMicrophoneCaptureCallback = {[weak self] audioData in
@@ -464,78 +393,87 @@ class HomeMapViewModel: NSObject, ObservableObject {
         }
     }
     
-    func recordButtonDidClicked() {
+    func requestForRecording() {
+        showRecordingPermissionAlert = isBroadcasting
+        guard !showRecordingPermissionAlert else { return }
+        startURRecordingSession()
+    }
+    
+    func keepBroadcastWhileRecording() {
+        // TODO: Make sure the engine will not crash
+        startURRecordingSession()
+    }
+    
+    private func startURRecordingSession() {
+        isRecording = true
         
-        if !isRecording {
-            
-            isRecording = true
-            
-            DispatchQueue.global().async {
-                // Request the task assertion and save the ID.
-                self.recordingBackgroundTaskID = UIApplication.shared.beginBackgroundTask (withName: "RecordingBackgroundTask") {
-                    // End the task if time expires.
-                    UIApplication.shared.endBackgroundTask(self.recordingBackgroundTaskID!)
-                    self.recordingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
-                }
-                // 1. Request Microphone
-                self.urAudioEngineInstance.requestRecordPermissionAndStartTappingMicrophone {[weak self] isGranted in
-                    guard let self = self else { return }
-                    if isGranted {
-                        // 2. setupBroadcastEnviriment
-                        self.urAudioEngineInstance.setupAudioEngineEnvironmentForCaptureAudioData()
-                        // 3. generateEmpty URAudioData
-                        let inputFormat = self.urAudioEngineInstance.convertFormat
-                        
-                        let _ = self.recordingHelper.generateEmptyURRecordingData(audioFormat: inputFormat)
-                        // 4.setupRecordingEnviriment
-                        self.setupRecordingMicrophoneCaptureCallback()
-                        
-                        print("Start Recording With File: \(self.recordName)")
-                    } else {
-                        print("Show Alert View")
-                        // TODO: Show Alert View
-                        self.isRecording = false
-                    }
-                }
-            }
-        } else {
-            guard let currentRecordingData = recordingHelper.getCurrentRecordingURAudioData() else { return }
-            
-            let data = URRecordingDataHelper.encodeURAudioData(urAudioData: currentRecordingData)
-            
-            let bytes = data.count
-            
-            let bytesFornatter = ByteCountFormatter.string(fromByteCount: Int64(bytes), countStyle: .file)
-            
-            print("Create File(\(recordName)) Size: \(bytesFornatter)")
-            // Create a Core Data Object
-            PersistenceController.shared.creatRecordedData {[recordName, recordDuration, recordMovingDistance] newRecordedData in
-                newRecordedData.id = UUID()
-                newRecordedData.timestamp = Date()
-                newRecordedData.fileName = recordName
-                newRecordedData.file = data
-                newRecordedData.recordDuration = Int64(recordDuration)
-                newRecordedData.movingDistance = recordMovingDistance
-            }
-            
-            // RESET THE RECORD STATUS
-            recordName = ""
-            
-            recordDuration = 0
-            
-            recordMovingDistance = 0
-            
-            recordingMicrophoneCaptureCallback = nil
-            #warning("Stop engine")
-            
-            DispatchQueue.global().async {
-                // End the task assertion.
+        DispatchQueue.global().async {
+            // Request the task assertion and save the ID.
+            self.recordingBackgroundTaskID = UIApplication.shared.beginBackgroundTask (withName: "RecordingBackgroundTask") {
+                // End the task if time expires.
                 UIApplication.shared.endBackgroundTask(self.recordingBackgroundTaskID!)
                 self.recordingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
             }
-            
-            isRecording = false
+            // 1. Request Microphone
+            self.urAudioEngineInstance.requestRecordPermissionAndStartTappingMicrophone {[weak self] isGranted in
+                guard let self = self else { return }
+                if isGranted {
+                    // 2. setupBroadcastEnviriment
+                    self.urAudioEngineInstance.setupAudioEngineEnvironmentForCaptureAudioData()
+                    // 3. generateEmpty URAudioData
+                    let inputFormat = self.urAudioEngineInstance.convertFormat
+                    
+                    let _ = self.recordingHelper.generateEmptyURRecordingData(audioFormat: inputFormat)
+                    // 4.setupRecordingEnviriment
+                    self.setupRecordingMicrophoneCaptureCallback()
+                    
+                    print("Start Recording With File: \(self.recordName)")
+                } else {
+                    print("Show Alert View")
+                    // TODO: Show Alert View
+                    self.isRecording = false
+                }
+            }
         }
+    }
+    
+    func stopURRecordingSession() {
+        guard let currentRecordingData = recordingHelper.getCurrentRecordingURAudioData() else { return }
+        
+        let data = URRecordingDataHelper.encodeURAudioData(urAudioData: currentRecordingData)
+        
+        let bytes = data.count
+        
+        let bytesFornatter = ByteCountFormatter.string(fromByteCount: Int64(bytes), countStyle: .file)
+        
+        print("Create File(\(recordName)) Size: \(bytesFornatter)")
+        // Create a Core Data Object
+        PersistenceController.shared.creatRecordedData {[recordName, recordDuration, recordMovingDistance] newRecordedData in
+            newRecordedData.id = UUID()
+            newRecordedData.timestamp = Date()
+            newRecordedData.fileName = recordName
+            newRecordedData.file = data
+            newRecordedData.recordDuration = Int64(recordDuration)
+            newRecordedData.movingDistance = recordMovingDistance
+        }
+        
+        // RESET THE RECORD STATUS
+        recordName = ""
+        
+        recordDuration = 0
+        
+        recordMovingDistance = 0
+        
+        recordingMicrophoneCaptureCallback = nil
+        #warning("Stop engine")
+        
+        DispatchQueue.global().async {
+            // End the task assertion.
+            UIApplication.shared.endBackgroundTask(self.recordingBackgroundTaskID!)
+            self.recordingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
+        }
+        
+        isRecording = false
     }
     // MARK: - Filelist
     func fileListOnDelete(_ recordedData: RecordedData) {
@@ -652,6 +590,103 @@ class HomeMapViewModel: NSObject, ObservableObject {
             self.playingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
         }
     }
+    // MARK: - DirectionAndDistanceMetersView
+    func clearDirectionAndDistanceMetersView() {
+        udpsocketLatenctMs = 0
+        receiverLastDirectionDegrees = 0
+        receiverLastDistanceMeters = 0
+    }
+    // MARK: - Map
+    func locateButtonDidClicked() {
+        isLocationLocked.toggle()
+    }
+    
+    private func removeAnnotionOnMap() {
+        self.removeAnnotationItems.append(receiverAnnotationItem)
+        
+        self.receiverAnnotationItem = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), color: .clear)
+    }
+    
+    func clearRoutesButtonDidClicked() {
+        removeRoutes = displayRoutes
+        removeAnnotionOnMap()
+        displayRoutes.removeAll()
+    }
+    
+    private func displayRecordedDataOnMap(_ displayData: RecordedData) {
+        // Check cache
+        for data in cacheRoutes {
+            if data == displayData {
+                // 1. Parse URAudioBuffers in locatinos
+                guard let data = displayData.file else { return }
+                
+                let urAudioData = URRecordingDataHelper.parseURAudioData(data)
+                
+                let buffersLocation: [CLLocationCoordinate2D] = urAudioData.audioBuffers.filter { buffer->Bool in
+                    buffer.metadata != nil
+                }.map { buffer in
+                    return CLLocationCoordinate2D(latitude: buffer.metadata!.locationCoordinate.latitude,
+                                                  longitude: buffer.metadata!.locationCoordinate.longitude)
+                }
+                
+                guard let startLocation = buffersLocation.first, let routes = displayData.routes else { continue }
+                
+                self.displayRoutesOnMap(centerLocation: startLocation, routes: routes)
+                return
+            }
+        }
+        // No routes cache
+        // 1. Parse URAudioBuffers in locatinos
+        guard let data = displayData.file else { return }
+        
+        let urAudioData = URRecordingDataHelper.parseURAudioData(data)
+        
+        let buffersLocation: [CLLocationCoordinate2D] = urAudioData.audioBuffers.filter { buffer->Bool in
+            buffer.metadata != nil
+        }.map { buffer in
+            return CLLocationCoordinate2D(latitude: buffer.metadata!.locationCoordinate.latitude,
+                                          longitude: buffer.metadata!.locationCoordinate.longitude)
+        }
+        
+        let routeBuilder = RouteBuilder(locationCollection: buffersLocation)
+        // 2. Generate MKPlaceMark with location => The distance bigger than 1 M as a one MKPlaceMark
+        let oneMeterPlaceMark = routeBuilder.generatePlaceMarkDistanceOver(meters: 1)
+        
+        // 3. Connect Location -> MKPlaceMark -> MapItem, each MapItem into a GroupedRoute
+        let mapItems = RouteBuilder.converToMapItems(placeMarks: oneMeterPlaceMark)
+        
+        
+        // 4. Generate MKRout And call the map method addOverlay for add the line on the map => MKDirections.Request(source, destination),
+        RouteBuilder.generateRouteWith(mapItems: mapItems) {[weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let routes):
+                guard let startLocation = buffersLocation.first else { return }
+                DispatchQueue.main.async {
+                    self.displayRoutesOnMap(centerLocation: startLocation, routes: routes)
+                    // Cache generated routes
+                    displayData.routes = routes
+                }
+                self.cacheRoutes.append(displayData)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    private func displayRoutesOnMap(centerLocation: CLLocationCoordinate2D, routes: [MKRoute]) {
+        //Remove the last routes
+        self.removeRoutes = self.displayRoutes
+        self.displayRoutes = routes
+        // Clear the last display
+        removeAnnotionOnMap()
+        
+        print(routes)
+        self.isLocationLocked = false
+        self.updateByMapItem = true
+        self.userCurrentRegion = MKCoordinateRegion(center: centerLocation, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
+    }
+    
     // MARK: - Compass
     func resetAnchorDegrees() {
         firstAnchorMotionCompassDegrees = nil
@@ -791,7 +826,7 @@ extension HomeMapViewModel: URAudioEngineDelegate {
         DispatchQueue.main.async {[weak self, receiverLatitude, receiverLongitude] in
             guard let self = self else { return }
             
-            self.receiverAnnotationItem = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(latitude: receiverLatitude, longitude: receiverLongitude), type: .user, color: .orange)
+            self.receiverAnnotationItem = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(latitude: receiverLatitude, longitude: receiverLongitude), type: .receiver, color: .orange)
         }
         
         guard let userLocation = userLocation else {print("Fail in getting userlocation"); return }

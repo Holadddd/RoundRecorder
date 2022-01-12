@@ -31,6 +31,7 @@ struct HomeMapView: View {
                     
                     MapView(userCurrentRegion: $viewmodel.userCurrentRegion,
                             isLocationLocked: $viewmodel.isLocationLocked,
+                            headingDirection: viewmodel.headingDirection,
                             updateByMapItem: $viewmodel.updateByMapItem,
                             showsUserLocation: true,
                             removeAnnotationItems: $viewmodel.removeAnnotationItems,
@@ -92,10 +93,14 @@ struct HomeMapView: View {
                                 switch data.id {
                                 case 0:
                                     BroadcastView(channelID: $viewmodel.broadcastID,
-                                                  isBroadcasting: $viewmodel.isBroadcasting, broadcastAction: { channelID in
-                                        viewmodel.broadcastChannel(channelID: channelID)
+                                                  isBroadcasting: $viewmodel.isBroadcasting,
+                                                  isShowingAlert: $viewmodel.showBroadcastPermissionAlert,
+                                                  requestForBroadcastWithId: { channelID in
+                                        viewmodel.requestForBroadcastChannelWith(channelID)
+                                    }, keepRecordingWithBroadcastWithId: { channelID in
+                                        viewmodel.keepRecordingWithBroadcastWithId(channelID)
                                     }, stopBroadcastAction: { channelID in
-                                        viewmodel.stopBroadcastChannel(channelID: channelID)
+                                        viewmodel.stopBroadcastChannelWith(channelID)
                                     })
                                 case 1:
                                     SubscribeView(channelID: $viewmodel.subscribeID,
@@ -104,7 +109,7 @@ struct HomeMapView: View {
                                                   requestForSubscribeChannel: {
                                         viewmodel.requestForSubscribeChannel()
                                     }, stopPlayingOnFileAndSubscribeChannel: {
-                                        viewmodel.stopPlayingOnFileAndSubscribeChannel()
+                                        viewmodel.stopPlayingOnFileThenSubscribeChannel()
                                     }, stopSubscribetAction: {
                                         viewmodel.stopSubscribeChannel()
                                     })
@@ -122,12 +127,19 @@ struct HomeMapView: View {
                                     }
                                     .scaledToFill()
                                 case 3:
-                                    RecorderView(recordDidClicked: { viewmodel.recordButtonDidClicked() },
-                                                 isRecordButtonPressed: $viewmodel.isRecording,
+                                    RecorderView(isRecordButtonPressed: $viewmodel.isRecording,
                                                  recordDuration: $viewmodel.recordDuration,
                                                  movingDistance: $viewmodel.recordMovingDistance,
                                                  recordName: $viewmodel.recordName,
-                                                 recorderLocation: viewmodel.userLocation)
+                                                 recorderLocation: viewmodel.userLocation,
+                                                 isShowingAlert: $viewmodel.showRecordingPermissionAlert,
+                                                 requestForRecording: {
+                                        viewmodel.requestForRecording()
+                                    }, keepBroadcastWhileRecording: {
+                                        viewmodel.keepBroadcastWhileRecording()
+                                    }, stopRecording: {
+                                        viewmodel.stopURRecordingSession()
+                                    })
                                 case 4:
                                     FileListView(
                                         setReload: {

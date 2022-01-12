@@ -207,7 +207,7 @@ class URAudioEngine: NSObject {
         }
     }
     
-    func stopBroadcasting() {
+    func stopCaptureAudioData() {
         switch currentAbility {
         case .undefined:
             print("No Broadcast ability can be terminate")
@@ -225,7 +225,7 @@ class URAudioEngine: NSObject {
         }
     }
     
-    func stopSubscribing() {
+    func stopScheduleAudioData() {
         switch currentAbility {
         case .undefined:
             print("No ScheduleAudioData ability can be terminate")

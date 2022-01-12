@@ -10,8 +10,6 @@ import Neumorphic
 
 struct RecorderView: View {
     
-    var recordDidClicked: (()->Void)
-    
     @Binding var isRecordButtonPressed: Bool
     
     @Binding var recordDuration: UInt
@@ -21,6 +19,16 @@ struct RecorderView: View {
     @Binding var recordName: String
     
     var recorderLocation: URLocationCoordinate3D?
+    
+    @Binding var isShowingAlert: Bool
+    
+    var requestForRecording: (()->Void)
+    
+    var keepBroadcastWhileRecording: ()->Void
+    
+    var stopRecording: ()->Void
+    
+    let alertMessage: String = "Record while broadcasting?"
     
     var body: some View {
         
@@ -51,8 +59,12 @@ struct RecorderView: View {
                                          trailing: 0))
                     
                     Button {
-                        checkFileNaming()
-                        recordDidClicked()
+                        if isRecordButtonPressed {
+                            stopRecording()
+                        } else {
+                            checkFileNaming()
+                            requestForRecording()
+                        }
                     } label: {
                         if isRecordButtonPressed {
                             RoundedRectangle(cornerRadius: 5)
@@ -68,6 +80,14 @@ struct RecorderView: View {
                         
                     }
                     .softButtonStyle(RoundedRectangle(cornerRadius: 15), padding: 3, textColor: .red, pressedEffect: .hard, isPressed: self.isRecordButtonPressed)
+                    .alert(alertMessage, isPresented: $isShowingAlert) {
+                        Button("No", role: .cancel) {
+                            print("Pause recording")
+                        }
+                        Button("Yes", role: .destructive) {
+                            keepBroadcastWhileRecording()
+                        }
+                    }
                 }
             }.padding(5)
                 .background(Color.Neumorphic.main)
@@ -106,12 +126,14 @@ struct RecorderView: View {
 
 struct RecorderView_Previews: PreviewProvider {
     static var previews: some View {
-        RecorderView(recordDidClicked: {
-            
-        }, isRecordButtonPressed: .constant(false),
+        RecorderView(isRecordButtonPressed: .constant(false),
                      recordDuration: .constant(0),
                      movingDistance: .constant(5.5),
                      recordName: .constant(""),
-                     recorderLocation: URLocationCoordinate3D(latitude: 121.1, longitude: 25.4, altitude: 0))
+                     recorderLocation: URLocationCoordinate3D(latitude: 121.1, longitude: 25.4, altitude: 0),
+                     isShowingAlert: .constant(false),
+                     requestForRecording: {},
+                     keepBroadcastWhileRecording: {},
+                     stopRecording: {})
     }
 }

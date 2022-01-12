@@ -15,7 +15,16 @@ class HomeMapAnnotation: NSObject, MKAnnotation {
     var color: UIColor?
     var tint: UIColor { color ?? .red }
     let id = UUID()
-    var imageSystemName: String = "shareplay"
+    var imageSystemName: String {
+        switch type {
+        case .undefine, .receiver:
+            return "shareplay"
+        case .user:
+            return "location.north.fill"
+        default:
+            return ""
+        }
+    }
     
     init(coordinate: CLLocationCoordinate2D, type: MapAnnotationItemType = .undefine, color: UIColor) {
         self.coordinate = coordinate
@@ -26,6 +35,7 @@ class HomeMapAnnotation: NSObject, MKAnnotation {
     enum MapAnnotationItemType {
         case undefine
         case user
+        case receiver
         case fixedPoint
         case dynamicPoint
     }
