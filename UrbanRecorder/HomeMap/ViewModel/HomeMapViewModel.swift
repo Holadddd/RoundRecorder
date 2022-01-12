@@ -418,7 +418,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
             self.urAudioEngineInstance.requestRecordPermissionAndStartTappingMicrophone {[weak self] isGranted in
                 guard let self = self else { return }
                 if isGranted {
-                    // 2. setupBroadcastEnviriment
+                    // 2. setupRecordingEnviriment
                     self.urAudioEngineInstance.setupAudioEngineEnvironmentForCaptureAudioData()
                     // 3. generateEmpty URAudioData
                     let inputFormat = self.urAudioEngineInstance.convertFormat
@@ -438,6 +438,8 @@ class HomeMapViewModel: NSObject, ObservableObject {
     }
     
     func stopURRecordingSession() {
+        urAudioEngineInstance.stopCaptureAudioData()
+        
         guard let currentRecordingData = recordingHelper.getCurrentRecordingURAudioData() else { return }
         
         let data = URRecordingDataHelper.encodeURAudioData(urAudioData: currentRecordingData)
@@ -510,7 +512,13 @@ class HomeMapViewModel: NSObject, ObservableObject {
             self.playingData = pauseData
         } else {
             print("Play")
+            
+            // Reset the last playing data
+            self.playingData?.playingDuration = 0
+            self.pauseData?.playingDuration = 0
+            
             self.pauseData = nil
+            
             self.playingData = playingData
         }
         // 2 Parse and schechule in audioengine
@@ -524,10 +532,12 @@ class HomeMapViewModel: NSObject, ObservableObject {
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
             // Request the task assertion and save the ID.
-            self.playingBackgroundTaskID = UIApplication.shared.beginBackgroundTask (withName: "PlayingBackgroundTask") {
-                // End the task if time expires.
-                UIApplication.shared.endBackgroundTask(self.playingBackgroundTaskID!)
-                self.playingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
+            if self.playingBackgroundTaskID == nil {
+                self.playingBackgroundTaskID = UIApplication.shared.beginBackgroundTask (withName: "PlayingBackgroundTask") {
+                    // End the task if time expires.
+                    UIApplication.shared.endBackgroundTask(self.playingBackgroundTaskID!)
+                    self.playingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
+                }
             }
             
             self.urAudioEngineInstance.setupPlayerDataAndStartPlayingAtSeconds(urAudioData, startOffset: playingDuration, updateInterval: 1) { updatedDuration in
@@ -546,8 +556,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
                     
                     self.removeAnnotionOnMap()
                 }
+                // AudioEngine
                 self.urAudioEngineInstance.removePlayerData()
                 
+                self.urAudioEngineInstance.stopScheduleAudioData()
                 // End the task assertion.
                 UIApplication.shared.endBackgroundTask(self.playingBackgroundTaskID!)
                 self.playingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
@@ -566,6 +578,9 @@ class HomeMapViewModel: NSObject, ObservableObject {
         self.playingData = nil
         self.urAudioEngineInstance.removePlayerData()
         
+        // AudioEngine
+        urAudioEngineInstance.stopScheduleAudioData()
+        
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
             // End the task assertion.
@@ -582,6 +597,9 @@ class HomeMapViewModel: NSObject, ObservableObject {
         self.expandedData?.playingDuration = 0
         self.urAudioEngineInstance.removePlayerData()
         self.clearRoutesButtonDidClicked()
+        
+        // AudioEngine
+        urAudioEngineInstance.stopScheduleAudioData()
         
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }

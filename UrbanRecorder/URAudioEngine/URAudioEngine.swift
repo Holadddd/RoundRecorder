@@ -18,7 +18,9 @@ class URAudioEngine: NSObject {
     
     static let metaDataUpdatedInterval: Second = 0.5
     
-    private var engine: AVAudioEngine = AVAudioEngine()
+    private var inputEngine: AVAudioEngine = AVAudioEngine()
+    
+    private var outputEngine: AVAudioEngine = AVAudioEngine()
     
     var currentAbility: URAudioEngineAbility = .undefined
     
@@ -33,7 +35,7 @@ class URAudioEngine: NSObject {
     // The convert format default as stereo layout & sampleRate is 48000
     var convertFormat: AVAudioFormat = AVAudioFormat(standardFormatWithSampleRate: 48000, channelLayout: ChannelLayout.stereo.object)
     
-    lazy var inputFormat: AVAudioFormat = engine.inputNode.inputFormat(forBus: 0)
+    lazy var inputFormat: AVAudioFormat = inputEngine.inputNode.inputFormat(forBus: 0)
     
     var bytesPerFrame: Int {
         return convertFormat.streamDescription.pointee.framesToBytes(1)
@@ -60,11 +62,13 @@ class URAudioEngine: NSObject {
     private var playerData: URAudioOutputData?
     
     //AudioNode
-    lazy var inputAudioUnit: AVAudioUnit? = nil
+    lazy var rendererAudioUnit: AVAudioUnit? = nil
     
     var streamingMixer: AVAudioMixerNode = AVAudioMixerNode()
     
     var streamingEnvironmentNode: AVAudioEnvironmentNode = AVAudioEnvironmentNode()
+    
+    var mainMixer: AVAudioMixerNode = AVAudioMixerNode()
     // environment info
     var listenerPosition: AVAudio3DPoint {
         return streamingEnvironmentNode.listenerPosition
@@ -141,22 +145,21 @@ class URAudioEngine: NSObject {
         case .undefined, .CaptureAudioData:
             let taskAfterSetupInputAudioUnit = {[weak self] in
                 guard let self = self else { return }
-                
-                self.stopEngine()
+
                 // 2. Store the incoming data with custom allocat size
                 self.setupRendererAudioData(updatedInterval: URAudioEngine.metaDataUpdatedInterval)
                 // 3. Attach node on audioEngine
-                self.setupNodeAttachment()
+                self.setupOutputNodeAttachment()
                 // 4. Connect node with specify sequence and format
-                self.setupAudioNodeConnection()
+                self.setupAudioOutputNodeConnection()
                 
-                self.startEngine()   // This will change switch AirPod connection from other device
+                self.startOutputEngine()   // This will change switch AirPod connection from other device
                 
                 self.currentAbility = self.currentAbility == .CaptureAudioData ? .ScheduleAndCaptureAudioData : .ScheduleAudioData
             }
             // 1. Set up Audio Unit For render the input streaming data while engine is running
-            if inputAudioUnit == nil {
-                setupInputAudioUnit() {
+            if rendererAudioUnit == nil {
+                setupRendererAudioUnit() {
                     taskAfterSetupInputAudioUnit()
                 }
             } else {
@@ -175,26 +178,15 @@ class URAudioEngine: NSObject {
         case .undefined:
             beginTappingMicrophone()
             
-            setupNodeAttachment()
-            
-            setupAudioNodeConnection()
-            
-            startEngine()   // This will change hte AirPod connect to the device
+            startInputEngine()   // This will change hte AirPod connect to the device
             
             currentAbility = .CaptureAudioData
             
             print("Ability: \(currentAbility)")
         case .ScheduleAudioData:
-            // TODO: setup Environment
-            stopEngine()
-            
             beginTappingMicrophone()
             
-            setupNodeAttachment()
-            
-            setupAudioNodeConnection()
-            
-            startEngine()   // Console: AUAudioUnit.mm:1352  Cannot set maximumFramesToRender while render resources allocated.
+            startInputEngine()   // Console: AUAudioUnit.mm:1352  Cannot set maximumFramesToRender while render resources allocated.
             
             currentAbility = .ScheduleAndCaptureAudioData
             
@@ -210,16 +202,20 @@ class URAudioEngine: NSObject {
     func stopCaptureAudioData() {
         switch currentAbility {
         case .undefined:
-            print("No Broadcast ability can be terminate")
+            print("No Capture ability can be terminate")
         case .ScheduleAudioData:
-            print("No Broadcast ability can be terminate")
+            print("No Capture ability can be terminate")
         case .CaptureAudioData:
-            print("Terminate Broadcast ability and stop engine")
-            stopEngine()
+            print("Terminate Capture ability and stop engine")
+            
+            removeTappingMicrophone()
+            pauseInputEngine()
             
             currentAbility = .undefined
         case .ScheduleAndCaptureAudioData:
-            print("Terminate Broadcast ability(remove capture callback) and keep schedule ability")
+            print("Terminate Capture ability(remove capture callback) and keep schedule ability")
+            removeTappingMicrophone()
+            pauseInputEngine()
             
             currentAbility = .ScheduleAudioData
         }
@@ -232,53 +228,54 @@ class URAudioEngine: NSObject {
         case .CaptureAudioData:
             print("No ScheduleAudioData ability can be terminate")
         case .ScheduleAudioData:
-            print("Terminate ScheduleAudioData ability and stop engine")
-            stopEngine()
+            
+            rendererData = nil
+            
+            pauseOutputEngine()
             
             currentAbility = .undefined
+            print("Terminate ScheduleAudioData ability and stop engine")
         case .ScheduleAndCaptureAudioData:
             print("Terminate ScheduleAudioData ability(remove rendererData & inputUnit) and keep CaptureAudioData ability")
             
             rendererData = nil
             
-            if let inputAudioUnit = inputAudioUnit {
-                engine.detach(inputAudioUnit)
-            }
+            pauseOutputEngine()
             
             currentAbility = .CaptureAudioData
         }
     }
     
-    private func setupNodeAttachment() {
+    private func setupOutputNodeAttachment() {
         // Engine wont multi attaching node on
-        if let inputAudioUnit = inputAudioUnit {
-            engine.attach(inputAudioUnit)
+        if let rendererAudioUnit = rendererAudioUnit {
+            outputEngine.attach(rendererAudioUnit)
         }
         
-        engine.attach(streamingMixer)   // Console: UrbanRecorder[56842:741656] throwing -10878
+        outputEngine.attach(streamingMixer)   // Console: UrbanRecorder[56842:741656] throwing -10878
         
-        engine.attach(streamingEnvironmentNode)
+        outputEngine.attach(streamingEnvironmentNode)
     }
     
-    private func setupInputAudioUnit(_ completion: @escaping()->Void ) {
+    private func setupRendererAudioUnit(_ completion: @escaping()->Void ) {
         
         URAudioRenderAudioUnit.registerSubclassOnce
         
         AVAudioUnit.instantiate(with: URAudioRenderAudioUnit.audioCompoentDescription, options: []) { auUnit, error in
             guard error == nil, let auUnit = auUnit else { fatalError() }
 
-            self.inputAudioUnit = auUnit
+            self.rendererAudioUnit = auUnit
 
             completion()
         }
     }
     
     private func beginTappingMicrophone() {
-        guard !engine.isRunning else {
+        guard !inputEngine.isRunning else {
             print("Tapping Microphone cant install while the engine is running")
             return
         }
-        let inputNode = engine.inputNode
+        let inputNode = inputEngine.inputNode
         let inputFormat = inputNode.inputFormat(forBus: 0)
         let sampleRate = inputFormat.sampleRate
         // Setup Converter
@@ -307,44 +304,75 @@ class URAudioEngine: NSObject {
         }
     }
     
-    private func stopEngine() {
-        if engine.isRunning {
-            engine.stop()
-            status = .failInSetUp
+    private func removeTappingMicrophone() {
+        let inputNode = inputEngine.inputNode
+        inputNode.removeTap(onBus: 0)
+    }
+    
+    private func pauseInputEngine() {
+        if inputEngine.isRunning {
+            inputEngine.pause()
         } else {
             print("Engine is not running")
         }
     }
     
-    private func startEngine() {
-        if !engine.isRunning {
+    private func startInputEngine() {
+        if !inputEngine.isRunning {
             do {
-                try engine.start()
+                inputEngine.prepare()
+                try inputEngine.start()
             } catch {
-                status = .failInSetUp
+                print("InputEngine is fail start")
             }
         } else {
-            print("Engine is running")
+            print("InputEngine is running")
+        }
+        
+    }
+    
+    private func pauseOutputEngine() {
+        if outputEngine.isRunning {
+            outputEngine.pause()
+        } else {
+            print("Engine is not running")
+        }
+    }
+    
+    private func startOutputEngine() {
+        if !outputEngine.isRunning {
+            do {
+                outputEngine.prepare()
+                try outputEngine.start()
+            } catch {
+                print("OutputEngine is fail start")
+            }
+        } else {
+            print("OutputEngine is running")
         }
         
     }
     //MARK: - AudioNode connect
-    private func setupAudioNodeConnection() {
+    private func setupAudioOutputNodeConnection() {
         // Keep Layout as Mono to play SpactialAudio
         guard let monoLayout: AVAudioChannelLayout = AVAudioChannelLayout.init(layoutTag: kAudioChannelLayoutTag_Mono) else { return }
         
         let monoFormat = AVAudioFormat(standardFormatWithSampleRate: 48000, channelLayout: monoLayout)
         
-        if let inputAudioUnit = inputAudioUnit {
-            engine.connect(inputAudioUnit, to: streamingMixer, format: monoFormat)
+        guard let stereoLayout: AVAudioChannelLayout = AVAudioChannelLayout.init(layoutTag: kAudioChannelLayoutTag_Stereo) else { return }
+        
+        let stereoFormat = AVAudioFormat(standardFormatWithSampleRate: 48000, channelLayout: stereoLayout)
+        
+        if let rendererAudioUnit = rendererAudioUnit {
+            outputEngine.connect(rendererAudioUnit, to: streamingMixer, format: monoFormat)
         }
         
-        engine.connect(streamingMixer, to: streamingEnvironmentNode, format: monoFormat)
+        outputEngine.connect(streamingMixer, to: streamingEnvironmentNode, format: monoFormat)
         
-        let outputFormat = engine.outputNode.outputFormat(forBus: 0)
+        let outputFormat = outputEngine.outputNode.outputFormat(forBus: 0)
         print(outputFormat)
         
-        engine.connect(streamingEnvironmentNode, to: engine.outputNode, format: outputFormat)  // Console: [AUSpatialMixerV2] OutputElement: Unsupported number of channels 0 in audio channel layout UseChannelDescriptions: must be two or more
+        outputEngine.connect(streamingEnvironmentNode, to: outputEngine.outputNode, format: stereoFormat)  // Console: [AUSpatialMixerV2] OutputElement: Unsupported number of channels 0 in audio channel layout UseChannelDescriptions: must be two or more
     }
     //MARK: - SetAudioOutputData
     private func setupRendererAudioData(updatedInterval: Double) {
@@ -639,7 +667,7 @@ extension URAudioEngine {
 
 extension URAudioEngine: URAudioRenderAudioUnitDelegate {
     func renderAudioBufferPointer(length bitToRead: Int) -> UnsafeMutableRawPointer? {
-        guard engine.isRunning else { return nil }
+        guard outputEngine.isRunning else { return nil }
         
         switch useCase {
         case .streaming, .streamingWithHighQuality:
