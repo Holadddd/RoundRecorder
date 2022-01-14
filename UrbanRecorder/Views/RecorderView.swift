@@ -18,7 +18,7 @@ struct RecorderView: View {
     
     @Binding var recordName: String
     
-    var recorderLocation: URLocationCoordinate3D?
+    var recorderURLocation: URLocationCoordinate3D?
     
     @Binding var isShowingAlert: Bool
     
@@ -130,7 +130,7 @@ struct RecorderView_Previews: PreviewProvider {
                      recordDuration: .constant(0),
                      movingDistance: .constant(5.5),
                      recordName: .constant(""),
-                     recorderLocation: URLocationCoordinate3D(latitude: 121.1, longitude: 25.4, altitude: 0),
+                     recorderURLocation: URLocationCoordinate3D(latitude: 121.1, longitude: 25.4, altitude: 0),
                      isShowingAlert: .constant(false),
                      requestForRecording: {},
                      keepBroadcastWhileRecording: {},

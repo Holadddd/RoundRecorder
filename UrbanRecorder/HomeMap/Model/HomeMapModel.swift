@@ -11,6 +11,7 @@ import MapKit
 
 class HomeMapAnnotation: NSObject, MKAnnotation {
     var coordinate: CLLocationCoordinate2D
+    var userHeadingDegrees: Double?
     var type: MapAnnotationItemType = .undefine
     var color: UIColor?
     var tint: UIColor { color ?? .red }
@@ -26,8 +27,9 @@ class HomeMapAnnotation: NSObject, MKAnnotation {
         }
     }
     
-    init(coordinate: CLLocationCoordinate2D, type: MapAnnotationItemType = .undefine, color: UIColor) {
+    init(coordinate: CLLocationCoordinate2D, userHeadingDegrees: Double? = nil, type: MapAnnotationItemType = .undefine, color: UIColor) {
         self.coordinate = coordinate
+        self.userHeadingDegrees = userHeadingDegrees
         self.color = color
         self.type = type
     }

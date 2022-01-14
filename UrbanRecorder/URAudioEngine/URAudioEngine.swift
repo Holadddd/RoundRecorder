@@ -78,6 +78,10 @@ class URAudioEngine: NSObject {
         return streamingEnvironmentNode.listenerAngularOrientation
     }
     
+    var maxDistanceWithListener: URDistanceMeters = -1
+    
+    var staticDistanceWithListener: URDistanceMeters?
+    
     override init() {
         super.init()
         // Set engine inActive
@@ -97,8 +101,8 @@ class URAudioEngine: NSObject {
                 }
             }
             
-            // .measurement Filter the ambient sound, able recording, motion detect
-            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .videoChat, options: engineOption)
+            #warning(".measurement Filter the ambient sound, able recording, keep motion detect")
+            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .measurement, options: engineOption)
             
             try AVAudioSession.sharedInstance().setActive(true)
             
@@ -121,8 +125,8 @@ class URAudioEngine: NSObject {
         
         streamingEnvironmentNode.renderingAlgorithm = renderingAlgo
         streamingEnvironmentNode.reverbParameters.enable = true
-        streamingEnvironmentNode.reverbParameters.level = -20.0
-        streamingEnvironmentNode.reverbParameters.loadFactoryReverbPreset(.plate)
+        streamingEnvironmentNode.reverbParameters.level = 0
+        streamingEnvironmentNode.reverbParameters.loadFactoryReverbPreset(.smallRoom)
         
         updateListenerPosition(AVAudio3DPoint(x: 0, y: 0, z: 0))
     }
@@ -171,6 +175,10 @@ class URAudioEngine: NSObject {
             print("Unhandle ability")
             break
         }
+    }
+    
+    func setStaticDistanceWithListener(_ distance: URDistanceMeters?) {
+        staticDistanceWithListener = distance
     }
     // Make sure the microphone access is been granted
     func setupAudioEngineEnvironmentForCaptureAudioData() {
@@ -359,10 +367,6 @@ class URAudioEngine: NSObject {
         
         let monoFormat = AVAudioFormat(standardFormatWithSampleRate: 48000, channelLayout: monoLayout)
         
-        guard let stereoLayout: AVAudioChannelLayout = AVAudioChannelLayout.init(layoutTag: kAudioChannelLayoutTag_Stereo) else { return }
-        
-        let stereoFormat = AVAudioFormat(standardFormatWithSampleRate: 48000, channelLayout: stereoLayout)
-        
         if let rendererAudioUnit = rendererAudioUnit {
             outputEngine.connect(rendererAudioUnit, to: streamingMixer, format: monoFormat)
         }
@@ -372,7 +376,7 @@ class URAudioEngine: NSObject {
         let outputFormat = outputEngine.outputNode.outputFormat(forBus: 0)
         print(outputFormat)
         
-        outputEngine.connect(streamingEnvironmentNode, to: outputEngine.outputNode, format: stereoFormat)  // Console: [AUSpatialMixerV2] OutputElement: Unsupported number of channels 0 in audio channel layout UseChannelDescriptions: must be two or more
+        outputEngine.connect(streamingEnvironmentNode, to: outputEngine.outputNode, format: nil)  // Console: [AUSpatialMixerV2] OutputElement: Unsupported number of channels 0 in audio channel layout UseChannelDescriptions: must be two or more
     }
     //MARK: - SetAudioOutputData
     private func setupRendererAudioData(updatedInterval: Double) {
@@ -449,7 +453,6 @@ class URAudioEngine: NSObject {
             let pitchDegrees: Float = Float(userTrueNorthAnchorsMotion.pitchDegrees)
             let rollDegrees: Float = Float(userTrueNorthAnchorsMotion.rollDegrees)
             let userOrientation = AVAudio3DAngularOrientation(yaw: yawDegrees, pitch: pitchDegrees, roll: rollDegrees)
-            
             updateListenerOrientation(userOrientation)
         }
         // NotUsing
@@ -460,7 +463,7 @@ class URAudioEngine: NSObject {
             let receiverLocation = receivingMetadata.locationCoordinate
             let directionAndDistance = userLocation.distanceAndDistance(from: receiverLocation)
             // Audio Engine
-            let listenerPosition = URAudioEngine.get3DMetersPositionWith(directionAndDistance)
+            let listenerPosition = URAudioEngine.get3DMetersPositionWith(directionAndDistance, staticDistanceWithListener: staticDistanceWithListener)
             
             updateListenerPosition(listenerPosition)
         }
@@ -679,7 +682,7 @@ extension URAudioEngine: URAudioRenderAudioUnitDelegate {
 }
 
 extension URAudioEngine {
-    static func get3DMetersPositionWith(_ directionAndDistance: UR3DDirectionAndDistance) -> AVAudio3DPoint {
+    static func get3DMetersPositionWith(_ directionAndDistance: UR3DDirectionAndDistance, staticDistanceWithListener: URDistanceMeters?) -> AVAudio3DPoint {
         
         // Direction Degrees Point To Receiver
         // Positive X is direct to the east
@@ -688,8 +691,11 @@ extension URAudioEngine {
         // Transfer TrueNorth degrees to quadrant degrees
         let quadrantDegrees = -directionAndDistance.direction + 90
         let degreesInPi = (quadrantDegrees / 180 * Double.pi)
+        #warning("This parameter is use for testing or adjust for the Reverb size")
+        let maxDistance: URDistanceMeters = 5
         
-        let distanceMeters = directionAndDistance.distance > 5 ? 10 : directionAndDistance.distance
+        let distanceMeters = staticDistanceWithListener ?? directionAndDistance.distance > maxDistance ? maxDistance : directionAndDistance.distance
+        
         let x: Float = -Float(cos(degreesInPi) * distanceMeters)
         let y: Float = 0
         let z: Float = Float(sin(degreesInPi) * distanceMeters)

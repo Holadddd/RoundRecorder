@@ -54,7 +54,7 @@ class UDPSocketOut: NSObject, GCDAsyncUdpSocketDelegate {
         guard isSocketReady,
         let data = UDPSocketOut.encodeUDPSocketPayload(payload, userID: userID, channelID: channelID) else { return }
         
-        socket.send(data, withTimeout: 0, tag: 0)
+        socket.send(data, withTimeout: 2, tag: 0)
     }
     
     func cancelBroadcastChannel() {

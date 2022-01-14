@@ -12,6 +12,8 @@ struct MapView: UIViewRepresentable {
     
     typealias UIViewType = MKMapView
     
+    static let userArrowColor: UIColor = UIColor("#66b2ff")
+    
     @Binding var userCurrentRegion: MKCoordinateRegion?
     
     @Binding var isLocationLocked: Bool
@@ -24,7 +26,9 @@ struct MapView: UIViewRepresentable {
     
     @Binding var removeAnnotationItems: [HomeMapAnnotation]
     
-    @Binding var addAnnotationItem: HomeMapAnnotation
+    var userAnootionItem: HomeMapAnnotation
+    
+    var addAnnotationItem: HomeMapAnnotation
     
     @Binding var displayRoutes: [MKRoute]
     
@@ -54,18 +58,22 @@ struct MapView: UIViewRepresentable {
             
             uiView.region.center = userCurrentRegion.center
             // Also update compass direction
-            uiView.camera.heading = headingDirection
+            if isLocationLocked {
+                uiView.camera.heading = headingDirection
+            }
             // TODO: ShowsUserLocation with arrow
             
         }
+        
+        // UserAnnotionItem
+        uiView.addAnnotation(userAnootionItem)
+        // ReceiverAnnotionItem
+        uiView.addAnnotation(addAnnotationItem)
         
         if !removeAnnotationItems.isEmpty {
             uiView.removeAnnotations(removeAnnotationItems)
             removeAnnotationItems.removeAll()
         }
-        
-        
-        uiView.addAnnotation(addAnnotationItem)
         
         if !removeRoutes.isEmpty {
             for route in removeRoutes {
@@ -92,13 +100,29 @@ struct MapView: UIViewRepresentable {
 
             guard let annotion = annotation as? HomeMapAnnotation else { return nil }
             // TODO: Image Tint Color
-            let annotionView = MKAnnotationView(annotation: annotion, reuseIdentifier: nil)
+            switch annotion.type{
+            case .user:
+                let annotionView = MKAnnotationView(annotation: annotion, reuseIdentifier: nil)
 
-            let image = UIImage(systemName: annotion.imageSystemName)?.withTintColor(.red)
+                let rotateDegrees = ((annotion.userHeadingDegrees ?? 0) / 180) * .pi
+                let annotionColor = MapView.userArrowColor
+                let image = UIImage(systemName: annotion.imageSystemName)?.withTintColor(annotionColor).rotate(radians: rotateDegrees)
+                
+                annotionView.image = image
 
-            annotionView.image = image
+                return annotionView
+            case .receiver:
+                let annotionView = MKAnnotationView(annotation: annotion, reuseIdentifier: nil)
 
-            return annotionView
+                let image = UIImage(systemName: annotion.imageSystemName)?.withTintColor(.orange)
+
+                annotionView.image = image
+
+                return annotionView
+            default:
+                return nil
+            }
+            
         }
         
     }

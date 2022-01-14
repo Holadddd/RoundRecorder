@@ -35,13 +35,18 @@ struct HomeMapView: View {
                             updateByMapItem: $viewmodel.updateByMapItem,
                             showsUserLocation: true,
                             removeAnnotationItems: $viewmodel.removeAnnotationItems,
-                            addAnnotationItem: $viewmodel.receiverAnnotationItem,
+                            userAnootionItem: viewmodel.userAnootion,
+                            addAnnotationItem: viewmodel.receiverAnnotationItem,
                             displayRoutes: $viewmodel.displayRoutes,
                             removeRoutes: $viewmodel.removeRoutes)
                         .edgesIgnoringSafeArea(.all)
                 }
                 VStack {
                     HStack {
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text(viewmodel.userLocation == nil ? "latitude: " : "latitude: \(viewmodel.userLocation!.latitude)")
+                            Text(viewmodel.userLocation == nil ? "longitude: " : "longitude: \(viewmodel.userLocation!.longitude)")
+                        }
                         Spacer()
                         VStack{
                             Button {
@@ -117,11 +122,10 @@ struct HomeMapView: View {
                                     DirectionAndDistanceMetersView(udpsocketLatenctMs: viewmodel.udpsocketLatenctMs,
                                                                    receiverDirection: viewmodel.receiverDirection,
                                                                    receiverMeters: $viewmodel.receiverLastDistanceMeters,
+                                                                   isSetStaticDistance: $viewmodel.isSetStaticDistanceMeters,
                                                                    showWave: viewmodel.showWave,
                                                                    volumeMaxPeakPercentage: viewmodel.volumeMaxPeakPercentage) {
-                                        // TODO: Fixed the distance
-                                        print("TODO: Fixed the distance")
-                                        
+                                        viewmodel.setStaticDistance()
                                     } resetAnchorDegreesDidClicked: {
                                         viewmodel.resetAnchorDegrees()
                                     }
@@ -131,7 +135,7 @@ struct HomeMapView: View {
                                                  recordDuration: $viewmodel.recordDuration,
                                                  movingDistance: $viewmodel.recordMovingDistance,
                                                  recordName: $viewmodel.recordName,
-                                                 recorderLocation: viewmodel.userLocation,
+                                                 recorderURLocation: viewmodel.userURLocation,
                                                  isShowingAlert: $viewmodel.showRecordingPermissionAlert,
                                                  requestForRecording: {
                                         viewmodel.requestForRecording()

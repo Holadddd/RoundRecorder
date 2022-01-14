@@ -9,8 +9,12 @@ import SwiftUI
 import Neumorphic
 
 struct DirectionAndDistanceMetersView: View {
+    
     var receiverDirection: Double
+    
     @Binding var receiverMeters: Double
+    
+    @Binding var isSetStaticDistance: Bool
     
     var udpsocketLatenctMs: UInt64
     
@@ -34,10 +38,19 @@ struct DirectionAndDistanceMetersView: View {
     
     let compassWidth:CGFloat = UIScreen.main.bounds.width * 0.8
     
-    init(udpsocketLatenctMs: UInt64, receiverDirection: Double, receiverMeters: Binding<Double>, showWave: Bool, volumeMaxPeakPercentage: Double, distanceMeteDidClicked: @escaping (()->Void), resetAnchorDegreesDidClicked: @escaping (()->Void)) {
+    init(udpsocketLatenctMs: UInt64,
+         receiverDirection: Double,
+         receiverMeters: Binding<Double>,
+         isSetStaticDistance:Binding<Bool>,
+         showWave: Bool,
+         volumeMaxPeakPercentage: Double,
+         distanceMeteDidClicked: @escaping (()->Void),
+         resetAnchorDegreesDidClicked: @escaping (()->Void)) {
+        
         self.udpsocketLatenctMs = udpsocketLatenctMs
         self.receiverDirection = receiverDirection
         self._receiverMeters = receiverMeters
+        self._isSetStaticDistance = isSetStaticDistance
         self.showWave = showWave
         self.volumeMaxPeakPercentage = volumeMaxPeakPercentage
         self.distanceMeteDidClicked = distanceMeteDidClicked
@@ -104,8 +117,7 @@ struct DirectionAndDistanceMetersView: View {
                         distanceMeteDidClicked()
                     }) {
                         Text("\(receiverMeters.string(fractionDigits: 2)) M").font(.title).fontWeight(.heavy)
-                    }.softButtonStyle(RoundedRectangle(cornerRadius: cornerRadius))
-                        .disabled(true)
+                    }.softButtonStyle(RoundedRectangle(cornerRadius: cornerRadius), isPressed: isSetStaticDistance)
                     
                 }.aspectRatio(1, contentMode: .fit)
             }.frame(width: compassWidth, height: compassWidth, alignment: .center)
@@ -116,7 +128,7 @@ struct DirectionAndDistanceMetersView: View {
 struct DirectionAndDistanceMetersView_Previews: PreviewProvider {
     static var previews: some View {
         
-        DirectionAndDistanceMetersView(udpsocketLatenctMs: 11, receiverDirection: 315, receiverMeters: .constant(5), showWave: false, volumeMaxPeakPercentage: 0.8) {
+        DirectionAndDistanceMetersView(udpsocketLatenctMs: 11, receiverDirection: 315, receiverMeters: .constant(5), isSetStaticDistance: .constant(false), showWave: false, volumeMaxPeakPercentage: 0.8) {
             
         } resetAnchorDegreesDidClicked: {
             

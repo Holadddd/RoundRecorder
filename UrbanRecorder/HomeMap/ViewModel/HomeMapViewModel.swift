@@ -71,7 +71,11 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     @Published var removeRoutes: [MKRoute] = []
     
-    var userLocation: URLocationCoordinate3D?
+    @Published var userLocation: CLLocationCoordinate2D?
+    
+    @Published var userHeadingDegrees: Double?
+    
+    var userURLocation: URLocationCoordinate3D?
     
     private var firstAnchorMotion: CMDeviceMotion?
     
@@ -97,7 +101,16 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     @Published var receiverLastDistanceMeters: Double = 0
     
+    @Published var isSetStaticDistanceMeters: Bool = false
+    
     @Published var isSelectedItemPlayAble: Bool = false
+    
+    @Published var userAnootion: HomeMapAnnotation = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), type: .user, color: .clear) {
+        willSet {
+            // Remove the last receiver annotion
+            removeAnnotationItems.append(userAnootion)
+        }
+    }
     
     @Published var removeAnnotationItems: [HomeMapAnnotation] = []
     
@@ -136,6 +149,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     let headphoneMotionManager = CMHeadphoneMotionManager()
     
+    let headphoneMotionManagerOperationQueue: OperationQueue = OperationQueue()
     // MARK: - Network
     var udpSocketManager: UDPSocketManager = UDPSocketManager.shared
     
@@ -164,18 +178,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
         
         locationManager.startUpdatingLocation()
         
-        if CLLocationManager.headingAvailable() {
-            self.locationManager.startUpdatingHeading()
-        }
-        // Headphone Motion
-        if headphoneMotionManager.isDeviceMotionAvailable {
-            headphoneMotionManager.delegate = self
-            
-            headphoneMotionManager.startDeviceMotionUpdates(to: OperationQueue.current!, withHandler: {[weak self] motion, error  in
-                guard let self = self, let motion = motion, error == nil else { return }
-                self.headphoneMotionDidChange(motion)
-            })
-        }
+        startDeviceMotionDetection()
         
         udpSocketManager.delegate = self
         // RecordHelper
@@ -228,7 +231,21 @@ class HomeMapViewModel: NSObject, ObservableObject {
             }
         }
     }
-    
+    //
+    func startDeviceMotionDetection() {
+        // Headphone Motion
+        if headphoneMotionManager.isDeviceMotionAvailable {
+            resetAnchorDegrees()
+            
+            headphoneMotionManager.delegate = self
+            
+            headphoneMotionManager.startDeviceMotionUpdates()
+        }
+        
+        if CLLocationManager.headingAvailable() {
+            self.locationManager.startUpdatingHeading()
+        }
+    }
     // MARK: - Broadcast
     private func setupBroadcastMicrophoneCaptureCallback(channelID: String) {
         broadcastMicrophoneCaptureCallback = {[weak self, channelID] audioData in
@@ -259,10 +276,12 @@ class HomeMapViewModel: NSObject, ObservableObject {
         
         DispatchQueue.global().async {
             // Request the task assertion and save the ID.
-            self.broadcastingBackgroundTaskID = UIApplication.shared.beginBackgroundTask (withName: "BroadcastingBackgroundTask") {
-                // End the task if time expires.
-                UIApplication.shared.endBackgroundTask(self.broadcastingBackgroundTaskID!)
-                self.broadcastingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
+            if self.broadcastingBackgroundTaskID == nil {
+                self.broadcastingBackgroundTaskID = UIApplication.shared.beginBackgroundTask (withName: "BroadcastingBackgroundTask") {
+                    // End the task if time expires.
+                    UIApplication.shared.endBackgroundTask(self.broadcastingBackgroundTaskID!)
+                    self.broadcastingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
+                }
             }
             // 1. Request Microphone
             self.urAudioEngineInstance.requestRecordPermissionAndStartTappingMicrophone {[weak self, channelID] isGranted in
@@ -286,6 +305,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
                     // End the task assertion.
                     UIApplication.shared.endBackgroundTask(self.broadcastingBackgroundTaskID!)
                     self.broadcastingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
+                    
                 }
             }
         }
@@ -340,10 +360,12 @@ class HomeMapViewModel: NSObject, ObservableObject {
         // 1. setupSubscribeEnviriment
         DispatchQueue.global().async {
             // Request the task assertion and save the ID.
-            self.subscribingBackgroundTaskID = UIApplication.shared.beginBackgroundTask (withName: "SubscribingingBackgroundTask") {
-                // End the task if time expires.
-                UIApplication.shared.endBackgroundTask(self.subscribingBackgroundTaskID!)
-                self.subscribingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
+            if self.subscribingBackgroundTaskID == nil {
+                self.subscribingBackgroundTaskID = UIApplication.shared.beginBackgroundTask (withName: "SubscribingingBackgroundTask") {
+                    // End the task if time expires.
+                    UIApplication.shared.endBackgroundTask(self.subscribingBackgroundTaskID!)
+                    self.subscribingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
+                }
             }
             self.urAudioEngineInstance.setupAudioEngineEnvironmentForScheduleAudioData()
             
@@ -539,36 +561,42 @@ class HomeMapViewModel: NSObject, ObservableObject {
                     self.playingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
                 }
             }
-            
-            self.urAudioEngineInstance.setupPlayerDataAndStartPlayingAtSeconds(urAudioData, startOffset: playingDuration, updateInterval: 1) { updatedDuration in
-                // TODO: Record playing duration
-                DispatchQueue.main.async {
-                    withAnimation {
-                        self.playingData?.playingDuration = updatedDuration
-                    }
+        }
+        
+        self.startDeviceMotionDetection()
+        
+        self.urAudioEngineInstance.setupPlayerDataAndStartPlayingAtSeconds(urAudioData, startOffset: playingDuration, updateInterval: 1) { updatedDuration in
+            // TODO: Record playing duration
+            DispatchQueue.main.async {
+                withAnimation {
+                    self.playingData?.playingDuration = updatedDuration
                 }
-            } endOfFilePlayingCallback: { endSecond in
-                print("The File Is End Of Playing At: \(endSecond)")
-                // TODO: Stop the engine
-                DispatchQueue.main.async {
-                    self.playingData?.playingDuration = 0
-                    self.playingData = nil
-                    
-                    self.removeAnnotionOnMap()
-                }
-                // AudioEngine
-                self.urAudioEngineInstance.removePlayerData()
+            }
+        } endOfFilePlayingCallback: { endSecond in
+            print("The File Is End Of Playing At: \(endSecond)")
+            // TODO: Stop the engine
+            DispatchQueue.main.async {
+                self.playingData?.playingDuration = 0
+                self.playingData = nil
                 
-                self.urAudioEngineInstance.stopScheduleAudioData()
+                self.removeAnnotionOnMap()
+            }
+            // AudioEngine
+            self.urAudioEngineInstance.removePlayerData()
+            
+            self.urAudioEngineInstance.stopScheduleAudioData()
+            
+            DispatchQueue.global().async { [weak self] in
+                guard let self = self else { return }
                 // End the task assertion.
                 UIApplication.shared.endBackgroundTask(self.playingBackgroundTaskID!)
                 self.playingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
             }
-            
-            // 3. SetUp engine environment
-            self.urAudioEngineInstance.setupAudioEngineEnvironmentForScheduleAudioData()
-            
         }
+        
+        // 3. SetUp engine environment
+        self.urAudioEngineInstance.setupAudioEngineEnvironmentForScheduleAudioData()
+        
     }
     
     func fileListOnPause() {
@@ -706,9 +734,16 @@ class HomeMapViewModel: NSObject, ObservableObject {
     }
     
     // MARK: - Compass
+    func setStaticDistance() {
+        isSetStaticDistanceMeters.toggle()
+        
+        urAudioEngineInstance.setStaticDistanceWithListener(isSetStaticDistanceMeters ? receiverLastDistanceMeters : nil)
+    }
+    
     func resetAnchorDegrees() {
         firstAnchorMotionCompassDegrees = nil
         firstAnchorMotion = nil
+        userTrueNorthURMotionAttitude = URMotionAttitude()
     }
     // MARK: - Unspecify
     func didReceiveVolumePeakPercentage(_ percentage: Double) {
@@ -773,12 +808,20 @@ extension HomeMapViewModel: CLLocationManagerDelegate, CMHeadphoneMotionManagerD
         let altitude = location.altitude
         let locationCoordinate = CLLocationCoordinate2D(latitude: latitude,
                                                         longitude: longitude)
-        if userLocation != nil {
-            userLocation!.latitude = latitude
-            userLocation!.longitude = longitude
-            userLocation!.altitude = altitude
+        userLocation = locationCoordinate
+        // Update UserAnnotion
+        DispatchQueue.main.async {[weak self] in
+            guard let self = self, let userLocation = self.userLocation, let userHeadingDegrees = self.userHeadingDegrees else { return }
+            
+            self.userAnootion = HomeMapAnnotation(coordinate: userLocation, userHeadingDegrees: userHeadingDegrees, type: .user, color: .blue)
+        }
+        
+        if userURLocation != nil {
+            userURLocation!.latitude = latitude
+            userURLocation!.longitude = longitude
+            userURLocation!.altitude = altitude
         } else {
-            userLocation = URLocationCoordinate3D(latitude: latitude, longitude: longitude, altitude: altitude)
+            userURLocation = URLocationCoordinate3D(latitude: latitude, longitude: longitude, altitude: altitude)
             print("latitude: \(latitude), longitude: \(longitude)")
         }
         
@@ -803,33 +846,51 @@ extension HomeMapViewModel: CLLocationManagerDelegate, CMHeadphoneMotionManagerD
         }
         
         compassDegrees = newDegrees
+        
+        userHeadingDegrees = isLocationLocked ? 0 : newHeading.trueHeading
+        // Update UserAnnotion
+        DispatchQueue.main.async {[weak self] in
+            guard let self = self, let userLocation = self.userLocation, let userHeadingDegrees = self.userHeadingDegrees else { return }
+            
+            self.userAnootion = HomeMapAnnotation(coordinate: userLocation, userHeadingDegrees: userHeadingDegrees, type: .user, color: .blue)
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Location Manager Did Fail With Error: \(error.localizedDescription)")
     }
+    func headphoneMotionManagerDidDisconnect(_ manager: CMHeadphoneMotionManager) {
+        print("headphoneMotionManagerDidDisconnect")
+    }
     
-    func headphoneMotionDidChange(_ motion: CMDeviceMotion) {
+    func reloadCurrentUserTrueNorthURMotionAttitude() {
         guard let anchorMotion = firstAnchorMotion,
-              let firstAnchorMotionCompassDegrees = firstAnchorMotionCompassDegrees else {
-            firstAnchorMotionCompassDegrees = compassDegrees
-            firstAnchorMotion = motion
-            return}
+              let firstAnchorMotionCompassDegrees = firstAnchorMotionCompassDegrees,
+              let motion = headphoneMotionManager.deviceMotion else {
+                  firstAnchorMotionCompassDegrees = compassDegrees
+                  firstAnchorMotion = headphoneMotionManager.deviceMotion
+                  return}
+        
         
         let trueNorthYawDegrees = (anchorMotion.attitude.yaw - motion.attitude.yaw) / Double.pi * 180 - firstAnchorMotionCompassDegrees
         let trueNorthPitchDegrees = (anchorMotion.attitude.pitch - motion.attitude.pitch) / Double.pi * 180
         let trueNorthRollDegrees = (anchorMotion.attitude.roll - motion.attitude.roll) / Double.pi * 180
         
-        userTrueNorthURMotionAttitude = URMotionAttitude(rollDegrees: trueNorthRollDegrees, pitchDegrees: trueNorthPitchDegrees, yawDegrees: trueNorthYawDegrees)
+        userTrueNorthURMotionAttitude?.rollDegrees = trueNorthRollDegrees
+        userTrueNorthURMotionAttitude?.pitchDegrees = trueNorthPitchDegrees
+        userTrueNorthURMotionAttitude?.yawDegrees = trueNorthYawDegrees
     }
 }
 // URAudioEngineDataSource
 extension HomeMapViewModel: URAudioEngineDataSource {
     func urAudioEngine(currentLocationForEngine: URAudioEngine) -> URLocationCoordinate3D? {
-        return userLocation
+        return userURLocation
     }
     
     func urAudioEngine(currentTrueNorthAnchorsMotionForEngine: URAudioEngine) -> URMotionAttitude? {
+        
+        reloadCurrentUserTrueNorthURMotionAttitude()
+        
         return userTrueNorthURMotionAttitude
     }
 }
@@ -847,12 +908,13 @@ extension HomeMapViewModel: URAudioEngineDelegate {
             self.receiverAnnotationItem = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(latitude: receiverLatitude, longitude: receiverLongitude), type: .receiver, color: .orange)
         }
         
-        guard let userLocation = userLocation else {print("Fail in getting userlocation"); return }
+        guard let userURLocation = userURLocation else {print("Fail in getting userURLocation"); return }
         
-        let directionAndDistance = userLocation.distanceAndDistance(from: metaData.locationCoordinate)
+        let directionAndDistance = userURLocation.distanceAndDistance(from: metaData.locationCoordinate)
         DispatchQueue.main.async {[weak self, directionAndDistance] in
             guard let self = self else { return }
             self.receiverLastDirectionDegrees = directionAndDistance.direction
+            guard !self.isSetStaticDistanceMeters else { return }
             self.receiverLastDistanceMeters = directionAndDistance.distance
         }
     }
