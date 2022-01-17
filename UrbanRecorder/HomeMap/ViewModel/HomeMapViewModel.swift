@@ -59,6 +59,8 @@ class HomeMapViewModel: NSObject, ObservableObject {
     // MARK: - DirectionAndDistanceMetersView
     
     // MARK: - Map & Compass
+    @Published var isSetupCurrentLocation: Bool = false
+    
     @Published var isLocationLocked: Bool = false
     
     var headingDirection: CLLocationDirection {
@@ -121,13 +123,13 @@ class HomeMapViewModel: NSObject, ObservableObject {
         }
     }
     
-    @Published var userCurrentRegion: MKCoordinateRegion?
+    @Published var userCurrentMapCamera: MKMapCamera?
     
     var udpsocketLatenctMs: UInt64 = 0
     
     let locationManager = CLLocationManager()
     
-    var updateByMapItem: Bool = false
+    var updateByMapItem: Bool = true
     
     @Published var showWave: Bool = false
     
@@ -730,7 +732,11 @@ class HomeMapViewModel: NSObject, ObservableObject {
         print(routes)
         self.isLocationLocked = false
         self.updateByMapItem = true
-        self.userCurrentRegion = MKCoordinateRegion(center: centerLocation, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
+        let camera = MKMapCamera()
+        camera.centerCoordinate = centerLocation
+        // TODO: Calculate the camera needed distance
+        camera.centerCoordinateDistance = 3000
+        self.userCurrentMapCamera = camera
     }
     
     // MARK: - Compass
@@ -823,12 +829,6 @@ extension HomeMapViewModel: CLLocationManagerDelegate, CMHeadphoneMotionManagerD
         } else {
             userURLocation = URLocationCoordinate3D(latitude: latitude, longitude: longitude, altitude: altitude)
             print("latitude: \(latitude), longitude: \(longitude)")
-        }
-        
-        
-        if isLocationLocked || userCurrentRegion == nil  {
-            self.userCurrentRegion = MKCoordinateRegion(center: locationCoordinate,
-                                                        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
         }
     }
     

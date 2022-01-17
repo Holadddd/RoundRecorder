@@ -14,7 +14,11 @@ struct MapView: UIViewRepresentable {
     
     static let userArrowColor: UIColor = UIColor("#66b2ff")
     
-    @Binding var userCurrentRegion: MKCoordinateRegion?
+    static let firstSetupCoordinateDistance: CLLocationDistance = 1000
+    
+    @Binding var isSetupCurrentLocation: Bool
+    
+    @Binding var userCurrentMapCamera: MKMapCamera?
     
     @Binding var isLocationLocked: Bool
     
@@ -43,28 +47,28 @@ struct MapView: UIViewRepresentable {
         
         mapView.delegate = context.coordinator
         mapView.showsUserLocation = showsUserLocation
+        mapView.showsCompass = true
         mapView.showsTraffic = false
-        if let userCurrentRegion = userCurrentRegion {
-            mapView.region = userCurrentRegion
-        }
         
         return mapView
     }
     
     func updateUIView(_ uiView: MKMapView, context: Context) {
-        
-        if (isLocationLocked || updateByMapItem), let userCurrentRegion = userCurrentRegion {
-            updateByMapItem = false
-            
-            uiView.region.center = userCurrentRegion.center
-            // Also update compass direction
-            if isLocationLocked {
-                uiView.camera.heading = headingDirection
-            }
-            // TODO: ShowsUserLocation with arrow
-            
+        // MARK: Setup camera vision
+        if !isSetupCurrentLocation, let userCurrentLocation = uiView.userLocation.location?.toCLLocationCoordinate2D {
+            // first user vision
+            isSetupCurrentLocation.toggle()
+            uiView.camera.centerCoordinate = userCurrentLocation
+            uiView.camera.centerCoordinateDistance = MapView.firstSetupCoordinateDistance
+        } else if updateByMapItem , let userCurrentMapCamera = userCurrentMapCamera {
+            // Udpate by item (ex: routes, annotation...)
+            updateByMapItem.toggle()
+            uiView.camera = userCurrentMapCamera
+        } else if isLocationLocked, let userCurrentLocation = uiView.userLocation.location?.toCLLocationCoordinate2D {
+            // Lock user vision with current location
+            uiView.camera.centerCoordinate = userCurrentLocation
+            uiView.camera.heading = headingDirection
         }
-        
         // UserAnnotionItem
         uiView.addAnnotation(userAnootionItem)
         // ReceiverAnnotionItem

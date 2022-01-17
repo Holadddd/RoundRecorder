@@ -29,7 +29,8 @@ struct HomeMapView: View {
                 
                 VStack{
                     
-                    MapView(userCurrentRegion: $viewmodel.userCurrentRegion,
+                    MapView(isSetupCurrentLocation: $viewmodel.isSetupCurrentLocation,
+                            userCurrentMapCamera: $viewmodel.userCurrentMapCamera,
                             isLocationLocked: $viewmodel.isLocationLocked,
                             headingDirection: viewmodel.headingDirection,
                             updateByMapItem: $viewmodel.updateByMapItem,
@@ -64,7 +65,7 @@ struct HomeMapView: View {
                                     .tint(Color.Neumorphic.secondary)
                                     .frame(width: 30, height: 30)
                             }.softButtonStyle(RoundedRectangle(cornerRadius: 3), padding: 0, pressedEffect: .hard, isPressed: viewmodel.isLocationLocked)
-                        }
+                        }.padding(EdgeInsets(top: 50, leading: 0, bottom: 0, trailing: 0))
                         
                             
                     }.padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 5))
