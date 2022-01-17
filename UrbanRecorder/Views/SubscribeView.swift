@@ -25,35 +25,36 @@ struct SubscribeView: View {
     let alertMessage: String = "Stop the file on playing?"
     
     var body: some View {
-        return VStack{
-            HStack{
-                Text("ChannelID: ").fontWeight(.bold)
-                    .foregroundColor(Color.Neumorphic.secondary)
-                if isSubscribing {
-                    TextField.init("SubscribeChannelID", text: $channelID, prompt: nil).disabled(true)
-                } else {
-                    TextField.init("SubscribeChannelID", text: $channelID, prompt: nil).disabled(false)
-                }
-                
-                Button(isSubscribing ? "Stop" : "Subscribe") {
+        return ZStack {
+                HStack{
+                    Text("ChannelID: ").fontWeight(.bold)
+                        .foregroundColor(Color.Neumorphic.secondary)
+                        .padding(5)
                     if isSubscribing {
-                        stopSubscribetAction()
+                        TextField.init("", text: $channelID, prompt: nil).disabled(true)
                     } else {
-                        // Request subscribe
-                        requestForSubscribeChannel()
+                        TextField.init("", text: $channelID, prompt: nil).disabled(false)
                     }
-                }.softButtonStyle(RoundedRectangle(cornerRadius: 5), padding: 3, textColor: Color.Neumorphic.secondary, pressedEffect: .hard)
-                    .padding()
-                    .alert(alertMessage, isPresented: $isShowingAlert) {
-                        Button("No", role: .cancel) {
-                            print("Keep playing with file")
+                    
+                    Button(isSubscribing ? "Stop" : "Subscribe") {
+                        if isSubscribing {
+                            stopSubscribetAction()
+                        } else {
+                            // Request subscribe
+                            requestForSubscribeChannel()
                         }
-                        Button("Yes", role: .destructive) {
-                            stopPlayingOnFileAndSubscribeChannel()
+                    }.softButtonStyle(RoundedRectangle(cornerRadius: 5), padding: 3, textColor: Color.Neumorphic.secondary, pressedEffect: .hard)
+                        .padding()
+                        .alert(alertMessage, isPresented: $isShowingAlert) {
+                            Button("No", role: .cancel) {
+                                print("Keep playing with file")
+                            }
+                            Button("Yes", role: .destructive) {
+                                stopPlayingOnFileAndSubscribeChannel()
+                            }
                         }
-                    }
-            }
-        }
+                }.segmentCardView(title: "Subscribe")
+        }.padding(10)
     }
 }
 

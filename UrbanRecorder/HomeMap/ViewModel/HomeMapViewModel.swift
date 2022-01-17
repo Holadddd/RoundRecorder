@@ -303,7 +303,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
                         guard let self = self else { return }
                         self.isBroadcasting = false
                     }
-                    
+                    guard self.broadcastingBackgroundTaskID != nil else { return }
                     // End the task assertion.
                     UIApplication.shared.endBackgroundTask(self.broadcastingBackgroundTaskID!)
                     self.broadcastingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
@@ -330,6 +330,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
         // Map
         
         DispatchQueue.global().async {
+            guard self.broadcastingBackgroundTaskID != nil else { return }
             // End the task assertion.
             UIApplication.shared.endBackgroundTask(self.broadcastingBackgroundTaskID!)
             self.broadcastingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
@@ -383,6 +384,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
                     }
                     print("Setup Subscribe Connection with error: \(error)")
                     // End the task assertion.
+                    guard self.subscribingBackgroundTaskID != nil else { return }
                     UIApplication.shared.endBackgroundTask(self.subscribingBackgroundTaskID!)
                     self.subscribingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
                 }
@@ -403,9 +405,11 @@ class HomeMapViewModel: NSObject, ObservableObject {
         removeAnnotionOnMap()
         // Background Task
         DispatchQueue.global().async {
+            guard self.subscribingBackgroundTaskID != nil else { return }
             // End the task assertion.
             UIApplication.shared.endBackgroundTask(self.subscribingBackgroundTaskID!)
             self.subscribingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
+            
         }
     }
     // MARK: - Record
@@ -433,10 +437,12 @@ class HomeMapViewModel: NSObject, ObservableObject {
         
         DispatchQueue.global().async {
             // Request the task assertion and save the ID.
-            self.recordingBackgroundTaskID = UIApplication.shared.beginBackgroundTask (withName: "RecordingBackgroundTask") {
-                // End the task if time expires.
-                UIApplication.shared.endBackgroundTask(self.recordingBackgroundTaskID!)
-                self.recordingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
+            if self.recordingBackgroundTaskID == nil {
+                self.recordingBackgroundTaskID = UIApplication.shared.beginBackgroundTask (withName: "RecordingBackgroundTask") {
+                    // End the task if time expires.
+                    UIApplication.shared.endBackgroundTask(self.recordingBackgroundTaskID!)
+                    self.recordingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
+                }
             }
             // 1. Request Microphone
             self.urAudioEngineInstance.requestRecordPermissionAndStartTappingMicrophone {[weak self] isGranted in
@@ -494,6 +500,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
         #warning("Stop engine")
         
         DispatchQueue.global().async {
+            guard self.recordingBackgroundTaskID != nil else { return }
             // End the task assertion.
             UIApplication.shared.endBackgroundTask(self.recordingBackgroundTaskID!)
             self.recordingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
@@ -512,6 +519,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
         
         if let displayData = expandedData{
             displayRecordedDataOnMap(displayData)
+        }
+        // Stop the last expandedData on playing
+        if expandedData != playingData {
+            fileListOnStop()
         }
     }
     
@@ -591,6 +602,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
             DispatchQueue.global().async { [weak self] in
                 guard let self = self else { return }
                 // End the task assertion.
+                guard self.playingBackgroundTaskID != nil else { return }
                 UIApplication.shared.endBackgroundTask(self.playingBackgroundTaskID!)
                 self.playingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
             }
@@ -614,6 +626,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
             // End the task assertion.
+            guard self.playingBackgroundTaskID != nil else { return }
             UIApplication.shared.endBackgroundTask(self.playingBackgroundTaskID!)
             self.playingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
         }
@@ -634,6 +647,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
             // End the task assertion.
+            guard self.playingBackgroundTaskID != nil else { return }
             UIApplication.shared.endBackgroundTask(self.playingBackgroundTaskID!)
             self.playingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
         }

@@ -56,7 +56,7 @@ struct RecorderView: View {
                     }.padding(EdgeInsets(top: 0,
                                          leading: 10,
                                          bottom: 0,
-                                         trailing: 0))
+                                         trailing: 10))
                     
                     Button {
                         if isRecordButtonPressed {
@@ -89,11 +89,9 @@ struct RecorderView: View {
                         }
                     }
                 }
-            }.padding(5)
-                .background(Color.Neumorphic.main)
-                .cornerRadius(15)
-                .softOuterShadow(offset: 2)
-        }.padding(10)
+            }
+        }.segmentCardView(title: "Recorder")
+            .padding(10)
     }
     
     private func getDefaultRecordName() -> String {

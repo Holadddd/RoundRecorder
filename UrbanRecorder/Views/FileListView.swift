@@ -50,7 +50,8 @@ struct FileListView: View {
         return playingDuration == 0 ? 0 : (playingDuration / Double(dataOnExpanded.recordDuration))
     }
     var body: some View {
-        return VStack {
+        return ZStack {
+            VStack{
                 HStack{
                     Spacer()
                     Button {
@@ -68,10 +69,13 @@ struct FileListView: View {
                                      leading: 0,
                                      bottom: 0,
                                      trailing: 10))
-                
-                if recordedDatas.count > 0 {
-                    VStack{
-                        ForEach(recordedDatas) { data in
+                Spacer()
+            }
+            
+            
+            if recordedDatas.count > 0 {
+                VStack{
+                    ForEach(recordedDatas) { data in
                             HStack {
                                 if isEditing {
                                     Button {
@@ -162,12 +166,10 @@ struct FileListView: View {
                                         }
                                         
                                     }
+                                    Divider()
                                 }.padding(paddingValue)
                                     .background(Color.Neumorphic.main)
                                     .cornerRadius(15)
-                                    .softOuterShadow(darkShadow: (data == dataOnPlaying) ? Color(hex: "#FF0000", alpha: 0.3) : Color.Neumorphic.darkShadow,
-                                                     lightShadow: (data == dataOnPlaying) ? Color(hex: "#FF0000", alpha: 0.2) : Color.Neumorphic.lightShadow,
-                                                     offset: 3)
                             }.onTapGesture {
                                 withAnimation {
                                     if dataOnExpanded == data {
@@ -181,7 +183,9 @@ struct FileListView: View {
                                              leading: 15,
                                              bottom: 5,
                                              trailing: 15))
-                    }
+                    }.segmentCardView(title: "Filelist")
+                        .padding(10)
+                    
                 } else {
                     Text("No Storage Data")
                 }
