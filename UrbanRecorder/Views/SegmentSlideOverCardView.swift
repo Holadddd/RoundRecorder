@@ -164,6 +164,16 @@ struct SegmentSlideOverCardView<Content: View> : View {
                                         if isCardReachTopOffset {
                                             isScrollingOnScrollView = true
                                             isScrollingOnCard = false
+                                            
+                                            // Update card mode
+                                            let currentCardOffset = cardPosition.offsetValue + cardViewOffset
+
+                                            let updatePosition = cardPosition.updatePositionResult(with: currentCardOffset + predictShiftOffset , availableMode: availableMode.modes)
+                                            
+                                            if cardPosition != updatePosition {
+                                                cardViewOffset = 0
+                                                cardPosition = updatePosition
+                                            }
                                         }
                                     }
                                 } else {
@@ -190,15 +200,14 @@ struct SegmentSlideOverCardView<Content: View> : View {
                             onScrollingSession = false
                             
                             let predictShiftOffset = drag.predictedEndLocation.y - drag.location.y
-
+                            // Update card mode
                             let currentCardOffset = cardPosition.offsetValue + cardViewOffset
 
                             let updatePosition = cardPosition.updatePositionResult(with: currentCardOffset + predictShiftOffset , availableMode: availableMode.modes)
                             
                             withAnimation(.spring(response: 0.3, dampingFraction: 0.7, blendDuration: 0.2)) {
                                 cardViewOffset = 0
-                                
-                                if cardPosition != updatePosition {
+                                if cardPosition != updatePosition && !isScrollingOnScrollView {
                                     cardPosition = updatePosition
                                 }
                             }
@@ -308,7 +317,7 @@ enum CardPosition: CGFloat {
         }
     }
     
-    mutating func isPositionStatusIsOnTop(_ position: CardPosition, availableMode: [CardPosition]) -> Bool {
+    static func isPositionStatusIsOnTop(_ position: CardPosition, availableMode: [CardPosition]) -> Bool {
         let sortedMode = availableMode.sorted(by:{$0.offsetValue < $1.offsetValue})
         return position == sortedMode[0]
     }

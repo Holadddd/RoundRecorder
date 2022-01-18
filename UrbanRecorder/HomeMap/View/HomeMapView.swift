@@ -15,8 +15,6 @@ struct HomeMapView: View {
     
     @ObservedObject var viewmodel: HomeMapViewModel = HomeMapViewModel()
     
-    @State private var showingSheet = false
-    
     @State private var lastDragPosition: DragGesture.Value?
     
     @State private var menuScrollViewOffset: CGFloat = 0
