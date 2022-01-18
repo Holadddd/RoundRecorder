@@ -135,8 +135,18 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     var volumeMaxPeakPercentage: Double = 0.01
     
+    // MARK: - Menubar control
+    
+    
     // MARK: - SegmentSlideOverCard
+    @Published var segmentCarViewIsVisible: Bool = true
+    
     @Published var cardPosition = CardPosition.middle
+    
+    lazy var cardAvailableMode: AvailablePosition = {
+        return AvailablePosition([.top, .middle, .bottom])
+    }()
+    
     
     var featureColumns: [GridItem] = [GridItem(.fixed(100)),
                                       GridItem(.fixed(100)),
@@ -789,6 +799,11 @@ class HomeMapViewModel: NSObject, ObservableObject {
     @objc func handleUDPSocketConnectionLatency(notification: Notification) {
         guard let msSecond = notification.userInfo?["millisecond"] as? UInt64 else { return }
         udpsocketLatenctMs = msSecond
+    }
+    
+    // MARK: - SegmentSlideOverCard
+    func segmentSlideOverCardDidClose() {
+        segmentCarViewIsVisible = false
     }
 }
 

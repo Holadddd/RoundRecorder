@@ -69,29 +69,8 @@ struct HomeMapView: View {
                     }.padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 5))
                     Spacer()
                 }
-                SegmentSlideOverCardView(isSetReload: $viewmodel.setNeedReload, content: {
+                SegmentSlideOverCardView(closeButtonDidClick: {viewmodel.segmentSlideOverCardDidClose()}, isSetReload: $viewmodel.setNeedReload, content: {
                     VStack(spacing: 0) {
-                        HStack(alignment: .top){
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 20) {
-                                    Spacer(minLength: 10)
-                                    ForEach(viewmodel.featureData) { data in
-                                        Button {
-                                            data.action?()
-                                            viewmodel.featureData[data.id].isShowing.toggle()
-                                        } label: {
-                                            Text(data.title).fontWeight(.bold)
-                                                .frame(width: 120, height: 20)
-                                        }.softButtonStyle(RoundedRectangle(cornerRadius: 10), padding: 5,
-                                                          isPressed: viewmodel.featureData[data.id].isShowing)
-                                    }
-                                    
-                                    Spacer(minLength: 10)
-                                }
-                                .padding(EdgeInsets(top: 10, leading: 0, bottom: 15, trailing: 0))
-                            }
-                        }.frame(width: UIScreen.main.bounds.width)
-                        
                         ForEach(viewmodel.featureData) { data in
                             if data.isShowing {
                                 switch data.id {
@@ -174,10 +153,34 @@ struct HomeMapView: View {
                             }
                         }
                     }
-                }, cardPosition: $viewmodel.cardPosition, availableMode: AvailablePosition([.top, .middle, .bottom]))
+                }, cardPosition: $viewmodel.cardPosition, availableMode: viewmodel.cardAvailableMode)
                     .onChange(of: viewmodel.featureData) { _ in
                         viewmodel.setNeedReload = true
                     }
+                    .show(isVisible: viewmodel.segmentCarViewIsVisible)
+                VStack{
+                    Spacer()
+                    HStack(alignment: .top){
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 20) {
+                                Spacer(minLength: 10)
+                                ForEach(viewmodel.featureData) { data in
+                                    Button {
+                                        data.action?()
+                                        viewmodel.featureData[data.id].isShowing.toggle()
+                                    } label: {
+                                        Text(data.title).fontWeight(.bold)
+                                            .frame(width: 120, height: 20)
+                                    }.softButtonStyle(RoundedRectangle(cornerRadius: 10), padding: 5,
+                                                      isPressed: viewmodel.featureData[data.id].isShowing)
+                                }
+                                
+                                Spacer(minLength: 10)
+                            }
+                            .padding(EdgeInsets(top: 10, leading: 0, bottom: 15, trailing: 0))
+                        }
+                    }.frame(width: UIScreen.main.bounds.width)
+                }
             }
         }.onAppear {
             #warning("Test Api work for temporarily")

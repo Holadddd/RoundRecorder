@@ -10,6 +10,8 @@ import Neumorphic
 
 struct SegmentSlideOverCardView<Content: View> : View {
     
+    var closeButtonDidClick: (()->Void)
+    
     @State var lastDragPosition: DragGesture.Value?
     
     @State private var cardViewOffset: CGFloat = 0
@@ -55,13 +57,32 @@ struct SegmentSlideOverCardView<Content: View> : View {
                         ScrollView {
                             ZStack{
                                 VStack(spacing:0) {
-                                    HStack(alignment: .center) {
-                                        Image(systemName: "minus")
-                                            .foregroundColor(.gray)
-                                            .scaleEffect(2)
-                                            .frame(height: 10)
-                                    }.padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0))
-                                    
+                                    ZStack{
+                                        HStack(alignment: .center) {
+                                            RoundedRectangle(cornerRadius: 5).frame(width: 30, height: 3)
+                                                .foregroundColor(.gray)
+                                        }.padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 10))
+                                            .softOuterShadow()
+                                        
+                                        HStack(alignment: .center) {
+                                            Spacer()
+                                            Button {
+                                                closeButtonDidClick()
+                                            } label: {
+                                                ZStack(){
+                                                    RoundedRectangle(cornerRadius: 5).frame(width: 15, height: 2)
+                                                        .rotationEffect(Angle(degrees: 45))
+                                                        .foregroundColor(.gray)
+                                                        .softOuterShadow()
+                                                    RoundedRectangle(cornerRadius: 5).frame(width: 15, height: 2)
+                                                        .rotationEffect(Angle(degrees: -45))
+                                                        .foregroundColor(.gray)
+                                                        .softOuterShadow()
+                                                }.padding(10)
+                                            }
+
+                                        }.padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 10))
+                                    }
                                     content()
                                     
                                     Spacer().padding(EdgeInsets(top: 0, leading: 0, bottom: 30, trailing: 0))
@@ -262,7 +283,7 @@ enum CardPosition: CGFloat {
         case .middle:
             return UIScreen.main.bounds.height / 2
         case .bottom:
-            return UIScreen.main.bounds.height - 150
+            return UIScreen.main.bounds.height - 250
         }
     }
     
