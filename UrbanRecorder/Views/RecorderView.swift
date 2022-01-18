@@ -53,10 +53,7 @@ struct RecorderView: View {
                         Text("\(getRecorderTimeFormat(recordDuration))")
                             .fontWeight(.light)
                             .foregroundColor(Color.Neumorphic.secondary)
-                    }.padding(EdgeInsets(top: 0,
-                                         leading: 10,
-                                         bottom: 0,
-                                         trailing: 10))
+                    }.padding(0)
                     
                     Button {
                         if isRecordButtonPressed {
@@ -88,7 +85,7 @@ struct RecorderView: View {
                             keepBroadcastWhileRecording()
                         }
                     }
-                }
+                }.padding(10)
             }
         }.segmentCardView(title: "Recorder")
             .padding(10)

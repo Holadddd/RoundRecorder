@@ -42,7 +42,7 @@ struct SegmentSlideOverCardView<Content: View> : View {
     
     @State private var scrollViewOffset: CGFloat = 0
     
-    var diffInSizeAndContentHeight: CGFloat {
+    private var diffInSizeAndContentHeight: CGFloat {
         let diffInSizeAndContentHeight: CGFloat = scrollViewContentHeight > scrollViewSizeHeight ? scrollViewContentHeight - scrollViewSizeHeight + minusIndicatorHeight + 5 : 0
         
         return diffInSizeAndContentHeight

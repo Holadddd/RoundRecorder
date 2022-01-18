@@ -52,7 +52,7 @@ struct FileListView: View {
     var body: some View {
         return ZStack {
             VStack{
-                HStack{
+                HStack(alignment: .center){
                     Spacer()
                     Button {
                         withAnimation {
@@ -61,11 +61,13 @@ struct FileListView: View {
                         
                     } label: {
                         Text("Edit")
-                            .frame(width: 40, height: 20, alignment: .center)
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundColor(Color.Neumorphic.secondary)
                     }.softButtonStyle(RoundedRectangle(cornerRadius: 5),
-                                      padding: 5,
+                                      padding: 3,
                                       isPressed: isEditing)
-                }.padding(EdgeInsets(top: 0,
+                    
+                }.padding(EdgeInsets(top: 10,
                                      leading: 0,
                                      bottom: 0,
                                      trailing: 10))
@@ -184,7 +186,10 @@ struct FileListView: View {
                                              bottom: 5,
                                              trailing: 15))
                     }.segmentCardView(title: "Filelist")
-                        .padding(10)
+                        .padding(EdgeInsets(top: 15,
+                                            leading: 15,
+                                            bottom: 5,
+                                            trailing: 15))
                     
                 } else {
                     Text("No Storage Data")

@@ -139,22 +139,16 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     
     // MARK: - SegmentSlideOverCard
-    @Published var segmentCarViewIsVisible: Bool = true
+    @Published var cardViewUseCase: CardViewUseCase? {
+        didSet{
+            // Reset card position
+            if let cardViewUseCase = cardViewUseCase {
+                cardPosition = cardViewUseCase.firstPosition
+            }
+        }
+    }
     
-    @Published var cardPosition = CardPosition.middle
-    
-    lazy var cardAvailableMode: AvailablePosition = {
-        return AvailablePosition([.top, .middle, .bottom])
-    }()
-    
-    
-    var featureColumns: [GridItem] = [GridItem(.fixed(100)),
-                                      GridItem(.fixed(100)),
-                                      GridItem(.fixed(100)),
-                                      GridItem(.fixed(100)),
-                                      GridItem(.fixed(100))]
-    
-    @Published var featureData: [GridData] = []
+    @Published var cardPosition: CardPosition = .bottom
     
     // MARK: - URAudioEngine
     var urAudioEngineInstance = URAudioEngine.instance
@@ -176,8 +170,6 @@ class HomeMapViewModel: NSObject, ObservableObject {
     // MARK: - Generate
     override init() {
         super.init()
-        generateFeatureData()
-        
         // Delegate/DataSource
         urAudioEngineInstance.dataSource = self
         urAudioEngineInstance.delegate = self
@@ -201,30 +193,6 @@ class HomeMapViewModel: NSObject, ObservableObject {
                                                name: Notification.Name.UDPSocketConnectionLatency,
                                                object: nil)
         
-    }
-    
-    private func generateFeatureData() {
-        let broadcastFeature = GridData(id: 0, title: "Broadcast", isShowing: false) {
-            print("Broadcast")
-        }
-        
-        let subscribeFeature = GridData(id: 1, title: "Subscribe", isShowing: false) {
-            print("Subscribe")
-        }
-        
-        let compassFeature = GridData(id: 2, title: "Compass", isShowing: false) {
-            print("Compass")
-        }
-        
-        let motionRecord = GridData(id: 3, title: "Record", isShowing: false) {
-            print("Record")
-        }
-        
-        let fileList = GridData(id: 4, title: "FileList", isShowing: false) {
-            print("FileList")
-        }
-        
-        featureData = [broadcastFeature, subscribeFeature,compassFeature, motionRecord, fileList]
     }
     
     func getAvailableUsersList() {
@@ -257,6 +225,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
         if CLLocationManager.headingAvailable() {
             self.locationManager.startUpdatingHeading()
         }
+    }
+    // MARK: - Radio
+    func radioButtonDidClicked() {
+        cardViewUseCase = .radio
     }
     // MARK: - Broadcast
     private func setupBroadcastMicrophoneCaptureCallback(channelID: String) {
@@ -423,6 +395,9 @@ class HomeMapViewModel: NSObject, ObservableObject {
         }
     }
     // MARK: - Record
+    func recordButtonDidClicked() {
+        cardViewUseCase = .record
+    }
     private func setupRecordingMicrophoneCaptureCallback(){
         recordingMicrophoneCaptureCallback = {[weak self] audioData in
             guard let self = self else { return }
@@ -519,6 +494,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
         isRecording = false
     }
     // MARK: - Filelist
+    func fileButtonDidClicked() {
+        cardViewUseCase = .file
+    }
+    
     func fileListOnDelete(_ recordedData: RecordedData) {
         PersistenceController.shared.deleteRecordedData(recordedData)
     }
@@ -803,7 +782,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     // MARK: - SegmentSlideOverCard
     func segmentSlideOverCardDidClose() {
-        segmentCarViewIsVisible = false
+        cardViewUseCase = nil
     }
 }
 
@@ -956,7 +935,7 @@ extension HomeMapViewModel: URAudioEngineDelegate {
 // URRecordingDataHelperDelegate
 extension HomeMapViewModel: URRecordingDataHelperDelegate {
     func didUpdateAudioRecordingDuration(_ seconds: UInt) {
-        if featureData[3].isShowing {
+        if cardViewUseCase == .record {
             DispatchQueue.main.async {[weak self] in
                 self?.recordDuration = seconds
             }
@@ -964,10 +943,36 @@ extension HomeMapViewModel: URRecordingDataHelperDelegate {
     }
     
     func didUpdateAudioRecordingMovingDistance(_ meters: Double) {
-        if featureData[3].isShowing {
+        if cardViewUseCase == .record {
             DispatchQueue.main.async {[weak self] in
                 self?.recordMovingDistance = meters
             }
+        }
+    }
+}
+
+enum CardViewUseCase {
+    case radio
+    case record
+    case file
+    
+    var cardAvailableMode: AvailablePosition {
+        switch self {
+        case .radio:
+            return AvailablePosition([.bottom, .middle])
+        case .record:
+            return AvailablePosition([.bottom])
+        case .file:
+            return AvailablePosition([.bottom, .middle, .top])
+        }
+    }
+    
+    var firstPosition: CardPosition{
+        switch self {
+        case .radio:
+            return .middle
+        case .record, .file:
+            return .bottom
         }
     }
 }
