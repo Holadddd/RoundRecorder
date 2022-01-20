@@ -21,6 +21,9 @@ extension View {
     func segmentCardView(title: String) -> some View {
         ModifiedContent(content: self, modifier: SegmentCardView(title: title))
     }
+    func customFont( name: String = "", style: UIFont.TextStyle, weight: Font.Weight = .regular) -> some View {
+        self.modifier(CustomFont(name: name, style: style, weight: weight))
+    }
 }
 
 struct Show: ViewModifier {
@@ -50,5 +53,20 @@ struct SegmentCardView: ViewModifier {
                 .cornerRadius(10)
                 .softOuterShadow()
         }
+    }
+}
+
+struct CustomFont: ViewModifier {
+    @Environment(\.sizeCategory) var sizeCategory
+
+    var name: String = ""
+    var style: UIFont.TextStyle
+    var weight: Font.Weight = .regular
+
+    func body(content: Content) -> some View {
+        return content.font(Font.custom(
+            name,
+            size: UIFont.preferredFont(forTextStyle: style).pointSize)
+            .weight(weight))
     }
 }

@@ -24,60 +24,112 @@ struct HomeMapView: View {
     var body: some View {
         GeometryReader { outsideProxy in
             ZStack(alignment: Alignment.leading) {
-//                VStack{
-//                    Spacer()
-//                    HStack(alignment: .top){
-//                        ScrollView(.horizontal, showsIndicators: false) {
-//                            HStack(spacing: 20) {
-//                                Spacer(minLength: 10)
-//                                ForEach(viewmodel.featureData) { data in
-//                                    Button {
-//                                        data.action?()
-//                                        viewmodel.featureData[data.id].isShowing.toggle()
-//                                    } label: {
-//                                        Text(data.title).fontWeight(.bold)
-//                                            .frame(width: 120, height: 20)
-//                                    }.softButtonStyle(RoundedRectangle(cornerRadius: 10), padding: 5,
-//                                                      isPressed: viewmodel.featureData[data.id].isShowing)
-//                                }
-//
-//                                Spacer(minLength: 10)
-//                            }
-//                            .padding(EdgeInsets(top: 10, leading: 0, bottom: 15, trailing: 0))
-//                        }
-//                    }.frame(width: UIScreen.main.bounds.width)
-//                    HStack(alignment: .center) {
-//                        Button {
-//                            print("Radio did clicked")
-//                        } label: {
-//                            Image(systemName: "antenna.radiowaves.left.and.right")
-//                                .tint(Color.Neumorphic.secondary)
-//                                .frame(width: 30, height: 30)
-//                        }
-//
-//                        Button {
-//                            print("List did clicked")
-//                        } label: {
-//                            Image(systemName: "list.bullet")
-//                                .tint(Color.Neumorphic.secondary)
-//                                .frame(width: 30, height: 30)
-//                        }
-//                    }
-//                }
                 VStack(spacing: 0){
+                    ZStack{
+                        VStack {
+                            MapView(isSetupCurrentLocation: $viewmodel.isSetupCurrentLocation,
+                                    userCurrentMapCamera: $viewmodel.userCurrentMapCamera,
+                                    isLocationLocked: $viewmodel.isLocationLocked,
+                                    headingDirection: viewmodel.headingDirection,
+                                    updateByMapItem: $viewmodel.updateByMapItem,
+                                    showsUserLocation: true,
+                                    removeAnnotationItems: $viewmodel.removeAnnotationItems,
+                                    userAnootionItem: viewmodel.userAnootion,
+                                    addAnnotationItem: viewmodel.receiverAnnotationItem,
+                                    displayRoutes: $viewmodel.displayRoutes,
+                                    removeRoutes: $viewmodel.removeRoutes)
+                                .edgesIgnoringSafeArea(.all)
+                        }
                     
-                    MapView(isSetupCurrentLocation: $viewmodel.isSetupCurrentLocation,
-                            userCurrentMapCamera: $viewmodel.userCurrentMapCamera,
-                            isLocationLocked: $viewmodel.isLocationLocked,
-                            headingDirection: viewmodel.headingDirection,
-                            updateByMapItem: $viewmodel.updateByMapItem,
-                            showsUserLocation: true,
-                            removeAnnotationItems: $viewmodel.removeAnnotationItems,
-                            userAnootionItem: viewmodel.userAnootion,
-                            addAnnotationItem: viewmodel.receiverAnnotationItem,
-                            displayRoutes: $viewmodel.displayRoutes,
-                            removeRoutes: $viewmodel.removeRoutes)
-                        .edgesIgnoringSafeArea(.all)
+                        
+                        VStack {
+                            Spacer()
+                            
+                            ZStack {
+                                VStack {
+                                    Spacer()
+                                    HStack{
+                                        
+                                        Spacer()
+                                        
+                                        VStack{
+                                            Button {
+                                                viewmodel.locateButtonDidClicked()
+                                            } label: {
+                                                Image(systemName: viewmodel.isLocationLocked ? "location.north.line.fill" : "location.fill")
+                                                    .softOuterShadow(offset: 2, radius: 0.5)
+                                                    .tint(Color.Neumorphic.secondary)
+                                                    .frame(width: 30, height: 30)
+                                            }
+                                            
+                                            Divider().frame(width: 30)
+                                            
+                                            Button {
+                                                viewmodel.clearRoutesButtonDidClicked()
+                                            } label: {
+                                                Image(systemName: "goforward")
+                                                    .softOuterShadow(offset: 2, radius: 0.5)
+                                                    .tint(Color.Neumorphic.secondary)
+                                                    .frame(width: 30, height: 30)
+                                            }
+                                        }
+                                        .padding(5)
+                                        .background(Color.Neumorphic.main)
+                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    }
+                                }
+                                
+                                VStack {
+                                    Spacer()
+                                    HStack {
+                                        if viewmodel.isShowingDirectionAndDistanceView {
+                                            VStack{
+                                                Spacer()
+                                                DirectionAndDistanceMetersView(closeButtonDidClick:{
+                                                    viewmodel.compassButtonDidClosed()
+                                                }, udpsocketLatenctMs: viewmodel.udpsocketLatenctMs,
+                                                                               receiverDirection: viewmodel.receiverDirection,
+                                                                               receiverMeters: $viewmodel.receiverLastDistanceMeters,
+                                                                               isSetStaticDistance: $viewmodel.isSetStaticDistanceMeters,
+                                                                               showWave: viewmodel.isShowingWave,
+                                                                               volumeMaxPeakPercentage: viewmodel.volumeMaxPeakPercentage,
+                                                                               distanceMeteDidClicked: {
+                                                    viewmodel.setStaticDistance()
+                                                },
+                                                                               resetAnchorDegreesDidClicked: {
+                                                    viewmodel.resetAnchorDegrees()
+                                                })
+                                            }.frame(height: 200)
+                                            
+                                        } else {
+                                            VStack {
+                                                Rectangle().fill(.clear).frame(width: 30, height: 30)
+                                                
+                                                Button {
+                                                    viewmodel.compassButtonDidClicked()
+                                                } label: {
+                                                    Image("compass")
+                                                        .resizable()
+                                                        .renderingMode(.template)
+                                                        .scaleEffect(0.7)
+                                                        .softOuterShadow(offset: 2, radius: 0.5)
+                                                        .tint(Color.Neumorphic.secondary)
+                                                        .frame(width: 30, height: 30)
+                                                }
+                                                .padding(5)
+                                                .background(Color.Neumorphic.main)
+                                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                            }
+                                        }
+                                        Spacer()
+                                    }
+                                }
+                            }
+                            
+                        }.padding(EdgeInsets(top: 0, leading: 0, bottom: 30, trailing: 0))
+                        
+                        
+                    }
                     // MARK: Feature menu
                     ZStack{
                         
@@ -153,111 +205,83 @@ struct HomeMapView: View {
                             Text(viewmodel.userLocation == nil ? "longitude: " : "longitude: \(viewmodel.userLocation!.longitude)")
                         }
                         Spacer()
-                        VStack{
-                            Button {
-                                viewmodel.locateButtonDidClicked()
-                            } label: {
-                                Image(systemName: viewmodel.isLocationLocked ? "location.north.line.fill" : "location.fill")
-                                    .tint(Color.Neumorphic.secondary)
-                                    .frame(width: 30, height: 30)
-                            }.softButtonStyle(RoundedRectangle(cornerRadius: 3), padding: 0, pressedEffect: .hard, isPressed: viewmodel.isLocationLocked)
-                            
-                            Button {
-                                viewmodel.clearRoutesButtonDidClicked()
-                            } label: {
-                                Image(systemName: "goforward")
-                                    .tint(Color.Neumorphic.secondary)
-                                    .frame(width: 30, height: 30)
-                            }.softButtonStyle(RoundedRectangle(cornerRadius: 3), padding: 0, pressedEffect: .hard, isPressed: viewmodel.isLocationLocked)
-                        }.padding(EdgeInsets(top: 50, leading: 0, bottom: 0, trailing: 0))
                         
-                            
                     }.padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 5))
                     Spacer()
                 }
-                if let useCase = viewmodel.cardViewUseCase {
-                    SegmentSlideOverCardView(closeButtonDidClick: {viewmodel.segmentSlideOverCardDidClose()}, isSetReload: $viewmodel.setNeedReload, content: {
-                        VStack(spacing: 0) {
-                            switch useCase {
-                            case .radio:
-                                BroadcastView(channelID: $viewmodel.broadcastID,
-                                              isBroadcasting: $viewmodel.isBroadcasting,
-                                              isShowingAlert: $viewmodel.showBroadcastPermissionAlert,
-                                              requestForBroadcastWithId: { channelID in
-                                    viewmodel.requestForBroadcastChannelWith(channelID)
-                                }, keepRecordingWithBroadcastWithId: { channelID in
-                                    viewmodel.keepRecordingWithBroadcastWithId(channelID)
-                                }, stopBroadcastAction: { channelID in
-                                    viewmodel.stopBroadcastChannelWith(channelID)
-                                })
-                                
-                                SubscribeView(channelID: $viewmodel.subscribeID,
-                                              isSubscribing: $viewmodel.isSubscribing,
-                                              isShowingAlert: $viewmodel.showSubscribePermissionAlert,
-                                              requestForSubscribeChannel: {
-                                    viewmodel.requestForSubscribeChannel()
-                                }, stopPlayingOnFileAndSubscribeChannel: {
-                                    viewmodel.stopPlayingOnFileThenSubscribeChannel()
-                                }, stopSubscribetAction: {
-                                    viewmodel.stopSubscribeChannel()
-                                })
-                            case .record:
-                                RecorderView(isRecordButtonPressed: $viewmodel.isRecording,
-                                             recordDuration: $viewmodel.recordDuration,
-                                             movingDistance: $viewmodel.recordMovingDistance,
-                                             recordName: $viewmodel.recordName,
-                                             recorderURLocation: viewmodel.userURLocation,
-                                             isShowingAlert: $viewmodel.showRecordingPermissionAlert,
-                                             requestForRecording: {
-                                    viewmodel.requestForRecording()
-                                }, keepBroadcastWhileRecording: {
-                                    viewmodel.keepBroadcastWhileRecording()
-                                }, stopRecording: {
-                                    viewmodel.stopURRecordingSession()
-                                })
-                            case .file:
-                                FileListView(
-                                    setReload: {
-                                        viewmodel.setNeedReload = true
-                                    },
-                                    fileListCount: $viewmodel.fileListCount,
-                                    isShowingAlert: $viewmodel.showPlayingPermissionAlert,
-                                    requestOnPlaying: {data in
-                                        viewmodel.requestFileOnPlaying(data)
-                                    },
-                                    stopSubscriptionAndPlaying: {data in
-                                        viewmodel.stopSubscriptionAndPlaying(data)
-                                    },
-                                    onPause: {
-                                        viewmodel.fileListOnPause()
-                                    }, onSelected: { selectedData in
-                                        
-                                        viewmodel.fileListOnSelected(selectedData)
-                                    },
-                                    onDelete: { deletedData in
-                                        
-                                        viewmodel.fileListOnDelete(deletedData)
-                                    },
-                                    dataOnExpanded: $viewmodel.expandedData,
-                                    dataOnPlaying: $viewmodel.playingData)
+                ZStack{
+                    if let useCase = viewmodel.cardViewUseCase {
+                        SegmentSlideOverCardView(closeButtonDidClick: {viewmodel.segmentSlideOverCardDidClose()}, isSetReload: $viewmodel.setNeedReload, content: {
+                            VStack(spacing: 0) {
+                                switch useCase {
+                                case .radio:
+                                    BroadcastView(channelID: $viewmodel.broadcastID,
+                                                  isBroadcasting: $viewmodel.isBroadcasting,
+                                                  isShowingAlert: $viewmodel.showBroadcastPermissionAlert,
+                                                  requestForBroadcastWithId: { channelID in
+                                        viewmodel.requestForBroadcastChannelWith(channelID)
+                                    }, keepRecordingWithBroadcastWithId: { channelID in
+                                        viewmodel.keepRecordingWithBroadcastWithId(channelID)
+                                    }, stopBroadcastAction: { channelID in
+                                        viewmodel.stopBroadcastChannelWith(channelID)
+                                    })
+                                    
+                                    SubscribeView(channelID: $viewmodel.subscribeID,
+                                                  isSubscribing: $viewmodel.isSubscribing,
+                                                  isShowingAlert: $viewmodel.showSubscribePermissionAlert,
+                                                  requestForSubscribeChannel: {
+                                        viewmodel.requestForSubscribeChannel()
+                                    }, stopPlayingOnFileAndSubscribeChannel: {
+                                        viewmodel.stopPlayingOnFileThenSubscribeChannel()
+                                    }, stopSubscribetAction: {
+                                        viewmodel.stopSubscribeChannel()
+                                    })
+                                case .record:
+                                    RecorderView(isRecordButtonPressed: $viewmodel.isRecording,
+                                                 recordDuration: $viewmodel.recordDuration,
+                                                 movingDistance: $viewmodel.recordMovingDistance,
+                                                 recordName: $viewmodel.recordName,
+                                                 recorderURLocation: viewmodel.userURLocation,
+                                                 isShowingAlert: $viewmodel.showRecordingPermissionAlert,
+                                                 requestForRecording: {
+                                        viewmodel.requestForRecording()
+                                    }, keepBroadcastWhileRecording: {
+                                        viewmodel.keepBroadcastWhileRecording()
+                                    }, stopRecording: {
+                                        viewmodel.stopURRecordingSession()
+                                    })
+                                case .file:
+                                    FileListView(
+                                        setReload: {
+                                            viewmodel.setNeedReload = true
+                                        },
+                                        fileListCount: $viewmodel.fileListCount,
+                                        isShowingAlert: $viewmodel.showPlayingPermissionAlert,
+                                        requestOnPlaying: {data in
+                                            viewmodel.requestFileOnPlaying(data)
+                                        },
+                                        stopSubscriptionAndPlaying: {data in
+                                            viewmodel.stopSubscriptionAndPlaying(data)
+                                        },
+                                        onPause: {
+                                            viewmodel.fileListOnPause()
+                                        }, onSelected: { selectedData in
+                                            
+                                            viewmodel.fileListOnSelected(selectedData)
+                                        },
+                                        onDelete: { deletedData in
+                                            
+                                            viewmodel.fileListOnDelete(deletedData)
+                                        },
+                                        dataOnExpanded: $viewmodel.expandedData,
+                                        dataOnPlaying: $viewmodel.playingData)
+                                }
                             }
-//
-//                            DirectionAndDistanceMetersView(udpsocketLatenctMs: viewmodel.udpsocketLatenctMs,
-//                                                           receiverDirection: viewmodel.receiverDirection,
-//                                                           receiverMeters: $viewmodel.receiverLastDistanceMeters,
-//                                                           isSetStaticDistance: $viewmodel.isSetStaticDistanceMeters,
-//                                                           showWave: viewmodel.showWave,
-//                                                           volumeMaxPeakPercentage: viewmodel.volumeMaxPeakPercentage) {
-//                                viewmodel.setStaticDistance()
-//                            } resetAnchorDegreesDidClicked: {
-//                                viewmodel.resetAnchorDegrees()
-//                            }
-//                            .scaledToFill()
-                        }
-                    }, cardPosition: $viewmodel.cardPosition, availableMode: useCase.cardAvailableMode)
-                        .onChange(of: viewmodel.cardViewUseCase) { _ in
-                            viewmodel.setNeedReload = true
-                        }
+                        }, cardPosition: $viewmodel.cardPosition, availableMode: useCase.cardAvailableMode)
+                            .onChange(of: viewmodel.cardViewUseCase) { _ in
+                                viewmodel.setNeedReload = true
+                            }
+                    }
                 }
             }
         }.onAppear {

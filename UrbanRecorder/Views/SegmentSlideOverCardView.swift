@@ -58,12 +58,12 @@ struct SegmentSlideOverCardView<Content: View> : View {
                             ZStack{
                                 VStack(spacing:0) {
                                     ZStack{
-                                        HStack(alignment: .center) {
-                                            RoundedRectangle(cornerRadius: 5).frame(width: 30, height: 3)
-                                                .foregroundColor(.gray)
-                                        }.padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 10))
-                                            .softOuterShadow()
-                                        
+                                        ZStack(alignment: .center) {
+                                            RoundedRectangle(cornerRadius: 5).fill(Color.Neumorphic.secondary).frame(width: 30, height: 3)
+                                                .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
+                                                .softOuterShadow()
+                                        }.background(Color.Neumorphic.main)
+                                            
                                         HStack(alignment: .center) {
                                             Spacer()
                                             Button {
@@ -72,15 +72,14 @@ struct SegmentSlideOverCardView<Content: View> : View {
                                                 ZStack(){
                                                     RoundedRectangle(cornerRadius: 5).frame(width: 15, height: 2)
                                                         .rotationEffect(Angle(degrees: 45))
-                                                        .foregroundColor(.gray)
+                                                        .foregroundColor(Color.Neumorphic.secondary)
                                                         .softOuterShadow()
                                                     RoundedRectangle(cornerRadius: 5).frame(width: 15, height: 2)
                                                         .rotationEffect(Angle(degrees: -45))
-                                                        .foregroundColor(.gray)
+                                                        .foregroundColor(Color.Neumorphic.secondary)
                                                         .softOuterShadow()
                                                 }.padding(10)
                                             }
-
                                         }.padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 10))
                                     }
                                     content()

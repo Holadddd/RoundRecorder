@@ -56,8 +56,6 @@ class HomeMapViewModel: NSObject, ObservableObject {
     @Published var playingData: RecordedData? = nil
     
     @Published var pauseData: RecordedData? = nil
-    // MARK: - DirectionAndDistanceMetersView
-    
     // MARK: - Map & Compass
     @Published var isSetupCurrentLocation: Bool = false
     
@@ -89,22 +87,6 @@ class HomeMapViewModel: NSObject, ObservableObject {
         return compassDegrees + receiverLastDirectionDegrees
     }
     
-    var trueNorthMotionAnchor: CMDeviceMotion? // TrueNorthOrientationAnchor(Assume the first motion is faceing the phone)
-    
-    @Published var compassDegrees: Double = 0
-    
-    var receiverLatitude: Double = 0
-    
-    var receiverLongitude: Double = 0
-    
-    var receiverAltitude: Double = 0
-    
-    @Published var receiverLastDirectionDegrees: Double = 0
-    
-    @Published var receiverLastDistanceMeters: Double = 0
-    
-    @Published var isSetStaticDistanceMeters: Bool = false
-    
     @Published var isSelectedItemPlayAble: Bool = false
     
     @Published var userAnootion: HomeMapAnnotation = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), type: .user, color: .clear) {
@@ -133,8 +115,29 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     @Published var showWave: Bool = false
     
-    var volumeMaxPeakPercentage: Double = 0.01
     
+    // MARK: - DirectionAndDistanceMetersView
+    @Published var isShowingDirectionAndDistanceView: Bool = false
+    
+    var trueNorthMotionAnchor: CMDeviceMotion? // TrueNorthOrientationAnchor(Assume the first motion is faceing the phone)
+    
+    @Published var compassDegrees: Double = 0
+    
+    var receiverLatitude: Double = 0
+    
+    var receiverLongitude: Double = 0
+    
+    var receiverAltitude: Double = 0
+    
+    @Published var receiverLastDirectionDegrees: Double = 0
+    
+    @Published var receiverLastDistanceMeters: Double = 0
+    
+    @Published var isSetStaticDistanceMeters: Bool = false
+    
+    @Published var isShowingWave: Bool = false
+    
+    var volumeMaxPeakPercentage: Double = 0.01
     // MARK: - Menubar control
     
     
@@ -742,7 +745,15 @@ class HomeMapViewModel: NSObject, ObservableObject {
         self.userCurrentMapCamera = camera
     }
     
-    // MARK: - Compass
+    // MARK: - DirectionAndDistanceView
+    func compassButtonDidClicked() {
+        isShowingDirectionAndDistanceView = true
+    }
+    
+    func compassButtonDidClosed() {
+        isShowingDirectionAndDistanceView = false
+    }
+    
     func setStaticDistance() {
         isSetStaticDistanceMeters.toggle()
         

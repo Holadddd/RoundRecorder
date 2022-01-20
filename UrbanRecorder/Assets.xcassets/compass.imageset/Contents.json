@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "location.north.fill.png",
+      "filename" : "compass.png",
       "idiom" : "universal",
       "scale" : "1x"
     },

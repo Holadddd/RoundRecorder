@@ -21,6 +21,16 @@ extension Double {
         let string = String(format: "%.\(fractionDigits)f", self)
         return string
     }
+    
+    func toDisplayDistance() -> String {
+        if self < 100 {
+            return self.string(fractionDigits: 2) + " m"
+        } else if self < 1000 {
+            return self.string(fractionDigits: 0) + " m"
+        } else {
+            return (self / 1000).string(fractionDigits: 2) + " km"
+        }
+    }
 }
 
 extension FloatingPoint {
