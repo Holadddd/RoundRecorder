@@ -13,9 +13,12 @@ struct PersistenceController {
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
-        for _ in 0..<10 {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
+        for _ in 0..<5 {
+            let recordData = RecordedData(context: viewContext)
+            recordData.id = UUID()
+            recordData.fileName = "12/10_12:34"
+            recordData.movingDistance = 12.34
+            recordData.recordDuration = 123
         }
         do {
             try viewContext.save()
@@ -31,7 +34,7 @@ struct PersistenceController {
     let container: NSPersistentCloudKitContainer
 
     init(inMemory: Bool = false) {
-        container = NSPersistentCloudKitContainer(name: "UrbanRecorder")
+        container = NSPersistentCloudKitContainer(name: "UrbanRecorderModel")
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }
@@ -51,5 +54,49 @@ struct PersistenceController {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
+    }
+    
+    private func save() {
+        let context = container.viewContext
+
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                // Show some error here
+                fatalError("Fail in saving context error \(error)")
+            }
+        }
+    }
+    // MARK: RecordedData
+    func creatRecordedData(complete: @escaping (RecordedData)->Void ){
+        let recordedData = RecordedData(context: container.viewContext)
+        
+        complete(recordedData)
+        
+        save()
+    }
+    
+    func fetchAllRecordedDatas()->[RecordedData] {
+        let fetchRequest: NSFetchRequest<RecordedData> = RecordedData.fetchRequest()
+        fetchRequest.predicate = nil       // ex: Fetch data id is 3 => NSPredicate(format: "id == 3")
+        
+        do {
+            return try container.viewContext.fetch(fetchRequest)
+        } catch {
+            return []
+        }
+    }
+    
+    func updateRecordedData(complete: @escaping ()->Void ) {
+        complete()
+        
+        save()
+    }
+    
+    func deleteRecordedData(_ recordedData: RecordedData) {
+        container.viewContext.delete(recordedData)
+        
+        save()
     }
 }

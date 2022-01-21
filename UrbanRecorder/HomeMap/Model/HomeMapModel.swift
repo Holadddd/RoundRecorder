@@ -9,26 +9,45 @@ import Foundation
 import SwiftUI
 import MapKit
 
-struct HomeMapAnnotationItem: Identifiable {
+class HomeMapAnnotation: NSObject, MKAnnotation {
     var coordinate: CLLocationCoordinate2D
+    var userHeadingDegrees: Double?
     var type: MapAnnotationItemType = .undefine
-    var color: Color?
-    var tint: Color { color ?? .red }
+    var color: UIColor?
+    var tint: UIColor { color ?? .red }
     let id = UUID()
-    var imageSystemName: String = "shareplay"
+    var imageSystemName: String {
+        switch type {
+        case .undefine, .receiver:
+            return "shareplay"
+        case .user:
+            return "location.north.fill"
+        default:
+            return ""
+        }
+    }
+    
+    init(coordinate: CLLocationCoordinate2D, userHeadingDegrees: Double? = nil, type: MapAnnotationItemType = .undefine, color: UIColor) {
+        self.coordinate = coordinate
+        self.userHeadingDegrees = userHeadingDegrees
+        self.color = color
+        self.type = type
+    }
     
     enum MapAnnotationItemType {
         case undefine
         case user
+        case receiver
         case fixedPoint
         case dynamicPoint
     }
 }
 //
-extension HomeMapAnnotationItem {
-    static var taipei101: HomeMapAnnotationItem {
+extension HomeMapAnnotation {
+    static var taipei101: HomeMapAnnotation {
         let locationCoordinate = CLLocationCoordinate2D(latitude: 25.03376, longitude: 121.56488)
-        let item = HomeMapAnnotationItem(coordinate: locationCoordinate, color: .blue)
+        let item = HomeMapAnnotation(coordinate: locationCoordinate, color: .blue)
         return item
     }
 }
+

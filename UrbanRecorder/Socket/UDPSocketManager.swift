@@ -57,20 +57,25 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
         }
     }
     
-    func setupSubscribeConnection(_ complete: @escaping()->Void) {
+    func stopBroadcastConnection() {
+        // UDPOutSocket
+        udpSocketOut?.cancelBroadcastChannel()
+    }
+    
+    func setupSubscribeConnection(_ complete: @escaping(Result<Bool, UDPSocketError>)->Void) {
         // UDPInSocket
         let ip = UDPSocketManager.hostIP
-        guard let inPort = UInt16(UDPSocketManager.inPort) else { fatalError() }
+        guard let inPort = UInt16(UDPSocketManager.inPort) else { complete(.failure(.failInSetupSubscription)); return }
         
         if udpSocketIn == nil {
             udpSocketIn = UDPSocketIn(ip: ip, port: inPort)
             udpSocketIn?.setupConnection { mtu in
                 self.mtu = mtu
                 setupUDPInReceive()
-                complete()
+                complete(.success(false))
             }
         } else {
-            complete()
+            complete(.success(true))
         }
     }
     
@@ -252,4 +257,8 @@ struct UDPSocketRecievedSubscribeInfo {
     let subscribeChannelID: String
     let socketIP: String
     let socketPort: UInt16
+}
+
+enum UDPSocketError: Error {
+    case failInSetupSubscription
 }
