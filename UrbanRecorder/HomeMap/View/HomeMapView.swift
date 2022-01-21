@@ -85,7 +85,8 @@ struct HomeMapView: View {
                                         if viewmodel.isShowingDirectionAndDistanceView {
                                             VStack{
                                                 Spacer()
-                                                DirectionAndDistanceMetersView(closeButtonDidClick:{
+                                                DirectionAndDistanceView(directionType: viewmodel.directionAndDistanceViewDirectionType,
+                                                                         closeButtonDidClick:{
                                                     viewmodel.compassButtonDidClosed()
                                                 }, udpsocketLatenctMs: viewmodel.udpsocketLatenctMs,
                                                                                receiverDirection: viewmodel.receiverDirection,
@@ -95,9 +96,16 @@ struct HomeMapView: View {
                                                                                volumeMaxPeakPercentage: viewmodel.volumeMaxPeakPercentage,
                                                                                distanceMeteDidClicked: {
                                                     viewmodel.setStaticDistance()
-                                                },
-                                                                               resetAnchorDegreesDidClicked: {
+                                                }, resetAnchorDegreesDidClicked: {
                                                     viewmodel.resetAnchorDegrees()
+                                                }, increaseButtonDidClicked: {
+                                                    viewmodel.increaseStaticDistanceButtonDidClicked()
+                                                }, decreaseButtonDidClicked: {
+                                                    viewmodel.decreaseStaticDistanceButtonDidClicked()
+                                                }, increaseButtonOnLongpress: {
+                                                    viewmodel.increaseStaticDistanceButtonOnLongpress()
+                                                }, decreaseButtonOnLongpress: {
+                                                    viewmodel.decreaseStaticDistanceButtonOnLongpress()
                                                 })
                                             }.frame(height: 200)
                                             

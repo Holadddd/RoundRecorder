@@ -66,7 +66,7 @@
 		DBD578F027954D3900C3433E /* Map+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD578EF27954D3900C3433E /* Map+.swift */; };
 		DBDD67DB27440F0100E91A5B /* UrbanRecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDD67DA27440F0100E91A5B /* UrbanRecorderTests.swift */; };
 		DBE2A389273D0B2B0098E52D /* FloatingPoint+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE2A388273D0B2B0098E52D /* FloatingPoint+.swift */; };
-		DBE2A38B273D17460098E52D /* DirectionAndDistanceMetersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE2A38A273D17460098E52D /* DirectionAndDistanceMetersView.swift */; };
+		DBE2A38B273D17460098E52D /* DirectionAndDistanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE2A38A273D17460098E52D /* DirectionAndDistanceView.swift */; };
 		DBF0E3F9272FEB07004DC546 /* SubscribeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E3F8272FEB07004DC546 /* SubscribeManager.swift */; };
 		DBF0E3FF27311959004DC546 /* Notification+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E3FE27311959004DC546 /* Notification+.swift */; };
 		DBF0E40127311DCF004DC546 /* UDPSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E40027311DCF004DC546 /* UDPSocketManager.swift */; };
@@ -150,7 +150,7 @@
 		DBDD67D827440F0100E91A5B /* UrbanRecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UrbanRecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBDD67DA27440F0100E91A5B /* UrbanRecorderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderTests.swift; sourceTree = "<group>"; };
 		DBE2A388273D0B2B0098E52D /* FloatingPoint+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingPoint+.swift"; sourceTree = "<group>"; };
-		DBE2A38A273D17460098E52D /* DirectionAndDistanceMetersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionAndDistanceMetersView.swift; sourceTree = "<group>"; };
+		DBE2A38A273D17460098E52D /* DirectionAndDistanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionAndDistanceView.swift; sourceTree = "<group>"; };
 		DBF0E3F8272FEB07004DC546 /* SubscribeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeManager.swift; sourceTree = "<group>"; };
 		DBF0E3FA2730FD99004DC546 /* UrbanRecorder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UrbanRecorder.entitlements; sourceTree = "<group>"; };
 		DBF0E3FC2730FD99004DC546 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
@@ -455,7 +455,7 @@
 			isa = PBXGroup;
 			children = (
 				DBF3C68B2726BCEC00292893 /* SegmentSlideOverCardView.swift */,
-				DBE2A38A273D17460098E52D /* DirectionAndDistanceMetersView.swift */,
+				DBE2A38A273D17460098E52D /* DirectionAndDistanceView.swift */,
 				DB2D9CFC275CCE7100100535 /* SubscribeView.swift */,
 				DB2D9CFE275CCFD800100535 /* BroadcastView.swift */,
 				DB2D9D00275CD17100100535 /* RecorderView.swift */,
@@ -635,7 +635,7 @@
 				DBD578F027954D3900C3433E /* Map+.swift in Sources */,
 				DB2D9CFF275CCFD800100535 /* BroadcastView.swift in Sources */,
 				DB67AE3D2738D678007EE7CE /* PowerMeters.swift in Sources */,
-				DBE2A38B273D17460098E52D /* DirectionAndDistanceMetersView.swift in Sources */,
+				DBE2A38B273D17460098E52D /* DirectionAndDistanceView.swift in Sources */,
 				DBF0E3F9272FEB07004DC546 /* SubscribeManager.swift in Sources */,
 				DB710E462745025700FD3304 /* AtomicValue.swift in Sources */,
 				DB710E492745F42A00FD3304 /* DispatchTime+.swift in Sources */,

@@ -117,6 +117,8 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     
     // MARK: - DirectionAndDistanceMetersView
+    @Published var directionAndDistanceViewDirectionType: DirectionAndDistanceView.DirectionType = .compass
+    
     @Published var isShowingDirectionAndDistanceView: Bool = false
     
     var trueNorthMotionAnchor: CMDeviceMotion? // TrueNorthOrientationAnchor(Assume the first motion is faceing the phone)
@@ -138,6 +140,8 @@ class HomeMapViewModel: NSObject, ObservableObject {
     @Published var isShowingWave: Bool = false
     
     var volumeMaxPeakPercentage: Double = 0.01
+    
+    private var isDistanceModifierButtonOnLongpress: Bool = false
     // MARK: - Menubar control
     
     
@@ -764,6 +768,36 @@ class HomeMapViewModel: NSObject, ObservableObject {
         firstAnchorMotionCompassDegrees = nil
         firstAnchorMotion = nil
         userTrueNorthURMotionAttitude = URMotionAttitude()
+    }
+    
+    func increaseStaticDistanceButtonDidClicked() {
+        if isDistanceModifierButtonOnLongpress {
+            isDistanceModifierButtonOnLongpress = false
+            print("TODO: Stop using time schechule to increase the distance")
+            
+        } else {
+            print("TODO: increase Static Distance")
+        }
+    }
+    
+    func increaseStaticDistanceButtonOnLongpress() {
+        print("TODO: use time schechule to increase the distance")
+        isDistanceModifierButtonOnLongpress = true
+    }
+    
+    func decreaseStaticDistanceButtonDidClicked() {
+        if isDistanceModifierButtonOnLongpress {
+            isDistanceModifierButtonOnLongpress = false
+            print("TODO: Stop using time schechule to decrease the distance")
+            
+        } else {
+            print("TODO: decrease Static Distance")
+        }
+    }
+    
+    func decreaseStaticDistanceButtonOnLongpress() {
+        print("TODO: use time schechule to decrease the distance")
+        isDistanceModifierButtonOnLongpress = true
     }
     // MARK: - Unspecify
     func didReceiveVolumePeakPercentage(_ percentage: Double) {
