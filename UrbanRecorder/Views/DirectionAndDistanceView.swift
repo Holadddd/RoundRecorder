@@ -23,7 +23,7 @@ struct DirectionAndDistanceView: View {
     var udpsocketLatenctMs: UInt64
     
     var udpsocketLatenctMsString: String {
-        return udpsocketLatenctMs == 0 ? "" : "MS: \(udpsocketLatenctMs)"
+        return udpsocketLatenctMs == 0 ? "" : "\(udpsocketLatenctMs) MS"
     }
     
     var volumeMaxPeakPercentage: Double
@@ -186,7 +186,7 @@ struct DirectionAndDistanceView: View {
                             }
                         }
                         
-//                        VStack{
+                        VStack{
 //                            HStack{
 //                                Button {
 //                                    print("Next type")
@@ -197,13 +197,28 @@ struct DirectionAndDistanceView: View {
 //                                        .scaleEffect(0.7)
 //                                        .softOuterShadow(offset: 2, radius: 0.5)
 //                                        .tint(Color.Neumorphic.secondary)
-//                                        .frame(width: 30, height: 30)
+//                                        .frame(width: 20, height: 20)
 //                                }
 //
 //                                Spacer()
 //                            }
-//                            Spacer()
-//                        }
+                            Spacer()
+                            HStack{
+                                Button {
+                                    print("Show description")
+                                } label: {
+                                    Image(systemName: "questionmark.circle")
+                                        .resizable()
+                                        .renderingMode(.template)
+                                        .scaleEffect(0.7)
+                                        .softOuterShadow(offset: 2, radius: 0.5)
+                                        .tint(Color.Neumorphic.secondary.opacity(0.5))
+                                        .frame(width: 20, height: 20)
+                                }
+
+                                Spacer()
+                            }
+                        }
                     }
                     .frame(width: reader.frame(in: .local).height, height: reader.frame(in: .local).height)
                 }.aspectRatio(1, contentMode: .fit)
@@ -238,7 +253,7 @@ struct DirectionAndDistanceView: View {
                         Spacer()
                         Text(udpsocketLatenctMsString)
                             .customFont(style: .caption1, weight: .light)
-                            .foregroundColor(.fixedLightGray)
+                            .foregroundColor(Color.Neumorphic.secondary.opacity(0.5))
                             .lineLimit(1)
                             .frame(height: 30)
                     }

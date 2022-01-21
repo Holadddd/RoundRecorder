@@ -118,10 +118,12 @@ struct MapView: UIViewRepresentable {
             case .receiver:
                 let annotionView = MKAnnotationView(annotation: annotion, reuseIdentifier: nil)
 
-                let image = UIImage(systemName: annotion.imageSystemName)?.withTintColor(.orange)
-
+                let image = UIImage(systemName: annotion.imageSystemName)
+                
                 annotionView.image = image
-
+                // TODO:  Fix the tint color on annotation
+                annotionView.image?.withTintColor(.red, renderingMode: .alwaysTemplate)
+                
                 return annotionView
             default:
                 return nil

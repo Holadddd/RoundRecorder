@@ -143,26 +143,33 @@ struct HomeMapView: View {
                         
                         HStack(alignment: .center) {
                             Spacer()
-                            
-                            Button {
-                                viewmodel.radioButtonDidClicked()
-                            } label: {
-                                VStack(spacing:0){
-                                    Image(systemName: "antenna.radiowaves.left.and.right")
-                                        .tint(Color.Neumorphic.secondary)
-                                        .frame(width: 30, height: 30)
-                                    Text("Radio").font(.system(size: 10, weight: .bold)).foregroundColor(Color.Neumorphic.secondary)
-                                }.padding(0)
+                            ZStack{
+                                Button {
+                                    viewmodel.radioButtonDidClicked()
+                                } label: {
+                                    VStack(spacing:0){
+                                        Image(systemName: "antenna.radiowaves.left.and.right")
+                                            .tint((viewmodel.isSubscribing || viewmodel.isBroadcasting) ? Color.red : Color.Neumorphic.secondary)
+                                            .frame(width: 30, height: 30)
+                                        Text("Radio").font(.system(size: 10, weight: .bold)).foregroundColor((viewmodel.isSubscribing || viewmodel.isBroadcasting) ? Color.red : Color.Neumorphic.secondary)
+                                    }.padding(0)
+                                }.softOuterShadow(offset: 2, radius: 0.5)
+                                    .background(.clear)
+                                    .padding(0)
                             }
-                            .softOuterShadow(offset: 2, radius: 0.5)
-                            .background(.clear)
-                            .padding(0)
+                            
+                            
                             Spacer()
                             ZStack{
                                 RoundedRectangle(cornerRadius: 11).frame(width: 22, height: 22)
                                     .foregroundColor(Color.Neumorphic.main)
                                 Button {
-                                    viewmodel.recordButtonDidClicked()
+                                    if viewmodel.isRecording {
+                                        viewmodel.stopURRecordingSession()
+                                    } else {
+                                        viewmodel.recordButtonDidClicked()
+                                    }
+                                    
                                 } label: {
                                     ZStack{
                                         RoundedRectangle(cornerRadius: 10).frame(width: 20, height: 20)
@@ -174,32 +181,50 @@ struct HomeMapView: View {
                                         RoundedRectangle(cornerRadius: 8).frame(width: 16, height: 16)
                                             .foregroundColor(Color.Neumorphic.main)
                                             .softInnerShadow(Circle())
-                                        Image(systemName: "plus")
-                                            .scaleEffect(0.7)
-                                            .tint(Color.Neumorphic.secondary)
-                                            .softOuterShadow(offset: 1, radius: 0.5)
+                                        if viewmodel.isRecording {
+                                            RoundedRectangle(cornerRadius: 1)
+                                                .stroke(Color.Neumorphic.secondary, style: SwiftUI.StrokeStyle(lineWidth: 0.3, lineCap: .square, lineJoin: .round))
+                                                .frame(width: 6, height: 6)
+                                            RoundedRectangle(cornerRadius: 1)
+                                                .fill(.red)
+                                                .frame(width: 6, height: 6)
+                                                .softOuterShadow(offset: 1, radius: 1)
+                                        } else {
+                                            ZStack{
+                                                RoundedRectangle(cornerRadius: 1)
+                                                    .fill(Color.Neumorphic.secondary)
+                                                    .frame(width: 8, height: 1)
+                                                RoundedRectangle(cornerRadius: 1)
+                                                    .fill(Color.Neumorphic.secondary)
+                                                    .frame(width: 1, height: 8)
+                                                    
+                                            }.softOuterShadow(offset: 1, radius: 1)
+                                        }
+                                        
                                     }.background(.clear)
                                 }
                             }.scaleEffect(3)
                                 .background(.clear)
                                 .padding(0)
+                            
                             Spacer()
                             
-                            Button {
-                                viewmodel.fileButtonDidClicked()
-                            } label: {
-                                VStack(spacing:0){
-                                    Image(systemName: "list.bullet")
-                                        .tint(Color.Neumorphic.secondary)
-                                        .frame(width: 30, height: 30)
-                                        .softOuterShadow(offset: 2, radius: 0.5)
-                                    Text("File").font(.system(size: 10, weight: .bold)).foregroundColor(Color.Neumorphic.secondary)
-                                }.padding(0)
+                            ZStack{
+                                Button {
+                                    viewmodel.fileButtonDidClicked()
+                                } label: {
+                                    VStack(spacing:0){
+                                        Image(systemName: "list.bullet")
+                                            .tint((viewmodel.playingData == nil) ? Color.Neumorphic.secondary : Color.red)
+                                            .frame(width: 30, height: 30)
+                                            .softOuterShadow(offset: 2, radius: 0.5)
+                                        Text("File").font(.system(size: 10, weight: .bold)).foregroundColor((viewmodel.playingData == nil) ? Color.Neumorphic.secondary : Color.red)
+                                    }.padding(0)
+                                }
+                                .softOuterShadow(offset: 2, radius: 0.5)
+                                .background(.clear)
+                                .padding(0)
                             }
-                            .softOuterShadow(offset: 2, radius: 0.5)
-                            .background(.clear)
-                            .padding(0)
-                            
                             Spacer()
                         }.padding(0)
                     }.padding(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))

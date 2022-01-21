@@ -107,7 +107,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     @Published var userCurrentMapCamera: MKMapCamera?
     
-    var udpsocketLatenctMs: UInt64 = 0
+    @Published var udpsocketLatenctMs: UInt64 = 0
     
     let locationManager = CLLocationManager()
     
@@ -388,8 +388,8 @@ class HomeMapViewModel: NSObject, ObservableObject {
         self.udpSocketManager.unsubscribeChannel(from: "", with: self.subscribeID)
         // AudioEngine
         urAudioEngineInstance.stopScheduleAudioData()
-        // Clear DistanceAndDirectionView
-        clearDirectionAndDistanceMetersView()
+        // DirectionAndDistanceView
+        clearDirectionAndDistanceView()
         // Map
         removeAnnotionOnMap()
         // Background Task
@@ -647,12 +647,8 @@ class HomeMapViewModel: NSObject, ObservableObject {
             UIApplication.shared.endBackgroundTask(self.playingBackgroundTaskID!)
             self.playingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
         }
-    }
-    // MARK: - DirectionAndDistanceMetersView
-    func clearDirectionAndDistanceMetersView() {
-        udpsocketLatenctMs = 0
-        receiverLastDirectionDegrees = 0
-        receiverLastDistanceMeters = 0
+        // DirectionAndDistanceView
+        clearDirectionAndDistanceView()
     }
     // MARK: - Map
     func locateButtonDidClicked() {
@@ -750,6 +746,12 @@ class HomeMapViewModel: NSObject, ObservableObject {
     }
     
     // MARK: - DirectionAndDistanceView
+    private func clearDirectionAndDistanceView() {
+        udpsocketLatenctMs = 0
+        receiverLastDirectionDegrees = 0
+        receiverLastDistanceMeters = 0
+    }
+    
     func compassButtonDidClicked() {
         isShowingDirectionAndDistanceView = true
     }
