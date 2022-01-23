@@ -175,6 +175,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     var playingBackgroundTaskID: UIBackgroundTaskIdentifier?
     // MARK: - Generate
+    lazy private var channelIDChecker: ChannelIDChecker = {
+        return ChannelIDChecker()
+    }()
+        
     override init() {
         super.init()
         // Delegate/DataSource
@@ -251,6 +255,9 @@ class HomeMapViewModel: NSObject, ObservableObject {
     }
     
     func requestForBroadcastChannelWith(_ channelID: String) {
+        
+        guard channelIDChecker.isChannelValidation(channelID) else {print("Fail channelID validation"); return }
+        
         showBroadcastPermissionAlert = isRecording
         guard !showBroadcastPermissionAlert else { return }
         broadcastChannelWith(channelID)
@@ -335,6 +342,9 @@ class HomeMapViewModel: NSObject, ObservableObject {
     }
     
     func requestForSubscribeChannel() {
+        
+        guard channelIDChecker.isChannelValidation(subscribeID) else {print("Fail subscribeID validation"); return }
+        
         showSubscribePermissionAlert = playingData != nil
         guard !showSubscribePermissionAlert else { return }
         subscribeChannel()

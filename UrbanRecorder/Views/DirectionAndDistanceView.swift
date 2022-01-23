@@ -202,22 +202,22 @@ struct DirectionAndDistanceView: View {
 //
 //                                Spacer()
 //                            }
-                            Spacer()
                             HStack{
-                                Button {
-                                    print("Show description")
-                                } label: {
-                                    Image(systemName: "questionmark.circle")
-                                        .resizable()
-                                        .renderingMode(.template)
-                                        .scaleEffect(0.7)
-                                        .softOuterShadow(offset: 2, radius: 0.5)
-                                        .tint(Color.Neumorphic.secondary.opacity(0.5))
-                                        .frame(width: 20, height: 20)
-                                }
+//                                Button {
+//                                    print("Show description")
+//                                } label: {
+//                                    Image(systemName: "questionmark.circle")
+//                                        .resizable()
+//                                        .renderingMode(.template)
+//                                        .scaleEffect(0.7)
+//                                        .softOuterShadow(offset: 2, radius: 0.5)
+//                                        .tint(Color.Neumorphic.secondary.opacity(0.5))
+//                                        .frame(width: 20, height: 20)
+//                                }
 
                                 Spacer()
                             }
+                            Spacer()
                         }
                     }
                     .frame(width: reader.frame(in: .local).height, height: reader.frame(in: .local).height)

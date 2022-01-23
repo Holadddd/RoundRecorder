@@ -65,6 +65,17 @@ struct EnumMap<Enum: CaseIterable & Hashable, Value> {
     }
 }
 
+struct ChannelIDChecker {
+    
+    func isChannelValidation(_ channelID: String) -> Bool {
+        guard channelID != "" else { return false}
+        for c in channelID {
+            guard !c.isWhitespace && !c.isSymbol else { return false }
+        }
+        return true
+    }
+}
+
 extension UIApplication{
     func endEditing(){
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)

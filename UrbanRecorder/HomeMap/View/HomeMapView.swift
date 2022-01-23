@@ -249,7 +249,7 @@ struct HomeMapView: View {
                                 switch useCase {
                                 case .radio:
                                     BroadcastView(channelID: $viewmodel.broadcastID,
-                                                  isBroadcasting: $viewmodel.isBroadcasting,
+                                                  isConnecting: $viewmodel.isBroadcasting,
                                                   isShowingAlert: $viewmodel.showBroadcastPermissionAlert,
                                                   requestForBroadcastWithId: { channelID in
                                         viewmodel.requestForBroadcastChannelWith(channelID)
@@ -260,7 +260,7 @@ struct HomeMapView: View {
                                     })
                                     
                                     SubscribeView(channelID: $viewmodel.subscribeID,
-                                                  isSubscribing: $viewmodel.isSubscribing,
+                                                  isConnecting: $viewmodel.isSubscribing,
                                                   isShowingAlert: $viewmodel.showSubscribePermissionAlert,
                                                   requestForSubscribeChannel: {
                                         viewmodel.requestForSubscribeChannel()
