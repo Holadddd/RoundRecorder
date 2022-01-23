@@ -17,7 +17,11 @@ class HomeMapViewModel: NSObject, ObservableObject {
     static let desiredAccuracy:CLLocationAccuracy = kCLLocationAccuracyBest
     
     // MARK: - Broadcast
-    @Published var isBroadcasting: Bool = false
+    @Published var isBroadcasting: Bool = false {
+        didSet {
+            clearDirectionAndDistanceView()
+        }
+    }
     
     @Published var showBroadcastPermissionAlert: Bool = false
     
@@ -25,7 +29,11 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     private var broadcastMicrophoneCaptureCallback: ((NSMutableData)->Void)?
     // MARK: - Subscribe
-    @Published var isSubscribing: Bool = false
+    @Published var isSubscribing: Bool = false {
+        didSet {
+            clearDirectionAndDistanceView()
+        }
+    }
     
     @Published var showSubscribePermissionAlert: Bool = false
     
@@ -53,7 +61,11 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     @Published var expandedData: RecordedData? = nil
     
-    @Published var playingData: RecordedData? = nil
+    @Published var playingData: RecordedData? = nil {
+        didSet {
+            clearDirectionAndDistanceView()
+        }
+    }
     
     @Published var pauseData: RecordedData? = nil
     // MARK: - Map & Compass
@@ -398,8 +410,6 @@ class HomeMapViewModel: NSObject, ObservableObject {
         self.udpSocketManager.unsubscribeChannel(from: "", with: self.subscribeID)
         // AudioEngine
         urAudioEngineInstance.stopScheduleAudioData()
-        // DirectionAndDistanceView
-        clearDirectionAndDistanceView()
         // Map
         removeAnnotionOnMap()
         // Background Task
@@ -657,8 +667,6 @@ class HomeMapViewModel: NSObject, ObservableObject {
             UIApplication.shared.endBackgroundTask(self.playingBackgroundTaskID!)
             self.playingBackgroundTaskID = UIBackgroundTaskIdentifier.invalid
         }
-        // DirectionAndDistanceView
-        clearDirectionAndDistanceView()
     }
     // MARK: - Map
     func locateButtonDidClicked() {

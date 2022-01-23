@@ -76,121 +76,123 @@ struct FileListView: View {
             
             
             if recordedDatas.count > 0 {
-                VStack{
-                    ForEach(recordedDatas) { data in
-                            HStack {
-                                if isEditing {
-                                    Button {
-                                        onDelete(data)
-                                        
-                                        if recordedDatas.count == 0 {
-                                            isEditing.toggle()
+                GeometryReader{ reader in
+                    VStack{
+                        ForEach(recordedDatas) { data in
+                                HStack {
+                                    if isEditing {
+                                        Button {
+                                            onDelete(data)
+                                            
+                                            if recordedDatas.count == 0 {
+                                                isEditing.toggle()
+                                            }
+                                        } label: {
+                                            Image.init(systemName: "minus.circle.fill")
                                         }
-                                    } label: {
-                                        Image.init(systemName: "minus.circle.fill")
+                                        .softButtonStyle(Circle(),
+                                                         padding: paddingValue,
+                                                         textColor: .red)
                                     }
-                                    .softButtonStyle(Circle(),
-                                                     padding: paddingValue,
-                                                     textColor: .red)
-                                }
-                                
-                                VStack(alignment: .leading) {
-                                    HStack {
-                                        VStack(alignment: .leading) {
-                                            
-                                            HStack{
-                                                Text("\(data.fileName!)")
-                                                    .foregroundColor(Color.Neumorphic.secondary)
-                                                    .fontWeight(.bold)
-                                                Spacer()
-                                            }
-                                            
-                                            HStack {
-                                                Text("Distance: \(data.movingDistance.string(fractionDigits: 2)) M").foregroundColor(Color.Neumorphic.secondary)
-                                                    .fontWeight(.light)
-                                                Spacer()
-                                                if data != dataOnExpanded {
-                                                    Text(getRecorderTimeFormat(UInt(data.recordDuration)))
+                                    
+                                    VStack(alignment: .leading) {
+                                        HStack {
+                                            VStack(alignment: .leading) {
+                                                
+                                                HStack{
+                                                    Text("\(data.fileName!)")
                                                         .foregroundColor(Color.Neumorphic.secondary)
-                                                        .fontWeight(.light)
-                                                }
-                                            }
-                                            if data == dataOnExpanded {
-                                                // TODO: Playing rate
-                                                HStack(alignment: .center, spacing: 0) {
-                                                    Spacer()
-                                                    Rectangle().fill(.orange).frame(width: UIScreen.main.bounds.size.width * 0.8 * playingDurationScale , height: 2, alignment: .center)
-                                                    Rectangle().fill(secondaryColor).frame(width: UIScreen.main.bounds.size.width * 0.8 * (1 - playingDurationScale), height: 2, alignment: .center)
+                                                        .fontWeight(.bold)
                                                     Spacer()
                                                 }
                                                 
-                                                HStack(alignment: .center) {
-                                                    Text(getRecorderTimeFormat(UInt(dataOnExpanded?.playingDuration ?? 0)))
-                                                        .foregroundColor(Color.Neumorphic.secondary)
+                                                HStack {
+                                                    Text("Distance: \(data.movingDistance.string(fractionDigits: 2)) M").foregroundColor(Color.Neumorphic.secondary)
                                                         .fontWeight(.light)
                                                     Spacer()
-                                                    Text(getRecorderTimeFormat(UInt(data.recordDuration)))
-                                                        .foregroundColor(Color.Neumorphic.secondary)
-                                                        .fontWeight(.light)
+                                                    if data != dataOnExpanded {
+                                                        Text(getRecorderTimeFormat(UInt(data.recordDuration)))
+                                                            .foregroundColor(Color.Neumorphic.secondary)
+                                                            .fontWeight(.light)
+                                                    }
+                                                }
+                                                if data == dataOnExpanded {
+                                                    // TODO: Playing rate
+                                                    HStack(alignment: .center, spacing: 0) {
+                                                        Spacer()
+                                                        Rectangle().fill(.orange).frame(width: abs(((reader.frame(in: .local).width - 60) > 0 ? (reader.frame(in: .local).width - 60) : 0.1) * 0.9 * playingDurationScale), height: 2, alignment: .center).cornerRadius(1)
+                                                        Rectangle().fill(secondaryColor).frame(width: abs(((reader.frame(in: .local).width - 60) > 0 ? (reader.frame(in: .local).width - 60) : 0.1) * 0.9 * (1 - playingDurationScale)), height: 2, alignment: .center).cornerRadius(1)
+                                                        Spacer()
+                                                    }
+                                                    
+                                                    HStack(alignment: .center) {
+                                                        Text(getRecorderTimeFormat(UInt(dataOnExpanded?.playingDuration ?? 0)))
+                                                            .foregroundColor(Color.Neumorphic.secondary)
+                                                            .fontWeight(.light)
+                                                        Spacer()
+                                                        Text(getRecorderTimeFormat(UInt(data.recordDuration)))
+                                                            .foregroundColor(Color.Neumorphic.secondary)
+                                                            .fontWeight(.light)
+                                                    }
                                                 }
                                             }
                                         }
-                                    }
-                                    
-                                    if data == dataOnExpanded {
-                                        VStack{
-                                            HStack(alignment: .center) {
-                                                Spacer()
-                                                Button {
-                                                    if data == dataOnPlaying {
-                                                        onPause()
-                                                    } else {
-                                                        requestOnPlaying(data)
-                                                    }
-                                                } label: {
-                                                    if data == dataOnPlaying {
-                                                        Image.init(systemName: "pause.fill")
-                                                    } else {
-                                                        Image.init(systemName: "play.fill")
-                                                    }
-                                                }.softButtonStyle(RoundedRectangle(cornerRadius: 5),
-                                                                  padding: paddingValue)
-                                                    .alert(alertMessage, isPresented: $isShowingAlert) {
-                                                        Button("No", role: .cancel) {
-                                                            print("Keep channel subscription")
-                                                        }
-                                                        Button("Yes", role: .destructive) {
-                                                            stopSubscriptionAndPlaying(data)
-                                                        }
-                                                    }
-                                                Spacer()
-                                            }
-                                        }
                                         
-                                    }
-                                    Divider()
-                                }.padding(paddingValue)
-                                    .background(Color.Neumorphic.main)
-                                    .cornerRadius(15)
-                            }.onTapGesture {
-                                withAnimation {
-                                    if dataOnExpanded == data {
-                                        onSelected(nil)
-                                    } else {
-                                        onSelected(data)
+                                        if data == dataOnExpanded {
+                                            VStack{
+                                                HStack(alignment: .center) {
+                                                    Spacer()
+                                                    Button {
+                                                        if data == dataOnPlaying {
+                                                            onPause()
+                                                        } else {
+                                                            requestOnPlaying(data)
+                                                        }
+                                                    } label: {
+                                                        if data == dataOnPlaying {
+                                                            Image.init(systemName: "pause.fill")
+                                                        } else {
+                                                            Image.init(systemName: "play.fill")
+                                                        }
+                                                    }.softButtonStyle(RoundedRectangle(cornerRadius: 5),
+                                                                      padding: paddingValue)
+                                                        .alert(alertMessage, isPresented: $isShowingAlert) {
+                                                            Button("No", role: .cancel) {
+                                                                print("Keep channel subscription")
+                                                            }
+                                                            Button("Yes", role: .destructive) {
+                                                                stopSubscriptionAndPlaying(data)
+                                                            }
+                                                        }
+                                                    Spacer()
+                                                }
+                                            }
+                                            
+                                        }
+                                        Divider()
+                                    }.padding(paddingValue)
+                                        .background(Color.Neumorphic.main)
+                                        .cornerRadius(15)
+                                }.onTapGesture {
+                                    withAnimation {
+                                        if dataOnExpanded == data {
+                                            onSelected(nil)
+                                        } else {
+                                            onSelected(data)
+                                        }
                                     }
                                 }
-                            }
-                        }.padding(EdgeInsets(top: 5,
-                                             leading: 15,
-                                             bottom: 5,
-                                             trailing: 15))
-                    }.segmentCardView(title: "Filelist")
-                        .padding(EdgeInsets(top: 15,
-                                            leading: 15,
-                                            bottom: 5,
-                                            trailing: 15))
+                            }.padding(EdgeInsets(top: 5,
+                                                 leading: 15,
+                                                 bottom: 5,
+                                                 trailing: 15))
+                        }.segmentCardView(title: "Filelist")
+                            .padding(EdgeInsets(top: 15,
+                                                leading: 15,
+                                                bottom: 5,
+                                                trailing: 15))
                     
+                }
                 } else {
                     Text("No Storage Data")
                 }
