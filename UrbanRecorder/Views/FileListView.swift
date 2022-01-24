@@ -20,7 +20,11 @@ struct FileListView: View {
     
     @Binding var fileListCount: Int
     
-    @State var isEditing: Bool = false
+    @State var isEditing: Bool = false {
+        didSet {
+            dataOnExpanded = nil
+        }
+    }
     
     @Binding var isShowingAlert: Bool
     
@@ -172,11 +176,13 @@ struct FileListView: View {
                                     .background(Color.Neumorphic.main)
                                     .cornerRadius(15)
                             }.onTapGesture {
-                                withAnimation {
-                                    if dataOnExpanded == data {
-                                        onSelected(nil)
-                                    } else {
-                                        onSelected(data)
+                                if !isEditing {
+                                    withAnimation {
+                                        if dataOnExpanded == data {
+                                            onSelected(nil)
+                                        } else {
+                                            onSelected(data)
+                                        }
                                     }
                                 }
                             }
@@ -193,6 +199,9 @@ struct FileListView: View {
                     
                 } else {
                     Text("No Storage Data")
+                        .foregroundColor(Color.Neumorphic.secondary)
+                        .fontWeight(.bold)
+                        .padding(EdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 0))
                 }
                 Spacer()
             }.softOuterShadow()
