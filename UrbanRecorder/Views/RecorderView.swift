@@ -87,6 +87,7 @@ struct RecorderView: View {
                     }
                 }.padding(10)
             }
+            
         }.segmentCardView(title: "Recorder")
             .padding(10)
     }

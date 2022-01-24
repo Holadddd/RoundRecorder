@@ -51,10 +51,12 @@ struct SegmentCardView: ViewModifier {
         
         VStack(alignment: .leading) {
             Text(title).font(.system(size: 14, weight: .bold)).foregroundColor(Color.Neumorphic.secondary)
+                .softOuterShadow()
+                .padding(5)
             content
                 .background(Color.Neumorphic.main)
                 .cornerRadius(10)
-                .softOuterShadow()
+                
         }
     }
 }

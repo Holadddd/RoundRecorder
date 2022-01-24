@@ -261,7 +261,7 @@ struct HomeMapView: View {
                                         viewmodel.keepRecordingWithBroadcastWithId(channelID)
                                     }, stopBroadcastAction: { channelID in
                                         viewmodel.stopBroadcastChannelWith(channelID)
-                                    })
+                                    }).softOuterShadow()
                                     
                                     SubscribeView(channelID: $viewmodel.subscribeID,
                                                   isConnecting: $viewmodel.isSubscribing,
@@ -272,7 +272,7 @@ struct HomeMapView: View {
                                         viewmodel.stopPlayingOnFileThenSubscribeChannel()
                                     }, stopSubscribetAction: {
                                         viewmodel.stopSubscribeChannel()
-                                    })
+                                    }).softOuterShadow()
                                 case .record:
                                     RecorderView(isRecordButtonPressed: $viewmodel.isRecording,
                                                  recordDuration: $viewmodel.recordDuration,
@@ -286,7 +286,7 @@ struct HomeMapView: View {
                                         viewmodel.keepBroadcastWhileRecording()
                                     }, stopRecording: {
                                         viewmodel.stopURRecordingSession()
-                                    })
+                                    }).softOuterShadow()
                                 case .file:
                                     FileListView(
                                         setReload: {
@@ -312,6 +312,7 @@ struct HomeMapView: View {
                                         },
                                         dataOnExpanded: $viewmodel.expandedData,
                                         dataOnPlaying: $viewmodel.playingData)
+                                    
                                 }
                             }
                             
