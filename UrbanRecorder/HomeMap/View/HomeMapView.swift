@@ -233,7 +233,7 @@ struct HomeMapView: View {
                         
                 }.padding(0)
                     .background(Color.Neumorphic.main)
-                
+                /*  User current location
                 VStack {
                     HStack {
                         VStack(alignment: .leading, spacing: 5) {
@@ -245,6 +245,7 @@ struct HomeMapView: View {
                     }.padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 5))
                     Spacer()
                 }
+                 */
                 ZStack{
                     if let useCase = viewmodel.cardViewUseCase {
                         SegmentSlideOverCardView(closeButtonDidClick: {viewmodel.segmentSlideOverCardDidClose()}, isSetReload: $viewmodel.setNeedReload, content: {
