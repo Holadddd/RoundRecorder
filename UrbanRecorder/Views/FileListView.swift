@@ -120,8 +120,8 @@ struct FileListView: View {
                                                     // TODO: Playing rate
                                                     HStack(alignment: .center, spacing: 0) {
                                                         Spacer()
-                                                        Rectangle().fill(.orange).frame(width: abs(((reader.frame(in: .local).width - 60) > 0 ? (reader.frame(in: .local).width - 60) : 0.1) * 0.9 * playingDurationScale), height: 2, alignment: .center).cornerRadius(1)
-                                                        Rectangle().fill(secondaryColor).frame(width: abs(((reader.frame(in: .local).width - 60) > 0 ? (reader.frame(in: .local).width - 60) : 0.1) * 0.9 * (1 - playingDurationScale)), height: 2, alignment: .center).cornerRadius(1)
+                                                        Rectangle().fill(.orange).frame(width: getProgressRateLineWidth(reader) * playingDurationScale, height: 2, alignment: .center).cornerRadius(1)
+                                                        Rectangle().fill(secondaryColor).frame(width: getProgressRateLineWidth(reader) * (1 - playingDurationScale), height: 2, alignment: .center).cornerRadius(1)
                                                         Spacer()
                                                     }
                                                     
@@ -216,6 +216,12 @@ struct FileListView: View {
         } else {
             return "\(minuteUnit):\(secondUnit)"
         }
+    }
+    
+    private func getProgressRateLineWidth(_ reader: GeometryProxy)->CGFloat {
+        let width = abs(((reader.frame(in: .local).width - 60) > 0 ? (reader.frame(in: .local).width - 60) : 0.1) * 0.9)
+        
+        return width
     }
 }
 

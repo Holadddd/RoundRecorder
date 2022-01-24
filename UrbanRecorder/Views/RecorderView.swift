@@ -42,7 +42,7 @@ struct RecorderView: View {
                                     .fontWeight(.semibold)
                     )
                     Spacer()
-                }.padding(0)
+                }.padding(EdgeInsets(top: 10, leading: 3, bottom: 0, trailing: 0))
                 
                 ZStack {
                     HStack(alignment: .center) {

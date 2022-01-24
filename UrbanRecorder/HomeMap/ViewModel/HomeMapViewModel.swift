@@ -69,6 +69,8 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     @Published var pauseData: RecordedData? = nil
     // MARK: - Map & Compass
+    var displayUserArrowAnnotation: Bool = false
+    
     @Published var isSetupCurrentLocation: Bool = false
     
     @Published var isLocationLocked: Bool = false
@@ -889,10 +891,12 @@ extension HomeMapViewModel: CLLocationManagerDelegate, CMHeadphoneMotionManagerD
                                                         longitude: longitude)
         userLocation = locationCoordinate
         // Update UserAnnotion
-        DispatchQueue.main.async {[weak self] in
-            guard let self = self, let userLocation = self.userLocation, let userHeadingDegrees = self.userHeadingDegrees else { return }
-            
-            self.userAnootion = HomeMapAnnotation(coordinate: userLocation, userHeadingDegrees: userHeadingDegrees, type: .user, color: .blue)
+        if displayUserArrowAnnotation {
+            DispatchQueue.main.async {[weak self] in
+                guard let self = self, let userLocation = self.userLocation, let userHeadingDegrees = self.userHeadingDegrees else { return }
+                
+                self.userAnootion = HomeMapAnnotation(coordinate: userLocation, userHeadingDegrees: userHeadingDegrees, type: .user, color: .blue)
+            }
         }
         
         if userURLocation != nil {
@@ -919,13 +923,15 @@ extension HomeMapViewModel: CLLocationManagerDelegate, CMHeadphoneMotionManagerD
         }
         
         compassDegrees = newDegrees
-        
+        //
         userHeadingDegrees = isLocationLocked ? 0 : newHeading.trueHeading
         // Update UserAnnotion
-        DispatchQueue.main.async {[weak self] in
-            guard let self = self, let userLocation = self.userLocation, let userHeadingDegrees = self.userHeadingDegrees else { return }
-            
-            self.userAnootion = HomeMapAnnotation(coordinate: userLocation, userHeadingDegrees: userHeadingDegrees, type: .user, color: .blue)
+        if displayUserArrowAnnotation {
+            DispatchQueue.main.async {[weak self] in
+                guard let self = self, let userLocation = self.userLocation, let userHeadingDegrees = self.userHeadingDegrees else { return }
+                
+                self.userAnootion = HomeMapAnnotation(coordinate: userLocation, userHeadingDegrees: userHeadingDegrees, type: .user, color: .blue)
+            }
         }
     }
     
