@@ -17,7 +17,7 @@ class URAudioRenderAudioUnit: AUAudioUnit {
         
         let AudioEngine: URAudioEngine = URAudioEngine.instance
         
-        guard AudioEngine.currentAbility != .undefined || AudioEngine.currentAbility != .Broadcast  else {print("No Subscribe ability"); return noErr}
+        guard AudioEngine.currentAbility == .ScheduleAudioData || AudioEngine.currentAbility == .ScheduleAndCaptureAudioData  else {print("No Subscribe ability"); return noErr}
         
         let bitsPerFrame = AudioEngine.bytesPerFrame
         

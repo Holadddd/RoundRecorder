@@ -74,7 +74,7 @@ class UrbanRecorderTests: XCTestCase {
         
         let expectedSize: Int = Int(bufferLength) + metaDataSize
         
-        XCTAssertEqual(urAudioData.length, expectedSize)
+        XCTAssertEqual(urAudioData.count, expectedSize)
     }
     
     func test_parseURAudioBufferData() {
@@ -103,9 +103,9 @@ class UrbanRecorderTests: XCTestCase {
         XCTAssertEqual(urAudioBufferData.metadata?.locationCoordinate.latitude, latitude)
         XCTAssertEqual(urAudioBufferData.metadata?.locationCoordinate.longitude, longitude)
         XCTAssertEqual(urAudioBufferData.metadata?.locationCoordinate.altitude, altitude)
-        XCTAssertEqual(urAudioBufferData.metadata?.motionAttitude.roll, roll)
-        XCTAssertEqual(urAudioBufferData.metadata?.motionAttitude.pitch, pitch)
-        XCTAssertEqual(urAudioBufferData.metadata?.motionAttitude.yaw, yaw)
+        XCTAssertEqual(urAudioBufferData.metadata?.motionAttitude.rollDegrees, roll)
+        XCTAssertEqual(urAudioBufferData.metadata?.motionAttitude.pitchDegrees, pitch)
+        XCTAssertEqual(urAudioBufferData.metadata?.motionAttitude.yawDegrees, yaw)
         XCTAssertEqual(urAudioBufferData.mDataByteSize, bufferLength)
         XCTAssertEqual(urAudioBufferData.audioData.length, audioData.count)
     }

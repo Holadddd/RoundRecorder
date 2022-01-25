@@ -69,11 +69,11 @@ struct URLocationCoordinate3D: Codable {
 public typealias URMotionAttitudeDegrees = Double
 struct URMotionAttitude: Codable {
     
-    public var rollDegrees: URMotionAttitudeDegrees
+    public var rollDegrees: URMotionAttitudeDegrees = 0
     
-    public var pitchDegrees: URMotionAttitudeDegrees
+    public var pitchDegrees: URMotionAttitudeDegrees = 0
     
-    public var yawDegrees: URMotionAttitudeDegrees
+    public var yawDegrees: URMotionAttitudeDegrees = 0
 }
 
 public typealias URDirectionDegrees = Double
