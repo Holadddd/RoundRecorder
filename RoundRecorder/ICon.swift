@@ -10,6 +10,15 @@ import Neumorphic
 
 struct ICon: View {
     
+    var gradient: LinearGradient = {
+        let gradient = LinearGradient(gradient:
+                                        Gradient(colors: [Color.red,Color.red]),
+                                      startPoint: .topLeading,
+                                     endPoint: .bottomTrailing)
+        
+        return gradient
+    }()
+    
     var body: some View {
         ZStack{
             Rectangle().fill(Color.Neumorphic.main)
@@ -20,7 +29,7 @@ struct ICon: View {
                     let height = UIScreen.main.bounds.height
                     
                     let x1: CGFloat = width * 0.62
-                    let y1 = height - 460
+                    let y1 = height/2 - 25
                     
                     let y2 = y1 - 84
                     // 2.
@@ -47,8 +56,9 @@ struct ICon: View {
                     // 5.
                     path.closeSubpath()
                 }.strokedPath(StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
-                    .foregroundColor(.red)
-                    .softOuterShadow()
+                    .fill(gradient)
+                    .softOuterShadow(offset: 2, radius: 2)
+                    .softOuterShadow(offset: 6 , radius: 3)
                 
                 Path { path in
                     let width = UIScreen.main.bounds.width
@@ -62,8 +72,9 @@ struct ICon: View {
                     
                     // 5.
                     path.closeSubpath()
-                }.fill(.red)
-                    .softOuterShadow()
+                }.fill(gradient)
+                    .softOuterShadow(offset: 2, radius: 2)
+                    .softOuterShadow(offset: 6 , radius: 3)
             }.offset(x: 0, y: 10)
             
         }.aspectRatio(1, contentMode: .fit)
