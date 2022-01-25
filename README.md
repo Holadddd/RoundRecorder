@@ -1,6 +1,6 @@
-# UrbanRecorder
+# RoundRecorder
 
-UrbanRecorder is an APP enabling to broadcast **live streaming spatial audio** by updating geographic information and user’s motion.(Use the headphones which support **spatial audio** for the best experience)
+RoundRecorder is an APP enabling to broadcast **live streaming spatial audio** by updating geographic information and user’s motion.(Use the headphones which support **spatial audio** for the best experience)
 
 ## Requirement
 
@@ -11,10 +11,10 @@ UrbanRecorder is an APP enabling to broadcast **live streaming spatial audio** b
 
 | Key | Usage |
 | -------- | -------- |
-| Privacy - Motion Usage Description| UrbanRecorder requires motion information for better user experience.|
-| Privacy - Microphone Usage Description| UrbanRecorder requires microphone access to record or broadcast audio. |
-| Privacy - Location Always and When In Use Usage Description| UrbanRecorder requires user’s location for better user experience.|
-| Privacy - Location When In Use Usage Description| UrbanRecorder requires user’s location for better user experience.|
+| Privacy - Motion Usage Description| RoundRecorder requires motion information for better user experience.|
+| Privacy - Microphone Usage Description| RoundRecorder requires microphone access to record or broadcast audio. |
+| Privacy - Location Always and When In Use Usage Description| RoundRecorder requires user’s location for better user experience.|
+| Privacy - Location When In Use Usage Description| RoundRecorder requires user’s location for better user experience.|
 
 ## Dependency
 ### Swift Package Manager
