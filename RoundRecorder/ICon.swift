@@ -29,7 +29,7 @@ struct ICon: View {
                     let height = UIScreen.main.bounds.height
                     
                     let x1: CGFloat = width * 0.62
-                    let y1 = height/2 - 25
+                    let y1 = width - 5
                     
                     let y2 = y1 - 84
                     // 2.
