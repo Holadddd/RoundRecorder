@@ -1,0 +1,25 @@
+/* 
+  Localizable.strings
+  RoundRecorder
+
+  Created by ting hui wu on 2022/1/25.
+  
+*/
+"Radio" = "廣播";
+"File" = "File";
+"Disconnect" = "Disconnect";
+"Connect" = "Connect";
+"ChannelID" = "ChannelID";
+"StopTheFileOnPlaying" = "Stop the file on playing";
+"No" = "No";
+"Yes" = "Yes";
+"Subscribe" = "Subscribe";
+"BroadcastWhileRecording" = "Broadcast while recording";
+"Broadcast" = "Broadcast";
+"RecordWhileBroadcasting" = "Record while broadcasting";
+"Distance" = "Distance";
+"Recorder" = "Recorder";
+"CancelChannelSubscriptions" = "Cancel channel subscriptions";
+"Edit" = "Edit";
+"Filelist" = "Filelist";
+"NoStorageData" = "No Storage Data";

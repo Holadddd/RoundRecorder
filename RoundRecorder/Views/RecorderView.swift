@@ -28,7 +28,7 @@ struct RecorderView: View {
     
     var stopRecording: ()->Void
     
-    let alertMessage: String = "Record while broadcasting?"
+    let alertMessage: String = I18n.string(.RecordWhileBroadcasting)
     
     var body: some View {
         
@@ -46,7 +46,7 @@ struct RecorderView: View {
                 
                 ZStack {
                     HStack(alignment: .center) {
-                        Text("Distance: \(movingDistance.string(fractionDigits: 1)) M")
+                        Text("\(I18n.string(.Distance)): \(movingDistance.string(fractionDigits: 1)) M")
                             .fontWeight(.light)
                             .foregroundColor(Color.Neumorphic.secondary)
                         Spacer()
@@ -78,17 +78,17 @@ struct RecorderView: View {
                     }
                     .softButtonStyle(RoundedRectangle(cornerRadius: 15), padding: 3, textColor: .red, pressedEffect: .hard, isPressed: self.isRecordButtonPressed)
                     .alert(alertMessage, isPresented: $isShowingAlert) {
-                        Button("No", role: .cancel) {
+                        Button(I18n.string(.No), role: .cancel) {
                             print("Pause recording")
                         }
-                        Button("Yes", role: .destructive) {
+                        Button(I18n.string(.Yes), role: .destructive) {
                             keepBroadcastWhileRecording()
                         }
                     }
                 }.padding(10)
             }
             
-        }.segmentCardView(title: "Recorder")
+        }.segmentCardView(title: I18n.string(.Recorder))
             .padding(10)
     }
     

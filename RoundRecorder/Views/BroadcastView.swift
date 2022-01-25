@@ -22,28 +22,31 @@ struct BroadcastView: View {
     var stopBroadcastAction: (String)->()
     
     var actionString: String {
-        isConnecting ? "Disconnect" : "Connect"
+        isConnecting ? I18n.string(.Disconnect) : I18n.string(.Connect)
     }
     
-    let alertMessage: String = "Broadcast while recording?"
+    let alertMessage: String = I18n.string(.BroadcastWhileRecording)
     
     var body: some View {
         return ZStack {
             HStack{
-                Text("ChannelID: ")
+                Text("\(I18n.string(.ChannelID)): ").fontWeight(.regular)
                     .customFont(style: .headline, weight: .bold)
                                         .foregroundColor(Color.Neumorphic.secondary)
                                         .lineLimit(1)
                                         .padding(5)
+                                        .softOuterShadow()
                 // Prvent Modifying state during view update
                 if isConnecting {
                     TextField.init("", text: $channelID, prompt: nil).disabled(true)
-                        .customFont(style: .subheadline, weight: .light)
                         .foregroundColor(Color.Neumorphic.secondary)
+                        .customFont(style: .footnote, weight: .heavy)
+                        .softOuterShadow()
                 } else {
                     TextField.init("", text: $channelID, prompt: nil).disabled(false)
-                        .customFont(style: .subheadline, weight: .light)
                         .foregroundColor(Color.Neumorphic.secondary)
+                        .customFont(style: .footnote, weight: .heavy)
+                        .softOuterShadow()
                 }
                 
                 Button {
@@ -59,17 +62,18 @@ struct BroadcastView: View {
                         .lineLimit(1)
                         .frame(height: 30)
                         .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5))
+                        .softOuterShadow(offset: 2, radius: 1)
                 }.softButtonStyle(RoundedRectangle(cornerRadius: 10), padding: 3, textColor: Color.Neumorphic.secondary, pressedEffect: .hard)
                     .padding()
                     .alert(alertMessage, isPresented: $isShowingAlert) {
-                        Button("No", role: .cancel) {
+                        Button(I18n.string(.No), role: .cancel) {
                             print("Keep recording with file")
                         }
-                        Button("Yes", role: .destructive) {
+                        Button(I18n.string(.Yes), role: .destructive) {
                             keepRecordingWithBroadcastWithId(channelID)
                         }
                     }
-            }.segmentCardView(title: "Broadcast")
+            }.segmentCardView(title: I18n.string(.Broadcast))
             
         }.padding(10)
     }

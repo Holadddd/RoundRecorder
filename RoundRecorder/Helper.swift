@@ -81,3 +81,30 @@ extension UIApplication{
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
+
+struct I18n {
+    enum I18nKey: String {
+        case Radio
+        case File
+        case Disconnect
+        case Connect
+        case ChannelID
+        case StopTheFileOnPlaying
+        case No
+        case Yes
+        case Subscribe
+        case BroadcastWhileRecording
+        case Broadcast
+        case RecordWhileBroadcasting
+        case Distance
+        case Recorder
+        case CancelChannelSubscriptions
+        case Edit
+        case Filelist
+        case NoStorageData
+    }
+    
+    static func string(_ i18nKey: I18nKey) -> String {
+        return NSLocalizedString(i18nKey.rawValue, comment: "")
+    }
+}

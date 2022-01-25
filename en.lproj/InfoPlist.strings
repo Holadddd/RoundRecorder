@@ -1,0 +1,12 @@
+/* 
+  InfoPlist.strings
+  RoundRecorder
+
+  Created by ting hui wu on 2022/1/25.
+  
+*/
+"NSLocationWhenInUseUsageDescription" = "RoundRecorder requires user’s location for better user experience.";
+"NSLocationAlwaysandWhenInUseUsageDescription" = "RoundRecorder requires user’s location for better user experience.";
+"NSLocalNetworkUsageDescription" = "This app will be able to discover and connect to devices on the network you use.";
+"NSMicrophoneUsageDescription" = "RoundRecorder requires microphone access to record or broadcast audio.";
+"NSMotionUsageDescription" = "RoundRecorder requires motion information for better user experience.";

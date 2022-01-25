@@ -153,7 +153,7 @@ struct HomeMapView: View {
                                         Image(systemName: "antenna.radiowaves.left.and.right")
                                             .tint((viewmodel.isSubscribing || viewmodel.isBroadcasting) ? Color.red : Color.Neumorphic.secondary)
                                             .frame(width: 30, height: 30)
-                                        Text("Radio").font(.system(size: 10, weight: .bold)).foregroundColor((viewmodel.isSubscribing || viewmodel.isBroadcasting) ? Color.red : Color.Neumorphic.secondary)
+                                        Text(I18n.string(.Radio)).font(.system(size: 10, weight: .bold)).foregroundColor((viewmodel.isSubscribing || viewmodel.isBroadcasting) ? Color.red : Color.Neumorphic.secondary)
                                     }.padding(0)
                                 }.softOuterShadow(offset: 2, radius: 0.5)
                                     .background(.clear)
@@ -220,7 +220,7 @@ struct HomeMapView: View {
                                             .tint((viewmodel.playingData == nil) ? Color.Neumorphic.secondary : Color.red)
                                             .frame(width: 30, height: 30)
                                             .softOuterShadow(offset: 2, radius: 0.5)
-                                        Text("File").font(.system(size: 10, weight: .bold)).foregroundColor((viewmodel.playingData == nil) ? Color.Neumorphic.secondary : Color.red)
+                                        Text(I18n.string(.File)).font(.system(size: 10, weight: .bold)).foregroundColor((viewmodel.playingData == nil) ? Color.Neumorphic.secondary : Color.red)
                                     }.padding(0)
                                 }
                                 .softOuterShadow(offset: 2, radius: 0.5)

@@ -40,6 +40,8 @@
 		DB9E3CFD2722785F008FCFAB /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CFC2722785F008FCFAB /* Helper.swift */; };
 		DB9E3D052722BAF6008FCFAB /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3D042722BAF6008FCFAB /* View+.swift */; };
 		DB9E3D072722BB34008FCFAB /* CGFloat+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3D062722BB34008FCFAB /* CGFloat+.swift */; };
+		DBA59E6727A02991008B934F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DBA59E6927A02991008B934F /* InfoPlist.strings */; };
+		DBA59E6D27A02A1B008B934F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DBA59E6F27A02A1B008B934F /* Localizable.strings */; };
 		DBA6DA50274E033000E80FF5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DBA6DA4F274E033000E80FF5 /* GoogleService-Info.plist */; };
 		DBA6DA54274E083800E80FF5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = DBA6DA53274E083800E80FF5 /* FirebaseAnalytics */; };
 		DBA6DA56274E083E00E80FF5 /* FirebaseAnalyticsSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = DBA6DA55274E083E00E80FF5 /* FirebaseAnalyticsSwift-Beta */; };
@@ -74,6 +76,7 @@
 		DBD578EE2791966F00C3433E /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD578ED2791966F00C3433E /* UIImage+.swift */; };
 		DBD578F027954D3900C3433E /* Map+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD578EF27954D3900C3433E /* Map+.swift */; };
 		DBDD67DB27440F0100E91A5B /* UrbanRecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDD67DA27440F0100E91A5B /* UrbanRecorderTests.swift */; };
+		DBE123BF27A022C000D25AB0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBE123BE27A022C000D25AB0 /* MapKit.framework */; };
 		DBE2A389273D0B2B0098E52D /* FloatingPoint+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE2A388273D0B2B0098E52D /* FloatingPoint+.swift */; };
 		DBE2A38B273D17460098E52D /* DirectionAndDistanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE2A38A273D17460098E52D /* DirectionAndDistanceView.swift */; };
 		DBF0E3F9272FEB07004DC546 /* SubscribeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E3F8272FEB07004DC546 /* SubscribeManager.swift */; };
@@ -123,11 +126,15 @@
 		DB9E3CC4272131CE008FCFAB /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		DB9E3CF127215B8A008FCFAB /* HomeMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMapView.swift; sourceTree = "<group>"; };
 		DB9E3CF627215D81008FCFAB /* HomeMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMapViewModel.swift; sourceTree = "<group>"; };
-		DB9E3CF827216587008FCFAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		DB9E3CFA27216E23008FCFAB /* HomeMapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMapModel.swift; sourceTree = "<group>"; };
 		DB9E3CFC2722785F008FCFAB /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		DB9E3D042722BAF6008FCFAB /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		DB9E3D062722BB34008FCFAB /* CGFloat+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+.swift"; sourceTree = "<group>"; };
+		DBA527F427A019C6000E016E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Info.plist; sourceTree = "<group>"; };
+		DBA59E6827A02991008B934F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		DBA59E6A27A02999008B934F /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		DBA59E6E27A02A1B008B934F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DBA59E7027A02A1D008B934F /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		DBA6DA4F274E033000E80FF5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DBA7EFC6272A9F880037AA7E /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		DBA7EFC9272AB3440037AA7E /* DeviceInfoRQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoRQ.swift; sourceTree = "<group>"; };
@@ -160,6 +167,7 @@
 		DBD578EF27954D3900C3433E /* Map+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Map+.swift"; sourceTree = "<group>"; };
 		DBDD67D827440F0100E91A5B /* RoundRecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RoundRecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBDD67DA27440F0100E91A5B /* UrbanRecorderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderTests.swift; sourceTree = "<group>"; };
+		DBE123BE27A022C000D25AB0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		DBE2A388273D0B2B0098E52D /* FloatingPoint+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingPoint+.swift"; sourceTree = "<group>"; };
 		DBE2A38A273D17460098E52D /* DirectionAndDistanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionAndDistanceView.swift; sourceTree = "<group>"; };
 		DBF0E3F8272FEB07004DC546 /* SubscribeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeManager.swift; sourceTree = "<group>"; };
@@ -181,6 +189,7 @@
 				DB9E3CEF27213B8F008FCFAB /* CocoaAsyncSocket in Frameworks */,
 				DB9E3CEC27213B77008FCFAB /* SocketIO in Frameworks */,
 				DBA6DA58274E08BD00E80FF5 /* FirebaseCrashlytics in Frameworks */,
+				DBE123BF27A022C000D25AB0 /* MapKit.framework in Frameworks */,
 				DBA6DA54274E083800E80FF5 /* FirebaseAnalytics in Frameworks */,
 				DB3321D227476312002446F1 /* Neumorphic in Frameworks */,
 			);
@@ -224,6 +233,8 @@
 		DB9E3CAF272131CC008FCFAB = {
 			isa = PBXGroup;
 			children = (
+				DBA59E6F27A02A1B008B934F /* Localizable.strings */,
+				DBA59E6927A02991008B934F /* InfoPlist.strings */,
 				DB9E3CBA272131CC008FCFAB /* RoundRecorder */,
 				DBDD67D927440F0100E91A5B /* RoundRecorderTests */,
 				DB9E3CB9272131CC008FCFAB /* Products */,
@@ -245,7 +256,7 @@
 			children = (
 				DB8085A1279FC55E00952D4F /* RoundRecorder.entitlements */,
 				DBC001CD279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodeld */,
-				DB9E3CF827216587008FCFAB /* Info.plist */,
+				DBA527F127A019A8000E016E /* Info.plist */,
 				DBA6DA4F274E033000E80FF5 /* GoogleService-Info.plist */,
 				DB9E3CBB272131CC008FCFAB /* RoundRecorderApp.swift */,
 				DB8085A2279FD77800952D4F /* ICon.swift */,
@@ -450,6 +461,7 @@
 		DBF0E3FB2730FD99004DC546 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DBE123BE27A022C000D25AB0 /* MapKit.framework */,
 				DBF0E3FC2730FD99004DC546 /* NetworkExtension.framework */,
 			);
 			name = Frameworks;
@@ -542,6 +554,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hant",
 			);
 			mainGroup = DB9E3CAF272131CC008FCFAB;
 			packageReferences = (
@@ -565,7 +578,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBA59E6D27A02A1B008B934F /* Localizable.strings in Resources */,
 				DB9E3CC3272131CE008FCFAB /* Preview Assets.xcassets in Resources */,
+				DBA59E6727A02991008B934F /* InfoPlist.strings in Resources */,
 				DB9E3CC0272131CE008FCFAB /* Assets.xcassets in Resources */,
 				DBA6DA50274E033000E80FF5 /* GoogleService-Info.plist in Resources */,
 			);
@@ -693,6 +708,35 @@
 			targetProxy = DBDD67DC27440F0100E91A5B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		DBA527F127A019A8000E016E /* Info.plist */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DBA527F427A019C6000E016E /* Base */,
+			);
+			name = Info.plist;
+			sourceTree = "<group>";
+		};
+		DBA59E6927A02991008B934F /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DBA59E6827A02991008B934F /* en */,
+				DBA59E6A27A02999008B934F /* zh-Hant */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		DBA59E6F27A02A1B008B934F /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DBA59E6E27A02A1B008B934F /* en */,
+				DBA59E7027A02A1D008B934F /* zh-Hant */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		DB9E3CDF272131CF008FCFAB /* Debug */ = {
@@ -831,7 +875,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RoundRecorder/Info.plist;
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "This app will be able to discover and connect to devices on the network you use";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "This app will be able to discover and connect to devices on the network you use.";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "RoundRecorder requires user’s location for better user experience.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "RoundRecorder requires user’s location for better user experience.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "RoundRecorder requires microphone access to record or broadcast audio.";
@@ -875,7 +919,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RoundRecorder/Info.plist;
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "This app will be able to discover and connect to devices on the network you use";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "This app will be able to discover and connect to devices on the network you use.";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "RoundRecorder requires user’s location for better user experience.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "RoundRecorder requires user’s location for better user experience.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "RoundRecorder requires microphone access to record or broadcast audio.";

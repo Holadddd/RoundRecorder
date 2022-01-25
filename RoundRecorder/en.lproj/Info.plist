@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>RoundRecorder requires user’s location for better user experience.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>RoundRecorder requires user’s location for better user experience.</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>This app will be able to discover and connect to devices on the network you use.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>RoundRecorder requires microphone access to record or broadcast audio.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>RoundRecorder requires motion information for better user experience.</string>
+	<key>APIHostIP</key>
+	<string>52.192.242.163</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>SocketHostIP</key>
+	<string>52.192.242.163</string>
+	<key>UDPSocketHostIP</key>
+	<string>52.192.242.163</string>
+	<key>UDPSocketInPort</key>
+	<string>8001</string>
+	<key>UDPSocketOutPort</key>
+	<string>8000</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+		<string>location</string>
+		<string>processing</string>
+		<string>voip</string>
+	</array>
+</dict>
+</plist>

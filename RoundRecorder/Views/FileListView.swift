@@ -46,7 +46,7 @@ struct FileListView: View {
     
     @Binding var dataOnPlaying: RecordedData?
     
-    let alertMessage: String = "Cancel channel subscriptions?"
+    let alertMessage: String = I18n.string(.CancelChannelSubscriptions)
     
     var playingDurationScale: Double {
         guard let dataOnExpanded = dataOnExpanded else { return 0}
@@ -64,7 +64,7 @@ struct FileListView: View {
                         }
                         
                     } label: {
-                        Text("Edit")
+                        Text(I18n.string(.Edit))
                             .font(.system(size: 14, weight: .bold))
                             .foregroundColor(Color.Neumorphic.secondary)
                     }.softButtonStyle(RoundedRectangle(cornerRadius: 5),
@@ -109,7 +109,7 @@ struct FileListView: View {
                                             }
                                             
                                             HStack {
-                                                Text("Distance: \(data.movingDistance.string(fractionDigits: 2)) M").foregroundColor(Color.Neumorphic.secondary)
+                                                Text("\(I18n.string(.Distance)): \(data.movingDistance.string(fractionDigits: 2)) M").foregroundColor(Color.Neumorphic.secondary)
                                                     .fontWeight(.light)
                                                 Spacer()
                                                 if data != dataOnExpanded {
@@ -159,10 +159,10 @@ struct FileListView: View {
                                                 }.softButtonStyle(RoundedRectangle(cornerRadius: 5),
                                                                   padding: paddingValue)
                                                     .alert(alertMessage, isPresented: $isShowingAlert) {
-                                                        Button("No", role: .cancel) {
+                                                        Button(I18n.string(.No), role: .cancel) {
                                                             print("Keep channel subscription")
                                                         }
-                                                        Button("Yes", role: .destructive) {
+                                                        Button(I18n.string(.Yes), role: .destructive) {
                                                             stopSubscriptionAndPlaying(data)
                                                         }
                                                     }
@@ -191,14 +191,14 @@ struct FileListView: View {
                                              bottom: 5,
                                              trailing: 15))
                     }
-                    .segmentCardView(title: "Filelist")
+                    .segmentCardView(title: I18n.string(.Filelist))
                     .padding(EdgeInsets(top: 15,
                                         leading: 15,
                                         bottom: 5,
                                         trailing: 15))
                     
                 } else {
-                    Text("No Storage Data")
+                    Text(I18n.string(.NoStorageData))
                         .foregroundColor(Color.Neumorphic.secondary)
                         .fontWeight(.bold)
                         .padding(EdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 0))

@@ -1,0 +1,12 @@
+/* 
+  InfoPlist.strings
+  RoundRecorder
+
+  Created by ting hui wu on 2022/1/25.
+  
+*/
+"NSLocationWhenInUseUsageDescription" = "RoundRecorder 將使用您的位置建立含有地理資訊的音檔、顯示您與播放音源的相對位置。";
+"NSLocationAlwaysandWhenInUseUsageDescription" = "RoundRecorder 將使用您的位置建立含有地理資訊的音檔、顯示您與播放音源的相對位置。";
+"NSLocalNetworkUsageDescription" = "This app will be able to discover and connect to devices on the network you use.";
+"NSMicrophoneUsageDescription" = "RoundRecorder 將使用您的麥克風錄製音檔、建立廣播頻道。";
+"NSMotionUsageDescription" = "RoundRecorder 將使用您的動態資訊提升立體音訊的使用體驗。";

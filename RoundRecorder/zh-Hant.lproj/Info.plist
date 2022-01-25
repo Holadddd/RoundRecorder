@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string></string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>RoundRecorder 將使用您的位置建立含有地理資訊的音檔、顯示您與播放音源的相對位置。</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>This app will be able to discover and connect to devices on the network you use.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>RoundRecorder 將使用您的麥克鳳錄製音檔、建立廣播頻道。</string>
+	<key>NSMotionUsageDescription</key>
+	<string>RoundRecorder 將使用您的動態資訊提升立體音訊的使用體驗。</string>
+	<key>APIHostIP</key>
+	<string>52.192.242.163</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>SocketHostIP</key>
+	<string>52.192.242.163</string>
+	<key>UDPSocketHostIP</key>
+	<string>52.192.242.163</string>
+	<key>UDPSocketInPort</key>
+	<string>8001</string>
+	<key>UDPSocketOutPort</key>
+	<string>8000</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+		<string>location</string>
+		<string>processing</string>
+		<string>voip</string>
+	</array>
+</dict>
+</plist>
