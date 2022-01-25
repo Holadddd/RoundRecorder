@@ -58,7 +58,18 @@
 		DBBB1D5C274F63F500E1B6C8 /* UDPSocketIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBB1D5B274F63F500E1B6C8 /* UDPSocketIn.swift */; };
 		DBBB1D602750D09300E1B6C8 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBB1D5F2750D09300E1B6C8 /* String+.swift */; };
 		DBC001CF279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DBC001CD279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodeld */; };
-		DBC001D3279FBA0200B4C8DF /* RRAudioEngine in Sources */ = {isa = PBXBuildFile; fileRef = DBC001D2279FBA0200B4C8DF /* RRAudioEngine */; };
+		DBC00205279FBC1900B4C8DF /* RRAudioOutputData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC001F5279FBC1900B4C8DF /* RRAudioOutputData.swift */; };
+		DBC00206279FBC1900B4C8DF /* EngineHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC001F6279FBC1900B4C8DF /* EngineHelper.swift */; };
+		DBC00207279FBC1900B4C8DF /* RRAudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC001F7279FBC1900B4C8DF /* RRAudioEngine.swift */; };
+		DBC00208279FBC1900B4C8DF /* RRRecordingDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC001F8279FBC1900B4C8DF /* RRRecordingDataHelper.swift */; };
+		DBC00209279FBC1900B4C8DF /* RRAudioData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC001FA279FBC1900B4C8DF /* RRAudioData.swift */; };
+		DBC0020A279FBC1900B4C8DF /* RRAudioBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC001FB279FBC1900B4C8DF /* RRAudioBuffer.swift */; };
+		DBC0020B279FBC1900B4C8DF /* RRAudioBufferMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC001FC279FBC1900B4C8DF /* RRAudioBufferMetadata.swift */; };
+		DBC0020C279FBC1900B4C8DF /* RRAudioEngineDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC001FD279FBC1900B4C8DF /* RRAudioEngineDataSource.swift */; };
+		DBC0020D279FBC1900B4C8DF /* RRStreamBasicDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC001FF279FBC1900B4C8DF /* RRStreamBasicDescription.swift */; };
+		DBC0020E279FBC1900B4C8DF /* RRAudioEngineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC00200279FBC1900B4C8DF /* RRAudioEngineDelegate.swift */; };
+		DBC0020F279FBC1900B4C8DF /* PowerMeters.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC00202279FBC1900B4C8DF /* PowerMeters.swift */; };
+		DBC00210279FBC1900B4C8DF /* RRAudioRenderAudioUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC00204279FBC1900B4C8DF /* RRAudioRenderAudioUnit.swift */; };
 		DBD578EE2791966F00C3433E /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD578ED2791966F00C3433E /* UIImage+.swift */; };
 		DBD578F027954D3900C3433E /* Map+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD578EF27954D3900C3433E /* Map+.swift */; };
 		DBDD67DB27440F0100E91A5B /* UrbanRecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDD67DA27440F0100E91A5B /* UrbanRecorderTests.swift */; };
@@ -102,6 +113,7 @@
 		DB710E452745025700FD3304 /* AtomicValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicValue.swift; sourceTree = "<group>"; };
 		DB710E482745F42A00FD3304 /* DispatchTime+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchTime+.swift"; sourceTree = "<group>"; };
 		DB74024E273A6FFD00CD74A4 /* UDPSocketOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPSocketOut.swift; sourceTree = "<group>"; };
+		DB8085A1279FC55E00952D4F /* RoundRecorder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RoundRecorder.entitlements; sourceTree = "<group>"; };
 		DB9E3CB8272131CC008FCFAB /* RoundRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RoundRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB9E3CBB272131CC008FCFAB /* RoundRecorderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundRecorderApp.swift; sourceTree = "<group>"; };
 		DB9E3CBF272131CE008FCFAB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -130,7 +142,18 @@
 		DBBB1D5B274F63F500E1B6C8 /* UDPSocketIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPSocketIn.swift; sourceTree = "<group>"; };
 		DBBB1D5F2750D09300E1B6C8 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		DBC001CE279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RoundRecorderModel.xcdatamodel; sourceTree = "<group>"; };
-		DBC001D2279FBA0200B4C8DF /* RRAudioEngine */ = {isa = PBXFileReference; lastKnownFileType = folder; path = RRAudioEngine; sourceTree = "<group>"; };
+		DBC001F5279FBC1900B4C8DF /* RRAudioOutputData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RRAudioOutputData.swift; sourceTree = "<group>"; };
+		DBC001F6279FBC1900B4C8DF /* EngineHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EngineHelper.swift; sourceTree = "<group>"; };
+		DBC001F7279FBC1900B4C8DF /* RRAudioEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RRAudioEngine.swift; sourceTree = "<group>"; };
+		DBC001F8279FBC1900B4C8DF /* RRRecordingDataHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RRRecordingDataHelper.swift; sourceTree = "<group>"; };
+		DBC001FA279FBC1900B4C8DF /* RRAudioData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RRAudioData.swift; sourceTree = "<group>"; };
+		DBC001FB279FBC1900B4C8DF /* RRAudioBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RRAudioBuffer.swift; sourceTree = "<group>"; };
+		DBC001FC279FBC1900B4C8DF /* RRAudioBufferMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RRAudioBufferMetadata.swift; sourceTree = "<group>"; };
+		DBC001FD279FBC1900B4C8DF /* RRAudioEngineDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RRAudioEngineDataSource.swift; sourceTree = "<group>"; };
+		DBC001FF279FBC1900B4C8DF /* RRStreamBasicDescription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RRStreamBasicDescription.swift; sourceTree = "<group>"; };
+		DBC00200279FBC1900B4C8DF /* RRAudioEngineDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RRAudioEngineDelegate.swift; sourceTree = "<group>"; };
+		DBC00202279FBC1900B4C8DF /* PowerMeters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PowerMeters.swift; sourceTree = "<group>"; };
+		DBC00204279FBC1900B4C8DF /* RRAudioRenderAudioUnit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RRAudioRenderAudioUnit.swift; sourceTree = "<group>"; };
 		DBD578ED2791966F00C3433E /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		DBD578EF27954D3900C3433E /* Map+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Map+.swift"; sourceTree = "<group>"; };
 		DBDD67D827440F0100E91A5B /* RoundRecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RoundRecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -138,7 +161,6 @@
 		DBE2A388273D0B2B0098E52D /* FloatingPoint+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingPoint+.swift"; sourceTree = "<group>"; };
 		DBE2A38A273D17460098E52D /* DirectionAndDistanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionAndDistanceView.swift; sourceTree = "<group>"; };
 		DBF0E3F8272FEB07004DC546 /* SubscribeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeManager.swift; sourceTree = "<group>"; };
-		DBF0E3FA2730FD99004DC546 /* RoundRecorder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RoundRecorder.entitlements; sourceTree = "<group>"; };
 		DBF0E3FC2730FD99004DC546 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		DBF0E3FE27311959004DC546 /* Notification+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+.swift"; sourceTree = "<group>"; };
 		DBF0E40027311DCF004DC546 /* UDPSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPSocketManager.swift; sourceTree = "<group>"; };
@@ -200,9 +222,7 @@
 		DB9E3CAF272131CC008FCFAB = {
 			isa = PBXGroup;
 			children = (
-				DBC001CD279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodeld */,
 				DB9E3CBA272131CC008FCFAB /* RoundRecorder */,
-				DBC001D2279FBA0200B4C8DF /* RRAudioEngine */,
 				DBDD67D927440F0100E91A5B /* RoundRecorderTests */,
 				DB9E3CB9272131CC008FCFAB /* Products */,
 				DBF0E3FB2730FD99004DC546 /* Frameworks */,
@@ -221,7 +241,8 @@
 		DB9E3CBA272131CC008FCFAB /* RoundRecorder */ = {
 			isa = PBXGroup;
 			children = (
-				DBF0E3FA2730FD99004DC546 /* RoundRecorder.entitlements */,
+				DB8085A1279FC55E00952D4F /* RoundRecorder.entitlements */,
+				DBC001CD279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodeld */,
 				DB9E3CF827216587008FCFAB /* Info.plist */,
 				DBA6DA4F274E033000E80FF5 /* GoogleService-Info.plist */,
 				DB9E3CBB272131CC008FCFAB /* RoundRecorderApp.swift */,
@@ -234,6 +255,7 @@
 				DBA7EFC5272A9F380037AA7E /* Network */,
 				DBF0E3F7272FCC43004DC546 /* Socket */,
 				DB2D9D0D2761FCE200100535 /* Storage */,
+				DBC001F4279FBC1900B4C8DF /* RRAudioEngine */,
 				DB9E3CC4272131CE008FCFAB /* Persistence.swift */,
 				DB9E3CBF272131CE008FCFAB /* Assets.xcassets */,
 				DB9E3CC1272131CE008FCFAB /* Preview Content */,
@@ -348,6 +370,58 @@
 				DBA7EFDF272AF3920037AA7E /* AvailableUserListRP.swift */,
 			);
 			path = User;
+			sourceTree = "<group>";
+		};
+		DBC001F4279FBC1900B4C8DF /* RRAudioEngine */ = {
+			isa = PBXGroup;
+			children = (
+				DBC001F5279FBC1900B4C8DF /* RRAudioOutputData.swift */,
+				DBC001F6279FBC1900B4C8DF /* EngineHelper.swift */,
+				DBC001F7279FBC1900B4C8DF /* RRAudioEngine.swift */,
+				DBC001F8279FBC1900B4C8DF /* RRRecordingDataHelper.swift */,
+				DBC001F9279FBC1900B4C8DF /* Model */,
+				DBC001FD279FBC1900B4C8DF /* RRAudioEngineDataSource.swift */,
+				DBC001FE279FBC1900B4C8DF /* AudioStreamBasicDescription */,
+				DBC00200279FBC1900B4C8DF /* RRAudioEngineDelegate.swift */,
+				DBC00201279FBC1900B4C8DF /* PowerMeters */,
+				DBC00203279FBC1900B4C8DF /* AudioUnit */,
+			);
+			name = RRAudioEngine;
+			path = RoundRecorder/RRAudioEngine;
+			sourceTree = SOURCE_ROOT;
+		};
+		DBC001F9279FBC1900B4C8DF /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DBC001FA279FBC1900B4C8DF /* RRAudioData.swift */,
+				DBC001FB279FBC1900B4C8DF /* RRAudioBuffer.swift */,
+				DBC001FC279FBC1900B4C8DF /* RRAudioBufferMetadata.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DBC001FE279FBC1900B4C8DF /* AudioStreamBasicDescription */ = {
+			isa = PBXGroup;
+			children = (
+				DBC001FF279FBC1900B4C8DF /* RRStreamBasicDescription.swift */,
+			);
+			path = AudioStreamBasicDescription;
+			sourceTree = "<group>";
+		};
+		DBC00201279FBC1900B4C8DF /* PowerMeters */ = {
+			isa = PBXGroup;
+			children = (
+				DBC00202279FBC1900B4C8DF /* PowerMeters.swift */,
+			);
+			path = PowerMeters;
+			sourceTree = "<group>";
+		};
+		DBC00203279FBC1900B4C8DF /* AudioUnit */ = {
+			isa = PBXGroup;
+			children = (
+				DBC00204279FBC1900B4C8DF /* RRAudioRenderAudioUnit.swift */,
+			);
+			path = AudioUnit;
 			sourceTree = "<group>";
 		};
 		DBDD67D927440F0100E91A5B /* RoundRecorderTests */ = {
@@ -530,7 +604,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DBC001D3279FBA0200B4C8DF /* RRAudioEngine in Sources */,
 				DBC001CF279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodeld in Sources */,
 				DB710E442744FA5E00FD3304 /* AppDelegate.swift in Sources */,
 				DBA7EFDB272AEEDE0037AA7E /* CloseTheSessionRQ.swift in Sources */,
@@ -540,19 +613,26 @@
 				DBA7EFCE272ABBF50037AA7E /* URLRequest+.swift in Sources */,
 				DB12B39A27701F34005B8AAC /* RouteBuilder.swift in Sources */,
 				DBA7EFD1272AE89B0037AA7E /* UserAPI.swift in Sources */,
+				DBC0020E279FBC1900B4C8DF /* RRAudioEngineDelegate.swift in Sources */,
 				DBA7EFDE272AF37D0037AA7E /* UserInfo.swift in Sources */,
 				DB9E3CFD2722785F008FCFAB /* Helper.swift in Sources */,
+				DBC0020C279FBC1900B4C8DF /* RRAudioEngineDataSource.swift in Sources */,
 				DB2D9CFD275CCE7100100535 /* SubscribeView.swift in Sources */,
 				DB2D9D01275CD17100100535 /* RecorderView.swift in Sources */,
 				DB9E3CC5272131CE008FCFAB /* Persistence.swift in Sources */,
 				DBF3C68C2726BCEC00292893 /* SegmentSlideOverCardView.swift in Sources */,
 				DB2D9D3027671F4A00100535 /* RecordedData+CoreDataProperties.swift in Sources */,
 				DBA7EFE0272AF3920037AA7E /* AvailableUserListRP.swift in Sources */,
+				DBC0020B279FBC1900B4C8DF /* RRAudioBufferMetadata.swift in Sources */,
 				DB9E3D072722BB34008FCFAB /* CGFloat+.swift in Sources */,
 				DBA7EFD7272AEEB20037AA7E /* AcceptCallingRequestRQ.swift in Sources */,
 				DB9E3CF227215B8A008FCFAB /* HomeMapView.swift in Sources */,
+				DBC0020F279FBC1900B4C8DF /* PowerMeters.swift in Sources */,
+				DBC00209279FBC1900B4C8DF /* RRAudioData.swift in Sources */,
 				DBF0E3FF27311959004DC546 /* Notification+.swift in Sources */,
+				DBC00210279FBC1900B4C8DF /* RRAudioRenderAudioUnit.swift in Sources */,
 				DB2D9D132762036300100535 /* Array+.swift in Sources */,
+				DBC0020A279FBC1900B4C8DF /* RRAudioBuffer.swift in Sources */,
 				DBD578EE2791966F00C3433E /* UIImage+.swift in Sources */,
 				DB4956D9274920DD00FE512A /* NeumorphicWaveView.swift in Sources */,
 				DBD578F027954D3900C3433E /* Map+.swift in Sources */,
@@ -560,14 +640,17 @@
 				DBE2A38B273D17460098E52D /* DirectionAndDistanceView.swift in Sources */,
 				DBF0E3F9272FEB07004DC546 /* SubscribeManager.swift in Sources */,
 				DB710E462745025700FD3304 /* AtomicValue.swift in Sources */,
+				DBC00206279FBC1900B4C8DF /* EngineHelper.swift in Sources */,
 				DB710E492745F42A00FD3304 /* DispatchTime+.swift in Sources */,
 				DBA7EFCC272ABABA0037AA7E /* Codable+.swift in Sources */,
 				DBA7EFD9272AEEC50037AA7E /* DeclineCallingRequestRQ.swift in Sources */,
 				DB2D9D0C2760A44000100535 /* Int+.swift in Sources */,
 				DBA7EFCA272AB3440037AA7E /* DeviceInfoRQ.swift in Sources */,
 				DBA7EFD5272AEB1C0037AA7E /* CallRequestRQ.swift in Sources */,
+				DBC00205279FBC1900B4C8DF /* RRAudioOutputData.swift in Sources */,
 				DB2D9CFB275C982000100535 /* Grid+.swift in Sources */,
 				DB12B39C27703E31005B8AAC /* MapView.swift in Sources */,
+				DBC00208279FBC1900B4C8DF /* RRRecordingDataHelper.swift in Sources */,
 				DBF0E405273126C1004DC546 /* Date+.swift in Sources */,
 				DB9E3CFB27216E23008FCFAB /* HomeMapModel.swift in Sources */,
 				DBBB1D5C274F63F500E1B6C8 /* UDPSocketIn.swift in Sources */,
@@ -581,7 +664,9 @@
 				DBF0E40127311DCF004DC546 /* UDPSocketManager.swift in Sources */,
 				DBA7EFD3272AE8BA0037AA7E /* VoiceServerAPI.swift in Sources */,
 				DB9E3D052722BAF6008FCFAB /* View+.swift in Sources */,
+				DBC00207279FBC1900B4C8DF /* RRAudioEngine.swift in Sources */,
 				DB4956DB2749401400FE512A /* UIDevice+.swift in Sources */,
+				DBC0020D279FBC1900B4C8DF /* RRStreamBasicDescription.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -731,7 +816,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = RoundRecorder/RoundRecorderentitlements;
+				CODE_SIGN_ENTITLEMENTS = RoundRecorder/RoundRecorder.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -775,7 +860,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = RoundRecorder/RoundRecorderentitlements;
+				CODE_SIGN_ENTITLEMENTS = RoundRecorder/RoundRecorder.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -969,8 +1054,7 @@
 				DBC001CE279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodel */,
 			);
 			currentVersion = DBC001CE279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodel */;
-			name = RoundRecorderModel.xcdatamodeld;
-			path = RoundRecorder/RoundRecorderModel.xcdatamodeld;
+			path = RoundRecorderModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
