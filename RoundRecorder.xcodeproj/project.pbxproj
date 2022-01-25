@@ -13,8 +13,6 @@
 		DB2D9CFD275CCE7100100535 /* SubscribeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9CFC275CCE7100100535 /* SubscribeView.swift */; };
 		DB2D9CFF275CCFD800100535 /* BroadcastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9CFE275CCFD800100535 /* BroadcastView.swift */; };
 		DB2D9D01275CD17100100535 /* RecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D00275CD17100100535 /* RecorderView.swift */; };
-		DB2D9D03275E180400100535 /* RRRecordingDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D02275E180400100535 /* RRRecordingDataHelper.swift */; };
-		DB2D9D05275F3B8400100535 /* RRAudioData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D04275F3B8400100535 /* RRAudioData.swift */; };
 		DB2D9D07275F49C000100535 /* RRRecordingDataHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D06275F49BF00100535 /* RRRecordingDataHelperTests.swift */; };
 		DB2D9D0C2760A44000100535 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D0B2760A44000100535 /* Int+.swift */; };
 		DB2D9D132762036300100535 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D122762036300100535 /* Array+.swift */; };
@@ -24,8 +22,6 @@
 		DB3321D227476312002446F1 /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = DB3321D127476312002446F1 /* Neumorphic */; };
 		DB4956D9274920DD00FE512A /* NeumorphicWaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */; };
 		DB4956DB2749401400FE512A /* UIDevice+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4956DA2749401400FE512A /* UIDevice+.swift */; };
-		DB67AE3D2738D678007EE7CE /* PowerMeters.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB67AE3C2738D678007EE7CE /* PowerMeters.swift */; };
-		DB68DD9C2733DB7500336001 /* RRAudioEngineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB68DD9B2733DB7500336001 /* RRAudioEngineDelegate.swift */; };
 		DB710E442744FA5E00FD3304 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB710E432744FA5E00FD3304 /* AppDelegate.swift */; };
 		DB710E462745025700FD3304 /* AtomicValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB710E452745025700FD3304 /* AtomicValue.swift */; };
 		DB710E472745025D00FD3304 /* AtomicValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB710E452745025700FD3304 /* AtomicValue.swift */; };
@@ -62,6 +58,7 @@
 		DBBB1D5C274F63F500E1B6C8 /* UDPSocketIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBB1D5B274F63F500E1B6C8 /* UDPSocketIn.swift */; };
 		DBBB1D602750D09300E1B6C8 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBB1D5F2750D09300E1B6C8 /* String+.swift */; };
 		DBC001CF279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DBC001CD279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodeld */; };
+		DBC001D3279FBA0200B4C8DF /* RRAudioEngine in Sources */ = {isa = PBXBuildFile; fileRef = DBC001D2279FBA0200B4C8DF /* RRAudioEngine */; };
 		DBD578EE2791966F00C3433E /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD578ED2791966F00C3433E /* UIImage+.swift */; };
 		DBD578F027954D3900C3433E /* Map+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD578EF27954D3900C3433E /* Map+.swift */; };
 		DBDD67DB27440F0100E91A5B /* UrbanRecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDD67DA27440F0100E91A5B /* UrbanRecorderTests.swift */; };
@@ -72,14 +69,6 @@
 		DBF0E40127311DCF004DC546 /* UDPSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E40027311DCF004DC546 /* UDPSocketManager.swift */; };
 		DBF0E403273123ED004DC546 /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E402273123ED004DC546 /* Data+.swift */; };
 		DBF0E405273126C1004DC546 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E404273126C1004DC546 /* Date+.swift */; };
-		DBF0E408273141E1004DC546 /* RRAudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E407273141E1004DC546 /* RRAudioEngine.swift */; };
-		DBF0E40B273144B6004DC546 /* RRAudioBufferMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E40A273144B6004DC546 /* RRAudioBufferMetadata.swift */; };
-		DBF0E40D27327A6F004DC546 /* RRAudioEngineDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E40C27327A6F004DC546 /* RRAudioEngineDataSource.swift */; };
-		DBF0E41027327B69004DC546 /* RRAudioRenderAudioUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E40F27327B69004DC546 /* RRAudioRenderAudioUnit.swift */; };
-		DBF0E41327327CE7004DC546 /* RRStreamBasicDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E41227327CE7004DC546 /* RRStreamBasicDescription.swift */; };
-		DBF0E41527327D1B004DC546 /* EngineHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E41427327D1B004DC546 /* EngineHelper.swift */; };
-		DBF0E417273288BE004DC546 /* RRAudioOutputData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E416273288BE004DC546 /* RRAudioOutputData.swift */; };
-		DBF0E41927338BDE004DC546 /* RRAudioBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF0E41827338BDE004DC546 /* RRAudioBuffer.swift */; };
 		DBF3C68C2726BCEC00292893 /* SegmentSlideOverCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF3C68B2726BCEC00292893 /* SegmentSlideOverCardView.swift */; };
 		DBF3C68E2727E10800292893 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF3C68D2727E10800292893 /* Color+.swift */; };
 /* End PBXBuildFile section */
@@ -101,8 +90,6 @@
 		DB2D9CFC275CCE7100100535 /* SubscribeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeView.swift; sourceTree = "<group>"; };
 		DB2D9CFE275CCFD800100535 /* BroadcastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastView.swift; sourceTree = "<group>"; };
 		DB2D9D00275CD17100100535 /* RecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecorderView.swift; sourceTree = "<group>"; };
-		DB2D9D02275E180400100535 /* RRRecordingDataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RRRecordingDataHelper.swift; sourceTree = "<group>"; };
-		DB2D9D04275F3B8400100535 /* RRAudioData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RRAudioData.swift; sourceTree = "<group>"; };
 		DB2D9D06275F49BF00100535 /* RRRecordingDataHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RRRecordingDataHelperTests.swift; sourceTree = "<group>"; };
 		DB2D9D0B2760A44000100535 /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
 		DB2D9D122762036300100535 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
@@ -111,8 +98,6 @@
 		DB2D9D2E27671F4900100535 /* RecordedData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecordedData+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		DB4956D8274920DD00FE512A /* NeumorphicWaveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeumorphicWaveView.swift; sourceTree = "<group>"; };
 		DB4956DA2749401400FE512A /* UIDevice+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+.swift"; sourceTree = "<group>"; };
-		DB67AE3C2738D678007EE7CE /* PowerMeters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerMeters.swift; sourceTree = "<group>"; };
-		DB68DD9B2733DB7500336001 /* RRAudioEngineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RRAudioEngineDelegate.swift; sourceTree = "<group>"; };
 		DB710E432744FA5E00FD3304 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DB710E452745025700FD3304 /* AtomicValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicValue.swift; sourceTree = "<group>"; };
 		DB710E482745F42A00FD3304 /* DispatchTime+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchTime+.swift"; sourceTree = "<group>"; };
@@ -145,6 +130,7 @@
 		DBBB1D5B274F63F500E1B6C8 /* UDPSocketIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPSocketIn.swift; sourceTree = "<group>"; };
 		DBBB1D5F2750D09300E1B6C8 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		DBC001CE279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RoundRecorderModel.xcdatamodel; sourceTree = "<group>"; };
+		DBC001D2279FBA0200B4C8DF /* RRAudioEngine */ = {isa = PBXFileReference; lastKnownFileType = folder; path = RRAudioEngine; sourceTree = "<group>"; };
 		DBD578ED2791966F00C3433E /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		DBD578EF27954D3900C3433E /* Map+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Map+.swift"; sourceTree = "<group>"; };
 		DBDD67D827440F0100E91A5B /* RoundRecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RoundRecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -158,14 +144,6 @@
 		DBF0E40027311DCF004DC546 /* UDPSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPSocketManager.swift; sourceTree = "<group>"; };
 		DBF0E402273123ED004DC546 /* Data+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+.swift"; sourceTree = "<group>"; };
 		DBF0E404273126C1004DC546 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
-		DBF0E407273141E1004DC546 /* RRAudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RRAudioEngine.swift; sourceTree = "<group>"; };
-		DBF0E40A273144B6004DC546 /* RRAudioBufferMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RRAudioBufferMetadata.swift; sourceTree = "<group>"; };
-		DBF0E40C27327A6F004DC546 /* RRAudioEngineDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RRAudioEngineDataSource.swift; sourceTree = "<group>"; };
-		DBF0E40F27327B69004DC546 /* RRAudioRenderAudioUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RRAudioRenderAudioUnit.swift; sourceTree = "<group>"; };
-		DBF0E41227327CE7004DC546 /* RRStreamBasicDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RRStreamBasicDescription.swift; sourceTree = "<group>"; };
-		DBF0E41427327D1B004DC546 /* EngineHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineHelper.swift; sourceTree = "<group>"; };
-		DBF0E416273288BE004DC546 /* RRAudioOutputData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RRAudioOutputData.swift; sourceTree = "<group>"; };
-		DBF0E41827338BDE004DC546 /* RRAudioBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RRAudioBuffer.swift; sourceTree = "<group>"; };
 		DBF3C68B2726BCEC00292893 /* SegmentSlideOverCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentSlideOverCardView.swift; sourceTree = "<group>"; };
 		DBF3C68D2727E10800292893 /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -219,19 +197,12 @@
 			path = "Neumorphic View";
 			sourceTree = "<group>";
 		};
-		DB67AE3B2738D65F007EE7CE /* PowerMeters */ = {
-			isa = PBXGroup;
-			children = (
-				DB67AE3C2738D678007EE7CE /* PowerMeters.swift */,
-			);
-			path = PowerMeters;
-			sourceTree = "<group>";
-		};
 		DB9E3CAF272131CC008FCFAB = {
 			isa = PBXGroup;
 			children = (
 				DBC001CD279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodeld */,
 				DB9E3CBA272131CC008FCFAB /* RoundRecorder */,
+				DBC001D2279FBA0200B4C8DF /* RRAudioEngine */,
 				DBDD67D927440F0100E91A5B /* RoundRecorderTests */,
 				DB9E3CB9272131CC008FCFAB /* Products */,
 				DBF0E3FB2730FD99004DC546 /* Frameworks */,
@@ -263,7 +234,6 @@
 				DBA7EFC5272A9F380037AA7E /* Network */,
 				DBF0E3F7272FCC43004DC546 /* Socket */,
 				DB2D9D0D2761FCE200100535 /* Storage */,
-				DBF0E406273141C5004DC546 /* URAudioEngine */,
 				DB9E3CC4272131CE008FCFAB /* Persistence.swift */,
 				DB9E3CBF272131CE008FCFAB /* Assets.xcassets */,
 				DB9E3CC1272131CE008FCFAB /* Preview Content */,
@@ -406,49 +376,6 @@
 				DBF0E3FC2730FD99004DC546 /* NetworkExtension.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		DBF0E406273141C5004DC546 /* URAudioEngine */ = {
-			isa = PBXGroup;
-			children = (
-				DBF0E407273141E1004DC546 /* RRAudioEngine.swift */,
-				DBF0E40C27327A6F004DC546 /* RRAudioEngineDataSource.swift */,
-				DB68DD9B2733DB7500336001 /* RRAudioEngineDelegate.swift */,
-				DBF0E416273288BE004DC546 /* RRAudioOutputData.swift */,
-				DB2D9D02275E180400100535 /* RRRecordingDataHelper.swift */,
-				DBF0E40E27327ABB004DC546 /* AudioUnit */,
-				DBF0E41127327CC7004DC546 /* AudioStreamBasicDescription */,
-				DB67AE3B2738D65F007EE7CE /* PowerMeters */,
-				DBF0E40927314495004DC546 /* Model */,
-				DBF0E41427327D1B004DC546 /* EngineHelper.swift */,
-			);
-			path = URAudioEngine;
-			sourceTree = "<group>";
-		};
-		DBF0E40927314495004DC546 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				DBF0E40A273144B6004DC546 /* RRAudioBufferMetadata.swift */,
-				DBF0E41827338BDE004DC546 /* RRAudioBuffer.swift */,
-				DB2D9D04275F3B8400100535 /* RRAudioData.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		DBF0E40E27327ABB004DC546 /* AudioUnit */ = {
-			isa = PBXGroup;
-			children = (
-				DBF0E40F27327B69004DC546 /* RRAudioRenderAudioUnit.swift */,
-			);
-			path = AudioUnit;
-			sourceTree = "<group>";
-		};
-		DBF0E41127327CC7004DC546 /* AudioStreamBasicDescription */ = {
-			isa = PBXGroup;
-			children = (
-				DBF0E41227327CE7004DC546 /* RRStreamBasicDescription.swift */,
-			);
-			path = AudioStreamBasicDescription;
 			sourceTree = "<group>";
 		};
 		DBF3C68A2726AF9F00292893 /* Views */ = {
@@ -603,11 +530,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBC001D3279FBA0200B4C8DF /* RRAudioEngine in Sources */,
 				DBC001CF279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodeld in Sources */,
 				DB710E442744FA5E00FD3304 /* AppDelegate.swift in Sources */,
 				DBA7EFDB272AEEDE0037AA7E /* CloseTheSessionRQ.swift in Sources */,
 				DBF3C68E2727E10800292893 /* Color+.swift in Sources */,
-				DBF0E41327327CE7004DC546 /* RRStreamBasicDescription.swift in Sources */,
 				DBBB1D602750D09300E1B6C8 /* String+.swift in Sources */,
 				DBA7EFC7272A9F880037AA7E /* HTTPClient.swift in Sources */,
 				DBA7EFCE272ABBF50037AA7E /* URLRequest+.swift in Sources */,
@@ -620,31 +547,22 @@
 				DB9E3CC5272131CE008FCFAB /* Persistence.swift in Sources */,
 				DBF3C68C2726BCEC00292893 /* SegmentSlideOverCardView.swift in Sources */,
 				DB2D9D3027671F4A00100535 /* RecordedData+CoreDataProperties.swift in Sources */,
-				DBF0E40B273144B6004DC546 /* RRAudioBufferMetadata.swift in Sources */,
 				DBA7EFE0272AF3920037AA7E /* AvailableUserListRP.swift in Sources */,
 				DB9E3D072722BB34008FCFAB /* CGFloat+.swift in Sources */,
-				DBF0E408273141E1004DC546 /* RRAudioEngine.swift in Sources */,
 				DBA7EFD7272AEEB20037AA7E /* AcceptCallingRequestRQ.swift in Sources */,
-				DBF0E41027327B69004DC546 /* RRAudioRenderAudioUnit.swift in Sources */,
 				DB9E3CF227215B8A008FCFAB /* HomeMapView.swift in Sources */,
-				DB68DD9C2733DB7500336001 /* RRAudioEngineDelegate.swift in Sources */,
 				DBF0E3FF27311959004DC546 /* Notification+.swift in Sources */,
 				DB2D9D132762036300100535 /* Array+.swift in Sources */,
 				DBD578EE2791966F00C3433E /* UIImage+.swift in Sources */,
 				DB4956D9274920DD00FE512A /* NeumorphicWaveView.swift in Sources */,
 				DBD578F027954D3900C3433E /* Map+.swift in Sources */,
 				DB2D9CFF275CCFD800100535 /* BroadcastView.swift in Sources */,
-				DB67AE3D2738D678007EE7CE /* PowerMeters.swift in Sources */,
 				DBE2A38B273D17460098E52D /* DirectionAndDistanceView.swift in Sources */,
 				DBF0E3F9272FEB07004DC546 /* SubscribeManager.swift in Sources */,
 				DB710E462745025700FD3304 /* AtomicValue.swift in Sources */,
 				DB710E492745F42A00FD3304 /* DispatchTime+.swift in Sources */,
-				DB2D9D05275F3B8400100535 /* RRAudioData.swift in Sources */,
 				DBA7EFCC272ABABA0037AA7E /* Codable+.swift in Sources */,
 				DBA7EFD9272AEEC50037AA7E /* DeclineCallingRequestRQ.swift in Sources */,
-				DBF0E41927338BDE004DC546 /* RRAudioBuffer.swift in Sources */,
-				DBF0E417273288BE004DC546 /* RRAudioOutputData.swift in Sources */,
-				DBF0E41527327D1B004DC546 /* EngineHelper.swift in Sources */,
 				DB2D9D0C2760A44000100535 /* Int+.swift in Sources */,
 				DBA7EFCA272AB3440037AA7E /* DeviceInfoRQ.swift in Sources */,
 				DBA7EFD5272AEB1C0037AA7E /* CallRequestRQ.swift in Sources */,
@@ -652,7 +570,6 @@
 				DB12B39C27703E31005B8AAC /* MapView.swift in Sources */,
 				DBF0E405273126C1004DC546 /* Date+.swift in Sources */,
 				DB9E3CFB27216E23008FCFAB /* HomeMapModel.swift in Sources */,
-				DB2D9D03275E180400100535 /* RRRecordingDataHelper.swift in Sources */,
 				DBBB1D5C274F63F500E1B6C8 /* UDPSocketIn.swift in Sources */,
 				DB2D9D2F27671F4A00100535 /* RecordedData+CoreDataClass.swift in Sources */,
 				DB74024F273A6FFD00CD74A4 /* UDPSocketOut.swift in Sources */,
@@ -663,7 +580,6 @@
 				DB9E3CF727215D81008FCFAB /* HomeMapViewModel.swift in Sources */,
 				DBF0E40127311DCF004DC546 /* UDPSocketManager.swift in Sources */,
 				DBA7EFD3272AE8BA0037AA7E /* VoiceServerAPI.swift in Sources */,
-				DBF0E40D27327A6F004DC546 /* RRAudioEngineDataSource.swift in Sources */,
 				DB9E3D052722BAF6008FCFAB /* View+.swift in Sources */,
 				DB4956DB2749401400FE512A /* UIDevice+.swift in Sources */,
 			);
