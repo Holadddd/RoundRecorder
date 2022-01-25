@@ -12,13 +12,13 @@ import CoreAudio
 //### We do not cosider old platforms which Swift does not support.
 
 //=============================================================================
-//    URStreamBasicDescription
+//    RRStreamBasicDescription
 //
 //    This is a wrapper class for the AudioStreamBasicDescription struct.
 //    It adds a number of convenience routines, but otherwise adds nothing
 //    to the footprint of the original struct.
 //=============================================================================
-//### URStreamBasicDescription is a typealias of AudioStreamBasicDescription, we define an extension.
+//### RRStreamBasicDescription is a typealias of AudioStreamBasicDescription, we define an extension.
 typealias RRStreamBasicDescription = AudioStreamBasicDescription
 extension RRStreamBasicDescription {
     

@@ -61,7 +61,7 @@
 		DBA7EFE0272AF3920037AA7E /* AvailableUserListRP.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7EFDF272AF3920037AA7E /* AvailableUserListRP.swift */; };
 		DBBB1D5C274F63F500E1B6C8 /* UDPSocketIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBB1D5B274F63F500E1B6C8 /* UDPSocketIn.swift */; };
 		DBBB1D602750D09300E1B6C8 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBB1D5F2750D09300E1B6C8 /* String+.swift */; };
-		DBC001CC279FAE5300B4C8DF /* RoundRecorderModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DBC001CA279FAE5300B4C8DF /* RoundRecorderModel.xcdatamodeld */; };
+		DBC001CF279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DBC001CD279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodeld */; };
 		DBD578EE2791966F00C3433E /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD578ED2791966F00C3433E /* UIImage+.swift */; };
 		DBD578F027954D3900C3433E /* Map+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD578EF27954D3900C3433E /* Map+.swift */; };
 		DBDD67DB27440F0100E91A5B /* UrbanRecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDD67DA27440F0100E91A5B /* UrbanRecorderTests.swift */; };
@@ -144,7 +144,7 @@
 		DBA7EFDF272AF3920037AA7E /* AvailableUserListRP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableUserListRP.swift; sourceTree = "<group>"; };
 		DBBB1D5B274F63F500E1B6C8 /* UDPSocketIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPSocketIn.swift; sourceTree = "<group>"; };
 		DBBB1D5F2750D09300E1B6C8 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
-		DBC001CB279FAE5300B4C8DF /* UrbanRecorderModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UrbanRecorderModel.xcdatamodel; sourceTree = "<group>"; };
+		DBC001CE279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RoundRecorderModel.xcdatamodel; sourceTree = "<group>"; };
 		DBD578ED2791966F00C3433E /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		DBD578EF27954D3900C3433E /* Map+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Map+.swift"; sourceTree = "<group>"; };
 		DBDD67D827440F0100E91A5B /* RoundRecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RoundRecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -230,7 +230,7 @@
 		DB9E3CAF272131CC008FCFAB = {
 			isa = PBXGroup;
 			children = (
-				DBC001CA279FAE5300B4C8DF /* RoundRecorderModel.xcdatamodeld */,
+				DBC001CD279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodeld */,
 				DB9E3CBA272131CC008FCFAB /* RoundRecorder */,
 				DBDD67D927440F0100E91A5B /* RoundRecorderTests */,
 				DB9E3CB9272131CC008FCFAB /* Products */,
@@ -603,7 +603,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DBC001CC279FAE5300B4C8DF /* RoundRecorderModel.xcdatamodeld in Sources */,
+				DBC001CF279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodeld in Sources */,
 				DB710E442744FA5E00FD3304 /* AppDelegate.swift in Sources */,
 				DBA7EFDB272AEEDE0037AA7E /* CloseTheSessionRQ.swift in Sources */,
 				DBF3C68E2727E10800292893 /* Color+.swift in Sources */,
@@ -1047,12 +1047,12 @@
 /* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
-		DBC001CA279FAE5300B4C8DF /* RoundRecorderModel.xcdatamodeld */ = {
+		DBC001CD279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				DBC001CB279FAE5300B4C8DF /* UrbanRecorderModel.xcdatamodel */,
+				DBC001CE279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodel */,
 			);
-			currentVersion = DBC001CB279FAE5300B4C8DF /* UrbanRecorderModel.xcdatamodel */;
+			currentVersion = DBC001CE279FB67F00B4C8DF /* RoundRecorderModel.xcdatamodel */;
 			name = RoundRecorderModel.xcdatamodeld;
 			path = RoundRecorder/RoundRecorderModel.xcdatamodeld;
 			sourceTree = "<group>";
