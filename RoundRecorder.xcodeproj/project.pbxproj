@@ -27,6 +27,7 @@
 		DB710E472745025D00FD3304 /* AtomicValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB710E452745025700FD3304 /* AtomicValue.swift */; };
 		DB710E492745F42A00FD3304 /* DispatchTime+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB710E482745F42A00FD3304 /* DispatchTime+.swift */; };
 		DB74024F273A6FFD00CD74A4 /* UDPSocketOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB74024E273A6FFD00CD74A4 /* UDPSocketOut.swift */; };
+		DB8085A3279FD77800952D4F /* ICon.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8085A2279FD77800952D4F /* ICon.swift */; };
 		DB9E3CBC272131CC008FCFAB /* RoundRecorderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3CBB272131CC008FCFAB /* RoundRecorderApp.swift */; };
 		DB9E3CC0272131CE008FCFAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB9E3CBF272131CE008FCFAB /* Assets.xcassets */; };
 		DB9E3CC3272131CE008FCFAB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB9E3CC2272131CE008FCFAB /* Preview Assets.xcassets */; };
@@ -114,6 +115,7 @@
 		DB710E482745F42A00FD3304 /* DispatchTime+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchTime+.swift"; sourceTree = "<group>"; };
 		DB74024E273A6FFD00CD74A4 /* UDPSocketOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPSocketOut.swift; sourceTree = "<group>"; };
 		DB8085A1279FC55E00952D4F /* RoundRecorder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RoundRecorder.entitlements; sourceTree = "<group>"; };
+		DB8085A2279FD77800952D4F /* ICon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICon.swift; sourceTree = "<group>"; };
 		DB9E3CB8272131CC008FCFAB /* RoundRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RoundRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB9E3CBB272131CC008FCFAB /* RoundRecorderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundRecorderApp.swift; sourceTree = "<group>"; };
 		DB9E3CBF272131CE008FCFAB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 				DB9E3CF827216587008FCFAB /* Info.plist */,
 				DBA6DA4F274E033000E80FF5 /* GoogleService-Info.plist */,
 				DB9E3CBB272131CC008FCFAB /* RoundRecorderApp.swift */,
+				DB8085A2279FD77800952D4F /* ICon.swift */,
 				DB710E432744FA5E00FD3304 /* AppDelegate.swift */,
 				DB9E3CFC2722785F008FCFAB /* Helper.swift */,
 				DB3321C627474951002446F1 /* Neumorphic View */,
@@ -618,6 +621,7 @@
 				DB9E3CFD2722785F008FCFAB /* Helper.swift in Sources */,
 				DBC0020C279FBC1900B4C8DF /* RRAudioEngineDataSource.swift in Sources */,
 				DB2D9CFD275CCE7100100535 /* SubscribeView.swift in Sources */,
+				DB8085A3279FD77800952D4F /* ICon.swift in Sources */,
 				DB2D9D01275CD17100100535 /* RecorderView.swift in Sources */,
 				DB9E3CC5272131CE008FCFAB /* Persistence.swift in Sources */,
 				DBF3C68C2726BCEC00292893 /* SegmentSlideOverCardView.swift in Sources */,
