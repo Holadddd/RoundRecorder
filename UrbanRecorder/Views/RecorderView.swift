@@ -39,8 +39,8 @@ struct RecorderView: View {
                     TextField.init("",
                                    text: $recordName,
                                    prompt: Text("\(getDefaultRecordName())")
-                                    .fontWeight(.semibold)
-                    )
+                    ).customFont(style: .subheadline, weight: .light)
+                        .foregroundColor(Color.Neumorphic.secondary)
                     Spacer()
                 }.padding(EdgeInsets(top: 10, leading: 3, bottom: 0, trailing: 0))
                 

@@ -15,6 +15,8 @@ struct MapView: UIViewRepresentable {
     static let userArrowColor: UIColor = UIColor("#66b2ff")
     
     static let firstSetupCoordinateDistance: CLLocationDistance = 1000
+    #warning("Calculate the real needed distance")
+    static let fileRouteDisplayCoordinateDistance: CLLocationDistance = 1000
     
     @Binding var isSetupCurrentLocation: Bool
     
@@ -64,6 +66,7 @@ struct MapView: UIViewRepresentable {
             // Udpate by item (ex: routes, annotation...)
             updateByMapItem.toggle()
             uiView.camera = userCurrentMapCamera
+            uiView.camera.centerCoordinateDistance = MapView.fileRouteDisplayCoordinateDistance
         } else if isLocationLocked, let userCurrentLocation = uiView.userLocation.location?.toCLLocationCoordinate2D {
             // Lock user vision with current location
             uiView.camera.centerCoordinate = userCurrentLocation
