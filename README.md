@@ -17,9 +17,12 @@ Real-time geographic information can be provide by map and pointer.
     <img src="https://github.com/Holadddd/RoundRecorder/blob/master/RoundRecorder/Gif/Recorder.gif" width="200">
 
 - 顯示錄製路線與播放
+
     <img src="https://github.com/Holadddd/RoundRecorder/blob/master/RoundRecorder/Gif/Player.gif" width="200">
+    
 ### Compass
 - 顯示廣播定位
+
     <img src="https://github.com/Holadddd/RoundRecorder/blob/master/RoundRecorder/Gif/Radio.gif" width="200">
     
 - 重新校正耳機空間定位
