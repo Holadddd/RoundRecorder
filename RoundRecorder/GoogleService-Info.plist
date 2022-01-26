@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>322164767638-rudafm7lim58c9f01lrl9sfg4ck8m7mh.apps.googleusercontent.com</string>
+	<string>788370997933-hjslm8589bocsrntg11qm86jgjjuaa20.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.322164767638-rudafm7lim58c9f01lrl9sfg4ck8m7mh</string>
+	<string>com.googleusercontent.apps.788370997933-hjslm8589bocsrntg11qm86jgjjuaa20</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAambB66pzpX-w7MOt5N-EE8ciGL72tf1A</string>
+	<string>AIzaSyAlUe5hds7Rfx2mtDAi54strJoOlLdKFBs</string>
 	<key>GCM_SENDER_ID</key>
-	<string>322164767638</string>
+	<string>788370997933</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>Holadddd.RoundRecorder</string>
 	<key>PROJECT_ID</key>
-	<string>urbanrecorder-20770</string>
+	<string>roundrecorder-17f1a</string>
 	<key>STORAGE_BUCKET</key>
-	<string>urbanrecorder-20770.appspot.com</string>
+	<string>roundrecorder-17f1a.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:322164767638:ios:e7084e5af5d2bc74dc7bb7</string>
+	<string>1:788370997933:ios:178747a29285df7bc8bc24</string>
 </dict>
 </plist>
