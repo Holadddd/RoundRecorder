@@ -190,7 +190,7 @@ class RRAudioEngine: NSObject {
             
             currentAbility = .CaptureAudioData
             
-            print("Ability: \(currentAbility)")
+            print("RRAudioEngine Ability: \(currentAbility)")
         case .ScheduleAudioData:
             beginTappingMicrophone()
             
@@ -198,7 +198,7 @@ class RRAudioEngine: NSObject {
             
             currentAbility = .ScheduleAndCaptureAudioData
             
-            print("Ability: \(currentAbility)")
+            print("RRAudioEngine Ability: \(currentAbility)")
         case .CaptureAudioData:
             print("The Ability of CaptureAudioData is been active")
         default:
@@ -662,7 +662,7 @@ extension RRAudioEngine {
                     self.status = .readyWithoutRecordPermission
                 }
                 complete(isGranted)
-                print("AudioEngine: \(self.status)")
+                print("RRAudioEngine: \(self.status)")
             }
         }
     }

@@ -27,6 +27,8 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
     static let compressionAlgorithm: NSData.CompressionAlgorithm = .lz4
     
     static let enableCompresssionAlgorithm: Bool = false
+    
+    static let broadcastTimeLimitation: TimeInterval = 600.0
     /*
      AWS can accept maximum package size(64K 65536 bytes), Mac default max buffer size is 9216
      Use the command for modify the os system maximun UPD buffer with size as 65535 bytes
@@ -69,9 +71,10 @@ class UDPSocketManager: NSObject, GCDAsyncUdpSocketDelegate {
         
         if udpSocketIn == nil {
             udpSocketIn = UDPSocketIn(ip: ip, port: inPort)
-            udpSocketIn?.setupConnection { mtu in
+            udpSocketIn?.setupConnection {[weak self] mtu in
+                guard let self = self else { return }
                 self.mtu = mtu
-                setupUDPInReceive()
+                self.setupUDPInReceive()
                 complete(.success(false))
             }
         } else {

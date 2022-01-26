@@ -17,9 +17,19 @@ class HomeMapViewModel: NSObject, ObservableObject {
     static let desiredAccuracy:CLLocationAccuracy = kCLLocationAccuracyBest
     
     // MARK: - Broadcast
+    private var broadcastingLimitedTimer: Timer?
+    
     @Published var isBroadcasting: Bool = false {
         didSet {
             clearDirectionAndDistanceView()
+            if isBroadcasting {
+                // TODO: user timer for 5 min limits then stop broadcasting
+                self.broadcastingLimitedTimer = Timer.scheduledTimer(timeInterval: UDPSocketManager.broadcastTimeLimitation, target: self, selector: #selector(broadcastingLimitedTimerAction), userInfo: nil, repeats: false)
+            } else {
+                // TODO: destroy timer
+                self.broadcastingLimitedTimer?.invalidate()
+                self.broadcastingLimitedTimer = nil
+            }
         }
     }
     
@@ -256,6 +266,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
         cardViewUseCase = .radio
     }
     // MARK: - Broadcast
+    @objc private func broadcastingLimitedTimerAction() {
+        stopBroadcastChannelWith(broadcastID)
+    }
+    
     private func setupBroadcastMicrophoneCaptureCallback(channelID: String) {
         broadcastMicrophoneCaptureCallback = {[weak self, channelID] audioData in
             guard let self = self else { return }

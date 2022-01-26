@@ -16,7 +16,15 @@ class UDPSocketIn: NSObject, GCDAsyncUdpSocketDelegate {
     
     var receiveCallback: ((Data)->Void)?
     
-    var isSocketReady: Bool = false
+    var isSocketReady: Bool {
+        return isSocketInConnection && !isSocketPrepareRestart
+    }
+    
+    private var isSocketInConnection: Bool = false
+    
+    private var isSocketPrepareRestart: Bool = false
+    
+    private var successAction: ((mtu)->Void)?
     
     var userID: String?
     
@@ -37,7 +45,7 @@ class UDPSocketIn: NSObject, GCDAsyncUdpSocketDelegate {
         socket = nil
     }
     typealias mtu = Int
-    func setupConnection(success:((mtu)->Void)){
+    func setupConnection(success:(@escaping(mtu)->Void)){
         if socket == nil {
             socket = GCDAsyncUdpSocket(delegate: self, delegateQueue:DispatchQueue.main)
         } else {
@@ -48,9 +56,8 @@ class UDPSocketIn: NSObject, GCDAsyncUdpSocketDelegate {
         do { try socket.connect(toHost:IP, onPort: PORT)} catch { print("joinMulticastGroup not proceed")}
         do { try socket.enableBroadcast(true)} catch { print("not able to broad cast")}
         do { try socket.beginReceiving()} catch { print("beginReceiving not proceed")}
-        isSocketReady = true
         
-        success(Int(socket.maxSendBufferSize()))
+        successAction = success
     }
     
     func subscibeChannel(from userID: String, with channelID: String) {
@@ -74,12 +81,21 @@ class UDPSocketIn: NSObject, GCDAsyncUdpSocketDelegate {
         subscribeOnChannel = nil
         
         socket.send(data, withTimeout: 2, tag: 0)
+        
+        isSocketInConnection = false
+        
+        socket.close()
+        
+        print("UDPSocketIn did close")
     }
     
     //MARK:-GCDAsyncUdpSocketDelegate
     func udpSocket(_ sock: GCDAsyncUdpSocket, didConnectToAddress address: Data) {
         print("UDPSocketIn didConnect")
         
+        isSocketInConnection = true
+        
+        successAction?(Int(socket.maxSendBufferSize()))
     }
     
     func udpSocket(_ sock: GCDAsyncUdpSocket, didReceive data: Data, fromAddress address: Data, withFilterContext filterContext: Any?) {
@@ -87,6 +103,7 @@ class UDPSocketIn: NSObject, GCDAsyncUdpSocketDelegate {
     }
     func udpSocket(_ sock: GCDAsyncUdpSocket, didNotConnect error: Error?) {
         print("UDPSocketIn didNotConnect")
+        isSocketInConnection = false
     }
     func udpSocket(_ sock: GCDAsyncUdpSocket, didSendDataWithTag tag: Int) {
         switch tag  {
@@ -110,12 +127,17 @@ class UDPSocketIn: NSObject, GCDAsyncUdpSocketDelegate {
         }
     }
     func udpSocketDidClose(_ sock: GCDAsyncUdpSocket, withError error: Error?) {
-        print("Error:\(String(describing: error))")
-        isSocketReady = false
-        print("Prepare To Restart Connection")
-        // RestartConnection
-        setupConnection { _ in
-            print("Restart Connection")
+        
+        if let error = error {
+            print("Error:\(String(describing: error))")
+        }
+        
+        if isSocketReady {
+            print("Prepare To Restart UDPSocketIn Connection")
+            // RestartConnection
+            setupConnection { _ in
+                print("Restart UDPSocketIn Connection")
+            }
         }
     }
     
