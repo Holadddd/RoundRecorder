@@ -15,7 +15,7 @@ struct RoundRecorderApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ICon()
+            HomeMapView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }

@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict/>
+<dict>
+	<key>APIHostIP</key>
+	<string>52.192.242.163</string>
+	<key>SocketHostIP</key>
+	<string>52.192.242.163</string>
+	<key>UDPSocketHostIP</key>
+	<string>52.192.242.163</string>
+	<key>UDPSocketInPort</key>
+	<string>8001</string>
+	<key>UDPSocketOutPort</key>
+	<string>8000</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+		<string>location</string>
+		<string>processing</string>
+		<string>remote-notification</string>
+	</array>
+</dict>
 </plist>

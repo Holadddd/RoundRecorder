@@ -5,8 +5,8 @@
   Created by ting hui wu on 2022/1/25.
   
 */
-"NSLocationWhenInUseUsageDescription" = "RoundRecorder requires user’s location for better user experience.";
-"NSLocationAlwaysandWhenInUseUsageDescription" = "RoundRecorder requires user’s location for better user experience.";
+"NSLocationWhenInUseUsageDescription" = "RoundRecorder will use your location to provide ability for recording and broadcasting the audio with geographic information.";
+"NSLocationAlwaysandWhenInUseUsageDescription" = "RoundRecorder will use your location to provide ability for recording and broadcasting the audio with geographic information.";
 "NSLocalNetworkUsageDescription" = "This app will be able to discover and connect to devices on the network you use.";
-"NSMicrophoneUsageDescription" = "RoundRecorder requires microphone access to record or broadcast audio.";
-"NSMotionUsageDescription" = "RoundRecorder requires motion information for better user experience.";
+"NSMicrophoneUsageDescription" = "RoundRecorder will use your microphone to record audio, create a radio channel";
+"NSMotionUsageDescription" = "RoundRecorder will use your motion feed to enhance the spatial audio experience";

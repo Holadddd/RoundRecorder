@@ -42,6 +42,7 @@
 		DB9E3D072722BB34008FCFAB /* CGFloat+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9E3D062722BB34008FCFAB /* CGFloat+.swift */; };
 		DBA59E6727A02991008B934F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DBA59E6927A02991008B934F /* InfoPlist.strings */; };
 		DBA59E6D27A02A1B008B934F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DBA59E6F27A02A1B008B934F /* Localizable.strings */; };
+		DBA59E7127A0F6ED008B934F /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DBA527F127A019A8000E016E /* Info.plist */; };
 		DBA6DA50274E033000E80FF5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DBA6DA4F274E033000E80FF5 /* GoogleService-Info.plist */; };
 		DBA6DA54274E083800E80FF5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = DBA6DA53274E083800E80FF5 /* FirebaseAnalytics */; };
 		DBA6DA56274E083E00E80FF5 /* FirebaseAnalyticsSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = DBA6DA55274E083E00E80FF5 /* FirebaseAnalyticsSwift-Beta */; };
@@ -135,6 +136,8 @@
 		DBA59E6A27A02999008B934F /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		DBA59E6E27A02A1B008B934F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DBA59E7027A02A1D008B934F /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		DBA59E7227A0F711008B934F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/Info.plist; sourceTree = "<group>"; };
+		DBA59E7327A0F715008B934F /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "zh-Hant"; path = "zh-Hant.lproj/Info.plist"; sourceTree = "<group>"; };
 		DBA6DA4F274E033000E80FF5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DBA7EFC6272A9F880037AA7E /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		DBA7EFC9272AB3440037AA7E /* DeviceInfoRQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoRQ.swift; sourceTree = "<group>"; };
@@ -580,6 +583,7 @@
 			files = (
 				DBA59E6D27A02A1B008B934F /* Localizable.strings in Resources */,
 				DB9E3CC3272131CE008FCFAB /* Preview Assets.xcassets in Resources */,
+				DBA59E7127A0F6ED008B934F /* Info.plist in Resources */,
 				DBA59E6727A02991008B934F /* InfoPlist.strings in Resources */,
 				DB9E3CC0272131CE008FCFAB /* Assets.xcassets in Resources */,
 				DBA6DA50274E033000E80FF5 /* GoogleService-Info.plist in Resources */,
@@ -714,6 +718,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				DBA527F427A019C6000E016E /* Base */,
+				DBA59E7227A0F711008B934F /* en */,
+				DBA59E7327A0F715008B934F /* zh-Hant */,
 			);
 			name = Info.plist;
 			sourceTree = "<group>";
