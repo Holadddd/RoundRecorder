@@ -4,6 +4,10 @@
 <dict>
 	<key>APIHostIP</key>
 	<string>35.74.243.95</string>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	</array>
 	<key>SocketHostIP</key>
 	<string>35.74.243.95</string>
 	<key>UDPSocketHostIP</key>
@@ -16,8 +20,8 @@
 	<array>
 		<string>audio</string>
 		<string>location</string>
-		<string>processing</string>
 		<string>remote-notification</string>
+		<string>voip</string>
 	</array>
 </dict>
 </plist>
