@@ -14,7 +14,9 @@ import SwiftUI
 class HomeMapViewModel: NSObject, ObservableObject {
     
     // MARK: - Module parameters
-    static let desiredAccuracy:CLLocationAccuracy = kCLLocationAccuracyBest
+    static let desiredFilterAccuracy: CLLocationDistance  = kCLLocationAccuracyBestForNavigation
+    
+    static let desiredAccuracy: CLLocationAccuracy = kCLLocationAccuracyBestForNavigation
     
     // MARK: - Broadcast
     private var broadcastingLimitedTimer: Timer?
@@ -210,11 +212,13 @@ class HomeMapViewModel: NSObject, ObservableObject {
         rrAudioEngineInstance.delegate = self
         // Location
         locationManager.delegate = self
-        
+
+        locationManager.distanceFilter = HomeMapViewModel.desiredFilterAccuracy
+
         locationManager.desiredAccuracy = HomeMapViewModel.desiredAccuracy
-        
+
         locationManager.requestWhenInUseAuthorization()
-        
+
         locationManager.startUpdatingLocation()
         
         startDeviceMotionDetection()
