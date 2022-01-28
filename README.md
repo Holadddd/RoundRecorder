@@ -25,7 +25,7 @@ RoundRecorder provides the ability to simultaneously **record(Broadcast)** and *
     
 - Readjust the relative position of the headphone and the mobile phone with same heading direction 
 
-    <img src="https://github.com/Holadddd/RoundRecorder/blob/master/RoundRecorder/Gif/Correction.gif" width="200">
+    <img src="https://github.com/Holadddd/RoundRecorder/blob/master/RoundRecorder/Gif/Correction.png" width="200">
     
 ### Map
 - Tracking on User's heading 
