@@ -1,35 +1,40 @@
 # RoundRecorder
 
-RoundRecorder 提供同時擷取**音訊和地理資訊**的**錄製**與**廣播**功能，在播放音訊時同步讀取地理資訊，並依據播放者當時下的地理位置模擬出**空間音訊**。使用支援空間音訊的耳機（AirPods Pro, AirPods Max, AirPods (3rd generation), etc.）能依據使用者的移動與轉向更新**立體音訊**，進而達到更沈浸式的體驗。
-透過地圖與指針能獲得**廣播者**或**錄製音檔**即時的地理資訊。
+RoundRecorder 提供同時擷取音訊和地理資訊的 **錄製(廣播)** 與 **播放(訂閱)** 功能，在播放音訊時同步讀取地理資訊，並依據播放者當時下的地理位置模擬出**空間音訊**。使用支援空間音訊的耳機（AirPods Pro, AirPods Max, AirPods (3rd generation), etc.）能依據使用者的移動與轉向更新空間音訊，進而獲得更沈浸式的體驗。
 
-RoundRecorder provides ability for **recording** and **broadcasting** the **audio** with **geographic information** simultaneously. Use a headphone that supports to play with **spatial audio**(AirPods Pro, AirPods Max, AirPods (3rd generation), etc.) can enable the ability of playing **spatial audio** according to the user's motion for a more immersive experience.
-Real-time geographic information can be provide by map and pointer.
+RoundRecorder provides the ability to simultaneously **record(Broadcast)** and **play(Subscribe)** audio with geographic information. Using headphones that support playback of **spatial audio** (AirPods Pro, AirPods Max, AirPods (3rd generation), etc.) can play spatial audio based on the user's motion for a more immersive experience.
 ## Feature
 ### Radio
-- 透過建立廣播頻道發布音訊與定位
+- This feature provides user subscribing the channel with the exact location where the broadcast user is broadcasting
 
     <img src="https://github.com/Holadddd/RoundRecorder/blob/master/RoundRecorder/Gif/Broadcast.gif" width="200"> <img src="https://github.com/Holadddd/RoundRecorder/blob/master/RoundRecorder/Gif/Subscription.gif" width="200"> 
 
 ### Recorder & Filestorage
-- 編輯檔名並錄製
+- The recorder provides the ability to simultaneously record audio with geographic information.
 
     <img src="https://github.com/Holadddd/RoundRecorder/blob/master/RoundRecorder/Gif/Recorder.gif" width="200">
 
-- 顯示錄製路線與播放
+- When the user is playing the recorded file, the map will show the exact location where the user recorded this audio file.
 
     <img src="https://github.com/Holadddd/RoundRecorder/blob/master/RoundRecorder/Gif/Player.gif" width="200">
     
 ### Compass
-- 顯示廣播定位
+- The compass will show the real distance and direction based on where the user played audio or where the user subscribe the channel.
 
     <img src="https://github.com/Holadddd/RoundRecorder/blob/master/RoundRecorder/Gif/Radio.gif" width="200">
     
-- 重新校正耳機空間定位
+- Readjust the relative position of the headphone and the mobile phone with same heading direction 
 
+    <img src="https://github.com/Holadddd/RoundRecorder/blob/master/RoundRecorder/Gif/Correction.gif" width="200">
+    
 ### Map
-- 同步使用者方位
-- 清除路徑
+- Tracking on User's heading 
+
+    <img src="https://github.com/Holadddd/RoundRecorder/blob/master/RoundRecorder/Gif/Heading.gif" width="200">
+
+- Clear the route display on the map
+
+    <img src="https://github.com/Holadddd/RoundRecorder/blob/master/RoundRecorder/Gif/ClearRoute.gif" width="200">
 
 
 ## Requirement
