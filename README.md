@@ -23,7 +23,7 @@ RoundRecorder provides the ability to simultaneously **record(Broadcast)** and *
 
     <img src="https://github.com/Holadddd/RoundRecorder/blob/master/RoundRecorder/Gif/Radio.gif" width="200">
     
-- Readjust the relative position of the headphone and the mobile phone with same heading direction 
+- Adjust the relative position of the headphone and the mobile phone to the same heading 
 
     <img src="https://github.com/Holadddd/RoundRecorder/blob/master/RoundRecorder/Gif/Correction.png" width="200">
     
