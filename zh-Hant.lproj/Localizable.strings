@@ -13,6 +13,7 @@
 "StopTheFileOnPlaying" = "停止播放檔案";
 "No" = "取消";
 "Yes" = "確定";
+"Ok" = "好";
 "Subscribe" = "訂閱";
 "BroadcastWhileRecording" = "繼續廣播並開始錄製";
 "Broadcast" = "廣播";
@@ -23,3 +24,11 @@
 "Edit" = "編輯";
 "Filelist" = "所有檔案";
 "NoStorageData" = "無檔案";
+"Setting" = "設定";
+"ChannelIDInvalid" = "無法使用此頻道名稱";
+"LocationPermissionDeniedAlertTitle" = "無法使用您的位置";
+"MicrophonePermissionDeniedAlertTitle" = "無法使用您的麥克風";
+"MotionPermissionDeniedAlertTitle" = "無法使用您的動作";
+"MicrophonePermissionAlertMsg" = "部分功能將無法使用，直到開啟使用麥克風權限。 iOS 設定->隱私->麥克風";
+"LocationPermissionAlertMsg" = "部分功能將無法使用，直到開啟使用位置權限。 iOS 設定->隱私->位置";
+"MotionPermissionAlertMsg" = "部分功能將無法使用，直到開啟使用位置權限。 iOS 設定->隱私->動作";

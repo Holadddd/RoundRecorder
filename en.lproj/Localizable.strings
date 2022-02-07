@@ -13,6 +13,7 @@
 "StopTheFileOnPlaying" = "Stop the file on playing";
 "No" = "No";
 "Yes" = "Yes";
+"Ok" = "Ok";
 "Subscribe" = "Subscribe";
 "BroadcastWhileRecording" = "Broadcast while recording";
 "Broadcast" = "Broadcast";
@@ -23,3 +24,11 @@
 "Edit" = "Edit";
 "Filelist" = "Filelist";
 "NoStorageData" = "No Storage Data";
+"Setting" = "Setting";
+"ChannelIDInvalid" = "The ChannelID is invalid";
+"LocationPermissionDeniedAlertTitle" = "Permission Denied";
+"MicrophonePermissionDeniedAlertTitle" = "Permission Denied";
+"MotionPermissionDeniedAlertTitle" = "Permission Denied";
+"MicrophonePermissionAlertMsg" = "We don't have permssion to access microphone.\nThere will be no outgoing audio untill you grant this permission in iOS Setting->Privacy->Microhpone.";
+"LocationPermissionAlertMsg" = "We don't have permssion to access your location.\nThere will be no available feature untill you grant this permission in iOS Setting->Privacy->Location.";
+"MotionPermissionAlertMsg" = "We don't have permssion to access your your motion.\nThere will be no available feature untill you grant this permission in iOS Setting->Privacy->Motion.";

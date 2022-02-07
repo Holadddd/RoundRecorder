@@ -168,8 +168,6 @@ class HomeMapViewModel: NSObject, ObservableObject {
     var volumeMaxPeakPercentage: Double = 0.01
     
     private var isDistanceModifierButtonOnLongpress: Bool = false
-    // MARK: - Menubar control
-    
     
     // MARK: - SegmentSlideOverCard
     @Published var cardViewUseCase: CardViewUseCase? {
@@ -204,24 +202,68 @@ class HomeMapViewModel: NSObject, ObservableObject {
     lazy private var channelIDChecker: ChannelIDChecker = {
         return ChannelIDChecker()
     }()
-        
+    
+    // MARK: - Permission Alert
+    @Published var isChannelIDInvalidAlertShowing: Bool = false
+    
+    var permissionAlert: PermissionDeniedAccess? {
+        didSet{
+            if permissionAlert != nil {
+                isShowingPermissionAlert = true
+            }
+        }
+    }
+    
+    @Published var isShowingPermissionAlert: Bool = false
+    
+    var permissionTitle: String {
+        switch permissionAlert {
+        case .microphone:
+            return I18n.string(.MicrophonePermissionDeniedAlertTitle)
+        case .motion:
+            return I18n.string(.MotionPermissionDeniedAlertTitle)
+        case .location:
+            return I18n.string(.LocationPermissionDeniedAlertTitle)
+        case .none:
+            return ""
+        }
+    }
+    
+    var permissionMsg: String {
+        switch permissionAlert {
+        case .microphone:
+            return I18n.string(.MicrophonePermissionAlertMsg)
+        case .motion:
+            return I18n.string(.MicrophonePermissionAlertMsg)
+        case .location:
+            return I18n.string(.LocationPermissionAlertMsg)
+        case .none:
+            return ""
+        }
+    }
+    
     override init() {
         super.init()
         // Delegate/DataSource
         rrAudioEngineInstance.dataSource = self
         rrAudioEngineInstance.delegate = self
         // Location
-        locationManager.delegate = self
+        if isLocationAuthorizationStatusBeingDenied() {
+            showPermissionAlertOn(.location)
+        } else {
+            locationManager.delegate = self
 
-        locationManager.distanceFilter = HomeMapViewModel.desiredFilterAccuracy
+            locationManager.distanceFilter = HomeMapViewModel.desiredFilterAccuracy
 
-        locationManager.desiredAccuracy = HomeMapViewModel.desiredAccuracy
+            locationManager.desiredAccuracy = HomeMapViewModel.desiredAccuracy
 
-        locationManager.requestWhenInUseAuthorization()
+            locationManager.requestWhenInUseAuthorization()
 
-        locationManager.startUpdatingLocation()
+            locationManager.startUpdatingLocation()
+            
+            startDeviceMotionDetection()
+        }
         
-        startDeviceMotionDetection()
         
         udpSocketManager.delegate = self
         // RecordHelper
@@ -288,7 +330,8 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     func requestForBroadcastChannelWith(_ channelID: String) {
         
-        guard channelIDChecker.isChannelValidation(channelID) else {print("Fail channelID validation"); return }
+        guard channelIDChecker.isChannelValidation(channelID) else {isChannelIDInvalidAlertShowing = true; return }
+        guard !isLocationAuthorizationStatusBeingDenied() else {showPermissionAlertOn(.location); return}
         
         showBroadcastPermissionAlert = isRecording
         guard !showBroadcastPermissionAlert else { return }
@@ -326,10 +369,11 @@ class HomeMapViewModel: NSObject, ObservableObject {
                 } else {
                     print("Show Alert View")
                     // TODO: Show Alert View
-                    // Broadcast state
-                    DispatchQueue.main.async {[weak self] in
+                    DispatchQueue.main.async { [weak self] in
                         guard let self = self else { return }
+                        self.showPermissionAlertOn(.microphone)
                         self.isBroadcasting = false
+                        // Remove record Name
                     }
                     guard self.broadcastingBackgroundTaskID != nil else { return }
                     // End the task assertion.
@@ -375,7 +419,11 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     func requestForSubscribeChannel() {
         
-        guard channelIDChecker.isChannelValidation(subscribeID) else {print("Fail subscribeID validation"); return }
+        guard channelIDChecker.isChannelValidation(subscribeID) else {isChannelIDInvalidAlertShowing = true; return }
+        guard !isLocationAuthorizationStatusBeingDenied() else {
+            showPermissionAlertOn(.location)
+            return
+        }
         
         showSubscribePermissionAlert = playingData != nil
         guard !showSubscribePermissionAlert else { return }
@@ -456,6 +504,11 @@ class HomeMapViewModel: NSObject, ObservableObject {
     func requestForRecording() {
         showRecordingPermissionAlert = isBroadcasting
         guard !showRecordingPermissionAlert else { return }
+        guard !isLocationAuthorizationStatusBeingDenied() else {
+            showPermissionAlertOn(.location)
+            recordName = ""
+            return
+        }
         startRRRecordingSession()
     }
     
@@ -492,8 +545,13 @@ class HomeMapViewModel: NSObject, ObservableObject {
                     print("Start Recording With File: \(self.recordName)")
                 } else {
                     print("Show Alert View")
-                    // TODO: Show Alert View
-                    self.isRecording = false
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self else { return }
+                        self.showPermissionAlertOn(.microphone)
+                        self.isRecording = false
+                        // Remove record Name
+                        self.recordName = ""
+                    }
                 }
             }
         }
@@ -565,6 +623,11 @@ class HomeMapViewModel: NSObject, ObservableObject {
     func requestFileOnPlaying(_ playingData: RecordedData?) {
         showPlayingPermissionAlert = isSubscribing
         guard !showPlayingPermissionAlert else { return }
+        guard !isLocationAuthorizationStatusBeingDenied() else {
+            showPermissionAlertOn(.location)
+            return
+        }
+        
         fileOnPlaying(playingData)
     }
     
@@ -869,6 +932,11 @@ class HomeMapViewModel: NSObject, ObservableObject {
     func segmentSlideOverCardDidClose() {
         cardViewUseCase = nil
     }
+    
+    // MARK: Permission Alert
+    private func showPermissionAlertOn(_ access: PermissionDeniedAccess) {
+        permissionAlert = access
+    }
 }
 
 extension HomeMapViewModel: UDPSocketManagerDelegate {
@@ -977,6 +1045,12 @@ extension HomeMapViewModel: CLLocationManagerDelegate, CMHeadphoneMotionManagerD
         userTrueNorthRRMotionAttitude?.pitchDegrees = trueNorthPitchDegrees
         userTrueNorthRRMotionAttitude?.yawDegrees = trueNorthYawDegrees
     }
+    
+    private func isLocationAuthorizationStatusBeingDenied() -> Bool {
+        let authorizationStatus = locationManager.authorizationStatus
+        
+        return authorizationStatus == .denied
+    }
 }
 // RRAudioEngineDataSource
 extension HomeMapViewModel: RRAudioEngineDataSource {
@@ -1064,4 +1138,10 @@ enum CardViewUseCase {
             return .bottom
         }
     }
+}
+
+enum PermissionDeniedAccess {
+    case microphone
+    case location
+    case motion
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import CoreLocation
 
 struct DeviceInfo {
     static var isCurrentDeviceIsPad: Bool {
@@ -92,6 +93,7 @@ struct I18n {
         case StopTheFileOnPlaying
         case No
         case Yes
+        case Ok
         case Subscribe
         case BroadcastWhileRecording
         case Broadcast
@@ -102,6 +104,14 @@ struct I18n {
         case Edit
         case Filelist
         case NoStorageData
+        case Setting
+        case ChannelIDInvalid
+        case LocationPermissionDeniedAlertTitle
+        case MicrophonePermissionDeniedAlertTitle
+        case MotionPermissionDeniedAlertTitle
+        case MicrophonePermissionAlertMsg
+        case LocationPermissionAlertMsg
+        case MotionPermissionAlertMsg
     }
     
     static func string(_ i18nKey: I18nKey) -> String {

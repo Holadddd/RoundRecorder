@@ -8,5 +8,5 @@
 "NSLocationWhenInUseUsageDescription" = "RoundRecorder will use your location to provide ability for recording and broadcasting the audio with geographic information.";
 "NSLocationAlwaysandWhenInUseUsageDescription" = "RoundRecorder will use your location to provide ability for recording and broadcasting the audio with geographic information.";
 "NSLocalNetworkUsageDescription" = "This app will be able to discover and connect to devices on the network you use.";
-"NSMicrophoneUsageDescription" = "RoundRecorder will use your microphone to record audio, create a radio channel";
-"NSMotionUsageDescription" = "RoundRecorder will use your motion feed to enhance the spatial audio experience";
+"NSMicrophoneUsageDescription" = "RoundRecorder will use your microphone to record audio, create a radio channel.";
+"NSMotionUsageDescription" = "RoundRecorder will use your motion feed to enhance the spatial audio experience.";

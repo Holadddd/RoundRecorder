@@ -395,11 +395,11 @@
 				DBC001F5279FBC1900B4C8DF /* RRAudioOutputData.swift */,
 				DBC001F6279FBC1900B4C8DF /* EngineHelper.swift */,
 				DBC001F7279FBC1900B4C8DF /* RRAudioEngine.swift */,
+				DBC00200279FBC1900B4C8DF /* RRAudioEngineDelegate.swift */,
 				DBC001F8279FBC1900B4C8DF /* RRRecordingDataHelper.swift */,
 				DBC001F9279FBC1900B4C8DF /* Model */,
 				DBC001FD279FBC1900B4C8DF /* RRAudioEngineDataSource.swift */,
 				DBC001FE279FBC1900B4C8DF /* AudioStreamBasicDescription */,
-				DBC00200279FBC1900B4C8DF /* RRAudioEngineDelegate.swift */,
 				DBC00201279FBC1900B4C8DF /* PowerMeters */,
 				DBC00203279FBC1900B4C8DF /* AudioUnit */,
 			);

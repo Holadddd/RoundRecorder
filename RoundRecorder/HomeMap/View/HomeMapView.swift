@@ -10,6 +10,10 @@ import SwiftUI
 import MapKit
 import Neumorphic
 import UniformTypeIdentifiers
+import PermissionsSwiftUIMicrophone
+import PermissionsSwiftUILocation
+import PermissionsSwiftUILocationAlways
+import PermissionsSwiftUIMotion
 
 struct HomeMapView: View {
     
@@ -322,6 +326,23 @@ struct HomeMapView: View {
                             }.offset(y: -kGuardian.slide)
                             
                     }
+                }
+                // Permission
+                Button("") {
+                    
+                }.alert(viewmodel.permissionTitle, isPresented: $viewmodel.isShowingPermissionAlert) {
+                    Button(I18n.string(.Setting), role: .cancel) {
+                        let url = URL(string: UIApplication.openSettingsURLString)!
+                        UIApplication.shared.open(url)
+                    }
+                    Button(I18n.string(.Ok)) {
+                        
+                    }
+                } message: {
+                    Text(viewmodel.permissionMsg)
+                }.show(isVisible: viewmodel.isShowingPermissionAlert)
+                    .alert(I18n.string(.ChannelIDInvalid), isPresented: $viewmodel.isChannelIDInvalidAlertShowing) {
+                        
                 }
             }.background(Color.Neumorphic.main.ignoresSafeArea())
         }
