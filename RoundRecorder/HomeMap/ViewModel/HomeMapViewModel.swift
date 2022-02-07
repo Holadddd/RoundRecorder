@@ -25,10 +25,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
         didSet {
             clearDirectionAndDistanceView()
             if isBroadcasting {
-                // TODO: user timer for 5 min limits then stop broadcasting
+                // User timer for 10 min limits then stop broadcasting
                 self.broadcastingLimitedTimer = Timer.scheduledTimer(timeInterval: UDPSocketManager.broadcastTimeLimitation, target: self, selector: #selector(broadcastingLimitedTimerAction), userInfo: nil, repeats: false)
             } else {
-                // TODO: destroy timer
+                // Destroy timer
                 self.broadcastingLimitedTimer?.invalidate()
                 self.broadcastingLimitedTimer = nil
             }
@@ -319,7 +319,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
     private func setupBroadcastMicrophoneCaptureCallback(channelID: String) {
         broadcastMicrophoneCaptureCallback = {[weak self, channelID] audioData in
             guard let self = self else { return }
-            // TODO: Send data through UDPSocket
+            
             self.udpSocketManager.broadcastBufferData(audioData, from: "", to: channelID)
         }
     }
@@ -367,8 +367,6 @@ class HomeMapViewModel: NSObject, ObservableObject {
                         self.setupBroadcastMicrophoneCaptureCallback(channelID: channelID)
                     }
                 } else {
-                    print("Show Alert View")
-                    // TODO: Show Alert View
                     DispatchQueue.main.async { [weak self] in
                         guard let self = self else { return }
                         self.showPermissionAlertOn(.microphone)
@@ -496,7 +494,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
     private func setupRecordingMicrophoneCaptureCallback(){
         recordingMicrophoneCaptureCallback = {[weak self] audioData in
             guard let self = self else { return }
-            // TODO: Send data through UDPSocket
+            
             self.recordingHelper.schechuleRRAudioBuffer(audioData)
         }
     }
@@ -513,7 +511,6 @@ class HomeMapViewModel: NSObject, ObservableObject {
     }
     
     func keepBroadcastWhileRecording() {
-        // TODO: Make sure the engine will not crash
         startRRRecordingSession()
     }
     
@@ -686,7 +683,6 @@ class HomeMapViewModel: NSObject, ObservableObject {
             }
         } endOfFilePlayingCallback: { endSecond in
             print("The File Is End Of Playing At: \(endSecond)")
-            // TODO: Stop the engine
             DispatchQueue.main.async {
                 self.playingData?.playingDuration = 0
                 self.playingData = nil
@@ -714,7 +710,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     func fileListOnPause() {
         print("Pause")
-        // TODO: record pause duration
+        
         self.pauseData = self.playingData
         self.playingData = nil
         self.rrAudioEngineInstance.removePlayerData()
@@ -733,7 +729,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     func fileListOnStop() {
         print("Stop")
-        // TODO: record pause duration
+        
         self.pauseData = nil
         self.playingData = nil
         self.expandedData?.playingDuration = 0

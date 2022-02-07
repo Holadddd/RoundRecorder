@@ -10,10 +10,6 @@ import SwiftUI
 import MapKit
 import Neumorphic
 import UniformTypeIdentifiers
-import PermissionsSwiftUIMicrophone
-import PermissionsSwiftUILocation
-import PermissionsSwiftUILocationAlways
-import PermissionsSwiftUIMotion
 
 struct HomeMapView: View {
     
