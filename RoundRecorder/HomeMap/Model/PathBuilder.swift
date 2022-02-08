@@ -1,5 +1,5 @@
 //
-//  RouteBuilder.swift
+//  PathBuilder.swift
 //  RoundRecorder
 //
 //  Created by ting hui wu on 2021/12/20.
@@ -8,11 +8,11 @@
 import Foundation
 import MapKit
 
-struct RouteBuilder {
+struct PathBuilder {
     
     var locationCollection: [CLLocationCoordinate2D]
     
-    private static let routeQueue = DispatchQueue(label: "RouteBuilder")
+    private static let routeQueue = DispatchQueue(label: "PathBuilder")
     
     func generatePlaceMarkDistanceOver(meters: Double) -> [MKPlacemark] {
         
@@ -37,6 +37,30 @@ struct RouteBuilder {
         marks.append(MKPlacemark(coordinate: last))
         
         return marks
+    }
+    
+    func generateLocationWithDistanceOver(meters: Double) -> [CLLocationCoordinate2D] {
+        var locations: [CLLocationCoordinate2D] = []
+        
+        guard let origin = locationCollection.first, let last = locationCollection.last else { return locations}
+        
+        locations.append(origin)
+        
+        var lastLocation: CLLocationCoordinate2D = origin
+        
+        for (index, location) in locationCollection.enumerated() {
+            let distance = location.distance(from: lastLocation)
+            
+            guard distance > meters && (index != locationCollection.count - 1) else { continue }
+            
+            locations.append(location)
+            
+            lastLocation = location
+        }
+        
+        locations.append(last)
+        
+        return locations
     }
     
     static func converToMapItems(placeMarks: [MKPlacemark]) -> [MKMapItem] {
@@ -70,6 +94,45 @@ struct RouteBuilder {
             }
             
             complete(.success(routes))
+        }
+    }
+    
+    static func generateRoutesAnnotionsWith(locations: [CLLocationCoordinate2D], centerDistance: CLLocationDistance, complete:@escaping ((Result<[HomeMapAnnotation], RouteBuilderError>)->Void) ) {
+        
+        routeQueue.async {
+            // The Annotations is set as 1 meters in each location
+            let idealDistance: Int = {
+                switch centerDistance {
+                case 0..<200:
+                    let distance = Int(centerDistance / 40) == 0 ? 1 : Int(centerDistance / 40)
+                    return distance
+                case 200..<1000:
+                    return 5
+                case 1000..<5000:
+                    return 20
+                case 5000..<10000:
+                    return 50
+                case 10000..<20000:
+                    return 100
+                default:
+                    // Not Display
+                    return 200
+                }
+            }()
+            print("The ideal distance is: \(idealDistance)")
+            var annotations: [HomeMapAnnotation] = []
+            
+            guard let origin = locations.first, let last = locations.last else { complete(.success(annotations)); return}
+            
+            annotations.append(HomeMapAnnotation(coordinate: origin, type: .pathWithDot))
+            
+            for (index, locations)in locations.enumerated() {
+                guard index > 0 && index % idealDistance == 0 else { continue}
+                annotations.append(HomeMapAnnotation(coordinate: locations, type: .pathWithDot))
+            }
+            annotations.append(HomeMapAnnotation(coordinate: last, type: .pathWithDot))
+            
+            complete(.success(annotations))
         }
     }
 }

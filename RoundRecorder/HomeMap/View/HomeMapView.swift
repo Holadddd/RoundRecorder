@@ -30,7 +30,6 @@ struct HomeMapView: View {
                     ZStack{
                         VStack {
                             MapView(isSetupCurrentLocation: $viewmodel.isSetupCurrentLocation,
-                                    userCurrentMapCamera: $viewmodel.userCurrentMapCamera,
                                     isLocationLocked: $viewmodel.isLocationLocked,
                                     headingDirection: viewmodel.headingDirection,
                                     updateByMapItem: $viewmodel.updateByMapItem,
@@ -38,8 +37,16 @@ struct HomeMapView: View {
                                     removeAnnotationItems: $viewmodel.removeAnnotationItems,
                                     userAnootionItem: viewmodel.userAnootion,
                                     addAnnotationItem: viewmodel.receiverAnnotationItem,
-                                    displayRoutes: $viewmodel.displayRoutes,
-                                    removeRoutes: $viewmodel.removeRoutes)
+                                    displayPathWithRoutes: $viewmodel.displayPathWithRoutes,
+                                    displayPathWithAnnotations: $viewmodel.displayPathWithAnnotations,
+                                    removeRoutes: $viewmodel.removeRoutes,
+                                    cameraCenterLocation: $viewmodel.cameraCenterLocation,
+                                    cameraCenterDistance: $viewmodel.cameraCenterDistance,
+                                    didUpdateUserLocation: { location in
+                                viewmodel.didUpdateUserLocation(location)
+                            }, didUpdateCenterCoordinateDistance: { distance in
+                                viewmodel.didUpdateCameraCenterDistance(distance)
+                            })
                                 .edgesIgnoringSafeArea(.all)
                         }
                     
@@ -55,6 +62,7 @@ struct HomeMapView: View {
                                         Spacer()
                                         
                                         VStack{
+                                            // MARK: Locked Location
                                             Button {
                                                 viewmodel.locateButtonDidClicked()
                                             } label: {
@@ -65,7 +73,7 @@ struct HomeMapView: View {
                                             }
                                             
                                             Divider().frame(width: 30)
-                                            
+                                            // MARK: Clear
                                             Button {
                                                 viewmodel.clearRoutesButtonDidClicked()
                                             } label: {

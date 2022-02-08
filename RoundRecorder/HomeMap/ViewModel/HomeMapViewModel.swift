@@ -18,6 +18,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     static let desiredAccuracy: CLLocationAccuracy = kCLLocationAccuracyBestForNavigation
     
+    static let displayPathByRoutes: Bool = false
     // MARK: - Broadcast
     private var broadcastingLimitedTimer: Timer?
     
@@ -93,15 +94,91 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     var cacheRoutes: [RecordedData] = []
     
-    @Published var displayRoutes: [MKRoute] = []
+    @Published var cameraCenterLocation: CLLocationCoordinate2D?
+    // Path
+    var lastDisplayCameraCenterDistance: CLLocationDistance = 0
+    
+    @Published var cameraCenterDistance: CLLocationDistance = MapView.firstSetupCoordinateDistance  {
+        didSet {
+            guard cameraCenterDistance != 0 && pathLocationWith1M.count > 1 else {
+                return
+            }
+            //
+            guard abs(lastDisplayCameraCenterDistance - cameraCenterDistance) > 10 else { return }
+            lastDisplayCameraCenterDistance = cameraCenterDistance
+            //Filter the annotation depends on center distance
+            PathBuilder.generateRoutesAnnotionsWith(locations: pathLocationWith1M,
+                                                    centerDistance: cameraCenterDistance) { [weak self] result in
+                guard  let self = self else { return }
+                
+                switch result {
+                case .success(let annotations):
+                    guard let centerLocation = annotations.first?.coordinate else { return }
+                    DispatchQueue.main.async {
+                        self.displayPathWithAnnotationsOnMap(centerLocation: centerLocation, annotations: annotations)
+                    }
+                case .failure(let error):
+                    print("Fail in generate Routes Annotions: \(error)")
+                }
+            }
+        }
+    }
+    
+    var pathLocationWith1M: [CLLocationCoordinate2D] = [] {
+        didSet {
+            guard cameraCenterDistance != 0 && pathLocationWith1M.count > 1 else {
+                return
+            }
+            
+            guard abs(lastDisplayCameraCenterDistance - cameraCenterDistance) > 10 else { return }
+            lastDisplayCameraCenterDistance = cameraCenterDistance
+            //Filter the annotation depends on center distance
+            PathBuilder.generateRoutesAnnotionsWith(locations: pathLocationWith1M,
+                                                    centerDistance: cameraCenterDistance) { [weak self] result in
+                
+                guard  let self = self else { return }
+                
+                switch result {
+                case .success(let annotations):
+                    guard let centerLocation = annotations.first?.coordinate else { return }
+
+                    DispatchQueue.main.async {
+                        self.displayPathWithAnnotationsOnMap(centerLocation: centerLocation, annotations: annotations)
+                    }
+                case .failure(let error):
+                    print("Fail in generate Routes Annotions: \(error)")
+                }
+            }
+        }
+    }
+    
+    @Published var displayPathWithAnnotations: [HomeMapAnnotation] = []
+    
+    @Published var displayPathWithRoutes: [MKRoute] = []
     
     @Published var removeRoutes: [MKRoute] = []
     
-    @Published var userLocation: CLLocationCoordinate2D?
-    
     @Published var userHeadingDegrees: Double?
     
-    var userRRLocation: RRLocationCoordinate3D?
+    var userRRLocation: RRLocationCoordinate3D? {
+        didSet {
+            guard let userRRLocation = userRRLocation else { return }
+            
+            if cameraCenterLocation == nil {
+                cameraCenterLocation = CLLocationCoordinate2D(latitude: userRRLocation.latitude, longitude: userRRLocation.longitude)
+                cameraCenterDistance = MapView.firstSetupCoordinateDistance
+            }
+            
+            if isLocationLocked {
+                cameraCenterLocation = CLLocationCoordinate2D(latitude: userRRLocation.latitude, longitude: userRRLocation.longitude)
+            }
+            
+            if isSetupCurrentLocation {
+                isSetupCurrentLocation.toggle()
+                cameraCenterLocation = CLLocationCoordinate2D(latitude: userRRLocation.latitude, longitude: userRRLocation.longitude)
+            }
+        }
+    }
     
     private var firstAnchorMotion: CMDeviceMotion?
     
@@ -130,8 +207,6 @@ class HomeMapViewModel: NSObject, ObservableObject {
             removeAnnotationItems.append(receiverAnnotationItem)
         }
     }
-    
-    @Published var userCurrentMapCamera: MKMapCamera?
     
     @Published var udpsocketLatenctMs: UInt64 = 0
     
@@ -753,19 +828,32 @@ class HomeMapViewModel: NSObject, ObservableObject {
     }
     
     private func removeAnnotionOnMap() {
+        self.removeAnnotationItems += displayPathWithAnnotations
         self.removeAnnotationItems.append(receiverAnnotationItem)
-        
+        self.displayPathWithAnnotations.removeAll()
         self.receiverAnnotationItem = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), color: .clear)
     }
     
     func clearRoutesButtonDidClicked() {
-        removeRoutes = displayRoutes
+        removeRoutes = displayPathWithRoutes
         removeAnnotionOnMap()
-        displayRoutes.removeAll()
+        displayPathWithRoutes.removeAll()
+    }
+    
+    func didUpdateUserLocation(_ location: RRLocationCoordinate3D) {
+        userRRLocation = location
+    }
+    
+    func didUpdateCameraCenterDistance(_ distance: CLLocationDistance) {
+        
+        if abs(cameraCenterDistance - distance) > 10 {
+            print("didUpdateCameraCenterDistance: \(distance)")
+            cameraCenterDistance = distance
+        }
     }
     
     private func displayRecordedDataOnMap(_ displayData: RecordedData) {
-        // Check cache
+        // MARK: Check cache
         for data in cacheRoutes {
             if data == displayData {
                 // 1. Parse RRAudioBuffers in locatinos
@@ -787,7 +875,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
             }
         }
         // No routes cache
-        // 1. Parse RRAudioBuffers in locatinos
+        // MARK: 1. Parse RRAudioBuffers in locatinos
         guard let data = displayData.file else { return }
         
         let rrAudioData = RRRecordingDataHelper.parseRRAudioData(data)
@@ -799,49 +887,67 @@ class HomeMapViewModel: NSObject, ObservableObject {
                                           longitude: buffer.metadata!.locationCoordinate.longitude)
         }
         
-        let routeBuilder = RouteBuilder(locationCollection: buffersLocation)
-        // 2. Generate MKPlaceMark with location => The distance bigger than 1 M as a one MKPlaceMark
-        let oneMeterPlaceMark = routeBuilder.generatePlaceMarkDistanceOver(meters: 1)
+        let routeBuilder = PathBuilder(locationCollection: buffersLocation)
         
-        // 3. Connect Location -> MKPlaceMark -> MapItem, each MapItem into a GroupedRoute
-        let mapItems = RouteBuilder.converToMapItems(placeMarks: oneMeterPlaceMark)
-        
-        
-        // 4. Generate MKRout And call the map method addOverlay for add the line on the map => MKDirections.Request(source, destination),
-        RouteBuilder.generateRouteWith(mapItems: mapItems) {[weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let routes):
-                guard let startLocation = buffersLocation.first else { return }
-                DispatchQueue.main.async {
-                    self.displayRoutesOnMap(centerLocation: startLocation, routes: routes)
-                    // Cache generated routes
-                    displayData.routes = routes
+        if HomeMapViewModel.displayPathByRoutes {
+            // MARK: 2. Generate MKPlaceMark with location => The distance bigger than 1 M as a one MKPlaceMark
+            let oneMeterPlaceMark = routeBuilder.generatePlaceMarkDistanceOver(meters: 1)
+            
+            // MARK: 3. Connect Location -> MKPlaceMark -> MapItem, each MapItem into a GroupedRoute
+            let mapItems = PathBuilder.converToMapItems(placeMarks: oneMeterPlaceMark)
+            
+            
+            // MARK: 4. Generate MKRout And call the map method addOverlay for add the line on the map => MKDirections.Request(source, destination),
+            PathBuilder.generateRouteWith(mapItems: mapItems) {[weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let routes):
+                    DispatchQueue.main.async {
+                        guard let startLocation = buffersLocation.first else { return }
+                        
+                        self.isLocationLocked = false
+                        self.updateByMapItem = true
+                        
+                        self.displayRoutesOnMap(centerLocation: startLocation, routes: routes)
+                        // Cache generated routes
+                        displayData.routes = routes
+                        self.cacheRoutes.append(displayData)
+                    }
+                case .failure(let error):
+                    print("Fail in generate Path with route: \(error)")
                 }
-                self.cacheRoutes.append(displayData)
-            case .failure(let error):
-                print(error)
             }
+        } else {
+            // TODO: Calculate the camera needed distance
+            
+            guard let startLocation = buffersLocation.first else { return }
+            self.isLocationLocked = false
+            self.updateByMapItem = true
+            cameraCenterLocation = startLocation
+            cameraCenterDistance = MapView.fileRouteDisplayCoordinateDistance
+            pathLocationWith1M = routeBuilder.generateLocationWithDistanceOver(meters: 1)
         }
+        
     }
     
     private func displayRoutesOnMap(centerLocation: CLLocationCoordinate2D, routes: [MKRoute]) {
         //Remove the last routes
-        self.removeRoutes = self.displayRoutes
-        self.displayRoutes = routes
+        self.removeRoutes = self.displayPathWithRoutes
+        self.displayPathWithRoutes = routes
         // Clear the last display
         removeAnnotionOnMap()
         
-        print(routes)
-        self.isLocationLocked = false
-        self.updateByMapItem = true
-        let camera = MKMapCamera()
-        camera.centerCoordinate = centerLocation
-        // TODO: Calculate the camera needed distance
-        camera.centerCoordinateDistance = 3000
-        self.userCurrentMapCamera = camera
+        print("Routes collection: \(routes)")
+        
     }
     
+    private func displayPathWithAnnotationsOnMap(centerLocation: CLLocationCoordinate2D, annotations: [HomeMapAnnotation]) {
+        // Remove the last annotations
+        removeAnnotionOnMap()
+        
+        displayPathWithAnnotations = annotations
+        print("Path annotation collection: \(annotations)")
+    }
     // MARK: - DirectionAndDistanceView
     private func clearDirectionAndDistanceView() {
         udpsocketLatenctMs = 0
@@ -965,29 +1071,15 @@ extension HomeMapViewModel: SocketManagerDelegate {
 // Core Data Manager
 extension HomeMapViewModel: CLLocationManagerDelegate, CMHeadphoneMotionManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.first else { return }
-        let latitude = location.coordinate.latitude
-        let longitude = location.coordinate.longitude
-        let altitude = location.altitude
-        let locationCoordinate = CLLocationCoordinate2D(latitude: latitude,
-                                                        longitude: longitude)
-        userLocation = locationCoordinate
-        // Update UserAnnotion
+        // Update UserAnnotion with Heading
         if displayUserArrowAnnotation {
             DispatchQueue.main.async {[weak self] in
-                guard let self = self, let userLocation = self.userLocation, let userHeadingDegrees = self.userHeadingDegrees else { return }
+                guard let self = self, let user3DLocation = self.userRRLocation, let userHeadingDegrees = self.userHeadingDegrees else { return }
                 
-                self.userAnootion = HomeMapAnnotation(coordinate: userLocation, userHeadingDegrees: userHeadingDegrees, type: .user, color: .blue)
+                let user2DLocation = CLLocationCoordinate2D(latitude: user3DLocation.latitude, longitude: user3DLocation.longitude)
+                
+                self.userAnootion = HomeMapAnnotation(coordinate: user2DLocation, userHeadingDegrees: userHeadingDegrees, type: .user, color: .blue)
             }
-        }
-        
-        if userRRLocation != nil {
-            userRRLocation!.latitude = latitude
-            userRRLocation!.longitude = longitude
-            userRRLocation!.altitude = altitude
-        } else {
-            userRRLocation = RRLocationCoordinate3D(latitude: latitude, longitude: longitude, altitude: altitude)
-            print("latitude: \(latitude), longitude: \(longitude)")
         }
     }
     
@@ -1007,12 +1099,14 @@ extension HomeMapViewModel: CLLocationManagerDelegate, CMHeadphoneMotionManagerD
         compassDegrees = newDegrees
         //
         userHeadingDegrees = isLocationLocked ? 0 : newHeading.trueHeading
-        // Update UserAnnotion
+        // Update UserAnnotion with Heading
         if displayUserArrowAnnotation {
             DispatchQueue.main.async {[weak self] in
-                guard let self = self, let userLocation = self.userLocation, let userHeadingDegrees = self.userHeadingDegrees else { return }
+                guard let self = self, let user3DLocation = self.userRRLocation, let userHeadingDegrees = self.userHeadingDegrees else { return }
                 
-                self.userAnootion = HomeMapAnnotation(coordinate: userLocation, userHeadingDegrees: userHeadingDegrees, type: .user, color: .blue)
+                let user2DLocation = CLLocationCoordinate2D(latitude: user3DLocation.latitude, longitude: user3DLocation.longitude)
+                
+                self.userAnootion = HomeMapAnnotation(coordinate: user2DLocation, userHeadingDegrees: userHeadingDegrees, type: .user, color: .blue)
             }
         }
     }

@@ -16,11 +16,9 @@ struct MapView: UIViewRepresentable {
     
     static let firstSetupCoordinateDistance: CLLocationDistance = 1000
     #warning("Calculate the real needed distance")
-    static let fileRouteDisplayCoordinateDistance: CLLocationDistance = 1000
+    static let fileRouteDisplayCoordinateDistance: CLLocationDistance = 3000
     
     @Binding var isSetupCurrentLocation: Bool
-    
-    @Binding var userCurrentMapCamera: MKMapCamera?
     
     @Binding var isLocationLocked: Bool
     
@@ -36,12 +34,29 @@ struct MapView: UIViewRepresentable {
     
     var addAnnotationItem: HomeMapAnnotation
     
-    @Binding var displayRoutes: [MKRoute]
+    @Binding var displayPathWithRoutes: [MKRoute]
+    
+    @Binding var displayPathWithAnnotations: [HomeMapAnnotation]
     
     @Binding var removeRoutes: [MKRoute]
     
+    @Binding var cameraCenterLocation: CLLocationCoordinate2D?
+    
+    @Binding var cameraCenterDistance: CLLocationDistance
+    
+    var didUpdateUserLocation: ((RRLocationCoordinate3D)->Void)
+    
+    var didUpdateCenterCoordinateDistance: ((CLLocationDistance)->Void)
+    
+    let coordinator = MapViewCoordinator()
+    
     func makeCoordinator() -> MapViewCoordinator {
-        return MapViewCoordinator()
+        
+        coordinator.didUpdateCenterCoordinateDistance = didUpdateCenterCoordinateDistance
+        
+        coordinator.didUpdateUserLocation = didUpdateUserLocation
+        print("Get coordinator")
+        return coordinator
     }
     
     func makeUIView(context: Context) -> MKMapView {
@@ -57,21 +72,17 @@ struct MapView: UIViewRepresentable {
     
     func updateUIView(_ uiView: MKMapView, context: Context) {
         // MARK: Setup camera vision
-        if !isSetupCurrentLocation, let userCurrentLocation = uiView.userLocation.location?.toCLLocationCoordinate2D {
-            // first user vision
-            isSetupCurrentLocation.toggle()
-            uiView.camera.centerCoordinate = userCurrentLocation
-            uiView.camera.centerCoordinateDistance = MapView.firstSetupCoordinateDistance
-        } else if updateByMapItem , let userCurrentMapCamera = userCurrentMapCamera {
+        if let cameraCenterLocation = cameraCenterLocation, updateByMapItem {
             // Udpate by item (ex: routes, annotation...)
             updateByMapItem.toggle()
-            uiView.camera = userCurrentMapCamera
-            uiView.camera.centerCoordinateDistance = MapView.fileRouteDisplayCoordinateDistance
-        } else if isLocationLocked, let userCurrentLocation = uiView.userLocation.location?.toCLLocationCoordinate2D {
+            uiView.camera.centerCoordinate = cameraCenterLocation
+        } else if let cameraCenterLocation = cameraCenterLocation, isLocationLocked {
             // Lock user vision with current location
-            uiView.camera.centerCoordinate = userCurrentLocation
             uiView.camera.heading = headingDirection
+            uiView.camera.centerCoordinate = cameraCenterLocation
         }
+        
+        uiView.camera.centerCoordinateDistance = cameraCenterDistance
         // UserAnnotionItem
         uiView.addAnnotation(userAnootionItem)
         // ReceiverAnnotionItem
@@ -90,12 +101,46 @@ struct MapView: UIViewRepresentable {
             removeRoutes.removeAll()
         }
         
-        for route in displayRoutes {
-            uiView.addOverlay(route.polyline, level: .aboveLabels)
+        if HomeMapViewModel.displayPathByRoutes {
+            for route in displayPathWithRoutes {
+                uiView.addOverlay(route.polyline, level: .aboveLabels)
+            }
+        } else {
+            // MARK: Filter distance by Camera centerCoordinateDistance
+            
+            uiView.addAnnotations(displayPathWithAnnotations)
         }
     }
     
+    func filtPathAnnotationsWithCameraCenterDistance(annotations: [HomeMapAnnotation], distance: CLLocationDistance) -> [HomeMapAnnotation] {
+        // The Annotations is set as 1 meters in each location
+        let idealDistance: Int = Int(distance / 20)
+        var newAnnotations: [HomeMapAnnotation] = []
+        
+        guard let origin = annotations.first, let last = annotations.last else { return newAnnotations}
+        
+        newAnnotations.append(origin)
+        
+        for (index, annotation)in annotations.enumerated() {
+            guard index > 0 && index % idealDistance == 0 else { continue}
+            newAnnotations.append(annotation)
+        }
+        newAnnotations.append(last)
+        
+        return newAnnotations
+    }
+    
     class MapViewCoordinator: NSObject, MKMapViewDelegate {
+        var didUpdateCenterCoordinateDistance: ((CLLocationDistance)->Void)?
+        
+        var didUpdateUserLocation: ((RRLocationCoordinate3D)->Void)?
+        
+        func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+            didUpdateUserLocation?(RRLocationCoordinate3D(latitude: userLocation.coordinate.latitude,
+                                                          longitude: userLocation.coordinate.longitude,
+                                                          altitude: userLocation.location?.altitude ?? 0))
+        }
+        
         func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
             let renderer = MKPolylineRenderer(overlay: overlay)
             renderer.strokeColor = .systemBlue
@@ -109,30 +154,40 @@ struct MapView: UIViewRepresentable {
             // TODO: Image Tint Color
             switch annotion.type{
             case .user:
-                let annotionView = MKAnnotationView(annotation: annotion, reuseIdentifier: nil)
+                let annotationView = MKAnnotationView(annotation: annotion, reuseIdentifier: nil)
 
                 let rotateDegrees = ((annotion.userHeadingDegrees ?? 0) / 180) * .pi
-                let annotionColor = MapView.userArrowColor
-                let image = UIImage(systemName: annotion.imageSystemName)?.withTintColor(annotionColor).rotate(radians: rotateDegrees)
+                let annotationColor = MapView.userArrowColor
+                let image = UIImage(systemName: annotion.imageSystemName)?.withTintColor(annotationColor).rotate(radians: rotateDegrees)
                 
-                annotionView.image = image
+                annotationView.image = image
 
-                return annotionView
+                return annotationView
             case .receiver:
-                let annotionView = MKAnnotationView(annotation: annotion, reuseIdentifier: nil)
+                let annotationView = MKAnnotationView(annotation: annotion, reuseIdentifier: nil)
 
                 let image = UIImage(systemName: annotion.imageSystemName)
                 
-                annotionView.image = image
+                annotationView.image = image
                 // TODO:  Fix the tint color on annotation
-                annotionView.image?.withTintColor(.red, renderingMode: .alwaysTemplate)
+                annotationView.image?.withTintColor(.red, renderingMode: .alwaysTemplate)
                 
-                return annotionView
+                return annotationView
+            case .pathWithDot:
+                let annotationView = MKAnnotationView(annotation: annotion, reuseIdentifier: nil)
+                
+                let image = UIImage(systemName: annotion.imageSystemName)
+                
+                annotationView.image = image
+                
+                return annotationView
             default:
                 return nil
             }
-            
         }
         
+        func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+            didUpdateCenterCoordinateDistance?(mapView.camera.centerCoordinateDistance)
+        }
     }
 }

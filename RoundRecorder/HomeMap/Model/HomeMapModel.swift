@@ -22,12 +22,14 @@ class HomeMapAnnotation: NSObject, MKAnnotation {
             return "shareplay"
         case .user:
             return "location.north.fill"
+        case .pathWithDot:
+            return "circle.circle.fill"
         default:
             return ""
         }
     }
     
-    init(coordinate: CLLocationCoordinate2D, userHeadingDegrees: Double? = nil, type: MapAnnotationItemType = .undefine, color: UIColor) {
+    init(coordinate: CLLocationCoordinate2D, userHeadingDegrees: Double? = nil, type: MapAnnotationItemType = .undefine, color: UIColor = .black) {
         self.coordinate = coordinate
         self.userHeadingDegrees = userHeadingDegrees
         self.color = color
@@ -39,6 +41,7 @@ class HomeMapAnnotation: NSObject, MKAnnotation {
         case user
         case receiver
         case fixedPoint
+        case pathWithDot
         case dynamicPoint
     }
 }
