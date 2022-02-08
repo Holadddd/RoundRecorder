@@ -145,6 +145,7 @@ struct HomeMapView: View {
                         
                         HStack(alignment: .center) {
                             Spacer()
+                            // MARK: Radio
                             ZStack{
                                 Button {
                                     viewmodel.radioButtonDidClicked()
@@ -162,16 +163,17 @@ struct HomeMapView: View {
                             
                             
                             Spacer()
+                            // MARK: Recorder
                             ZStack{
                                 RoundedRectangle(cornerRadius: 11).frame(width: 22, height: 22)
                                     .foregroundColor(Color.Neumorphic.main)
                                 Button {
-                                    if viewmodel.isRecording {
-                                        viewmodel.stopRRRecordingSession()
-                                    } else {
-                                        viewmodel.recordButtonDidClicked()
-                                    }
-                                    
+//                                    if viewmodel.isRecording {
+//                                        viewmodel.stopRRRecordingSession()
+//                                    } else {
+//                                        viewmodel.recordButtonDidClicked()
+//                                    }
+                                    viewmodel.recordButtonDidClicked()
                                 } label: {
                                     ZStack{
                                         RoundedRectangle(cornerRadius: 10).frame(width: 20, height: 20)
@@ -184,13 +186,15 @@ struct HomeMapView: View {
                                             .foregroundColor(Color.Neumorphic.main)
                                             .softInnerShadow(Circle())
                                         if viewmodel.isRecording {
-                                            RoundedRectangle(cornerRadius: 1)
-                                                .stroke(Color.Neumorphic.secondary, style: SwiftUI.StrokeStyle(lineWidth: 0.3, lineCap: .square, lineJoin: .round))
-                                                .frame(width: 6, height: 6)
-                                            RoundedRectangle(cornerRadius: 1)
-                                                .fill(.red)
-                                                .frame(width: 6, height: 6)
-                                                .softOuterShadow(offset: 1, radius: 1)
+                                            ZStack{
+                                                RoundedRectangle(cornerRadius: 1)
+                                                    .fill(Color.red.opacity(0.8))
+                                                    .frame(width: 8, height: 1)
+                                                RoundedRectangle(cornerRadius: 1)
+                                                    .fill(Color.red.opacity(0.8))
+                                                    .frame(width: 1, height: 8)
+                                                    
+                                            }.softOuterShadow(offset: 1, radius: 1)
                                         } else {
                                             ZStack{
                                                 RoundedRectangle(cornerRadius: 1)
@@ -210,7 +214,7 @@ struct HomeMapView: View {
                                 .padding(0)
                             
                             Spacer()
-                            
+                            // MARK: Filelist
                             ZStack{
                                 Button {
                                     viewmodel.fileButtonDidClicked()
@@ -220,7 +224,9 @@ struct HomeMapView: View {
                                             .tint((viewmodel.playingData == nil) ? Color.Neumorphic.secondary : Color.red)
                                             .frame(width: 30, height: 30)
                                             .softOuterShadow(offset: 2, radius: 0.5)
-                                        Text(I18n.string(.File)).font(.system(size: 10, weight: .bold)).foregroundColor((viewmodel.playingData == nil) ? Color.Neumorphic.secondary : Color.red)
+                                        Text(I18n.string(.File))
+                                            .font(.system(size: 10, weight: .bold))
+                                            .foregroundColor((viewmodel.playingData == nil) ? Color.Neumorphic.secondary : Color.red)
                                     }.padding(0)
                                 }
                                 .softOuterShadow(offset: 2, radius: 0.5)
@@ -358,7 +364,6 @@ struct HomeMapView: View {
 }
 
 struct HomeMapView_Preview: PreviewProvider {
-    
     
     static var previews: some View {
         HomeMapView()

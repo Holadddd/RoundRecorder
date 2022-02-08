@@ -1,0 +1,10 @@
+included:
+  – ../ButtonKit
+  – ../ButtonGallery
+
+disabled_rules:
+  – compiler_protocol_init
+  – trailing_whitespace
+
+opt_in_rules:
+  

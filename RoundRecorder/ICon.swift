@@ -26,7 +26,6 @@ struct ICon: View {
             ZStack{
                 Path { path in
                     let width = UIScreen.main.bounds.width
-                    let height = UIScreen.main.bounds.height
                     
                     let x1: CGFloat = width * 0.62
                     let y1 = width - 5
@@ -62,7 +61,6 @@ struct ICon: View {
                 
                 Path { path in
                     let width = UIScreen.main.bounds.width
-                    let height = UIScreen.main.bounds.height
                     
                     // 4. Circle
                     let cx1: CGFloat = width/2 - 30
