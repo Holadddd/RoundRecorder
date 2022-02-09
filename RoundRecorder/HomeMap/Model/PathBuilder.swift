@@ -201,15 +201,15 @@ class PathBuilder {
             return distance
         case 200..<1000:
             return 5
-        case 1000..<5000:
+        case 1000..<3000:
+            return 10
+        case 3000..<10000:
             return 20
-        case 5000..<10000:
-            return 50
         case 10000..<20000:
-            return 100
+            return 50
         default:
             // Not Display
-            return 200
+            return 100
         }
     }
     
