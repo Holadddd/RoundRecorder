@@ -214,11 +214,12 @@ class RRAudioOutputData: NSObject {
         // Get Reading MetaData by ReadingDataOffset
         var metadata: RRAudioBufferMetadata? = nil
         
+        // Get the closest metadatasReadingIndex
+        while let offset = audioBufferMetadatas[safe: metadatasReadingIndex]?.0, offset <= readingDataOffset {
+            metadatasReadingIndex += 1
+        }
+        
         if let element = audioBufferMetadatas[safe: metadatasReadingIndex] {
-            let offset = element.0
-            if readingDataOffset >= offset {
-                metadatasReadingIndex += 1
-            }
             metadata = element.1
         } else {
             print("Reading audioBufferMetadatas out of range, skip updating metadatas")

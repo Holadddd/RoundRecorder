@@ -30,9 +30,13 @@ struct MapView: UIViewRepresentable {
     
     @Binding var removeAnnotationItems: [HomeMapAnnotation]
     
-    @Binding var userAnootionItem: HomeMapAnnotation
+    @Binding var userAnootion: HomeMapAnnotation
     
-    @Binding var addAnnotationItem: HomeMapAnnotation
+    @Binding var setNeedUpdateUserAnootionOnMap: Bool
+    
+    @Binding var sourceAnnotation: HomeMapAnnotation?
+    
+    @Binding var setNeedUpdateSourceAnnotationOnMap: Bool
     
     @Binding var displayPathWithRoutes: [MKRoute]
     
@@ -108,9 +112,15 @@ struct MapView: UIViewRepresentable {
             uiView.addAnnotations(displayPathWithAnnotations)
         }
         // UserAnnotionItem
-        uiView.addAnnotation(userAnootionItem)
-        // ReceiverAnnotionItem
-        uiView.addAnnotation(addAnnotationItem)
+        if setNeedUpdateUserAnootionOnMap {
+            setNeedUpdateUserAnootionOnMap.toggle()
+            uiView.addAnnotation(userAnootion)
+        }
+        // SourceAnnotionItem
+        if setNeedUpdateSourceAnnotationOnMap, let sourceAnnotation = sourceAnnotation {
+            setNeedUpdateSourceAnnotationOnMap.toggle()
+            uiView.addAnnotation(sourceAnnotation)
+        }
     }
     
     func filtPathAnnotationsWithCameraCenterDistance(annotations: [HomeMapAnnotation], distance: CLLocationDistance) -> [HomeMapAnnotation] {

@@ -20,7 +20,7 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     static let displayPathByRoutes: Bool = false
     
-    static let receiverAnnotationColor: UIColor = UIColor("9CB4B3")
+    static let sourceAnnotationColor: UIColor = UIColor("9CB4B3")
     // MARK: - Broadcast
     private var broadcastingLimitedTimer: Timer?
     
@@ -78,7 +78,10 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     @Published var playingData: RecordedData? = nil {
         didSet {
-            clearDirectionAndDistanceView()
+            DispatchQueue.main.async {[weak self] in
+                guard let self = self else { return }
+                self.clearDirectionAndDistanceView()
+            }
         }
     }
     
@@ -156,6 +159,8 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     @Published var isSelectedItemPlayAble: Bool = false
     
+    @Published var setNeedUpdateUserAnootionOnMap: Bool = false
+    
     @Published var userAnootion: HomeMapAnnotation = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), type: .user, color: .clear) {
         willSet {
             // Remove the last receiver annotion
@@ -165,10 +170,13 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     @Published var removeAnnotationItems: [HomeMapAnnotation] = []
     
-    @Published var receiverAnnotationItem: HomeMapAnnotation = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), type: .receiver, color: .clear) {
+    @Published var setNeedUpdateSourceAnnotationOnMap: Bool = true
+    
+    @Published var sourceAnnotation: HomeMapAnnotation? {
         willSet {
-            // Remove the last receiver annotion
-            removeAnnotationItems.append(receiverAnnotationItem)
+            setNeedUpdateSourceAnnotationOnMap = true
+            guard let lastSourceAnnotation = sourceAnnotation else { return }
+            removeAnnotationItems.append(lastSourceAnnotation)
         }
     }
     
@@ -801,9 +809,9 @@ class HomeMapViewModel: NSObject, ObservableObject {
     
     private func removeAnnotionOnMap() {
         self.removeAnnotationItems += displayPathWithAnnotations
-        self.removeAnnotationItems.append(receiverAnnotationItem)
         self.displayPathWithAnnotations.removeAll()
-        self.receiverAnnotationItem = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(), color: .clear)
+        
+        self.sourceAnnotation = nil
     }
     
     func clearRoutesButtonDidClicked() {
@@ -1150,7 +1158,11 @@ extension HomeMapViewModel: RRAudioEngineDelegate {
         DispatchQueue.main.async {[weak self, receiverLatitude, receiverLongitude] in
             guard let self = self else { return }
             
-            self.receiverAnnotationItem = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(latitude: receiverLatitude, longitude: receiverLongitude), type: .receiver, color: HomeMapViewModel.receiverAnnotationColor)
+            self.setNeedUpdateSourceAnnotationOnMap = true
+            
+            let location = CLLocationCoordinate2D(latitude: receiverLatitude, longitude: receiverLongitude)
+            
+            self.sourceAnnotation = HomeMapAnnotation(coordinate: location, type: .receiver, color: HomeMapViewModel.sourceAnnotationColor)
         }
         
         guard let userRRLocation = userRRLocation else {print("Fail in getting userRRLocation"); return }
