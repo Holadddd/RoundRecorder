@@ -30,11 +30,13 @@ struct MapView: UIViewRepresentable {
     
     @Binding var removeAnnotationItems: [HomeMapAnnotation]
     
-    var userAnootionItem: HomeMapAnnotation
+    @Binding var userAnootionItem: HomeMapAnnotation
     
-    var addAnnotationItem: HomeMapAnnotation
+    @Binding var addAnnotationItem: HomeMapAnnotation
     
     @Binding var displayPathWithRoutes: [MKRoute]
+    
+    @Binding var setNeedUpdateNewPathAnnotationsOnMap: Bool
     
     @Binding var displayPathWithAnnotations: [HomeMapAnnotation]
     
@@ -83,11 +85,7 @@ struct MapView: UIViewRepresentable {
         }
         
         uiView.camera.centerCoordinateDistance = cameraCenterDistance
-        // UserAnnotionItem
-        uiView.addAnnotation(userAnootionItem)
-        // ReceiverAnnotionItem
-        uiView.addAnnotation(addAnnotationItem)
-        
+        // Path
         if !removeAnnotationItems.isEmpty {
             uiView.removeAnnotations(removeAnnotationItems)
             removeAnnotationItems.removeAll()
@@ -105,11 +103,14 @@ struct MapView: UIViewRepresentable {
             for route in displayPathWithRoutes {
                 uiView.addOverlay(route.polyline, level: .aboveLabels)
             }
-        } else {
-            // MARK: Filter distance by Camera centerCoordinateDistance
-            
+        } else if setNeedUpdateNewPathAnnotationsOnMap && (displayPathWithAnnotations.count > 1) {
+            setNeedUpdateNewPathAnnotationsOnMap.toggle()
             uiView.addAnnotations(displayPathWithAnnotations)
         }
+        // UserAnnotionItem
+        uiView.addAnnotation(userAnootionItem)
+        // ReceiverAnnotionItem
+        uiView.addAnnotation(addAnnotationItem)
     }
     
     func filtPathAnnotationsWithCameraCenterDistance(annotations: [HomeMapAnnotation], distance: CLLocationDistance) -> [HomeMapAnnotation] {
@@ -164,23 +165,31 @@ struct MapView: UIViewRepresentable {
 
                 return annotationView
             case .receiver:
-                let annotationView = MKAnnotationView(annotation: annotion, reuseIdentifier: nil)
-
                 let image = UIImage(systemName: annotion.imageSystemName)
                 
-                annotationView.image = image
-                // TODO:  Fix the tint color on annotation
-                annotationView.image?.withTintColor(.red, renderingMode: .alwaysTemplate)
+                let marker = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: nil)
                 
-                return annotationView
+                marker.animatesWhenAdded = true
+                
+                marker.displayPriority = MKFeatureDisplayPriority(2)
+                
+                marker.glyphImage = image
+                
+                marker.markerTintColor = annotion.color
+                
+                return marker
             case .pathWithDot:
-                let annotationView = MKAnnotationView(annotation: annotion, reuseIdentifier: nil)
-                
                 let image = UIImage(systemName: annotion.imageSystemName)
                 
-                annotationView.image = image
+                let marker = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: nil)
                 
-                return annotationView
+                marker.displayPriority = MKFeatureDisplayPriority(0)
+                
+                marker.glyphImage = image
+                
+                marker.markerTintColor = annotion.color
+                
+                return marker
             default:
                 return nil
             }

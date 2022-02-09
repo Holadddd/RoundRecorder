@@ -8,13 +8,60 @@
 import Foundation
 import MapKit
 
-struct PathBuilder {
+protocol PathBuilderDelegate: AnyObject {
+    func didUpdateDisplayAnnotations(_ annotations: [HomeMapAnnotation])
+}
+
+class PathBuilder {
     
-    var locationCollection: [CLLocationCoordinate2D]
+    weak var delegate: PathBuilderDelegate?
+    
+    private var locationCollection: [CLLocationCoordinate2D]
     
     private static let routeQueue = DispatchQueue(label: "PathBuilder")
     
-    func generatePlaceMarkDistanceOver(meters: Double) -> [MKPlacemark] {
+    private static let pathUnprocessDotColor: UIColor = UIColor("E3C598")
+    
+    private static let pathDidprocessDotColor: UIColor = .gray
+    
+    private var pathLocationWith1M: [CLLocationCoordinate2D] = []
+    
+    private var currentDisplayPathAnnotation: [HomeMapAnnotation] = []
+    
+    private var currentProcessIndex: Int = 0 {
+        didSet {
+            // TODO: Generate the annotion by updating process rate
+            updateRoutesAnnotatationWith(processIndex: currentProcessIndex)
+        }
+    }
+    
+    private var idealDistanceBetweenAnnotation: Int = 1 {
+        didSet {
+            // TODO: Update display anntation
+            generateRoutesAnnotionsWith(processIndex: currentProcessIndex)
+        }
+    }
+    
+    init(locationCollection: [CLLocationCoordinate2D]) {
+        
+        self.locationCollection = locationCollection
+        
+        pathLocationWith1M = generateLocationWithDistanceOver(meters: 1)
+    }
+    
+    func didUpdateProcessRate(_ rate: Double) {
+        let currentProcessIndex = getCurrentProcessIndexBy(rate)
+        guard self.currentProcessIndex != currentProcessIndex else { return }
+        self.currentProcessIndex = currentProcessIndex
+    }
+    
+    func didUpdateCameraCenterDistance(_ distance: CLLocationDistance) {
+        let idealDistance = getIdealDistanceWithCameraCenterDistance(distance)
+        guard idealDistanceBetweenAnnotation != idealDistance else { return }
+        idealDistanceBetweenAnnotation = idealDistance
+    }
+    
+    private func generatePlaceMarkDistanceOver1Meter() -> [MKPlacemark] {
         
         var marks: [MKPlacemark] = []
         
@@ -27,7 +74,7 @@ struct PathBuilder {
         for (index, location) in locationCollection.enumerated() {
             let distance = location.distance(from: lastLocation)
             
-            guard distance > meters && (index != locationCollection.count - 1) else { continue }
+            guard distance > 1 && (index != locationCollection.count - 1) else { continue }
             
             marks.append(MKPlacemark(coordinate: location))
             
@@ -39,7 +86,7 @@ struct PathBuilder {
         return marks
     }
     
-    func generateLocationWithDistanceOver(meters: Double) -> [CLLocationCoordinate2D] {
+    private func generateLocationWithDistanceOver(meters: Double) -> [CLLocationCoordinate2D] {
         var locations: [CLLocationCoordinate2D] = []
         
         guard let origin = locationCollection.first, let last = locationCollection.last else { return locations}
@@ -63,7 +110,10 @@ struct PathBuilder {
         return locations
     }
     
-    static func converToMapItems(placeMarks: [MKPlacemark]) -> [MKMapItem] {
+    func converToMapItems() -> [MKMapItem] {
+        
+        let placeMarks = generatePlaceMarkDistanceOver1Meter()
+        
         return placeMarks.map {
             MKMapItem(placemark: $0)
         }
@@ -97,43 +147,75 @@ struct PathBuilder {
         }
     }
     
-    static func generateRoutesAnnotionsWith(locations: [CLLocationCoordinate2D], centerDistance: CLLocationDistance, complete:@escaping ((Result<[HomeMapAnnotation], RouteBuilderError>)->Void) ) {
+    func didStartProcess() {
+        guard currentDisplayPathAnnotation.count > 0 else { return }
         
-        routeQueue.async {
-            // The Annotations is set as 1 meters in each location
-            let idealDistance: Int = {
-                switch centerDistance {
-                case 0..<200:
-                    let distance = Int(centerDistance / 40) == 0 ? 1 : Int(centerDistance / 40)
-                    return distance
-                case 200..<1000:
-                    return 5
-                case 1000..<5000:
-                    return 20
-                case 5000..<10000:
-                    return 50
-                case 10000..<20000:
-                    return 100
-                default:
-                    // Not Display
-                    return 200
-                }
-            }()
-            print("The ideal distance is: \(idealDistance)")
-            var annotations: [HomeMapAnnotation] = []
+        currentDisplayPathAnnotation[0].color = PathBuilder.pathDidprocessDotColor
+        
+        delegate?.didUpdateDisplayAnnotations(currentDisplayPathAnnotation)
+    }
+
+    private func generateRoutesAnnotionsWith(processIndex: Int) {
+        
+        var annotations: [HomeMapAnnotation] = []
+        
+        guard let origin = pathLocationWith1M.first, let last = pathLocationWith1M.last else {return}
+        
+        let getColor: (Int)->UIColor = { index in
             
-            guard let origin = locations.first, let last = locations.last else { complete(.success(annotations)); return}
-            
-            annotations.append(HomeMapAnnotation(coordinate: origin, type: .pathWithDot))
-            
-            for (index, locations)in locations.enumerated() {
-                guard index > 0 && index % idealDistance == 0 else { continue}
-                annotations.append(HomeMapAnnotation(coordinate: locations, type: .pathWithDot))
-            }
-            annotations.append(HomeMapAnnotation(coordinate: last, type: .pathWithDot))
-            
-            complete(.success(annotations))
+            return index > processIndex ? PathBuilder.pathUnprocessDotColor: PathBuilder.pathDidprocessDotColor
         }
+        
+        annotations.append(HomeMapAnnotation(coordinate: origin, type: .pathWithDot, color: PathBuilder.pathUnprocessDotColor))
+        
+        for (index, locations)in pathLocationWith1M.enumerated() {
+            guard index > 0 && index % idealDistanceBetweenAnnotation == 0 else { continue}
+            
+            let color = getColor(index)
+            
+            annotations.append(HomeMapAnnotation(coordinate: locations, type: .pathWithDot, color: color))
+        }
+        
+        annotations.append(HomeMapAnnotation(coordinate: last, type: .pathWithDot, color: PathBuilder.pathUnprocessDotColor))
+        
+        currentDisplayPathAnnotation = annotations
+        delegate?.didUpdateDisplayAnnotations(annotations)
+    }
+    
+    private func updateRoutesAnnotatationWith(processIndex: Int) {
+        let annotations: [HomeMapAnnotation] = currentDisplayPathAnnotation.enumerated().map { index, element in
+            let color = index > processIndex ? PathBuilder.pathUnprocessDotColor: PathBuilder.pathDidprocessDotColor
+            
+            element.color = color
+            
+            return element
+        }
+        
+        delegate?.didUpdateDisplayAnnotations(annotations)
+    }
+    
+    private func getIdealDistanceWithCameraCenterDistance(_ distance: CLLocationDistance) -> Int {
+        switch distance {
+        case 0..<200:
+            let distance = Int(distance / 40) == 0 ? 1 : Int(distance / 40)
+            return distance
+        case 200..<1000:
+            return 5
+        case 1000..<5000:
+            return 20
+        case 5000..<10000:
+            return 50
+        case 10000..<20000:
+            return 100
+        default:
+            // Not Display
+            return 200
+        }
+    }
+    
+    private func getCurrentProcessIndexBy(_ rate: Double) -> Int {
+        let anotationCount = currentDisplayPathAnnotation.count
+        return Int(Double(anotationCount) * rate)
     }
 }
 

@@ -14,7 +14,7 @@ class HomeMapAnnotation: NSObject, MKAnnotation {
     var userHeadingDegrees: Double?
     var type: MapAnnotationItemType = .undefine
     var color: UIColor?
-    var tint: UIColor { color ?? .red }
+    var tint: UIColor { color ?? .black }
     let id = UUID()
     var imageSystemName: String {
         switch type {
@@ -23,7 +23,7 @@ class HomeMapAnnotation: NSObject, MKAnnotation {
         case .user:
             return "location.north.fill"
         case .pathWithDot:
-            return "circle.circle.fill"
+            return "waveform.circle.fill"
         default:
             return ""
         }

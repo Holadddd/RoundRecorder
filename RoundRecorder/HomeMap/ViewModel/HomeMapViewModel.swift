@@ -19,6 +19,8 @@ class HomeMapViewModel: NSObject, ObservableObject {
     static let desiredAccuracy: CLLocationAccuracy = kCLLocationAccuracyBestForNavigation
     
     static let displayPathByRoutes: Bool = false
+    
+    static let receiverAnnotationColor: UIColor = UIColor("9CB4B3")
     // MARK: - Broadcast
     private var broadcastingLimitedTimer: Timer?
     
@@ -98,59 +100,21 @@ class HomeMapViewModel: NSObject, ObservableObject {
     // Path
     var lastDisplayCameraCenterDistance: CLLocationDistance = 0
     
-    @Published var cameraCenterDistance: CLLocationDistance = MapView.firstSetupCoordinateDistance  {
+    var pathBuilder: PathBuilder?
+    
+    var pathProcessRate: Double = 0 {
         didSet {
-            guard cameraCenterDistance != 0 && pathLocationWith1M.count > 1 else {
-                return
-            }
-            //
-            guard abs(lastDisplayCameraCenterDistance - cameraCenterDistance) > 10 else { return }
-            lastDisplayCameraCenterDistance = cameraCenterDistance
-            //Filter the annotation depends on center distance
-            PathBuilder.generateRoutesAnnotionsWith(locations: pathLocationWith1M,
-                                                    centerDistance: cameraCenterDistance) { [weak self] result in
-                guard  let self = self else { return }
-                
-                switch result {
-                case .success(let annotations):
-                    guard let centerLocation = annotations.first?.coordinate else { return }
-                    DispatchQueue.main.async {
-                        self.displayPathWithAnnotationsOnMap(centerLocation: centerLocation, annotations: annotations)
-                    }
-                case .failure(let error):
-                    print("Fail in generate Routes Annotions: \(error)")
-                }
-            }
+            self.pathBuilder?.didUpdateProcessRate(pathProcessRate)
         }
     }
     
-    var pathLocationWith1M: [CLLocationCoordinate2D] = [] {
+    var cameraCenterDistance: CLLocationDistance = MapView.firstSetupCoordinateDistance  {
         didSet {
-            guard cameraCenterDistance != 0 && pathLocationWith1M.count > 1 else {
-                return
-            }
-            
-            guard abs(lastDisplayCameraCenterDistance - cameraCenterDistance) > 10 else { return }
-            lastDisplayCameraCenterDistance = cameraCenterDistance
-            //Filter the annotation depends on center distance
-            PathBuilder.generateRoutesAnnotionsWith(locations: pathLocationWith1M,
-                                                    centerDistance: cameraCenterDistance) { [weak self] result in
-                
-                guard  let self = self else { return }
-                
-                switch result {
-                case .success(let annotations):
-                    guard let centerLocation = annotations.first?.coordinate else { return }
-
-                    DispatchQueue.main.async {
-                        self.displayPathWithAnnotationsOnMap(centerLocation: centerLocation, annotations: annotations)
-                    }
-                case .failure(let error):
-                    print("Fail in generate Routes Annotions: \(error)")
-                }
-            }
+            self.pathBuilder?.didUpdateCameraCenterDistance(cameraCenterDistance)
         }
     }
+    
+    @Published var setNeedUpdateNewPathAnnotationsOnMap: Bool = false
     
     @Published var displayPathWithAnnotations: [HomeMapAnnotation] = []
     
@@ -749,12 +713,20 @@ class HomeMapViewModel: NSObject, ObservableObject {
         
         self.startDeviceMotionDetection()
         
+        self.pathProcessRate = 0
+        // Set first annotation been processed
+        pathBuilder?.didStartProcess()
+
         self.rrAudioEngineInstance.setupPlayerDataAndStartPlayingAtSeconds(rrAudioData, startOffset: playingDuration, updateInterval: 1) { updatedDuration in
             // TODO: Record playing duration
             DispatchQueue.main.async {
                 withAnimation {
                     self.playingData?.playingDuration = updatedDuration
                 }
+                // PathBuilder
+                guard let recordDuration = self.playingData?.recordDuration else { return }
+                let playingRate = updatedDuration / Double(recordDuration)
+                self.pathProcessRate = playingRate
             }
         } endOfFilePlayingCallback: { endSecond in
             print("The File Is End Of Playing At: \(endSecond)")
@@ -887,14 +859,15 @@ class HomeMapViewModel: NSObject, ObservableObject {
                                           longitude: buffer.metadata!.locationCoordinate.longitude)
         }
         
-        let routeBuilder = PathBuilder(locationCollection: buffersLocation)
+        pathBuilder = PathBuilder(locationCollection: buffersLocation)
+        pathBuilder?.delegate = self
         
         if HomeMapViewModel.displayPathByRoutes {
+            guard let pathBuilder = pathBuilder else { return }
             // MARK: 2. Generate MKPlaceMark with location => The distance bigger than 1 M as a one MKPlaceMark
-            let oneMeterPlaceMark = routeBuilder.generatePlaceMarkDistanceOver(meters: 1)
             
             // MARK: 3. Connect Location -> MKPlaceMark -> MapItem, each MapItem into a GroupedRoute
-            let mapItems = PathBuilder.converToMapItems(placeMarks: oneMeterPlaceMark)
+            let mapItems = pathBuilder.converToMapItems()
             
             
             // MARK: 4. Generate MKRout And call the map method addOverlay for add the line on the map => MKDirections.Request(source, destination),
@@ -925,7 +898,6 @@ class HomeMapViewModel: NSObject, ObservableObject {
             self.updateByMapItem = true
             cameraCenterLocation = startLocation
             cameraCenterDistance = MapView.fileRouteDisplayCoordinateDistance
-            pathLocationWith1M = routeBuilder.generateLocationWithDistanceOver(meters: 1)
         }
         
     }
@@ -947,6 +919,8 @@ class HomeMapViewModel: NSObject, ObservableObject {
         
         displayPathWithAnnotations = annotations
         print("Path annotation collection: \(annotations)")
+        
+        setNeedUpdateNewPathAnnotationsOnMap = true
     }
     // MARK: - DirectionAndDistanceView
     private func clearDirectionAndDistanceView() {
@@ -1038,6 +1012,16 @@ class HomeMapViewModel: NSObject, ObservableObject {
     // MARK: Permission Alert
     private func showPermissionAlertOn(_ access: PermissionDeniedAccess) {
         permissionAlert = access
+    }
+}
+
+extension HomeMapViewModel: PathBuilderDelegate {
+    func didUpdateDisplayAnnotations(_ annotations: [HomeMapAnnotation]) {
+        guard let centerLocation = annotations.first?.coordinate else { return }
+
+        DispatchQueue.main.async {
+            self.displayPathWithAnnotationsOnMap(centerLocation: centerLocation, annotations: annotations)
+        }
     }
 }
 
@@ -1166,7 +1150,7 @@ extension HomeMapViewModel: RRAudioEngineDelegate {
         DispatchQueue.main.async {[weak self, receiverLatitude, receiverLongitude] in
             guard let self = self else { return }
             
-            self.receiverAnnotationItem = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(latitude: receiverLatitude, longitude: receiverLongitude), type: .receiver, color: .orange)
+            self.receiverAnnotationItem = HomeMapAnnotation(coordinate: CLLocationCoordinate2D(latitude: receiverLatitude, longitude: receiverLongitude), type: .receiver, color: HomeMapViewModel.receiverAnnotationColor)
         }
         
         guard let userRRLocation = userRRLocation else {print("Fail in getting userRRLocation"); return }
