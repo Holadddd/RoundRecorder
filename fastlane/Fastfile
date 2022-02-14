@@ -26,7 +26,7 @@ platform :ios do
   desc "Sync certificates"
   lane :sync_certificates do
     #read-only disables match from overriding the existing certificates.
-    match({readonly: true, type: "appstore"})
+    match({readonly: true, type: appstore})
   end
 
   desc "Create ipa"
@@ -35,6 +35,7 @@ platform :ios do
     sync_certificates
 
     # Increases the build number by 1
+    get_build_number
     increment_build_number
 
     # Creates a signed file
@@ -44,6 +45,7 @@ platform :ios do
   desc "Upload to TestFlight"
   lane :beta do
      build
-     pilot  
+
+     pilot
   end
 end
