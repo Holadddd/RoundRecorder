@@ -2,7 +2,7 @@
 
 RoundRecorder 提供同時擷取音訊和地理資訊的 **錄製(廣播)** 與 **播放(訂閱)** 功能，在播放音訊時同步讀取地理資訊，並依據播放者當時下的地理位置模擬出**空間音訊**。使用支援空間音訊的耳機（AirPods Pro, AirPods Max, AirPods (3rd generation), etc.）能依據使用者的移動與轉向更新空間音訊，進而獲得更沈浸式的體驗。
 
-RoundRecorder provides the ability to simultaneously **record(Broadcast)** and **play(Subscribe)** audio with geographic information. Using headphones that support playback of **spatial audio** (AirPods Pro, AirPods Max, AirPods (3rd generation), etc.) can play spatial audio based on the user's motion for a more immersive experience.
+RoundRecorder provides the ability to simultaneously **record(Broadcast)** and **play(Subscribe)** audio with geographic location. Using headphones that support playback of **spatial audio** (AirPods Pro, AirPods Max, AirPods (3rd generation), etc.) can play spatial-audio based on the user's motion for a more immersive experience.
 ## Feature
 ### Radio
 - This feature provides user subscribing the channel with the exact location where the broadcast user is broadcasting
