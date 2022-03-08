@@ -76,7 +76,6 @@
 		DBC00210279FBC1900B4C8DF /* RRAudioRenderAudioUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC00204279FBC1900B4C8DF /* RRAudioRenderAudioUnit.swift */; };
 		DBD578EE2791966F00C3433E /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD578ED2791966F00C3433E /* UIImage+.swift */; };
 		DBD578F027954D3900C3433E /* Map+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD578EF27954D3900C3433E /* Map+.swift */; };
-		DBDD67DB27440F0100E91A5B /* UrbanRecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDD67DA27440F0100E91A5B /* UrbanRecorderTests.swift */; };
 		DBE123BF27A022C000D25AB0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBE123BE27A022C000D25AB0 /* MapKit.framework */; };
 		DBE2A389273D0B2B0098E52D /* FloatingPoint+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE2A388273D0B2B0098E52D /* FloatingPoint+.swift */; };
 		DBE2A38B273D17460098E52D /* DirectionAndDistanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE2A38A273D17460098E52D /* DirectionAndDistanceView.swift */; };
@@ -169,7 +168,6 @@
 		DBD578ED2791966F00C3433E /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		DBD578EF27954D3900C3433E /* Map+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Map+.swift"; sourceTree = "<group>"; };
 		DBDD67D827440F0100E91A5B /* RoundRecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RoundRecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		DBDD67DA27440F0100E91A5B /* UrbanRecorderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanRecorderTests.swift; sourceTree = "<group>"; };
 		DBE123BE27A022C000D25AB0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		DBE2A388273D0B2B0098E52D /* FloatingPoint+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingPoint+.swift"; sourceTree = "<group>"; };
 		DBE2A38A273D17460098E52D /* DirectionAndDistanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionAndDistanceView.swift; sourceTree = "<group>"; };
@@ -444,7 +442,6 @@
 		DBDD67D927440F0100E91A5B /* RoundRecorderTests */ = {
 			isa = PBXGroup;
 			children = (
-				DBDD67DA27440F0100E91A5B /* UrbanRecorderTests.swift */,
 				DB2D9D06275F49BF00100535 /* RRRecordingDataHelperTests.swift */,
 			);
 			path = RoundRecorderTests;
@@ -699,7 +696,6 @@
 			files = (
 				DB2D9D07275F49C000100535 /* RRRecordingDataHelperTests.swift in Sources */,
 				DB710E472745025D00FD3304 /* AtomicValue.swift in Sources */,
-				DBDD67DB27440F0100E91A5B /* UrbanRecorderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -874,7 +870,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_ASSET_PATHS = "\"RoundRecorder/Preview Content\"";
 				DEVELOPMENT_TEAM = R8WVK7NKZV;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
@@ -919,7 +915,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_ASSET_PATHS = "\"RoundRecorder/Preview Content\"";
 				DEVELOPMENT_TEAM = R8WVK7NKZV;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
@@ -961,7 +957,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = R8WVK7NKZV;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -985,7 +981,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = R8WVK7NKZV;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (

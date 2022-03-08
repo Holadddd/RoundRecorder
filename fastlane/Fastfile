@@ -47,5 +47,6 @@ platform :ios do
      build
 
      pilot
+
   end
 end

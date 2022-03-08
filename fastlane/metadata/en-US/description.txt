@@ -1,0 +1,1 @@
+RoundRecorder provides the ability to simultaneously record and play audio with geographic location. Using headphones that support playback of spatial audio (AirPods Pro, AirPods Max, AirPods (3rd generation), etc.) can produce spatial audio based on the user’s motion for a more immersive experience.

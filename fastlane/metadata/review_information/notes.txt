@@ -1,0 +1,10 @@
+The file(Screen Recording) is for demo the main feature of RoundRecorder.
+
+1. Broadcast and Subscribe:
+ This feature provides user subscribing the channel with the exact location where the broadcast user is broadcasting
+
+2. Recorder:
+The recorder provides the ability to simultaneously record the audio with geographic information.
+
+3. FileStorage & Player
+When user did finish their recording, the file will be stored in the device. When the user is playing the recorded file, the map will show the exact location where the user recorded this audio file and the compass will show the real distance and direction based on where the user played this audio file.
